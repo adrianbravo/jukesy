@@ -1,6 +1,4 @@
-var express = require('express'),
-    i18n = require('i18n'),
-    app = require('./'),
+var app = require('./'),
     logger = require('./lib/logger'),
     error = require('./lib/error'),
     User = app.model('User'),
@@ -8,30 +6,7 @@ var express = require('express'),
     UserController = app.controller('User'),
     SessionController = app.controller('Session');
 
-exports.connect = function() {
-  var server = express.createServer();
-
-  server.configure(function() {
-    server.set('port', 8080)
-          .set('host', 'localhost')
-          .set('views', __dirname + '/app/views')
-          .set('view engine', 'jade');
-      
-    server.use(express.logger(''))
-          .use(i18n.init)
-          .use(express.bodyParser())
-          .use(express.cookieParser())
-          .use(express.session({ secret: 'jukesy' }))
-          .use(express.errorHandler({ dumpExceptions: true, showStack: true }))
-          .use(express.methodOverride())
-          .use(express.static(__dirname + '/public'))
-          .use(server.router);
-
-    server.helpers({ __: i18n.__ });
-  });
-
-  server.configure('test', function() {
-  });
+module.exports = function(server) {
   
   server.get('/status', ApplicationController.status);
   server.get('/fail', ApplicationController.fail);
@@ -69,6 +44,4 @@ exports.connect = function() {
   server.get('/404', ApplicationController.notFound);
   server.get('/500', ApplicationController.internalServerError);
   server.all('*', ApplicationController.notFound);
-  
-  return server;
 };

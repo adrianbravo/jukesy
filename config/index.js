@@ -1,9 +1,9 @@
 //
 // Set the current environment
 //
+if (['development', 'test', 'staging', 'production'].indexOf(process.env.NODE_ENV) == -1)
+  process.env.NODE_ENV = 'development';
 exports.env = process.env.NODE_ENV;
-if (['development', 'test', 'staging', 'production'].indexOf(exports.env) == -1)
-  exports.env = 'development';
 
 //
 // Libraries we need in config steps
@@ -37,9 +37,10 @@ exports.assets = require('./assets')[exports.env];
 // Mongoose booter
 //
 exports.connectModels = function(host, db) {
-  logger.info('Models'.yellow.inverse);
-  var ext = '.js';
+  var mongodbString = 'mongodb://' + host + '/' + db
+      ext = '.js';
 
+  logger.info('Models'.yellow.inverse);
   fs.readdirSync('app/models').forEach(function(file) {
     if (!file.match(ext + '$'))
       return;
@@ -48,11 +49,8 @@ exports.connectModels = function(host, db) {
     logger.info((' - ' + file).yellow);
   });
 
-  var mongodbString = 'mongodb://' + host + '/' + db;
-  logger.info(
-    'MongoDB'.green.inverse,
-    (' - ' + mongodbString).green
-  );
+
+  logger.info('MongoDB'.green.inverse, (' - ' + mongodbString).green);
   return mongoose.connect(mongodbString);
 };
 
@@ -62,11 +60,10 @@ exports.connectModels = function(host, db) {
 //
 
 exports.connectControllers = function() {
-  logger.info('Controllers'.blue.inverse);
-
   var ext = '_controller.js',
       controllers = {};
 
+  logger.info('Controllers'.blue.inverse);
   fs.readdirSync('app/controllers').forEach(function(file) {
     if (!file.match(ext + '$'))
       return;
@@ -81,6 +78,5 @@ exports.connectControllers = function() {
 
     logger.info((' - ' + controllerName + ' (' + file + ') ').blue);
   });
-
   return controllers;
 };
