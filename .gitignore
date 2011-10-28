@@ -1,0 +1,5 @@
+node_modules
+test/coverage/*
+test/coverage.html
+*.swp
+.DS_Store

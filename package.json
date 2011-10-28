@@ -1,0 +1,27 @@
+{
+  "author": "Adrian Bravo <me@adrianbravo.net>",
+  "name": "jukesy",
+  "description": "A basic node application with several fixins: user authentication, tests, and a clean API.",
+  "version": "0.0.1",
+  "homepage": "",
+  "repository": {
+    "url": ""
+  },  
+  "main": "./",
+  "engines": {
+    "node": ">= v0.4.10"
+  },  
+  "dependencies": {
+    "i18n"      : "0.3.0",
+    "async"     : "0.1.12",
+    "colors"    : "0.5.1",
+    "vows"      : "0.5.11",
+    "should"    : "0.3.1",
+    "request"   : "2.1.1",
+    "express"   : "2.4.6",
+    "mongoose"  : "2.2.0",
+    "bcrypt"    : "0.3.1",
+    "everyauth" : "0.2.20",
+    "jade"      : "0.15.4"
+  }
+}
