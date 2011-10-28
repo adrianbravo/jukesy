@@ -1,32 +1,41 @@
+//
 // Set the current environment
+//
 exports.env = process.env.NODE_ENV;
 if (['development', 'test', 'staging', 'production'].indexOf(exports.env) == -1)
   exports.env = 'development';
 
+//
+// Libraries we need in config steps
+//
 var mongoose = require('mongoose'),
     logger = require('../lib/logger'),
     async = require('async'),
     fs = require('fs');
+logger.info('Environment'.red.inverse, (' - ' + exports.env).red);
 
-logger.info(
-  'Environment'.red.inverse,
-  (' - ' + exports.env).red
-);
-
+//
 // Pepper used by bcrypt for hashing password
+//
 exports.pepper = '12febe85f1b1c312b9a44c1744760ddfdfd9660ac94b619ff41e3d344e25ede2f50633237b2c5f68e8bb72181c211920fa49ff4f99547912311a2e4b1ce7814a'
 
+//
 // Database environment settings
+//
 exports.db = require('./database')[exports.env];
 
-// logger environment settings
+//
+// Logger environment settings
+//
 logger.settings(require('./logger')[exports.env]);
 
+//
+// CSS, JS, and image assets
+exports.assets = require('./assets')[exports.env];
 
 //
 // Mongoose booter
 //
-
 exports.connectModels = function(host, db) {
   logger.info('Models'.yellow.inverse);
   var ext = '.js';

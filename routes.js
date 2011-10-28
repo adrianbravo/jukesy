@@ -1,6 +1,7 @@
 var express = require('express'),
     i18n = require('i18n'),
     app = require('./'),
+    logger = require('./lib/logger'),
     error = require('./lib/error'),
     User = app.model('User'),
     ApplicationController = app.controller('Application'),
@@ -16,7 +17,7 @@ exports.connect = function() {
           .set('views', __dirname + '/app/views')
           .set('view engine', 'jade');
       
-    server.use(express.logger('dev'))
+    server.use(express.logger(''))
           .use(i18n.init)
           .use(express.bodyParser())
           .use(express.cookieParser())
@@ -29,6 +30,9 @@ exports.connect = function() {
     server.helpers({ __: i18n.__ });
   });
 
+  server.configure('test', function() {
+  });
+  
   server.get('/status', ApplicationController.status);
   server.get('/fail', ApplicationController.fail);
   server.get('/', ApplicationController.home);
@@ -57,6 +61,9 @@ exports.connect = function() {
         type    : err.type
       }, err.code);
     }
+
+    if (typeof err.stack != 'undefined' && err.stack)
+      logger.error(err.stack);
   });
 
   server.get('/404', ApplicationController.notFound);

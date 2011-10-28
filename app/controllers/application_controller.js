@@ -6,7 +6,7 @@ module.exports = {
   },
 
   home: function(req, res, next) {
-    res.render('home', {});
+    res.render('home', { scripts: app.assets });
   },
 
   notFound: function(req, res, next) {
@@ -23,4 +23,3 @@ module.exports = {
   },
 
 };
-

@@ -1,0 +1,121 @@
+@import "include.less";
+@import "controls.less";
+@import "search.less";
+
+html { background: #f3f3f3; }
+html, input, textarea { font-family: 'Ubuntu'; }
+body { line-height: 1.5; }
+strong { font-weight: bold; }
+em { font-style: italic; }
+a {
+  text-decoration: none;
+  color: #666;
+  &:hover { color: #000; text-decoration: underline; }
+}
+
+/* TODO add no-select class via js when dragging, etc. */
+body, body.no-select { .no-select(); }
+
+#app {
+  position: relative;
+  margin: 0 auto 30px auto;
+  padding: 10px;
+  width: 940px;
+  border: 1px solid #ccc;
+  background: #fff;
+  border-top: 0;
+}
+
+#header {
+  
+  #home {
+    background: transparent;
+    font-size: 24px;
+    line-height: 24px;
+    color: #444;
+    &:hover {
+      text-decoration: none;
+      color: #000;
+    }
+  }
+
+  a {
+    display: inline-block;
+    margin: 5px 10px;
+  }
+}
+
+#query {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border: 1px solid #aaa;
+  padding: 4px;
+  font-size: 16px;
+  color: #333;
+  .radius(2px);
+  &:focus { outline: 0; border-color: #333; }
+}
+
+#home {
+  ul {
+    margin: 0 auto;
+    width: 600px;
+  }
+}
+
+#video_wrapper {
+  position: relative;
+  width: 540px;
+  height: 320px;
+  margin: 10px auto;
+}
+
+#video {
+  background: #000;
+  position: absolute;
+}
+
+#footer {
+  z-index: 10;
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+
+  .content {
+    background: #111;
+    padding: 0 10px;
+    margin: 0 auto;
+    height: 40px;
+    width: 940px;
+    border-top: 1px solid #444;
+  }
+}
+
+.fullscreen {
+  overflow: hidden;
+
+  #video_wrapper {
+    position: fixed;
+    margin: 0;
+    top: 0;
+    left: 0;
+    z-index: 50;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    padding-bottom: 40px;
+  }
+
+  #footer {
+    z-index: 60;
+    background: #111;
+    border-top: 1px solid #444;
+    .content {
+      border: 0;
+      width: 940px;
+    }
+  }
+}
+

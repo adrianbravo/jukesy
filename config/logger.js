@@ -5,7 +5,7 @@ module.exports = {
   },
 
   test: {
-    level: 'error'
+    level: 'debug'
   },
 
   staging: {

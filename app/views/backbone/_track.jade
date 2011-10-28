@@ -1,0 +1,12 @@
+.track(title= 'click to select<br>doubleclick to play')
+  .avatar.left.
+    <% if (image != '') { %>
+      <img src='{{ image }}'>
+    <% } %>
+  .text
+    a.name(title= 'search for similar tracks to {{ name }}') {{ name }}
+    br
+    a.artist(title= 'view popular songs by {{ artist }}') {{ artist }}
+  .clear
+  //remove
+

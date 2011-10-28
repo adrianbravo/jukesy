@@ -14,6 +14,9 @@ exports.controller = function(controller) {
   return exports.controllers[controller];
 };
 
+// CSS, JS and image assets
+exports.assets = config.assets;
+
 // Start the web app
 exports.boot = function() {
 
@@ -23,6 +26,7 @@ exports.boot = function() {
   // Load routes
   var web = require('../routes').connect(null);
 
+  // TODO is there a sync way to do this?
   web.listen(web.set('port'), function() {
     logger.info(
                 ('Express').magenta.inverse,
@@ -32,3 +36,5 @@ exports.boot = function() {
     exports.web = this;
   });
 };
+
+Error.stackTraceLimit = Infinity;
