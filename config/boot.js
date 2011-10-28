@@ -45,6 +45,7 @@ exports.boot = function() {
           .use(express.errorHandler({ dumpExceptions: true, showStack: true }))
           .use(express.methodOverride())
           .use(express.static(__dirname + '/../public'))
+          .use('/locales', express.static(__dirname + '/../locales'))
           .use(server.router);
 
     server.helpers({ __: i18n.__ });

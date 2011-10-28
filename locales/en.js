@@ -1,3 +1,3 @@
 {
-  "welcome": "Welcome to Jukesy! hello world"
+	"welcome": "Welcome to Jukesy! hello world"
 }
