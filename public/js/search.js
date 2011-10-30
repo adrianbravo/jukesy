@@ -193,13 +193,13 @@ $(function() {
       , 'click .last'     : 'last'
       , 'click .track'    : 'toggleSelect'
       , 'dblclick .track' : 'play'
-      , 'mouseenter'      : 'showActions'
-      , 'mouseleave'      : 'hideActions'
+      //, 'mouseenter'      : 'showActions'
+      //, 'mouseleave'      : 'hideActions'
     },
 
     refreshActions: function() {
-      this.hideActions();
-      this.showActions();
+      //this.hideActions();
+      //this.showActions();
     },
 
     toggleSelect: function() {

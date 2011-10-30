@@ -1,35 +1,72 @@
 #app
   #header
-    #header-inner.inner10
-      a.home(href= '/')= __('jukesy')
+    a.home(href= '/')= __('jukesy')
+    #controls
+    input#query(name= 'jksy_query', type= 'text', value= '', placeholder= __('search for music'), spellcheck= 'false')
+    a.login(href= '/login')= __('login')
+    a.signup(href= '/signup')= __('signup')
   #sidebar
     #quickbar
-      #quickbar-inner.inner10
-        p sidebar sidebar sidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebar sidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebar sidebarsidebarsidebarsidebarsidebarsidebarsidebar sidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebar sidebar sidebar sidebar sidebar sidebarsidebarsidebarsidebarsidebarsidebarsidebar
-        p sidebar sidebar sidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebar sidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebar sidebarsidebarsidebarsidebarsidebarsidebarsidebar sidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebar sidebar sidebar sidebar sidebar sidebarsidebarsidebarsidebarsidebarsidebarsidebar
-        p sidebar sidebar sidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebar sidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebar sidebarsidebarsidebarsidebarsidebarsidebarsidebar sidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebar sidebar sidebar sidebar sidebar sidebarsidebarsidebarsidebarsidebarsidebarsidebar
+      a(href= '/playlists')= __('playlists')
+      a(href= '/favorites')= __('favorites')
+      p sidebar sidebar sidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebar sidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebar sidebarsidebarsidebarsidebarsidebarsidebarsidebar sidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebar sidebar sidebar sidebar sidebar sidebarsidebarsidebarsidebarsidebarsidebarsidebar
+      p sidebar sidebar sidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebar sidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebar sidebarsidebarsidebarsidebarsidebarsidebarsidebar sidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebar sidebar sidebar sidebar sidebar sidebarsidebarsidebarsidebarsidebarsidebarsidebar
+      p sidebar sidebar sidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebar sidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebar sidebarsidebarsidebarsidebarsidebarsidebarsidebar sidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebarsidebar sidebar sidebar sidebar sidebar sidebarsidebarsidebarsidebarsidebarsidebarsidebar
     #video
-
   #main
-    //a#home(href= '#/')= __('jukesy')
-    //a(href= '#/favorites') __('favorites')
-    //a(href= '#/playlists') __('playlists')
-    //input#query.right(name= 'jukesy_query', type= 'text', value= '', placeholder= 'search for music', spellcheck= 'false')
-    //.clear
-  //#main
-  //#playlist_wrapper
-  //  #playlist.tracks
-  //#video_wrapper
-  //  #video
-
-//#footer
-//  .content
-//    #controls
+    #playlist_wrapper
+      #playlist.tracks
 
 
+script#controls-template(type= 'text/template')
+  != partial('backbone/_controls')
+
+script#song-info-template(type= 'text/template')
+  != partial('backbone/_song_info')
+
+script#song-badge-template(type= 'text/template')
+  != partial('backbone/_song_badge')
+
+script#playlists-template(type= 'text/template')
+  != partial('backbone/_playlists')
+
+script#playlist-short-template(type= 'text/template')
+  != partial('backbone/_playlist_short')
+
+script#home-template(type= 'text/template')
+  != partial('backbone/_home')
+
+script#lastfm-search-template(type= 'text/template')
+  != partial('backbone/_lastfm_search')
+
+script#tag-template(type= 'text/template')
+  != partial('backbone/_tag')
+
+script#album-template(type= 'text/template')
+  != partial('backbone/_album')
+
+script#artist-template(type= 'text/template')
+  != partial('backbone/_artist')
+
+script#track-template(type= 'text/template')
+  != partial('backbone/_track')
+
+script#track-actions-template(type= 'text/template')
+  != partial('backbone/_track_actions')
+
+script#lastfm-no-results-template(type= 'text/template')
+  != partial('backbone/_lastfm_no_results')
+
+script#lastfm-waiting-template(type= 'text/template')
+  != partial('backbone/_lastfm_waiting')
+
+script#playlist-template(type= 'text/template')
+  != partial('backbone/_playlist')
+
+script#playlist-empty-template(type= 'text/template')
+  != partial('backbone/_playlist_empty')
 
 script(src= 'http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js')
+script(src= 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js')
 - each script in scripts
   script(src= '/' + script)
-
-

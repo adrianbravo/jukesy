@@ -12,11 +12,17 @@ module.exports = function(server) {
   server.get('/fail', ApplicationController.fail);
   server.get('/', ApplicationController.home);
 
+  server.get('/lastfm/:type/:method/:query', ApplicationController.search);
+  //server.get('/playlist
+
   server.get('/users', UserController.index);
   server.get('/users/:username', UserController.show);
   server.post('/users/create', UserController.create);
   server.post('/users/:username', UserController.update);
   //server.delete('/users/:username', UserController.delete);
+
+  // users/:user/playlists/playlist-slug, separate output for (.html) and .json
+  // (.html) sends back home layout w/meta tags, .json sends the playlist
 
   server.post('/login', SessionController.create);
 

@@ -148,6 +148,7 @@ $(function() {
         Controls.$songBadge.html('');
       }
       if (this.state == 0) this.next();
+      this.player.setPlaybackQuality('hd720');
       window.Controls.updatePlay();
     },
 

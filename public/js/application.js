@@ -84,13 +84,19 @@ $(function() {
 
   View.App = Backbone.View.extend({
     el: $(document),
+
     events: {
         'keypress #query_clone': 'searchOnEnter'
-      , 'keyup #query_clone'   : 'cloneQuery'
       , 'keypress #query'      : 'searchOnEnter'
       , 'keydown'              : 'keyMapper'
       , 'keyup'                : 'setMaxVolume'
+      , 'click a'              : 'hijackAnchor'
       //, 'hover [title]'        : 'tooltip'
+    },
+
+    hijackAnchor: function(e) {
+      e.preventDefault();
+      Router.navigate($(e.target).attr('href'), true);
     },
 
     tooltip: function(e) {
@@ -113,10 +119,6 @@ $(function() {
         Router.navigate('/lastfm/track/search/' + encodeURIComponent($('#query').val()), true);
         $('#query').val('').blur();
       }
-    },
-
-    cloneQuery: function(e) {
-      $('#query').val($('#query_clone').val());
     },
 
     // The event lacks keyboard modifiers (ctrl, alt, shift, meta)

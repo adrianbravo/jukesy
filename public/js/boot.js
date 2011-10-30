@@ -1,14 +1,4 @@
 
-
-var windowResize = function() {
-  $app = $('#app');
-};
-
-$(function() {
-});
-
-/*
-
 window.Collection = {};
 window.Model = {};
 window.View = {};
@@ -23,11 +13,20 @@ function onYouTubePlayerReady(id) {
 
   window.Router = new AppRouter();
 
-  if (!Backbone.history.start())
-    Router.navigate('/', true);
+  if (!Backbone.history.start({ pushState: true })) {
+    Router.navigate(window.location.pathname, true);
+  }
 
   Controls.setUpdate();
 }
+
+var windowResized = function() {
+  if ($('body').hasClass('fullscreen')) {
+    var $video = $('#video');
+    $video.height($(window).height() - $video.position().top);
+    Video.player.setSize($video.width(), $video.height());
+  }
+};
 
 $(function() {
   // Mustache-style templates, e.g. {{ artist }}
@@ -36,11 +35,9 @@ $(function() {
     evaluate    : /<%(.+?)%>/g
   };
 
-  $(window).resize(windowResized);
-  windowResized();
+  $(window).resize(_.debounce(windowResized));
 });
 
 String.prototype.capitalize = function() {
   return this.charAt(0).toUpperCase() + this.slice(1);
 }
-*/

@@ -9,6 +9,12 @@ module.exports = {
     res.render('home', { scripts: app.assets });
   },
 
+  search: function(req, res, next) {
+    console.log(req.param('type'), req.param('method'), req.param('query'));
+    res.render('home', { scripts: app.assets });
+    // server.get('/lastfm/:type/:method/:query', ApplicationController.search);
+  },
+
   notFound: function(req, res, next) {
     res.render('404', { layout: false, status: 404 });
   },
