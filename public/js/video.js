@@ -43,8 +43,17 @@ $(function() {
       return this.player.getCurrentTime() / this.player.getDuration();
     },
 
-    timeText: function() {
-      return (this.humanizeSeconds(this.player.getCurrentTime()) + ' / ' + this.humanizeSeconds(this.player.getDuration()));
+    timers: function() {
+      var current = Math.floor(this.player.getCurrentTime()),
+          remaining = Math.ceil(this.player.getDuration() - current);
+
+      return [
+        this.humanizeSeconds(current),
+        this.humanizeSeconds(remaining)
+       ];
+    },
+
+    timeRemaining: function() {
     },
 
     humanizeSeconds: function(s) {

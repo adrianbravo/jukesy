@@ -27,7 +27,8 @@ $(function() {
       this.$songInfo     = $('#song_info'),
       this.$songBadge    = $('#song_badge'),
       this.$timer        = $('#timer'),
-      this.$timerText    = $('#timer_text'),
+      this.$timerLeft    = $('#timer_left'),
+      this.$timerRight   = $('#timer_right'),
       this.$timerLoaded  = $('#timer_loaded'),
       this.$timerCurrent = $('#timer_current');
       this.$volume       = $('#volume');
@@ -51,7 +52,7 @@ $(function() {
     },
 
     setUpdate: function() {
-      this.updateInterval = setInterval(this.update, 334);
+      this.updateInterval = setInterval(this.update, 100);
     },
 
     toggleFullscreen: function() {
@@ -119,11 +120,14 @@ $(function() {
       if (_.isNaN(timeRatio) || _.isNaN(bytesRatio)) {
         this.$timerLoaded.width(0);
         this.$timerCurrent.width(0);
-        this.$timerText.html('');
+        this.$timerLeft.html('');
+        this.$timerRight.html('');
       } else {
         this.$timerLoaded.width(this.$timer.width() * bytesRatio);
         this.$timerCurrent.width(this.$timer.width() * timeRatio);
-        this.$timerText.html(window.Video.timeText());
+        var time = window.Video.timers();
+        this.$timerLeft.html(time[0]);
+        this.$timerRight.html(time[1]);
       }
     },
 

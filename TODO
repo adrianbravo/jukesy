@@ -1,5 +1,22 @@
 
-- hijack <a> tags w/js for pushstate
+- login button
+- modal popup for login
+- login + signup forms (views)
+- style search results to be consistent with other styles
+  - that blue-grey color
+  - more list-like w/ artist and track side-by-side
+- style the loadmore button to be consistent with other styles
+- icons to left of sidebar nav items
+  - make sure each has two color states, white and grey-blue
+  - now playing - play icon
+  - settings - gear
+  - favorites - star
+  - playlists - list
+  - tag radio - radio...
+  - broadcast - radio...
+  - new playlist - plus
+- make each sidebar nav item (except new playlist) open a url and add active class (remove active from others), and swap colors in active state
+
 - js placeholder
 
 - make app.boot synchronous if possible:

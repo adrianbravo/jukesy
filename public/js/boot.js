@@ -13,7 +13,7 @@ function onYouTubePlayerReady(id) {
 
   window.Router = new AppRouter();
 
-  if (!Backbone.history.start({ pushState: true })) {
+  if (!Backbone.history.start()) {
     Router.navigate(window.location.pathname, true);
   }
 

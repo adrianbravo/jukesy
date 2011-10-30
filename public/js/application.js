@@ -73,7 +73,10 @@ $(function() {
 
     search: function(type, method, query) {
       // Unbind events for when view is re-created
-      if (!_.isUndefined(window.Search)) window.Search.view.delegateEvents([]);
+      console.log(type, method, query);
+      if (!_.isUndefined(window.Search)) {
+        window.Search.view.delegateEvents([]);
+      }
       this.trigger('appview');
       $('#main').show();
       var query = decodeURIComponent(query);
@@ -90,13 +93,7 @@ $(function() {
       , 'keypress #query'      : 'searchOnEnter'
       , 'keydown'              : 'keyMapper'
       , 'keyup'                : 'setMaxVolume'
-      , 'click a'              : 'hijackAnchor'
       //, 'hover [title]'        : 'tooltip'
-    },
-
-    hijackAnchor: function(e) {
-      e.preventDefault();
-      Router.navigate($(e.target).attr('href'), true);
     },
 
     tooltip: function(e) {

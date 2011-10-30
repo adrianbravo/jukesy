@@ -8,5 +8,14 @@
 	"favorites": "favorites",
 	"playlists": "playlists",
 	"login": "login",
-	"signup": "signup"
+	"signup": "signup",
+	"Currently Playing": "Currently Playing",
+	"Settings": "Settings",
+	"Favorites": "Favorites",
+	"Playlists": "Playlists",
+	"Now playing": "Now playing",
+	"Now Playing": "Now Playing",
+	"Tag Radio": "Tag Radio",
+	"Broadcasts": "Broadcasts",
+	"+ New Playlist": "+ New Playlist"
 }
