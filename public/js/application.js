@@ -93,7 +93,12 @@ $(function() {
       , 'keypress #query'      : 'searchOnEnter'
       , 'keydown'              : 'keyMapper'
       , 'keyup'                : 'setMaxVolume'
+      , 'click #login'         : 'login'
       //, 'hover [title]'        : 'tooltip'
+    },
+
+    login: function(e) {
+      new Model.Modal({ type: 'login' });
     },
 
     tooltip: function(e) {

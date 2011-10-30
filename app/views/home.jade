@@ -3,7 +3,7 @@
     a.home(href= '/#/')= __('jukesy')
     #controls
     input#query(name= 'jksy_query', type= 'text', value= '', placeholder= __('search for music'), spellcheck= 'false')
-    a#login(href= '/#/login')= __('login')
+    #login= __('login')
   #sidebar
     #quickbar
       a(href= '/#/')= __('Now Playing')
@@ -69,6 +69,12 @@ script#playlist-template(type= 'text/template')
 
 script#playlist-empty-template(type= 'text/template')
   != partial('backbone/_playlist_empty')
+
+script#modal-template(type= 'text/template')
+  != partial('backbone/_modal')
+
+script#login-template(type= 'text/template')
+  != partial('backbone/_login')
 
 script(src= 'http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js')
 script(src= 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js')
