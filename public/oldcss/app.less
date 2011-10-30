@@ -1,12 +1,10 @@
 @import "include.less";
-/*
 @import "controls.less";
 @import "search.less";
-*/
 
 html { background: #f3f3f3; }
 html, input, textarea { font-family: 'Ubuntu'; }
-body { line-height: 1.5; .no-select(); }
+body { line-height: 1.5; }
 strong { font-weight: bold; }
 em { font-style: italic; }
 a {
@@ -15,103 +13,9 @@ a {
   &:hover { color: #000; text-decoration: underline; }
 }
 
-#app {
-  background: #222;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  min-width: 960px;
-}
+/* TODO add no-select class via js when dragging, etc. */
+body, body.no-select { .no-select(); }
 
-#header {
-  position: absolute;
-  top: 0;
-  width: 100%;
-  height: @header-height;
-  .gradient(#eee, #ddd);
-  box-shadow: 0 1px 0 1px #000;
-  z-index: 2;
-
-  .home {
-    color: #000;
-    text-shadow: 0 0 1px #ccc;
-    font-weight: bold;
-    font-size: 24px;
-    line-height: 0;
-    &:hover { text-decoration: none; color: #06f; }
-  }
-}
-
-#sidebar, #quickbar, #video {
-  left: 0;
-  width: @sidebar-width;
-}
-
-#sidebar {
-  position: absolute;
-  top: @header-height;
-  bottom: 0;
-  color: #eee;
-  border-right: 1px solid #444;
-  box-shadow: 1px 0 0 6px #333;
-
-  #quickbar {
-    background: #101010;
-    position: absolute;
-    top: 0;
-    bottom: @video-height;
-    overflow-y: scroll;
-    overflow-x: hidden;
-  }
-
-  #video {
-    background: #000;
-    height: @video-height;
-    position: absolute;
-    bottom: 0;
-  }
-}
-
-
-/*
-#sidebar {
-  background: red;
-  width: @sidebar-width;
-  height: 100%;
-  margin-top: (@header-height);
-  padding-top: -(@header-height);
-  position: absolute;
-  z-index: 99;
-  top: 0;
-  left: 0;
-  opacity: 0.5;
-}
-
-#header {
-  background: blue;
-  width: 100%;
-  height: @header-height;
-  position: absolute;
-  z-index: 100;
-  top: 0;
-  left: 0;
-  opacity: 0.5;
-}
-
-#main {
-  background: green;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0.5;
-}
-*/
-
-/*
 #app {
   position: relative;
   margin: 0 auto 30px auto;
@@ -214,4 +118,4 @@ a {
     }
   }
 }
-*/
+

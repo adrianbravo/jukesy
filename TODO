@@ -2,6 +2,7 @@
 - make app.boot synchronous if possible:
   synchronous startup would eliminate race conditions
 - convert any current text in the app to i18n bullshit
+- twitter bootstrap for some design stuff?
 
 rename users/create POST to just /users POST
 

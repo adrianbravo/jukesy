@@ -1,0 +1,127 @@
+
+#controls {
+  height: 24px;
+  padding: 8px 0;
+}
+
+#play, #next, #prev,
+#mute, #repeat, #fullscreen {
+  opacity: 0.5;
+  &:hover { opacity: 1.0; }
+}
+
+#play,
+#next,
+#prev,
+#mute,
+#repeat,
+#fullscreen {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  vertical-align: top;
+  background: transparent url('/images/buttons.png') no-repeat 0 0;
+  cursor: pointer;
+}
+
+#mute {
+  background-position: -150px -150px;
+  width: 16px;
+  margin: 6px 0 0 10px;
+  &.on { background-position: -200px -150px; }
+}
+
+#prev {
+  background-position: -50px -200px;
+  width: 16px;
+  margin: 4px 10px 0 0;
+}
+
+#next {
+  background-position: -100px -200px;
+  width: 16px;
+  margin: 4px 0 0 10px;
+}
+
+#play {
+  background-position: -50px -150px;
+  width: 18px;
+  height: 24px;
+  margin: 1px 0 0 0;
+
+  &.pause { background-position: -100px -150px; }
+  &.loading { background-position: -1000px -150px; }
+}
+
+#repeat {
+  background-position: -50px -350px;
+  margin: 5px 0 0 10px;
+}
+
+#fullscreen {
+  background-position: -100px -250px;
+  margin: 4px 0 0 10px;
+  &.off { background-position: -50px -250px; }
+}
+
+#volume {
+  display: inline-block;
+  background: #333;
+  width: 80px;
+  height: 10px;
+  margin: 7px 0 0 10px;
+  vertical-align: top;
+  .radius(10px);
+  overflow: hidden;
+  cursor: pointer;
+
+  .ui-slider-range {
+    background: #999;
+    height: 10px;
+  }
+
+  .ui-slider-handle {
+    position: relative;
+    display: block;
+    opacity: 1.0;
+  }
+}
+
+#timer {
+  display: inline-block;
+  width: 640px;
+  background: #333;
+  overflow: hidden;
+  height: 12px;
+  z-index: 22;
+  margin: 6px 10px;
+  .radius(4px);
+
+  * {
+    height: 12px;
+    z-index: 22;
+  }
+
+  #timer_text {
+    font-family: 'Ubuntu';
+    white-space: nowrap;
+    padding-left: 5px;
+    font-size: 11px;
+    line-height: 11px;
+    text-shadow: 0px 0px 3px #000;
+    color: #fff;
+  }
+
+  #timer_loaded {
+    width: 0px;
+    background: #666;
+    cursor: pointer;
+  }
+
+  #timer_current {
+    width: 0px;
+    background: #ccc;
+  }
+
+}
+

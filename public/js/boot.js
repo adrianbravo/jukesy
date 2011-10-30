@@ -1,4 +1,14 @@
 
+
+var windowResize = function() {
+  $app = $('#app');
+};
+
+$(function() {
+});
+
+/*
+
 window.Collection = {};
 window.Model = {};
 window.View = {};
@@ -19,15 +29,6 @@ function onYouTubePlayerReady(id) {
   Controls.setUpdate();
 }
 
-function windowResized() {
-  var h = $(window).height(),
-      w = $(window).width();
-
-  if (window.Video && window.Video.fullscreen) {
-    $('#video').width(w).height(h - $('#footer').outerHeight());
-  }
-}
-
 $(function() {
   // Mustache-style templates, e.g. {{ artist }}
   _.templateSettings = {
@@ -42,3 +43,4 @@ $(function() {
 String.prototype.capitalize = function() {
   return this.charAt(0).toUpperCase() + this.slice(1);
 }
+*/

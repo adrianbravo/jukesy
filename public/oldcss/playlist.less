@@ -1,0 +1,127 @@
+
+#playlist {
+  overflow-x: hidden;
+  font-size: 10px;
+
+  .header {
+    margin: 0 3px 6px 3px;
+    height: 24px;
+    font-size: 12px;
+    position: relative;
+    color: #666;
+
+    input.name {
+      width: 260px;
+      height: 18px;
+      display: inline-block;
+      overflow: hidden;
+      padding: 2px 5px; margin: 0; border: 0; outline: 0;
+
+      &:hover, &:focus {
+        background: #ddd;
+      }
+    }
+
+    #save {
+      float: right;
+      .gradient(#fff, #eee);
+      display: inline-block;
+      color: #666;
+      padding: 4px 8px;
+      border: 1px solid #ccc;
+      cursor: pointer;
+      position: absolute;
+      top: 0;
+      right: 0;
+
+      &.disabled, &.disabled:hover {
+        cursor: default;
+        color: #ccc;
+        border: 1px solid #ccc;
+        .gradient(#fff, #eee);
+      }
+      &:hover {
+        .blue-box;
+        .gradient(#9cf, #69f);
+      }
+    }
+  }
+
+  li {
+    cursor: pointer;
+    list-style-type: none;
+
+    &:last div { margin: 0; }
+  }
+
+  .track {
+    font-size: 10px;
+    width: 320px;
+    padding: 3px;
+    margin: 3px;
+
+    .meta {
+      width: 270px;
+      height: 24px;
+      overflow: hidden;
+    }
+
+    .image {
+      position: relative;
+      display: inline-block;
+      background: #666;
+      text-align: center;
+      margin-right: 5px;
+      color: #ccc;
+      width: 24px;
+      height: 24px;
+      font-size: 20px;
+      line-height: 26px;
+      .radius(0);
+
+      img {
+        width: 22px; height: 22px; padding: 1px;
+      }
+    }
+
+    &:hover .remove { background-position: -200px -50px; }
+    .remove {
+      display: block; position: absolute; top: 8px; right: 5px;
+      background: url('/images/buttons.png') no-repeat -150px -50px; width: 14px; height: 14px;
+
+      &:hover { background-position: -250px -50px; }
+    }
+  }
+
+  .playing {
+    .track {
+      .blue-box;
+      .remove { display: none; }
+      .image { background: #fff; }
+    }
+  }
+
+  .error .track {
+    background: #eee;
+    border-color: #ddd;
+    color: #aaa;
+  }
+
+  .ui-state-highlight {
+    height: 30px;
+    width: 326px;
+    border: 1px solid #666;
+    background: #eee; margin: 3px;
+    box-shadow: inset 0px 0px 1px #999;
+  }
+
+  .playlist_empty {
+    text-align: center;
+    font-size: 16px;
+    font-style: italic;
+    color: #666;
+    padding: 15px 0;
+  }
+}
+
+

@@ -1,0 +1,13 @@
+a.album
+  <% if (image != '') { %>
+  img.avatar(src='{{ image }}')
+  <% } else { %>
+  .avatar
+  <% } %>
+  .text
+    .name
+      {{ name }}
+    .albumartist
+      {{ artist }}
+  .clear
+
