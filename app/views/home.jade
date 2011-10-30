@@ -3,8 +3,7 @@
     a.home(href= '/#/')= __('jukesy')
     #controls
     input#query(name= 'jksy_query', type= 'text', value= '', placeholder= __('search for music'), spellcheck= 'false')
-    //a.login(href= '/#/login')= __('login')
-    //a.signup(href= '/#/signup')= __('signup')
+    a#login(href= '/#/login')= __('login')
   #sidebar
     #quickbar
       a(href= '/#/')= __('Now Playing')

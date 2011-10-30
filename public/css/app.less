@@ -10,7 +10,7 @@ em { font-style: italic; }
 a {
   text-decoration: none;
   color: #666;
-  &:hover { color: #000; text-decoration: underline; }
+  &:hover, &:focus { outline: 0; color: #000; text-decoration: underline; }
 }
 hr {
   background: #222;
@@ -48,26 +48,47 @@ hr {
     font-weight: bold;
     font-size: 28px;
     text-shadow: 0 1px 1px #fff;
-    &:hover { text-decoration: none; color: #2b373d; }
+    &:hover { text-decoration: none; color: @bluegrey; }
   }
 
   #controls {
     position: absolute;
     top: 6px;
     left: 110px;
-    right: 240px;
+    right: 283px;
   }
 
   #query {
     position: absolute;
     top: 9px;
-    right: 9px;
+    right: 59px;
     border: 1px solid #999;
     padding: 4px;
     font-size: 16px;
     color: #666;
     box-shadow: inset 0 0 1px 0 #999;
     &:focus { outline: 0; border-color: #666; }
+  }
+
+  #login {
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50px;
+    font-size: 20px;
+    font-family: 'Geo';
+    text-align: center;
+    color: #444;
+    .gradient(#ccc, #bbb);
+    line-height: @header-height; height: @header-height;
+
+    &:hover, &:focus {
+      text-decoration: none;
+      .gradient(#777, #555);
+      color: #eee;
+      outline: 0;
+    }
   }
 
 }
@@ -102,9 +123,9 @@ hr {
         background: #161616;
         text-decoration: none;
       }
-      &.active {
-        background: #c0d4df;
-        color: #2b373d;
+      &.active, &:hover {
+        background: @lightblue;
+        color: @bluegrey;
         text-decoration: none;
         text-shadow: 0 1px 1px #fff;
       }
@@ -149,35 +170,3 @@ hr {
   }
 }
 
-/*
-
-#video_wrapper {
-  position: relative;
-  width: 540px;
-  height: 320px;
-  margin: 10px auto;
-}
-
-#video {
-  background: #000;
-  position: absolute;
-}
-
-#footer {
-  z-index: 10;
-  width: 100%;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-
-  .content {
-    background: #111;
-    padding: 0 10px;
-    margin: 0 auto;
-    height: 40px;
-    width: 940px;
-    border-top: 1px solid #444;
-  }
-}
-
-*/
