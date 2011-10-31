@@ -1,5 +1,12 @@
 
-- modal popup for login
+- style load more button
+- auto-save playlists, remove save button
+- make track search a full search
+  - /search/:query
+  - calls artist, track, and album searches
+  - prevent search from running more than once every 200ms
+  - clear searches from the search queue (what is the search queue going to be)
+- improve login modal
 - login + signup forms (views)
 - style search results to be consistent with other styles
   - that blue-grey color

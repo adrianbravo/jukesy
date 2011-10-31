@@ -1,5 +1,48 @@
 
 #playlist {
+  .header {
+    input.name {
+      font-size: 36px;
+      background: #222;
+      border: 1px solid #222;
+      color: #ddd;
+      text-shadow: 0 2px 0 #999;
+      padding: 5px;
+      margin: 0 0 10px 0;
+
+      &:hover, &:focus {
+        background: #eee;
+        border: 1px solid #444;
+        box-shadow: inset 0 0 4px 0 #999;
+        outline: 0;
+        color: #666;
+      }
+    }
+
+    #save {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      padding: 5px;
+      background: #aaa;
+      color: #333;
+      cursor: pointer;
+
+      &.disabled, &.disabled:hover {
+        cursor: default;
+        background: #555;
+        color: #333;
+      }
+      &:hover {
+        background: @lightblue;
+        color: @bluegrey;
+      }
+    }
+  }
+}
+
+/*
+#playlist {
   overflow-x: hidden;
   font-size: 10px;
 
@@ -11,40 +54,19 @@
     color: #666;
 
     input.name {
-      width: 260px;
       height: 18px;
       display: inline-block;
       overflow: hidden;
       padding: 2px 5px; margin: 0; border: 0; outline: 0;
+      background: #222;
+      border: 1px solid #222;
+      font-size: 36px;
 
       &:hover, &:focus {
         background: #ddd;
       }
     }
 
-    #save {
-      float: right;
-      .gradient(#fff, #eee);
-      display: inline-block;
-      color: #666;
-      padding: 4px 8px;
-      border: 1px solid #ccc;
-      cursor: pointer;
-      position: absolute;
-      top: 0;
-      right: 0;
-
-      &.disabled, &.disabled:hover {
-        cursor: default;
-        color: #ccc;
-        border: 1px solid #ccc;
-        .gradient(#fff, #eee);
-      }
-      &:hover {
-        .blue-box;
-        .gradient(#9cf, #69f);
-      }
-    }
   }
 
   li {
@@ -123,5 +145,5 @@
     padding: 15px 0;
   }
 }
-
+*/
 

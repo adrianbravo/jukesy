@@ -1,9 +1,10 @@
 @import "include.less";
 @import "controls.less";
 @import "search.less";
+@import "playlist.less";
 
 html { background: #f3f3f3; }
-html, input, textarea { font-family: 'Ubuntu'; }
+html, input, textarea { font-family: 'Geo'; }
 body { line-height: 1.5; .no-select(); }
 strong { font-weight: bold; }
 em { font-style: italic; }
@@ -118,8 +119,7 @@ hr {
     overflow-x: visible;
     a {
       display: block;
-      font-size: 12px;
-      font-weight: bold;
+      font-size: 20px;
       color: #ddd;
       padding: 10px 10px 10px 20px;
       &:hover {
@@ -153,6 +153,7 @@ hr {
   right: 0;
   overflow-y: scroll;
   padding: 10px 10px 10px 14px;
+  color: #999;
 }
 
 .fullscreen {
