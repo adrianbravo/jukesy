@@ -1,5 +1,4 @@
 
-- style load more button
 - auto-save playlists, remove save button
 - make track search a full search
   - /search/:query

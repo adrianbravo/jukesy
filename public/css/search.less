@@ -170,26 +170,28 @@
 
 
 .more {
-  background: #ccc;
+  position: relative;
   cursor: pointer;
+  background: #444;
+  color: #ddd;
+  text-shadow: 0 2px 0 #000;
   margin: 10px auto;
   padding: 10px;
   width: 200px;
   font-size: 16px;
-  font-weight: bold;
-  color: #666;
-  position: relative;
   text-align: center;
 
   &.disabled, &.disabled:hover {
     background: #777;
     color: #999;
     cursor: default;
+    text-shadow: 0 0 0;
   }
 
   &:hover {
-    background: #06f;
-    color: #fff;
+    background: @lightblue;
+    color: @bluegrey;
+    text-shadow: 0 0 0;
   }
 
   .wait {
