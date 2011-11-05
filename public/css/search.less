@@ -12,6 +12,7 @@
   }
 }
 
+
 .tags {
   li {
     margin: 10px;
@@ -167,6 +168,35 @@
   }
 }
 
+.sort {
+  width: 100%;
+  position: relative;
+  height: 32px;
+  .gradient(#aaa, #888);
+
+  .cols {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 36px;
+    right: 5px;
+    overflow: hidden;
+  }
+
+  .name,
+  .artist {
+    display: inline-block;
+    vertical-align: top;
+    width: 50%; height: 32px;
+    font-size: 16px;
+    color: #333;
+    text-shadow: 0 1px 0 #ccc;
+    line-height: 32px;
+    overflow: hidden;
+    cursor: pointer;
+    &:hover { color: #000; text-decoration: underline; }
+  }
+}
 
 
 .more {
