@@ -1,19 +1,19 @@
 #app
   #header
-    a.home(data-href= '/#/')= __('jukesy')
+    a.home(data-href= '#/')= __('jukesy')
     input#query(name= 'jksy_query', type= 'text', value= '', placeholder= __('search for music'), spellcheck= 'false')
     #login= __('login')
   #sidebar
     #quickbar
-      a.now-playing(data-href= '/#/')= __('Now Playing')
-      a(data-href= '/#/settings')= __('Settings')
-      a(data-href= '/#/favorites')= __('Favorites')
-      a(data-href= '/#/playlists')= __('Playlists')
+      a.now-playing(data-href= '#/')= __('Now Playing')
+      a(data-href= '#/settings')= __('Settings')
+      a(data-href= '#/favorites')= __('Favorites')
+      a(data-href= '#/playlists')= __('Playlists')
       hr
-      a(data-href= '/#/tag-radio')= __('Tag Radio')
-      a(data-href= '/#/broadcasts')= __('Broadcasts')
+      a(data-href= '#/tag-radio')= __('Tag Radio')
+      a(data-href= '#/broadcasts')= __('Broadcasts')
       hr
-      a(data-href= '/#/')= __('+ New Playlist')
+      a(data-href= '#/')= __('+ New Playlist')
       #my-playlists
         .playlists
           ul
