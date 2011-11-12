@@ -17,5 +17,6 @@
 	"Now Playing": "Now Playing",
 	"Tag Radio": "Tag Radio",
 	"Broadcasts": "Broadcasts",
-	"+ New Playlist": "+ New Playlist"
+	"+ New Playlist": "+ New Playlist",
+	"New Playlist": "New Playlist"
 }

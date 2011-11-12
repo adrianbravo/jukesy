@@ -1,5 +1,6 @@
 @import "layout.less";
 @import "include.less";
+@import "quickbar.less";
 @import "controls.less";
 @import "search.less";
 @import "playlist.less";
@@ -79,37 +80,6 @@ hr {
   box-shadow: 3px 0 0 #333;
   background: #101010;
 
-  #quickbar {
-    .quickbar-inner {
-      padding-right: 4px;
-    }
-    a {
-      text-decoration: none;
-      display: block;
-      font-size: 14px;
-      color: #ddd;
-      padding: 10px 10px 10px 20px;
-      &:hover {
-        background: #1a1a1a;
-        color: #fff;
-        border-right: 3px solid #444;
-        box-shadow: inset -1px 0px 0px #666;
-      }
-      &:hover, &.active {
-        margin-right: -4px;
-      }
-      &.active {
-        background: @lightblue;
-        color: #101010;
-        text-shadow: 0 1px 1px #fff;
-        border-right: 3px solid #d9e4ec;
-        box-shadow: inset -1px 0px 0px #fff;
-      }
-      &.playlist {
-        color: #888;
-      }
-    }
-  }
 
 }
 

@@ -1,0 +1,59 @@
+@size: 16px;
+@normal: @size * 0;
+@hover: @size * 1;
+@active: @size * 2;
+
+.icon-states(@pos) {
+  .icon           { background-position: -(@size * @pos) -@normal; }
+  &:hover .icon   { background-position: -(@size * @pos) -@hover; }
+  &.active .icon  { background-position: -(@size * @pos) -@active; }
+}
+
+#quickbar {
+  .quickbar-inner {
+    padding-right: 4px;
+  }
+
+  .icon {
+    float: left;
+    width: @size;
+    height: @size;
+    margin: 2px 10px 0 0;
+    background: url('/images/sprites.png') no-repeat;  
+  }
+
+  a {
+    text-decoration: none;
+    display: block;
+    font-size: 14px;
+    color: #ddd;
+    padding: 10px 10px 10px 20px;
+    &:hover {
+      background: #1a1a1a;
+      color: #fff;
+      border-right: 3px solid #444;
+      box-shadow: inset -1px 0px 0px #666;
+    }
+    &:hover, &.active {
+      margin-right: -4px;
+    }
+    &.active {
+      background: @lightblue;
+      color: #101010;
+      text-shadow: 0 1px 1px #fff;
+      border-right: 3px solid #d9e4ec;
+      box-shadow: inset -1px 0px 0px #fff;
+    }
+    &.playlist {
+      color: #888;
+    }
+  }
+
+  .now-playing    { .icon-states(0); }
+  .settings       { .icon-states(1); }
+  .favorites      { .icon-states(2); }
+  .tag-radio      { .icon-states(3); }
+  .broadcasts     { .icon-states(4); }
+  .new-playlist   { .icon-states(5); }
+
+}
