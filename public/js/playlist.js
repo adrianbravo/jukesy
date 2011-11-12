@@ -80,7 +80,7 @@ $(function() {
 
         _.each(tracks, function(track) {
           track.view = new View.PlaylistTrack({ model: track });
-          self.view.el.append(track.view.render().el);
+          self.view.el.find('tbody').append(track.view.render().el);
         });
       }
 
@@ -122,7 +122,7 @@ $(function() {
   });
 
   View.Playlist = Backbone.View.extend({
-    el: $('#playlist'),
+    el: $('#playlist_wrapper'),
 
     events: {
       'click #save': 'save',
@@ -140,7 +140,7 @@ $(function() {
 
       this.el.sortable({
         placeholder: 'ui-state-highlight',
-        items: 'li',
+        items: 'tr',
         axis: 'y',
         distance: 4,
         containment: '#playlist',
@@ -181,7 +181,7 @@ $(function() {
   });
 
   View.PlaylistTrack = Backbone.View.extend({
-    tagName: 'li',
+    tagName: 'tr',
     template: _.template($('#track-template').html()),
 
     events: {
