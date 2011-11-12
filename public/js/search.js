@@ -121,7 +121,6 @@ $(function() {
             break;
 
           default:
-            console.log('result', result, 'error, bad result type');
             break;
         }
       });

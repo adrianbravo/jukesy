@@ -56,7 +56,6 @@ $(function() {
     },
 
     initialize: function() {
-    console.log('playlist initialized', this);
       var self = this;
       _.bindAll(this, 'add', 'remove', 'sortByDOM');
 
