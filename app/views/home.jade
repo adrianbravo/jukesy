@@ -1,7 +1,6 @@
 #app
   #header
     a.home(href= '/#/')= __('jukesy')
-    #controls
     input#query(name= 'jksy_query', type= 'text', value= '', placeholder= __('search for music'), spellcheck= 'false')
     #login= __('login')
   #sidebar
@@ -15,9 +14,10 @@
       a(href= '/#/broadcasts')= __('Broadcasts')
       hr
       a(href= '/#/')= __('+ New Playlist')
-    #video
-    #video_shim
+  #video
+  #video-shim
   #main
+  #controls
   #playlist_wrapper
     #playlist.tracks
 

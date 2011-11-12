@@ -6,6 +6,6 @@ head
   meta(content= __('youtube music, music videos, music, music player, youtube, last.fm, mashup'), name= 'keywords')
 
   link(rel='stylesheet', href='/css/reset.css', type='text/css')
-  link(rel='stylesheet/less', href='/css/app.less', type='text/css')
-  ////link(rel='stylesheet/less', href='/css/main.less', type='text/css')
+  - each stylesheet in stylesheets
+    link(rel='stylesheet/less', href='/' + stylesheet, type='text/css')
   link(href='http://fonts.googleapis.com/css?family=Ubuntu', rel='stylesheet', type='text/css')

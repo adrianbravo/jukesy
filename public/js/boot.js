@@ -23,7 +23,8 @@ function onYouTubePlayerReady(id) {
 var windowResized = function() {
   if ($('body').hasClass('fullscreen')) {
     var $video = $('#video');
-    $video.height($(window).height() - $video.position().top);
+    $video.height($(window).height() - parseInt($video.css('bottom')));
+    $('#video-shim').height($video.height());
     Video.player.setSize($video.width(), $video.height());
   }
 };
