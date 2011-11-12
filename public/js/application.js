@@ -5,34 +5,6 @@ $(function() {
   Model.Album = Backbone.Model.extend({});
   Model.Tag = Backbone.Model.extend({});
 
-  Model.Track = Backbone.Model.extend({
-    play: function() {
-      var self = this;
-
-      if (window.Video.loading) return false;
-      window.currentlyPlayingTrackModel = this;
-      window.Video.hideBadge();
-
-      if (_.isUndefined(this.videos)) {
-        this.getVideos();
-      } else if (_.isEmpty(this.videos)) {
-        window.Video.error();
-      } else {
-        _.defer(function() {
-          Controls.$songInfo.html(window.Controls.songInfoTemplate(self.toJSON()));
-          Controls.$songBadge.html(window.Controls.songBadgeTemplate(self.toJSON()));
-        });
-        $(this.view.el).addClass('playing').siblings().removeClass('playing');
-        window.Video.skipToPrev = false;
-        window.Video.load(this.videos[0]);
-      }
-    },
-
-    getVideos: function() {
-      window.Video.searchByArtistAndTrack(this.get('artist'), this.get('name'), 'Video.setTrackVideoIds');
-    },
-  });
-
   AppRouter = Backbone.Router.extend({
     initialize: function() {
       this.bind('appview', Video.fullscreenOff);
@@ -48,12 +20,12 @@ $(function() {
     },
 
     hideViews: function() {
-      $('#playlist_wrapper, #main').hide();
+      $('#now-playing, #main').hide();
     },
 
     home: function() {
       this.trigger('appview');
-      $('#playlist_wrapper').show();
+      $('#now-playing').show();
       new View.Home();
     },
 
@@ -67,7 +39,7 @@ $(function() {
       // Unbind events for when view is re-created
       if (!_.isUndefined(window.Playlist)) window.Playlist.view.delegateEvents([]);
       this.trigger('appview');
-      $('#playlist_wrapper').show();
+      $('#now-playing').show();
       window.Playlist = new Model.Playlist(Playlists.get(id).toJSON());
     },
 

@@ -2,7 +2,8 @@ $(function() {
 
   Collection.Playlists = Backbone.Collection.extend({
     model: Model.Playlist,
-    localStorage: new Store("Playlists"),
+
+    localStorage: new Store("Playlists")
   });
 
   // Playlist Model
@@ -37,6 +38,8 @@ $(function() {
       _.each(this.get('tracks'), function(track) {
         self.add([new Model.Track(track)], { silent: true });
       });
+
+      if (self.tracks[0]) self.tracks[0].play();
     },
 
     onchange: function() {
@@ -52,14 +55,14 @@ $(function() {
 
       // At least one song, and play or next was clicked.
       // So IF will target the current song to add one after it.
-      if (!_.isUndefined(window.currentlyPlayingTrackModel) && _.include(['play', 'next'], options.method)) {
+      if (!_.isUndefined(window.nowPlayingTrack) && _.include(['play', 'next'], options.method)) {
         if (!$placeholder) {
           $placeholder = $('<div class="placeholder h"></div>');
-          $(currentlyPlayingTrackModel.view.el).after($placeholder);
+          $(nowPlayingTrack.view.el).after($placeholder);
         }
 
         // Insert before placeholder (which is after current track).
-        var i = _.indexOf(Playlist.tracks, currentlyPlayingTrackModel);
+        var i = _.indexOf(Playlist.tracks, nowPlayingTrack);
         _.each(tracks, function(track, j) {
           self.tracks.splice(i + 1 + j, 0, track);
           track.view = new View.PlaylistTrack({ model: track });
@@ -85,7 +88,7 @@ $(function() {
       }
 
       // Start playback.
-      if (_.isUndefined(window.currentlyPlayingTrackModel)) this.tracks[0].play();
+      if (_.isUndefined(window.nowPlayingTrack)) this.tracks[0].play();
     },
 
     // Remove a track from the model.
@@ -96,13 +99,12 @@ $(function() {
       model.destroy();
     },
 
-    // Sorts tracks by their DOM positions.
     sortByDOM: function() {
       this.change();
       this.tracks = _.sortBy(this.tracks, function(track) {
         return _.indexOf($(track.view.el).parent().children(track.view.tagName), track.view.el);
       });
-    },
+    }
   });
 
   View.PlaylistShort = Backbone.View.extend({
@@ -117,12 +119,11 @@ $(function() {
     render: function() {
       $(this.el).html(this.template(this.model.toJSON()));
       return this;
-    },
-
+    }
   });
 
   View.Playlist = Backbone.View.extend({
-    el: $('#playlist_wrapper'),
+    el: $('#now-playing'),
 
     events: {
       'click #save': 'save',
@@ -177,37 +178,7 @@ $(function() {
 
       this.el.find('#save').addClass('disabled');
       alert('Playlist saved.');
-    },
-  });
-
-  View.PlaylistTrack = Backbone.View.extend({
-    tagName: 'tr',
-    template: _.template($('#track-template').html()),
-
-    events: {
-      'click .remove'      : 'removeTrack',
-      'click :not(.remove)': 'play',
-    },
-
-    removeTrack: function() {
-      window.Playlist.remove(this.model);
-      return false;
-    },
-
-    play: function() {
-      if (window.Playlist.view.cancelClick) {
-        window.Playlist.view.cancelClick = false;
-        return false;
-      }
-      if (this.model === window.currentlyPlayingTrackModel) return false;
-
-      this.model.play();
-    },
-
-    render: function() {
-      $(this.el).html(this.template(this.model.toJSON()));
-      return this;
-    },
+    }
   });
 
 });

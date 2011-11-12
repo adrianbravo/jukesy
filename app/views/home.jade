@@ -5,7 +5,7 @@
     #login= __('login')
   #sidebar
     #quickbar
-      a(href= '/#/')= __('Now Playing')
+      a.now-playing(href= '/#/')= __('Now Playing')
       a(href= '/#/settings')= __('Settings')
       a(href= '/#/favorites')= __('Favorites')
       a(href= '/#/playlists')= __('Playlists')
@@ -18,7 +18,7 @@
   #video-shim
   #main
   #controls
-  #playlist_wrapper
+  #now-playing
 
 script#controls-template(type= 'text/template')
   != partial('backbone/_controls')

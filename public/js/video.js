@@ -122,7 +122,7 @@ $(function() {
       var next = false;
       _.each(Playlist.tracks, function(trackModel) {
         if (next == true) next = trackModel;
-        if (window.currentlyPlayingTrackModel === trackModel) next = true;
+        if (window.nowPlayingTrack === trackModel) next = true;
       });
       if (next == true || next == false) next = Playlist.tracks[0];
 
@@ -138,11 +138,11 @@ $(function() {
       this.skipToPrev = true;
 
       var prev = null, prevSet = false;
-      if (window.currentlyPlayingTrackModel === _.first(Playlist.tracks)) {
+      if (window.nowPlayingTrack === _.first(Playlist.tracks)) {
         prev = _.last(Playlist.tracks);
       } else {
         _.each(Playlist.tracks, function(trackModel) {
-          if (window.currentlyPlayingTrackModel === trackModel) prevSet = true;
+          if (window.nowPlayingTrack === trackModel) prevSet = true;
           if (!prevSet) prev = trackModel
         });
       }
@@ -163,21 +163,21 @@ $(function() {
 
     on_error: function(error) {
       if (error == '150') {
-        window.currentlyPlayingTrackModel.videos = _.rest(window.currentlyPlayingTrackModel.videos);
-        window.currentlyPlayingTrackModel.play();
+        window.nowPlayingTrack.videos = _.rest(window.nowPlayingTrack.videos);
+        window.nowPlayingTrack.play();
       }
     },
 
     error: function() {
-      $(window.currentlyPlayingTrackModel.view.el).addClass('error');
+      $(window.nowPlayingTrack.view.el).addClass('error');
       this.skipToPrev ? this.prev() : this.next();
     },
 
     setTrackVideoIds: function(data) {
       if (!data.feed.entry) {
-        window.currentlyPlayingTrackModel.videos = [];
+        window.nowPlayingTrack.videos = [];
       } else {
-        window.currentlyPlayingTrackModel.videos = _.map(data.feed.entry, function(entry) {
+        window.nowPlayingTrack.videos = _.map(data.feed.entry, function(entry) {
           return _.last(entry.id.$t.split('/'));
           /*
           VideoResults.reset();
@@ -194,7 +194,7 @@ $(function() {
       }
       this.loading = false;
       $('#controls #play').removeClass('loading');
-      window.currentlyPlayingTrackModel.play();
+      window.nowPlayingTrack.play();
     },
 
     searchByArtistAndTrack: function(artist, track, callback) {
