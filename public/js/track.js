@@ -35,18 +35,18 @@ $(function() {
     template: _.template($('#track-template').html()),
 
     events: {
-      'click .remove'      : 'removeTrack',
-      'click :not(.remove)': 'play',
+      'click .remove': 'removeTrack',
+      'dblclick :not(.remove)': 'play',
     },
 
     removeTrack: function() {
-      window.Playlist.remove(this.model);
+      nowPlaying.remove(this.model);
       return false;
     },
 
     play: function() {
-      if (window.Playlist.view.cancelClick) {
-        window.Playlist.view.cancelClick = false;
+      if (nowPlaying.view.cancelClick) {
+        nowPlaying.view.cancelClick = false;
         return false;
       }
       if (this.model === window.nowPlayingTrack) return false;
@@ -100,7 +100,7 @@ $(function() {
 
     queueTrack: function(e, method) {
       $(this.el).addClass('selected');
-      Playlist.add(_(Search.results).chain()
+      nowPlaying.add(_(Search.results).chain()
         .map(function(track) {
           if (!$(track.view.el).hasClass('selected')) return null;
           $(track.view.el).removeClass('selected');

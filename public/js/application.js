@@ -37,10 +37,11 @@ $(function() {
 
     playlist_play: function(id) {
       // Unbind events for when view is re-created
-      if (!_.isUndefined(window.Playlist)) window.Playlist.view.delegateEvents([]);
+      if (!_.isUndefined(window.nowPlaying)) window.nowPlaying.view.delegateEvents([]);
       this.trigger('appview');
       $('#now-playing').show();
-      window.Playlist = new Model.Playlist(Playlists.get(id).toJSON());
+      window.nowPlaying = new Model.Playlist(Playlists.get(id).toJSON());
+      //window.nowPlaying = Playlists.get(id);
     },
 
     search: function(type, method, query) {
@@ -54,18 +55,18 @@ $(function() {
       var query = decodeURIComponent(query);
 
       window.Search = new Model.Search({ type: type, query: query, method: 'search' });
-    },
+    }
+
   });
 
   View.App = Backbone.View.extend({
     el: $(document),
 
     events: {
-        'keypress #query_clone': 'searchOnEnter'
-      , 'keypress #query'      : 'searchOnEnter'
-      , 'keydown'              : 'keyMapper'
-      , 'keyup'                : 'setMaxVolume'
-      , 'click #login'         : 'login'
+      'keypress #query'      : 'searchOnEnter',
+      'keydown'              : 'keyMapper',
+      'keyup'                : 'setMaxVolume',
+      'click #login'         : 'login'
       //, 'hover [title]'        : 'tooltip'
     },
 
@@ -159,10 +160,12 @@ $(function() {
           $('#query').focus();
           return false;
       }
-    },
+    }
+
   });
 
   View.Playlists = Backbone.View.extend({
+
     el: $('#main'),
 
     template: _.template($('#playlists-template').html()),
@@ -179,10 +182,12 @@ $(function() {
         var view = new View.PlaylistShort({ model: playlist });
         self.el.find('#playlists ul').append(view.render().el);
       });
-    },
+    }
+
   });
 
   View.Home = Backbone.View.extend({
+
     el: $('#main'),
 
     template: _.template($('#home-template').html()),
@@ -194,16 +199,18 @@ $(function() {
 
     render: function() {
       this.el.html(this.template);
-    },
+    }
+
   });
+
 });
 
 $(function() {
-  window.AppView   = new View.App();
-  window.Video     = new Model.Video();
-  window.Controls  = new View.Controls();
-  window.Playlists = new Collection.Playlists();
-  window.Playlist  = new Model.Playlist();
+  window.AppView    = new View.App();
+  window.Video      = new Model.Video();
+  window.Controls   = new View.Controls();
+  window.Playlists  = new Collection.Playlists();
+  window.nowPlaying = new Model.Playlist({ expires: true });
 
   Playlists.fetch();
 });

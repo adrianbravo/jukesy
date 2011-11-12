@@ -62,7 +62,7 @@ $(function() {
         }
 
         // Insert before placeholder (which is after current track).
-        var i = _.indexOf(Playlist.tracks, nowPlayingTrack);
+        var i = _.indexOf(nowPlaying.tracks, nowPlayingTrack);
         _.each(tracks, function(track, j) {
           self.tracks.splice(i + 1 + j, 0, track);
           track.view = new View.PlaylistTrack({ model: track });
