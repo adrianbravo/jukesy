@@ -3,6 +3,8 @@ window.Collection = {};
 window.Model = {};
 window.View = {};
 
+$('#app').css('opacity', '1.0');
+
 // YouTube API Player callback
 // The function name cannot be changed.
 function onYouTubePlayerReady(id) {
