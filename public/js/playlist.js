@@ -31,6 +31,7 @@ $(function() {
         var view = new View.PlaylistShort({ model: playlist });
         self.el.find('.playlists ul').append(view.render().el);
       });
+
       if (this.options.quickbar) {
         windowResized();
       }
@@ -71,6 +72,7 @@ $(function() {
         self.add([new Model.Track(track)], { silent: true });
       });
 
+      if (Video.player) Video.pause();
       if (self.tracks[0]) self.tracks[0].play();
     },
 
