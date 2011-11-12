@@ -30,6 +30,7 @@ var windowResized = function() {
     Video.player.setSize($video.width(), $video.height());
   } else {
     $('#video-shim').height('');
+    $('#quickbar').data('jsp').reinitialise();
   }
 };
 
@@ -40,7 +41,9 @@ $(function() {
     evaluate    : /<%(.+?)%>/g
   };
 
+  $('#quickbar').jScrollPane({ verticalGutter: -8 });
   $(window).resize(_.debounce(windowResized));
+  windowResized();
 });
 
 String.prototype.capitalize = function() {

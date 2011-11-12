@@ -8,6 +8,7 @@
 
 html, #app { background: #222; }
 #app { opacity: 0; }
+* { outline: none; }
 
 html, input, textarea { font-family: 'Ubuntu'; }
 body { line-height: 1.5; .no-select(); }
@@ -76,10 +77,12 @@ hr {
   color: #eee;
   border-right: 1px solid #444;
   box-shadow: 3px 0 0 #333;
+  background: #101010;
 
   #quickbar {
-    background: #101010;
-
+    .quickbar-inner {
+      padding-right: 4px;
+    }
     a {
       text-decoration: none;
       display: block;
@@ -127,3 +130,17 @@ hr {
   #video, #video-shim {
   }
 }
+
+.jspContainer { overflow: visible; }
+.jspPane { position: absolute; }
+.jspVerticalBar {
+	width: 8px;
+	background: transparent;
+  opacity: 0.65;
+  right: 5px;
+}
+.jspHorizontalBar { display: none; }
+.jspVerticalBar * { margin: 0; padding: 0; }
+.jspTrack { background: transparent; }
+.jspDrag { background: #666; }
+.jspCorner { background: #eeeef4; height: 100%; }

@@ -7,6 +7,9 @@ var assets = {
     'js/lib/backbone.localStorage.js',
     'js/lib/swfobject.js',
     'js/lib/less-1.1.3.min.js',
+    'js/lib/jquery.mousewheel.js',
+    'js/lib/mwheelIntent.js',
+    'js/lib/jquery.jscrollpane.min.js',
     'js/boot.js',
     'js/modal.js',
     'js/track.js',
@@ -15,6 +18,11 @@ var assets = {
     'js/search.js',
     'js/video.js',
     'js/application.js'
+  ],
+
+  css: [
+    'css/lib/reset.css',
+    'css/lib/jquery.jscrollpane.css'
   ],
 
   less: [

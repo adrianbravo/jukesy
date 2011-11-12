@@ -7,8 +7,7 @@ module.exports = {
 
   home: function(req, res, next) {
     res.render('home', {
-      scripts: app.assets.js,
-      stylesheets: app.assets.less
+      assets: app.assets
     });
   },
 
@@ -19,8 +18,7 @@ module.exports = {
   search: function(req, res, next) {
     console.log(req.param('type'), req.param('method'), req.param('query'));
     res.render('home', {
-      scripts: app.assets.js,
-      stylesheets: app.assets.less
+      assets: app.assets
     });
     // server.get('/lastfm/:type/:method/:query', ApplicationController.search);
   },

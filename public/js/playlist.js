@@ -31,6 +31,9 @@ $(function() {
         var view = new View.PlaylistShort({ model: playlist });
         self.el.find('.playlists ul').append(view.render().el);
       });
+      if (this.options.quickbar) {
+        windowResized();
+      }
     }
 
   });

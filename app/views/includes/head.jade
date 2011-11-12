@@ -5,7 +5,8 @@ head
   meta(content= __('Adrian Bravo'), name= 'author')
   meta(content= __('youtube music, music videos, music, music player, youtube, last.fm, mashup'), name= 'keywords')
 
-  link(rel='stylesheet', href='/css/reset.css', type='text/css')
-  - each stylesheet in stylesheets
+  - each stylesheet in assets.css
+    link(rel='stylesheet', href='/' + stylesheet, type='text/css')
+  - each stylesheet in assets.less
     link(rel='stylesheet/less', href='/' + stylesheet, type='text/css')
   link(href='http://fonts.googleapis.com/css?family=Ubuntu', rel='stylesheet', type='text/css')

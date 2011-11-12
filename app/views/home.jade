@@ -5,18 +5,19 @@
     #login= __('login')
   #sidebar
     #quickbar
-      a.now-playing(data-href= '#/')= __('Now Playing')
-      a(data-href= '#/settings')= __('Settings')
-      a(data-href= '#/favorites')= __('Favorites')
-      a(data-href= '#/playlists')= __('Playlists')
-      hr
-      a(data-href= '#/tag-radio')= __('Tag Radio')
-      a(data-href= '#/broadcasts')= __('Broadcasts')
-      hr
-      a(data-href= '#/')= __('+ New Playlist')
-      #my-playlists
-        .playlists
-          ul
+      .quickbar-inner
+        a.now-playing(data-href= '#/')= __('Now Playing')
+        a(data-href= '#/settings')= __('Settings')
+        a(data-href= '#/favorites')= __('Favorites')
+        a(data-href= '#/playlists')= __('Playlists')
+        hr
+        a(data-href= '#/tag-radio')= __('Tag Radio')
+        a(data-href= '#/broadcasts')= __('Broadcasts')
+        hr
+        a(data-href= '#/')= __('+ New Playlist')
+        #my-playlists
+          .playlists
+            ul
   #video
   #video-shim
   #main
@@ -79,5 +80,5 @@ script#login-template(type= 'text/template')
 
 script(src= 'http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js')
 script(src= 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js')
-- each script in scripts
+- each script in assets.js
   script(src= '/' + script)
