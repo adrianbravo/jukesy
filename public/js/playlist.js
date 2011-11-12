@@ -1,9 +1,38 @@
 $(function() {
 
   Collection.Playlists = Backbone.Collection.extend({
+
     model: Model.Playlist,
 
-    localStorage: new Store("Playlists")
+    localStorage: new Store('Playlists')
+
+  });
+
+  View.Playlists = Backbone.View.extend({
+
+    el: $('#main'),
+
+    template: _.template($('#playlists-template').html()),
+
+    initialize: function() {
+      if (this.options.quickbar)
+        this.el = $('#my-playlists');
+      this.render();
+    },
+
+    render: function() {
+      var self = this;
+
+      this.el.html(this.template({
+        empty: _.isEmpty(Playlists.models),
+        quick: this.options.quickbar
+      }));
+      _.each(Playlists.models, function(playlist) {
+        var view = new View.PlaylistShort({ model: playlist });
+        self.el.find('.playlists ul').append(view.render().el);
+      });
+    }
+
   });
 
   // Playlist Model
@@ -20,13 +49,14 @@ $(function() {
   //   ]
   // }
   Model.Playlist = Backbone.Model.extend({
-    localStorage: new Store("Playlists"),
+    localStorage: new Store('Playlists'),
 
     defaults: {
       name: 'New Playlist'
     },
 
     initialize: function() {
+    console.log('playlist initialized', this);
       var self = this;
       _.bindAll(this, 'add', 'remove', 'sortByDOM');
 

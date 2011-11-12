@@ -164,28 +164,6 @@ $(function() {
 
   });
 
-  View.Playlists = Backbone.View.extend({
-
-    el: $('#main'),
-
-    template: _.template($('#playlists-template').html()),
-
-    initialize: function() {
-      this.render();
-    },
-
-    render: function() {
-      var self = this;
-
-      this.el.html(this.template({ empty: _.isEmpty(Playlists.models) }));
-      _.each(Playlists.models, function(playlist) {
-        var view = new View.PlaylistShort({ model: playlist });
-        self.el.find('#playlists ul').append(view.render().el);
-      });
-    }
-
-  });
-
   View.Home = Backbone.View.extend({
 
     el: $('#main'),
@@ -213,5 +191,6 @@ $(function() {
   window.nowPlaying = new Model.Playlist({ expires: true });
 
   Playlists.fetch();
+  PlaylistsView = new View.Playlists({ quickbar: true });
 });
 

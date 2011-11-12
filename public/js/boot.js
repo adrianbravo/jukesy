@@ -46,3 +46,9 @@ $(function() {
 String.prototype.capitalize = function() {
   return this.charAt(0).toUpperCase() + this.slice(1);
 }
+
+$('a').live('click', function(e) {
+  var $self = $(this);
+  if (!$self.attr('href'))
+    Router.navigate($self.attr('data-href'), true);
+});
