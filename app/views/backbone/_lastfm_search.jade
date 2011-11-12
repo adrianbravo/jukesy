@@ -4,16 +4,18 @@ p(class= 'type-links type-{{ type }}')
   a.-album(href='/#/lastfm/album/{{ method }}/{{ encodeURIComponent(query) }}') Album
   a.-tag(href='/#/lastfm/tag/{{ method }}/{{ encodeURIComponent(query) }}') Tag
 
-p.search-for
-  | Search results for {{ type }}:
-  strong {{ query }}
+//p.search-for
+//  | Search results for {{ type }}:
+//  strong {{ query }}
 
-ul#lastfm_search_results(class= '{{ type }}s')
-  .sort
-    .cols
-      .name Track
-      .artist Artist
-.clear
+table#lastfm_search_results(class= '{{ type }}s')
+  thead
+    tr
+      td.art
+      td.name Track
+      td.artist Artist
+  tbody
+
 .more Show more
   .wait
 

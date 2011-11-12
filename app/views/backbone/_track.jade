@@ -1,11 +1,7 @@
-.track
-  .avatar.left.
-    <% if (image != '') { %>
-      <img src='{{ image }}'>
-    <% } %>
-  .cols
-    a.name {{ name }}
-    a.artist {{ artist }}
-  .clear
-  //remove
+td.avatar.
+  <% if (image != '') { %>
+    <img src='{{ image }}'>
+  <% } %>
+td.name {{ name }}
+td.artist {{ artist }}
 

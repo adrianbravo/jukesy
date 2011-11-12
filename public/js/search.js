@@ -55,7 +55,7 @@ $(function() {
       this.results.push(result);
       if (this.results.length == 1) this.view.render();
       result.view = new View['Search' + this.get('type').capitalize()]({ model: result });
-      this.view.el.find('ul').append(result.view.render().el);
+      this.view.el.find('tbody').append(result.view.render().el);
     },
 
     query: function() {
@@ -182,7 +182,7 @@ $(function() {
   });
 
   View.SearchTrack = Backbone.View.extend({
-    tagName: 'li',
+    tagName: 'tr',
 
     template: _.template($('#track-template').html()),
     actions_template: _.template($('#track-actions-template').html()),
@@ -191,8 +191,8 @@ $(function() {
         'click .play'     : 'play'
       , 'click .next'     : 'next'
       , 'click .last'     : 'last'
-      , 'click .track'    : 'toggleSelect'
-      , 'dblclick .track' : 'play'
+      , 'click'           : 'toggleSelect'
+      , 'dblclick'        : 'play'
       //, 'mouseenter'      : 'showActions'
       //, 'mouseleave'      : 'hideActions'
     },

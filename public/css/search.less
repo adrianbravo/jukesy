@@ -74,10 +74,20 @@
 }
 
 .tracks {
-  list-style-type: none;
+  width: 100%;
+  font-size: 13px;
+  color: #bbb;
 
-  li {
-    position: relative;
+  td {
+    padding: 2px 5px;
+    vertical-align: middle;
+  }
+
+  .name, .artist {
+    width: 50%;
+  }
+
+  tr {
     &.selected, &.playing {
       .avatar {
         background: #333;
@@ -117,53 +127,27 @@
     */
   }
 
-  li {
-    background: #333;
+  thead tr {
+    background: #323232; 
+    td {
+      border-right: 1px solid #262626;
+    }
   }
-  li:nth-child(even) {
+
+  tr {
+    background: #2a2a2a;
+  }
+  tr:nth-child(even) {
     background: #262626;
   }
 
-  .track {
-    margin: 0 auto;
-    position: relative;
-    padding: 5px;
-
-    .cols {
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 36px;
-      right: 5px;
-      overflow: hidden;
-    }
-
-    .name,
-    .artist {
-      display: inline-block;
-      vertical-align: top;
-      width: 50%; height: 32px;
-      font-size: 16px;
-      color: #999;
-      text-shadow: 0 1px 0 #111;
-      line-height: 32px;
-      overflow: hidden;
-      cursor: pointer;
-      &:hover { color: #ccc; }
-    }
-
-    .avatar {
-      background: #999;
-      margin: 0 5px 0 0;
-      padding: 0;
-      border-right: 2px solid #111;
+  .avatar {
+    width: 24px;
+    text-align: center;
+    img {
+      display: block;
       width: 24px;
       height: 24px;
-
-      img {
-        width: 24px;
-        height: 24px;
-      }
     }
   }
 }
