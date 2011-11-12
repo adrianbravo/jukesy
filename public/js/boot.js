@@ -26,6 +26,8 @@ var windowResized = function() {
     $video.height($(window).height() - parseInt($video.css('bottom')));
     $('#video-shim').height($video.height());
     Video.player.setSize($video.width(), $video.height());
+  } else {
+    $('#video-shim').height('');
   }
 };
 
