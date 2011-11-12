@@ -3,6 +3,8 @@ window.Collection = {};
 window.Model = {};
 window.View = {};
 
+$('#app').css('opacity', '1.0');
+
 // YouTube API Player callback
 // The function name cannot be changed.
 function onYouTubePlayerReady(id) {
@@ -23,8 +25,11 @@ function onYouTubePlayerReady(id) {
 var windowResized = function() {
   if ($('body').hasClass('fullscreen')) {
     var $video = $('#video');
-    $video.height($(window).height() - $video.position().top);
+    $video.height($(window).height() - parseInt($video.css('bottom')));
+    $('#video-shim').height($video.height());
     Video.player.setSize($video.width(), $video.height());
+  } else {
+    $('#video-shim').height('');
   }
 };
 
