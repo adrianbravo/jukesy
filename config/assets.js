@@ -12,11 +12,17 @@ var assets = {
     'js/lib/jquery.jscrollpane.min.js',
     'js/boot.js',
     'js/modal.js',
+
     'js/track.js',
+    'js/artist.js',
+    'js/album.js',
+    'js/tag.js',
+
     'js/playlist.js',
     'js/nowplaying.js',
-    'js/controls.js',
     'js/search.js',
+
+    'js/controls.js',
     'js/video.js',
     'js/application.js'
   ],

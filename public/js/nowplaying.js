@@ -1,5 +1,6 @@
 $(function() {
 
+  /*
   Model.NowPlaying = Backbone.Model.extend({
     initialize: function() {
       var self = this;
@@ -14,14 +15,19 @@ $(function() {
       var self = this;
       self.playlist = playlist;
 
-      _.each(self.tracks(), function(track) {
-        track.view = new View.PlaylistTrack({ model: track });
-      });
+      self.buildTrackViews(self.tracks());
 
       self.view = new View.NowPlaying({ model: self.playlist });
 
       if (Video.player) Video.pause(); // TODO pseudostop
       if (self.tracks()[0]) self.tracks()[0].play();
+    },
+
+    // TODO optimize, verify old track.view makes it to GC
+    buildTrackViews: function(tracks) {
+      _.each(tracks, function(track) {
+        track.view = new View.Track({ model: track });
+      });
     },
 
     // Add a track to the model.
@@ -35,9 +41,7 @@ $(function() {
         self.playlist.get('tracks').add(tracks);
       }
 
-      _.each(tracks, function(track) {
-        track.view = new View.PlaylistTrack({ model: track });
-      });
+      self.buildTrackViews(tracks);
 
       self.view.render();
 
@@ -53,5 +57,6 @@ $(function() {
   View.NowPlaying = View.Playlist.extend({
     el: $('#now-playing')
   });
+  */
 
 });

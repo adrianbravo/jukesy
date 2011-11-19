@@ -76,31 +76,8 @@ $(function() {
       return this.player.getCurrentTime();
     },
 
-    hideBadge: function() {
-      window.Controls.$songBadge.stop().css('opacity', '').hide();
-    },
-
-    showBadge: function() {
-      window.Controls.$songBadge.stop().css('opacity', '').show();
-    },
-
     load: function(id) {
       if (this.state == 3) return;
-
-      clearTimeout(this.showBadgeTimeout);
-      clearTimeout(this.hideBadgeTimeout);
-      this.hideBadge();
-
-      // set timeout to show name + track
-      var self = this;
-      this.showBadgeTimeout = setTimeout(function() {
-        self.showBadge();
-        self.hideBadgeTimeout = setTimeout(function() {
-          window.Controls.$songBadge.animate({ opacity: 0 }, 1000, function() {
-            window.Video.hideBadge();
-          });
-        }, 4000);
-      }, 1000);
 
       // in timeout: display element (unset any css too), wait 2s, animate to opacity 0, 
       this.player.loadVideoById(id);
@@ -151,7 +128,6 @@ $(function() {
       this.state = state;
       if (this.state == -1) {
         Controls.$songInfo.html('');
-        Controls.$songBadge.html('');
       }
       if (this.state == 0) this.next();
       this.player.setPlaybackQuality('hd720');

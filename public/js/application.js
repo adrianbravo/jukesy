@@ -1,10 +1,6 @@
 
 $(function() {
 
-  Model.Artist = Backbone.Model.extend({});
-  Model.Album = Backbone.Model.extend({});
-  Model.Tag = Backbone.Model.extend({});
-
   AppRouter = Backbone.Router.extend({
     initialize: function() {
       this.bind('appview', Video.fullscreenOff);
@@ -15,8 +11,12 @@ $(function() {
       '/'                  : 'home',
       //'/playlists'         : 'playlists_index',
       //'/playlist/:id'      : 'playlist_view',
-      '/playlist/play/:id' : 'playlist_play',
-      '/lastfm/:type/:method/:query': 'search',
+      //'/playlist/play/:id' : 'playlist_play',
+      '/search/:query': 'searchAll'
+
+      //'/artist/:query': 'searchArtist',
+      //'/album/:query': 'searchAlbum',
+      //'/track/:query': 'searchTrack',
     },
 
     hideViews: function() {
@@ -37,17 +37,21 @@ $(function() {
       nowPlaying.setPlaylist(Playlists.get(id));
     },
 
-    search: function(type, method, query) {
-      // Unbind events for when view is re-created
-      console.log(type, method, query);
+    // lastfm/track/search
+    searchAll: function(query) {
+      /*
       if (!_.isUndefined(window.Search)) {
         window.Search.view.delegateEvents({});
       }
+      */
+
+      query = decodeURIComponent(query);
       this.trigger('appview');
       $('#main').show();
-      var query = decodeURIComponent(query);
+      window.Search = new Model.Search({ query: query });
 
-      window.Search = new Model.Search({ type: type, query: query, method: 'search' });
+
+      //window.Search = new Model.Search({ type: type, query: query, method: 'search' });
     }
 
   });
@@ -56,7 +60,7 @@ $(function() {
     el: $(document),
 
     events: {
-      'keypress #query'      : 'searchOnEnter',
+      'keypress #query'      : 'searchAll',
       'keydown'              : 'keyMapper',
       'keyup'                : 'setMaxVolume',
       'click #login'         : 'login'
@@ -82,9 +86,9 @@ $(function() {
       }
     },
 
-    searchOnEnter: function(e) {
+    searchAll: function(e) {
       if (e.keyCode == 13) {
-        Router.navigate('/lastfm/track/search/' + encodeURIComponent($('#query').val()), true);
+        Router.navigate('/search/' + encodeURIComponent($('#query').val()), true);
         $('#query').val('').blur();
       }
     },
@@ -182,7 +186,7 @@ $(function() {
   window.Controls   = new View.Controls();
   window.Playlists  = new Collection.Playlists();
 
-  window.nowPlaying = new Model.NowPlaying();
+  //window.nowPlaying = new Model.NowPlaying();
 
   Playlists.fetch();
   PlaylistsView = new View.Playlists({ quickbar: true });

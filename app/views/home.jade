@@ -35,41 +35,53 @@ script#controls-template(type= 'text/template')
 script#song-info-template(type= 'text/template')
   != partial('backbone/_song_info')
 
-script#song-badge-template(type= 'text/template')
-  != partial('backbone/_song_badge')
+script#home-template(type= 'text/template')
+  != partial('backbone/_home')
+
+script#search-waitstate-template(type= 'text/template')
+  != partial('backbone/_search_waitstate')
+
+//script#search-empty-template(type= 'text/template')
+//  != partial('backbone/_search_empty')
+
+script#search-artists-template(type= 'text/template')
+  != partial('backbone/_search_artists')
+
+script#search-artist-template(type= 'text/template')
+  != partial('backbone/_search_artist')
+
+script#search-albums-template(type= 'text/template')
+  != partial('backbone/_search_albums')
+
+script#search-album-template(type= 'text/template')
+  != partial('backbone/_search_album')
+
+//script#search-template(type= 'text/template')
+//  != partial('backbone/_search')
+
+//script#tag-template(type= 'text/template')
+//  != partial('backbone/_tag')
+
+//script#album-template(type= 'text/template')
+//  != partial('backbone/_album')
+
+//script#artist-template(type= 'text/template')
+//  != partial('backbone/_artist')
+
+script#track-template(type= 'text/template')
+  != partial('backbone/_track')
+
+//script#lastfm-no-results-template(type= 'text/template')
+//  != partial('backbone/_lastfm_no_results')
+
+//script#lastfm-waiting-template(type= 'text/template')
+//  != partial('backbone/_lastfm_waiting')
 
 script#playlists-template(type= 'text/template')
   != partial('backbone/_playlists')
 
 script#playlist-short-template(type= 'text/template')
   != partial('backbone/_playlist_short')
-
-script#home-template(type= 'text/template')
-  != partial('backbone/_home')
-
-script#lastfm-search-template(type= 'text/template')
-  != partial('backbone/_lastfm_search')
-
-script#tag-template(type= 'text/template')
-  != partial('backbone/_tag')
-
-script#album-template(type= 'text/template')
-  != partial('backbone/_album')
-
-script#artist-template(type= 'text/template')
-  != partial('backbone/_artist')
-
-script#track-template(type= 'text/template')
-  != partial('backbone/_track')
-
-script#track-actions-template(type= 'text/template')
-  != partial('backbone/_track_actions')
-
-script#lastfm-no-results-template(type= 'text/template')
-  != partial('backbone/_lastfm_no_results')
-
-script#lastfm-waiting-template(type= 'text/template')
-  != partial('backbone/_lastfm_waiting')
 
 script#playlist-template(type= 'text/template')
   != partial('backbone/_playlist')

@@ -5,7 +5,6 @@ $(function() {
 
     template         : _.template($('#controls-template').html()),
     songInfoTemplate : _.template($('#song-info-template').html()),
-    songBadgeTemplate: _.template($('#song-badge-template').html()),
 
     events: {
       'click #play:not(.pause)' : 'play',
@@ -25,7 +24,6 @@ $(function() {
       this.render();
 
       this.$songInfo     = $('#song_info'),
-      this.$songBadge    = $('#song_badge'),
       this.$timer        = $('#timer'),
       this.$timerLeft    = $('#timer_left'),
       this.$timerRight   = $('#timer_right'),
