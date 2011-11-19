@@ -14,6 +14,7 @@ var assets = {
     'js/modal.js',
     'js/track.js',
     'js/playlist.js',
+    'js/nowplaying.js',
     'js/controls.js',
     'js/search.js',
     'js/video.js',

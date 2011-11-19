@@ -1,15 +1,6 @@
 $(function() {
 
-  Collection.Playlists = Backbone.Collection.extend({
-
-    model: Model.Playlist,
-
-    localStorage: new Store('Playlists')
-
-  });
-
   View.Playlists = Backbone.View.extend({
-
     el: $('#main'),
 
     template: _.template($('#playlists-template').html()),
@@ -27,6 +18,7 @@ $(function() {
         empty: _.isEmpty(Playlists.models),
         quick: this.options.quickbar
       }));
+
       _.each(Playlists.models, function(playlist) {
         var view = new View.PlaylistShort({ model: playlist });
         self.el.find('.playlists ul').append(view.render().el);
@@ -39,19 +31,6 @@ $(function() {
 
   });
 
-  // Playlist Model
-  // JSON example:
-  // {
-  //   name: "Unicorns",
-  //   tracks: [
-  //     {
-  //       artist : "The Unicorns",
-  //       name   : "I Was Born (A Unicorn)",
-  //       image  : "http://userserve-ak.last.fm/serve/126/8632109.jpg"
-  //     },
-  //     ...
-  //   ]
-  // }
   Model.Playlist = Backbone.Model.extend({
     localStorage: new Store('Playlists'),
 
@@ -61,68 +40,17 @@ $(function() {
 
     initialize: function() {
       var self = this;
-      _.bindAll(this, 'add', 'remove', 'sortByDOM');
+      _.bindAll(self, 'remove', 'sortByDOM');
 
-      this.tracks = [];
-      this.view = new View.Playlist({ model: this });
-      this.view.render();
-      this.bind('change', this.onchange);
+      // Loads tracks collection or converts its json to a new collection, silently.
+      self.set({ tracks: new Collection.Tracks(self.get('tracks') || []) }, { silent: true });
 
-      _.each(this.get('tracks'), function(track) {
-        self.add([new Model.Track(track)], { silent: true });
-      });
-
-      if (Video.player) Video.pause();
-      if (self.tracks[0]) self.tracks[0].play();
-    },
-
-    onchange: function() {
-      this.view.el.find('#save').removeClass('disabled');
-    },
-
-    // Add a track to the model.
-    add: function(tracks, options) {
-      if (!options.silent) this.change();
-      var $placeholder
-        , self = this;
-
-
-      // At least one song, and play or next was clicked.
-      // So IF will target the current song to add one after it.
-      if (!_.isUndefined(window.nowPlayingTrack) && _.include(['play', 'next'], options.method)) {
-        if (!$placeholder) {
-          $placeholder = $('<div class="placeholder h"></div>');
-          $(nowPlayingTrack.view.el).after($placeholder);
-        }
-
-        // Insert before placeholder (which is after current track).
-        var i = _.indexOf(nowPlaying.tracks, nowPlayingTrack);
-        _.each(tracks, function(track, j) {
-          self.tracks.splice(i + 1 + j, 0, track);
-          track.view = new View.PlaylistTrack({ model: track });
-          $placeholder.before(track.view.render().el);
-        });
-        $placeholder.remove();
-
-        if (options.method == 'play') tracks[0].play();
-      } else {
-
-        _.each(tracks, function(track) {
-          self.tracks.push(track);
-
-          // Render non_empty template on first addition.
-          if (self.tracks.length == 1) self.view.render();
-        });
-
-
-        _.each(tracks, function(track) {
-          track.view = new View.PlaylistTrack({ model: track });
-          self.view.el.find('tbody').append(track.view.render().el);
-        });
-      }
-
-      // Start playback.
-      if (_.isUndefined(window.nowPlayingTrack)) this.tracks[0].play();
+      self.oldToJSON = self.toJSON;
+      self.toJSON = function() {
+        var json = self.oldToJSON();
+        json.tracks = self.get('tracks').toJSON();
+        return json;
+      };
     },
 
     // Remove a track from the model.
@@ -157,10 +85,9 @@ $(function() {
   });
 
   View.Playlist = Backbone.View.extend({
-    el: $('#now-playing'),
+    el: $('#main'),
 
     events: {
-      'click #save': 'save',
       'change input.name': 'setName'
     },
 
@@ -169,11 +96,9 @@ $(function() {
 
     initialize: function() {
       var self = this;
-      this.render();
+      self.render();
 
-      _.bindAll(this, 'save');
-
-      this.el.sortable({
+      self.el.sortable({
         placeholder: 'ui-state-highlight',
         items: 'tr',
         axis: 'y',
@@ -192,27 +117,26 @@ $(function() {
     },
 
     render: function() {
-      if (this.model.tracks.length > 0) {
-        this.el.html(this.non_empty_template(this.model.toJSON()));
+      var self = this;
+      if (self.model.get('tracks').models.length > 0) {
+        self.el.html(self.non_empty_template(self.model.toJSON()));
+        _.each(self.model.get('tracks').models, function(track) {
+          self.el.find('tbody').append(track.view.render().el);
+        });
       } else {
-        this.el.html(this.empty_template());
+        self.el.html(self.empty_template());
       }
     },
 
     setName: function(e) {
-      this.model.set({ name: this.el.find('input.name').val() })
-    },
-
-    save: function(e) {
-      if ($(e.currentTarget).hasClass('disabled')) return;
-
-      if (this.model.isNew()) Playlists.add(this.model);
-      this.model.set({ tracks: this.model.tracks });
-      this.model.save();
-
-      this.el.find('#save').addClass('disabled');
-      alert('Playlist saved.');
+      var self = this;
+      self.model.set({ name: self.el.find('input.name').val() })
     }
+  });
+
+  Collection.Playlists = Backbone.Collection.extend({
+    model: Model.Playlist,
+    localStorage: new Store('Playlists')
   });
 
 });

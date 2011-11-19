@@ -53,9 +53,6 @@ $(function() {
        ];
     },
 
-    timeRemaining: function() {
-    },
-
     humanizeSeconds: function(s) {
       var minutes = Math.floor(s / 60);
       var seconds = Math.floor(s % 60);
@@ -120,11 +117,11 @@ $(function() {
 
     next: function() {
       var next = false;
-      _.each(nowPlaying.tracks, function(trackModel) {
+      _.each(nowPlaying.tracks(), function(trackModel) {
         if (next == true) next = trackModel;
         if (window.nowPlayingTrack === trackModel) next = true;
       });
-      if (next == true || next == false) next = nowPlaying.tracks[0];
+      if (next == true || next == false) next = _.first(nowPlaying.tracks());
 
       next.play();
     },
@@ -138,10 +135,10 @@ $(function() {
       this.skipToPrev = true;
 
       var prev = null, prevSet = false;
-      if (window.nowPlayingTrack === _.first(nowPlaying.tracks)) {
-        prev = _.last(nowPlaying.tracks);
+      if (window.nowPlayingTrack === _.first(nowPlaying.tracks())) {
+        prev = _.last(nowPlaying.tracks());
       } else {
-        _.each(nowPlaying.tracks, function(trackModel) {
+        _.each(nowPlaying.tracks(), function(trackModel) {
           if (window.nowPlayingTrack === trackModel) prevSet = true;
           if (!prevSet) prev = trackModel
         });

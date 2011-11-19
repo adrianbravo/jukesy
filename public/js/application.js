@@ -13,8 +13,8 @@ $(function() {
 
     routes: {
       '/'                  : 'home',
-      '/playlists'         : 'playlists_index',
-      '/playlist/:id'      : 'playlist_view',
+      //'/playlists'         : 'playlists_index',
+      //'/playlist/:id'      : 'playlist_view',
       '/playlist/play/:id' : 'playlist_play',
       '/lastfm/:type/:method/:query': 'search',
     },
@@ -29,19 +29,12 @@ $(function() {
       new View.Home();
     },
 
-    playlists_index: function(id) {
-      this.trigger('appview');
-      $('#main').show();
-      new View.Playlists();
-    },
-
     playlist_play: function(id) {
       // Unbind events for when view is re-created
-      if (!_.isUndefined(window.nowPlaying)) window.nowPlaying.view.delegateEvents([]);
+      nowPlaying.view.delegateEvents({});
       this.trigger('appview');
       $('#now-playing').show();
-      window.nowPlaying = new Model.Playlist(Playlists.get(id).toJSON());
-      //window.nowPlaying = Playlists.get(id);
+      nowPlaying.setPlaylist(Playlists.get(id));
     },
 
     search: function(type, method, query) {
@@ -188,7 +181,8 @@ $(function() {
   window.Video      = new Model.Video();
   window.Controls   = new View.Controls();
   window.Playlists  = new Collection.Playlists();
-  window.nowPlaying = new Model.Playlist({ expires: true });
+
+  window.nowPlaying = new Model.NowPlaying();
 
   Playlists.fetch();
   PlaylistsView = new View.Playlists({ quickbar: true });

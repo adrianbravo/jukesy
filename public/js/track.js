@@ -49,7 +49,7 @@ $(function() {
         nowPlaying.view.cancelClick = false;
         return false;
       }
-      if (this.model === window.nowPlayingTrack) return false;
+      if (this.model === nowPlayingTrack) return false;
 
       this.model.play();
     },
@@ -122,6 +122,10 @@ $(function() {
       $(this.el).html(this.template(this.model.toJSON()));
       return this;
     },
+  });
+
+  Collection.Tracks = Backbone.Collection.extend({
+    model: Model.Track,
   });
 
 });
