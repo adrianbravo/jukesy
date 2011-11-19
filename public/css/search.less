@@ -88,32 +88,6 @@
   }
 
   tr {
-    &.selected, &.playing {
-      .avatar {
-        background: #333;
-        border-color: @bluegrey;
-      }
-    }
-    &.selected {
-      .track {
-        background: @lightblue;
-        .artist, .name {
-          color: @bluegrey;
-          text-shadow: 0 1px 0 #fff;
-        }
-      }
-    }
-    &.playing {
-      .track {
-        padding: 10px 5px;
-        .gradient(#eee, #aaa);
-        .artist, .name {
-          line-height: 44px;
-          color: @bluegrey;
-          text-shadow: 0 1px 0 #fff;
-        }
-      }
-    }
     /*
       .name, .artist {
         color: #ccc;
@@ -139,6 +113,13 @@
   }
   tr:nth-child(even) {
     background: #262626;
+  }
+  tr:hover {
+    background: #363636;
+  }
+  tr.selected, tr.playing {
+    background: #c0d4df;
+    color: #333;
   }
 
   .avatar {

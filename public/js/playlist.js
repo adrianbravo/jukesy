@@ -40,10 +40,11 @@ $(function() {
 
     initialize: function() {
       var self = this;
-      _.bindAll(self, 'remove', 'sortByDOM');
+      _.bindAll(self, 'remove', 'sortByDOM', 'saveLocally');
 
       // Loads tracks collection or converts its json to a new collection, silently.
       self.set({ tracks: new Collection.Tracks(self.get('tracks') || []) }, { silent: true });
+      self.bind('change', self.saveLocally);
 
       self.oldToJSON = self.toJSON;
       self.toJSON = function() {
@@ -53,19 +54,28 @@ $(function() {
       };
     },
 
+    saveLocally: function() {
+      if (this.localStorage) {
+        this.save();
+        this.shortView.render();
+      }
+      // TODO handle saving remotely
+    },
+
     // Remove a track from the model.
     remove: function(model) {
       this.change();
-      this.tracks = _.without(this.tracks, model);
+      this.get('tracks').models = _.without(this.get('tracks').models, model);
       model.view.remove();
       model.destroy();
     },
 
     sortByDOM: function() {
-      this.change();
-      this.tracks = _.sortBy(this.tracks, function(track) {
+      this.get('tracks').models = _.sortBy(this.get('tracks').models, function(track) {
+        console.log(_.indexOf($(track.view.el).parent().children(track.view.tagName), track.view.el));
         return _.indexOf($(track.view.el).parent().children(track.view.tagName), track.view.el);
       });
+      this.change();
     }
   });
 
@@ -76,6 +86,7 @@ $(function() {
 
     initialize: function() {
       _.bindAll(this, 'render');
+      this.model.shortView = this;
     },
 
     render: function() {
