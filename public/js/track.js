@@ -35,8 +35,9 @@ $(function() {
     template: _.template($('#track-template').html()),
 
     events: {
-      'click .remove': 'removeTrack',
-      'dblclick :not(.remove)': 'play',
+      'click .remove'          : 'removeTrack',
+      'click'                  : 'toggleSelect',
+      'dblclick :not(.remove)' : 'play'
     },
 
     removeTrack: function() {
@@ -54,8 +55,13 @@ $(function() {
       this.model.play();
     },
 
+    toggleSelect: function() {
+      $(this.el).toggleClass('selected');
+    },
+
     render: function() {
       $(this.el).html(this.template(this.model.toJSON()));
+      this.delegateEvents();
       return this;
     }
   });
@@ -67,13 +73,13 @@ $(function() {
     actions_template: _.template($('#track-actions-template').html()),
 
     events: {
-        'click .play'     : 'play'
-      , 'click .next'     : 'next'
-      , 'click .last'     : 'last'
-      , 'click'           : 'toggleSelect'
-      , 'dblclick'        : 'play'
-      //, 'mouseenter'      : 'showActions'
-      //, 'mouseleave'      : 'hideActions'
+      'click .play'     : 'play',
+      'click .next'     : 'next',
+      'click .last'     : 'last',
+      'click'           : 'toggleSelect',
+      'dblclick'        : 'play'
+      //'mouseenter'      : 'showActions'
+      //'mouseleave'      : 'hideActions'
     },
 
     refreshActions: function() {
@@ -121,7 +127,7 @@ $(function() {
     render: function() {
       $(this.el).html(this.template(this.model.toJSON()));
       return this;
-    },
+    }
   });
 
   Collection.Tracks = Backbone.Collection.extend({

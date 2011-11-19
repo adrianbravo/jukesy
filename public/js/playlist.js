@@ -40,6 +40,7 @@ $(function() {
 
     initialize: function() {
       var self = this;
+      if (!self.isNew()) self.autosave = true;
       _.bindAll(self, 'remove', 'sortByDOM', 'saveLocally');
 
       // Loads tracks collection or converts its json to a new collection, silently.
@@ -55,7 +56,7 @@ $(function() {
     },
 
     saveLocally: function() {
-      if (this.localStorage) {
+      if (this.localStorage && this.autosave) {
         this.save();
         this.shortView.render();
       }
@@ -72,7 +73,6 @@ $(function() {
 
     sortByDOM: function() {
       this.get('tracks').models = _.sortBy(this.get('tracks').models, function(track) {
-        console.log(_.indexOf($(track.view.el).parent().children(track.view.tagName), track.view.el));
         return _.indexOf($(track.view.el).parent().children(track.view.tagName), track.view.el);
       });
       this.change();

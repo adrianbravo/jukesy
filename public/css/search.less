@@ -117,9 +117,20 @@
   tr:hover {
     background: #363636;
   }
-  tr.selected, tr.playing {
+  tr.selected {
     background: #c0d4df;
     color: #333;
+  }
+  tr.playing {
+    background: #ccc;
+    .gradient(#eee, #aaa);
+    .artist, .name {
+      text-shadow: 0 1px 0 #fff;
+    }
+    color: #333;
+    &.selected {
+      background: #d0e4ef;
+    }
   }
 
   .avatar {

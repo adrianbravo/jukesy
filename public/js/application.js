@@ -41,7 +41,7 @@ $(function() {
       // Unbind events for when view is re-created
       console.log(type, method, query);
       if (!_.isUndefined(window.Search)) {
-        window.Search.view.delegateEvents([]);
+        window.Search.view.delegateEvents({});
       }
       this.trigger('appview');
       $('#main').show();
