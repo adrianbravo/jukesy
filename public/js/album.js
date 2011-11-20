@@ -10,12 +10,10 @@ $(function() {
   View.SearchAlbums = View.SearchResults.extend({
     el: '#search .albums',
 
-    template: _.template($('#search-albums-template').html()),
+    viewObject: View.SearchAlbum,
+    viewInner: 'ul',
 
-    addModel: function(model) {
-      var view = new View.SearchAlbum({ model : model });
-      $(this.view.el).find('ul').append(view.el);
-    }
+    template: _.template($('#search-albums-template').html())
   });
 
   Collection.Albums = Backbone.Collection.extend({

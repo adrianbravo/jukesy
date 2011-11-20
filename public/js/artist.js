@@ -10,12 +10,10 @@ $(function() {
   View.SearchArtists = View.SearchResults.extend({
     el: '#search .artists',
 
-    template: _.template($('#search-artists-template').html()),
+    viewObject: View.SearchArtist,
+    viewInner: 'ul',
 
-    addModel: function(model) {
-      var view = new View.SearchArtist({ model : model });
-      $(this.view.el).find('ul').append(view.el);
-    }
+    template: _.template($('#search-artists-template').html())
   });
 
   Collection.Artists = Backbone.Collection.extend({

@@ -1,12 +1,9 @@
 @SEARCH-normal-img-side: 96px;
 @SEARCH-small-img-side: 16px;
 
-.SEARCH-img (@side-length) {
-  width: @side-length;
-  height: @side-length;
-}
-
 #search {
+  color: #bbb;
+
   .wait {
     width: 16px;
     height: 16px;
@@ -14,8 +11,19 @@
   }
 
 
-  .artists, .albums {
+  .empty {
     padding: 10px;
+    font-size: 13px;
+  }
+
+  .artists {
+    max-height: 140px;
+  }
+  .albums {
+    max-height: 150px;
+  }
+  .artists, .albums {
+    overflow: hidden;
 
     li {
       float: left;
@@ -24,13 +32,14 @@
       padding: 5px;
       background: #111;
       font-size: 10px;
-      text-align: center;
-
-      .SEARCH-img(@SEARCH-normal-img-side)
+      height: @SEARCH-normal-img-side + 30px;
 
       .inner {
         overflow: hidden;
         width: @SEARCH-normal-img-side;
+        position: relative;
+        text-align: center;
+
         .name, .artist {
           overflow: hidden;
           height: 15px;
@@ -41,10 +50,9 @@
 
     .listeners, .albumid { display: none; }
     .img, img.lastfm {
-      margin: 0;
+      margin: 0 -1000px; // Centering hack?
       padding: 0;
-      background: #333;
-      .SEARCH-img(@SEARCH-normal-img-side)
+      height: @SEARCH-normal-img-side;
     }
 
   }
@@ -54,9 +62,6 @@
 
 
 .tracks {
-  width: 100%;
-  font-size: 13px;
-  color: #bbb;
 
   td {
     padding: 2px 5px;
@@ -111,6 +116,7 @@
   }
 }
 
+/*
 .sort {
   width: 100%;
   position: relative;
@@ -140,7 +146,7 @@
     &:hover { color: #000; text-decoration: underline; }
   }
 }
-
+*/
 
 /*
 .more {

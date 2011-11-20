@@ -66,8 +66,12 @@ $(function() {
       this.query();
     },
 
-    query: function() {
+    // Debounce will keep the queries from firing off if back/forward is repeatedly pressed.
+    query: _.debounce(function() {
       var self = this;
+      if (!Backbone.history.fragment.match(new RegExp('/search/' + self.get('query'), 'i')))
+        return;
+
       _.forEach(['artist', 'album', 'track'], function(type) {
         var params = {
           api_key     : self.api_key,
@@ -81,20 +85,13 @@ $(function() {
 
         $.getScript('http://ws.audioscrobbler.com/2.0/?' + $.param(params));
       });
-    },
+    }, 600),
 
-      // loads up a view for each
-      //   artist, albums, tracks
-      // as callbacks are received, if the window location is correct, update those collections, which updates the views
     queryCallback: function(data) {
       var self = this;
-
-      // TODO verify view exists before appending shit
-
       if (!self.isCurrentQuery(data.results)) {
         return;
       }
-
 
       // Figure out the type by searching json, e.g. results.artistmatches
       _.forEach(['artist', 'album', 'track'], function(type) {
@@ -102,12 +99,9 @@ $(function() {
           return;
 
         self.get(type).view = new View['Search' + type.capitalize() + 's']({ collection: self.get(type) });
-
-        // Add initial models to the collection
         _.forEach(data.results[type + 'matches'][type], function(result) {
           self.get(type).add(self.resultToJSON(type, result));
         });
-
       });
     },
 
@@ -119,7 +113,6 @@ $(function() {
       var self = this;
       switch (type) {
         case 'track':
-          console.log('track', result);
           return new Model.Track({
             artist    : result.artist,
             name      : result.name,
@@ -127,19 +120,17 @@ $(function() {
             listeners : result.listeners
           });
         case 'artist':
-          console.log('artist', result);
           return new Model.Artist({
             name      : result.name,
-            image     : self.resultImage(result, 'extralarge'),
+            image     : self.resultImage(result),
             listeners : result.listeners
           });
         case 'album':
-          console.log('album', result);
           return new Model.Album({
             artist  : result.artist,
             name    : result.name,
             albumid : result.id,
-            image   : self.resultImage(result, 'extralarge'),
+            image   : self.resultImage(result),
           });
         case 'tag':
           return new Model.Tag({
@@ -182,14 +173,32 @@ $(function() {
   View.SearchResults = Backbone.View.extend({
     tagName: 'ul',
 
+    templateEmpty: _.template($('#search-empty-template').html()),
+
     initialize: function() {
-      this.render();
-      this.collection.bind('add', this.addModel);
+      var self = this;
+      ['artist', 'album', 'track'].forEach(function(type) {
+        if (self.collection.model == Model[type.capitalize()]) {
+          self.type = type;
+        }
+      });
+      self.render();
+
+      self.collection.bind('add', self.addModel);
+      _.bindAll(self, 'addModel');
     },
 
     render: function() {
       var count = this.collection.models.length;
-      $(this.el).html(this.template({ count: this.collection.models.length }));
+      $(this.el).html(this.templateEmpty({ type: this.type }));
+    },
+
+    addModel: function(model) {
+      if (this.models.length == 1)
+        $(this.view.el).html(this.view.template());
+
+      var view = new this.view.viewObject({ model : model });
+      $(this.view.el).find(this.view.viewInner).append(view.el);
     }
   });
 

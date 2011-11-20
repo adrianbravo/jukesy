@@ -124,12 +124,10 @@ $(function() {
   View.SearchTracks = View.SearchResults.extend({
     el: '#search .tracks',
 
-    template: _.template($('#search-tracks-template').html()),
+    viewObject: View.SearchTrack,
+    viewInner: 'table tbody',
 
-    addModel: function(model) {
-      var view = new View.SearchTrack({ model : model });
-      $(this.view.el).find('table tbody').append(view.el);
-    }
+    template: _.template($('#search-tracks-template').html()),
   });
 
   Collection.Tracks = Backbone.Collection.extend({
