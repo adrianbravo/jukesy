@@ -1,4 +1,10 @@
+@SEARCH-normal-img-side: 96px;
+@SEARCH-small-img-side: 16px;
 
+.SEARCH-img (@side-length) {
+  width: @side-length;
+  height: @side-length;
+}
 
 #search {
   .wait {
@@ -6,84 +12,46 @@
     height: 16px;
     background: url('/images/more.gif') no-repeat 0 0;
   }
-}
 
 
-
-/*
-.type-links {
-  display: none;
-  a { margin-right: 20px; }
-  &.type-track .-track { text-decoration: none; color: #333; cursor: default; }
-}
-
-#main {
-  .search-for {
-    text-align: center; font-size: 20px;
-    strong { font-size: 36px; text-shadow: 0 2px 0 #555; }
-  }
-}
-
-
-.tags {
-  li {
-    margin: 10px;
-    display: inline-block;
-    cursor: pointer;
-
-    a.tag {
-      display: block;
-      width: 200px;
-      background: #666;
-      padding: 5px;
-      color: #fff;
-      .text {
-      }
-    }
-  }
-}
-
-.artists, .albums {
-  text-align: center;
-
-  li {
-    margin: 10px;
+  .artists, .albums {
     padding: 10px;
-    display: inline-block;
-    vertical-align: top;
-    cursor: pointer;
 
-    a.artist, a.album {
-      text-decoration: none;
+    li {
+      float: left;
+      display: inline;
+      margin: 5px;
+      padding: 5px;
+      background: #111;
+      font-size: 10px;
+      text-align: center;
 
-      .avatar {
-        border-left: 20px solid #333;
-        background: #999 no-repeat center center;
-        width: 170px;
-        height: 170px;
-      }
+      .SEARCH-img(@SEARCH-normal-img-side)
 
-      .text {
-        display: block;
-        color: #333;
-
-        .name { font-weight: bold; }
-        .name,
-        .albumartist {
-          width: 190px;
-          height: 23px;
-          line-height: 23px;
+      .inner {
+        overflow: hidden;
+        width: @SEARCH-normal-img-side;
+        .name, .artist {
           overflow: hidden;
-          &:hover { text-decoration: underline; }
+          height: 15px;
+          line-height: 20px;
         }
       }
     }
 
-    &:hover {
-      background: #ddd;
+    .listeners, .albumid { display: none; }
+    .img, img.lastfm {
+      margin: 0;
+      padding: 0;
+      background: #333;
+      .SEARCH-img(@SEARCH-normal-img-side)
     }
+
   }
+
 }
+
+
 
 .tracks {
   width: 100%;
@@ -131,13 +99,14 @@
     }
   }
 
-  .avatar {
+  .img {
     width: 24px;
     text-align: center;
-    img {
+    img.lastfm {
       display: block;
       width: 24px;
       height: 24px;
+      background: #111;
     }
   }
 }
@@ -173,6 +142,7 @@
 }
 
 
+/*
 .more {
   position: relative;
   cursor: pointer;

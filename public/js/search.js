@@ -95,7 +95,6 @@ $(function() {
         return;
       }
 
-      console.log('query callback', data);
 
       // Figure out the type by searching json, e.g. results.artistmatches
       _.forEach(['artist', 'album', 'track'], function(type) {
@@ -120,18 +119,22 @@ $(function() {
       var self = this;
       switch (type) {
         case 'track':
+          console.log('track', result);
           return new Model.Track({
-            artist : result.artist,
-            name   : result.name,
-            image  : self.resultImage(result),
+            artist    : result.artist,
+            name      : result.name,
+            image     : self.resultImage(result),
+            listeners : result.listeners
           });
         case 'artist':
+          console.log('artist', result);
           return new Model.Artist({
             name      : result.name,
             image     : self.resultImage(result, 'extralarge'),
             listeners : result.listeners
           });
         case 'album':
+          console.log('album', result);
           return new Model.Album({
             artist  : result.artist,
             name    : result.name,

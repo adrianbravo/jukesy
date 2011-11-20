@@ -1,1 +1,7 @@
-div an artist
+.inner
+  .img
+    <% if (image != '') { %>
+    img.lastfm(src='{{ image }}')
+    <% } %>
+  .name {{ name }}
+  .listeners {{ listeners }}

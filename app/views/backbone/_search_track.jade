@@ -1,7 +1,8 @@
-td.avatar.
-  <% if (image != '') { %>
-    <img src='{{ image }}'>
-  <% } %>
+td.avatar
+  .img
+    <% if (image != '') { %>
+    img.lastfm(src='{{ image }}')
+    <% } %>
 td.name {{ name }}
 td.artist {{ artist }}
-
+td.listeners {{ listeners }}

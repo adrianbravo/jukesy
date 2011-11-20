@@ -1,2 +1,8 @@
-div an album
-
+.inner
+  .img
+    <% if (image != '') { %>
+    img.lastfm(src='{{ image }}')
+    <% } %>
+  .name {{ name }}
+  .artist {{ artist }}
+  .albumid {{ albumid }}

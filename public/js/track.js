@@ -44,7 +44,6 @@ $(function() {
     //},
 
     play: function() {
-      console.log(this.model);
       nowPlaying.setPlaylist(this.model.collection);
 
       if (nowPlaying.view.cancelClick) {
@@ -129,7 +128,7 @@ $(function() {
 
     addModel: function(model) {
       var view = new View.SearchTrack({ model : model });
-      $(this.view.el).append(view.el);
+      $(this.view.el).find('table tbody').append(view.el);
     }
   });
 

@@ -14,7 +14,7 @@ $(function() {
 
     addModel: function(model) {
       var view = new View.SearchArtist({ model : model });
-      $(this.view.el).append(view.el);
+      $(this.view.el).find('ul').append(view.el);
     }
   });
 
