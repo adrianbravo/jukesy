@@ -3,15 +3,6 @@ $(function() {
   
   /*
   View.Search = Backbone.View.extend({
-
-    waiting_template   : _.template($('#lastfm-waiting-template').html()),
-    results_template   : _.template($('#lastfm-search-template').html()),
-    no_results_template: _.template($('#lastfm-no-results-template').html()),
-
-    initialize: function() {
-      this.render();
-    },
-
     loadMore: function(event, ui) {
       if ($(event.currentTarget).hasClass('disabled')) return;
       $(event.currentTarget).addClass('disabled');
@@ -28,6 +19,7 @@ $(function() {
     }
   });
   */
+
   View.Search = Backbone.View.extend({
     el: '#main',
 
@@ -43,9 +35,6 @@ $(function() {
 
   });
 
-  // TODO
-  // Hold running history of searches???
-  // Check if the current search parameters (query) are right
   Model.Search = Backbone.Model.extend({
     api_key: '75c8c3065db32d805a292ec1af5631a3',
 
