@@ -13,6 +13,7 @@ var assets = {
     'js/boot.js',
     'js/modal.js',
 
+    'js/search.js',
     'js/track.js',
     'js/artist.js',
     'js/album.js',
@@ -20,7 +21,6 @@ var assets = {
 
     'js/playlist.js',
     'js/nowplaying.js',
-    'js/search.js',
 
     'js/controls.js',
     'js/video.js',

@@ -3,20 +3,18 @@ $(function() {
   Model.Album = Backbone.Model.extend({
   });
 
-  View.SearchAlbums = Backbone.View.extend({
-    el: '#search .albums',
+  View.SearchAlbum = View.SearchResult.extend({
+    template: _.template($('#search-album-template').html()),
+  });
 
-    tagName: 'ul',
+  View.SearchAlbums = View.SearchResults.extend({
+    el: '#search .albums',
 
     template: _.template($('#search-albums-template').html()),
 
-    initialize: function() {
-      console.log('search albums view');
-      this.render();
-    },
-
-    render: function() {
-      $(this.el).replaceWith(this.template({ count: this.collection.models.length }));
+    addModel: function(model) {
+      var view = new View.SearchAlbum({ model : model });
+      $(this.view.el).append(view.el);
     }
   });
 
@@ -25,4 +23,3 @@ $(function() {
   });
 
 });
-

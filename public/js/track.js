@@ -79,9 +79,6 @@ $(function() {
 
   /*
   View.SearchTrack = Backbone.View.extend({
-    tagName: 'tr',
-
-    template: _.template($('#track-template').html()),
 
     events: {
       'click'           : 'toggleSelect',
@@ -118,6 +115,23 @@ $(function() {
     }
   });
   */
+
+  View.SearchTrack = View.SearchResult.extend({
+    template: _.template($('#search-track-template').html()),
+
+    tagName: 'tr'
+  });
+
+  View.SearchTracks = View.SearchResults.extend({
+    el: '#search .tracks',
+
+    template: _.template($('#search-tracks-template').html()),
+
+    addModel: function(model) {
+      var view = new View.SearchTrack({ model : model });
+      $(this.view.el).append(view.el);
+    }
+  });
 
   Collection.Tracks = Backbone.Collection.extend({
     model: Model.Track

@@ -51,15 +51,15 @@ $(function() {
 
     initialize: function() {
       this.set({
-        artists : new Collection.Artists(),
-        albums  : new Collection.Albums(),
-        tracks  : new Collection.Tracks()
+        artist : new Collection.Artists(),
+        album  : new Collection.Albums(),
+        track  : new Collection.Tracks()
       }, { silent: true });
 
       this.pages = {
-        artists : 1,
-        albums  : 1,
-        tracks  : 1
+        artist : 1,
+        album  : 1,
+        track  : 1
       };
 
       this.view = new View.Search({ model: this });
@@ -68,12 +68,11 @@ $(function() {
 
     query: function() {
       var self = this;
-      //_.forEach(['artist', 'track', 'album'], function(type) {
-      _.forEach(['artist', 'album'], function(type) {
+      _.forEach(['artist', 'album', 'track'], function(type) {
         var params = {
           api_key     : self.api_key,
           method      : type + '.search',
-          page        : self.pages[type + 's'],
+          page        : self.pages[type],
           autocorrect : 1,
           format      : 'json',
           callback    : 'window.Search.queryCallback',
@@ -103,11 +102,11 @@ $(function() {
         if (_.isUndefined(data.results[type + 'matches']))
           return;
 
-        self.get(type + 's').view = new View['Search' + type.capitalize() + 's']({ collection: self.get(type + 's') });
+        self.get(type).view = new View['Search' + type.capitalize() + 's']({ collection: self.get(type) });
 
         // Add initial models to the collection
         _.forEach(data.results[type + 'matches'][type], function(result) {
-          self.get(type + 's').add(self.resultToJSON(type, result));
+          self.get(type).add(self.resultToJSON(type, result));
         });
 
       });
@@ -164,120 +163,32 @@ $(function() {
 
   });
 
-  /*
-  Model.Search = Backbone.Model.extend({
-    api_key: '75c8c3065db32d805a292ec1af5631a3',
+  View.SearchResult = Backbone.View.extend({
+    tagName: 'li',
 
     initialize: function() {
-      this.results = [];
-      this.set({ page: 1 });
-      this.query();
-      this.view = new View.Search({ model: this });
-
-      this.set({ tracks: new Collection.Tracks([]) }, { silent: true });
+      this.render();
     },
-
-    addResult: function(result) {
-      this.results.push(result);
-      if (this.results.length == 1) this.view.render();
-      // TODO
-      // ADD MULTIPLE RESULT TYPES
-      // View.Track added here
-      result.view = new View[this.get('type').capitalize()]({ model: result });
-      this.view.el.find('tbody').append(result.view.render().el);
-    },
-
-    queryCallback: function(data) {
-      this.view.el.find('.more').removeClass('disabled');
-      this.done = true;
-
-      if (!this.isCurrentQuery(data.results)) return;
-
-      // TODO Split off into type-specific parsers
-      if (_.isUndefined(data.results) || !_.isArray(data.results[this.get('type') + 'matches'][this.get('type')])) {
-        this.view.render();
-        return;
-      }
-
-      var self = this;
-      _.each(data.results[this.get('type') + 'matches'][this.get('type')], function(result) {
-
-        switch (self.get('type')) {
-          case 'track':
-            self.addResult(new Model.Track({
-              artist : result.artist,
-              name   : result.name,
-              image  : self.getImage(result),
-            }));
-            break;
-
-          case 'artist':
-            self.addResult(new Model.Artist({
-              name      : result.name,
-              image     : self.getImage(result, 'extralarge'),
-              listeners : result.listeners
-            }));
-            break;
-
-          case 'album':
-            self.addResult(new Model.Album({
-              artist  : result.artist,
-              name    : result.name,
-              albumid : result.id,
-              image   : self.getImage(result, 'extralarge'),
-            }));
-            break;
-
-          case 'tag':
-            self.addResult(new Model.Tag({
-              name  : result.name,
-              count : result.count
-            }));
-            break;
-
-          default:
-            break;
-        }
-      });
-
-      this.view.handleMore(data.results);
-    },
-
-  });
-
-  View.SearchTag = Backbone.View.extend({
-    tagName: 'li',
-
-    template: _.template($('#tag-template').html()),
 
     render: function() {
       $(this.el).html(this.template(this.model.toJSON()));
       return this;
-    },
+    }
   });
 
-  View.SearchAlbum = Backbone.View.extend({
-    tagName: 'li',
+  View.SearchResults = Backbone.View.extend({
+    tagName: 'ul',
 
-    template: _.template($('#album-template').html()),
+    initialize: function() {
+      this.render();
+      this.collection.bind('add', this.addModel);
+    },
 
     render: function() {
-      $(this.el).html(this.template(this.model.toJSON()));
-      return this;
-    },
+      var count = this.collection.models.length;
+      $(this.el).html(this.template({ count: this.collection.models.length }));
+    }
   });
-
-  View.SearchArtist = Backbone.View.extend({
-    tagName: 'li',
-
-    template: _.template($('#artist-template').html()),
-
-    render: function() {
-      $(this.el).html(this.template(this.model.toJSON()));
-      return this;
-    },
-  });
-  */
 
 });
 
