@@ -9,7 +9,11 @@ $(function() {
 
     routes: {
       '/'              : 'home',
-      '/search/:query' : 'searchAll'
+      '/search/:query' : 'searchAll',
+      '/settings'      : 'settings',
+      '/favorites'     : 'favorites',
+      '/tag-radio'     : 'tagRadio',
+      '/broadcasts'    : 'broadcasts',
       //'/artist/:query': 'searchArtist',
       //'/album/:query': 'searchAlbum',
       //'/track/:query': 'searchTrack',
@@ -28,10 +32,35 @@ $(function() {
       $('#main').show();
 
       // TODO nowPlaying.tracks points to collection.models
-      if (nowPlaying.playlist.get('tracks').models.length > 0)
+      if (nowPlaying.playlist.get('tracks').models.length > 0) {
         nowPlaying.view.render();
-      else
-        new View.Home();
+      } else {
+        MainView.render();
+      }
+    },
+
+    settings: function() {
+      this.trigger('appview');
+      $('#main').show();
+      MainView.render('settings');
+    },
+
+    favorites: function() {
+      this.trigger('appview');
+      $('#main').show();
+      MainView.render('favorites');
+    },
+
+    tagRadio: function() {
+      this.trigger('appview');
+      $('#main').show();
+      MainView.render('tagRadio');
+    },
+
+    broadcasts: function() {
+      this.trigger('appview');
+      $('#main').show();
+      MainView.render('broadcasts');
     },
 
     playlist_play: function(id) {
@@ -150,19 +179,25 @@ $(function() {
 
   });
 
-  View.Home = Backbone.View.extend({
+  View.Main = Backbone.View.extend({
 
-    el: $('#main'),
+    el: '#main',
 
-    template: _.template($('#home-template').html()),
+    template: {
+      home       : _.template($('#home-template').html()),
+      settings   : _.template($('#settings-template').html()),
+      favorites  : _.template($('#favorites-template').html()),
+      tagRadio   : _.template($('#tag-radio-template').html()),
+      broadcasts : _.template($('#broadcasts-template').html())
+    },
 
     initialize: function() {
       this.render();
       this.delegateEvents();
     },
 
-    render: function() {
-      this.el.html(this.template);
+    render: function(template) {
+      $(this.el).html(template ? this.template[template] : this.template.home);
     }
 
   });
@@ -179,5 +214,7 @@ $(function() {
 
   Playlists.fetch();
   PlaylistsView = new View.Playlists({ quickbar: true });
+
+  window.MainView = new View.Main();
 });
 

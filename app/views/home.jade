@@ -18,7 +18,7 @@
         a.broadcasts(data-href= '#/broadcasts')= __('Broadcasts')
           .icon
         hr
-        a.new-playlist(data-href= '#/')= __('New Playlist')
+        a.new-playlist= __('New Playlist')
           .icon
         #my-playlists
           .playlists
@@ -37,6 +37,19 @@ script#song-info-template(type= 'text/template')
 
 script#home-template(type= 'text/template')
   != partial('backbone/_home')
+
+script#settings-template(type= 'text/template')
+  != partial('backbone/_settings')
+
+script#favorites-template(type= 'text/template')
+  != partial('backbone/_favorites')
+
+script#tag-radio-template(type= 'text/template')
+  != partial('backbone/_tag_radio')
+
+script#broadcasts-template(type= 'text/template')
+  != partial('backbone/_broadcasts')
+
 
 //
 // Search templates
