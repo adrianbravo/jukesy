@@ -1,6 +1,5 @@
 $(function() {
 
-  /*
   Model.NowPlaying = Backbone.Model.extend({
     initialize: function() {
       var self = this;
@@ -32,6 +31,7 @@ $(function() {
 
     // Add a track to the model.
     add: function(tracks, options) {
+      console.log('add tracks', tracks, options);
       var self = this;
 
       if (!_.isUndefined(window.nowPlayingTrack) && _.include(['play', 'next'], options.method)) {
@@ -43,7 +43,8 @@ $(function() {
 
       self.buildTrackViews(tracks);
 
-      self.view.render();
+      if ($(nowPlaying.view.el).is('#main.now-playing'))
+        self.view.render();
 
       if (!_.isUndefined(window.nowPlayingTrack) && _.include(['play', 'next'], options.method)) {
         if (options.method == 'play') tracks[0].play();
@@ -55,8 +56,8 @@ $(function() {
   });
 
   View.NowPlaying = View.Playlist.extend({
-    el: $('#now-playing')
+    className: 'now-playing'
+    // wat
   });
-  */
 
 });

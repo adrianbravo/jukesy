@@ -8,15 +8,15 @@ $(function() {
     },
 
     routes: {
-      '/'                  : 'home',
-      //'/playlists'         : 'playlists_index',
-      //'/playlist/:id'      : 'playlist_view',
-      //'/playlist/play/:id' : 'playlist_play',
-      '/search/:query': 'searchAll'
-
+      '/'              : 'home',
+      '/search/:query' : 'searchAll'
       //'/artist/:query': 'searchArtist',
       //'/album/:query': 'searchAlbum',
       //'/track/:query': 'searchTrack',
+
+      //'/playlists'         : 'playlists_index',
+      //'/playlist/:id'      : 'playlist_view',
+      //'/playlist/play/:id' : 'playlist_play',
     },
 
     hideViews: function() {
@@ -25,8 +25,13 @@ $(function() {
 
     home: function() {
       this.trigger('appview');
-      $('#now-playing').show();
-      new View.Home();
+      $('#main').show();
+
+      // TODO nowPlaying.tracks points to collection.models
+      if (nowPlaying.playlist.get('tracks').models.length > 0)
+        nowPlaying.view.render();
+      else
+        new View.Home();
     },
 
     playlist_play: function(id) {
@@ -63,27 +68,11 @@ $(function() {
       'keypress #query'      : 'searchAll',
       'keydown'              : 'keyMapper',
       'keyup'                : 'setMaxVolume',
-      'click #login'         : 'login'
-      //, 'hover [title]'        : 'tooltip'
+      'click #login'         : 'login',
     },
 
     login: function(e) {
       new Model.Modal({ type: 'login' });
-    },
-
-    tooltip: function(e) {
-      var $tgt = $(e.currentTarget);
-      if (e.type == 'mouseenter') {
-        var $tooltip = $('<div class="tooltip">' + $tgt.attr('title') + '</div>');
-        $tgt.append($tooltip);
-        $tgt.attr('title','');
-        $tooltip.css('top', $tgt.outerHeight() + 15)
-                .css('margin-left', ($tgt.outerWidth()/2) - ($tooltip.outerWidth()/2));
-      } else if (e.type == 'mouseleave') {
-        var $tooltip = $tgt.find('.tooltip');
-        $tgt.attr('title', $tooltip.html());
-        $tooltip.remove();
-      }
     },
 
     searchAll: function(e) {
@@ -141,11 +130,11 @@ $(function() {
           return false;
         case 38: // UP
           if (this.keypressHasModifier(e)) return;
-          Controls.$volume.slider('value', Controls.$volume.slider('value') + 2);
+          Controls.$volume.slider('value', Controls.$volume.slider('value') + 5);
           return false;
         case 40: // DOWN
           if (this.keypressHasModifier(e)) return;
-          Controls.$volume.slider('value', Controls.$volume.slider('value') - 2);
+          Controls.$volume.slider('value', Controls.$volume.slider('value') - 5);
           return false;
         case 70: // F
           if (this.keypressHasModifier(e)) return;
@@ -186,7 +175,7 @@ $(function() {
   window.Controls   = new View.Controls();
   window.Playlists  = new Collection.Playlists();
 
-  //window.nowPlaying = new Model.NowPlaying();
+  window.nowPlaying = new Model.NowPlaying();
 
   Playlists.fetch();
   PlaylistsView = new View.Playlists({ quickbar: true });

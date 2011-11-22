@@ -58,8 +58,6 @@ $(function() {
     // Debounce will keep the queries from firing off if back/forward is repeatedly pressed.
     query: _.debounce(function() {
       var self = this;
-      if (!Backbone.history.fragment.match(new RegExp('/search/' + self.get('query'), 'i')))
-        return;
 
       _.forEach(['artist', 'album', 'track'], function(type) {
         var params = {
@@ -150,6 +148,7 @@ $(function() {
     tagName: 'li',
 
     initialize: function() {
+      this.model.view = this;
       this.render();
     },
 

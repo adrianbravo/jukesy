@@ -63,16 +63,20 @@
 
 #volume {
   display: inline-block;
-  background: #ccc;
+  .radius(2px);
+  background: #222;
+  .gradient(#161616, #222);
   width: 80px;
-  height: 10px;
+  height: 8px;
   margin: 7px 0 0 0;
   vertical-align: top;
   overflow: hidden;
   cursor: pointer;
 
   .ui-slider-range {
-    background: #444;
+    .radius(2px 0 0 2px);
+    background: #777;
+    .gradient(#666, #777);
     height: 10px;
   }
 
@@ -84,26 +88,33 @@
 }
 
 #timer {
-  background: #ccc;
+  .radius(2px);
+  background: #222;
+  .gradient(#161616, #222);
   overflow: hidden;
-  height: 12px;
+  height: 8px;
   z-index: 22;
-  margin: 6px 10px;
+  margin: 8px 10px;
 
   * {
-    height: 12px;
+    height: 8px;
     z-index: 22;
   }
 
   #timer_loaded {
+    .radius(2px 0 0 2px);
+    background: #444;
+    .gradient(#363636, #444);
     width: 0px;
-    background: #999;
     cursor: pointer;
   }
 
   #timer_current {
+    .radius(2px 0 0 2px);
+    background: #777;
+    .gradient(#666, #777);
     width: 0px;
-    background: #444;
+    position: relative;
   }
 
 }
@@ -117,9 +128,9 @@
 
 #timer {
   position: absolute;
-  top: 9px;
-  left: 180px;
-  right: 40px;
+  top: 15px;
+  left: 190px;
+  right: 50px;
 }
 .controls-right {
   position: absolute;
@@ -128,30 +139,27 @@
 }
 
 #song_info, #timer_left, #timer_right {
-  font-size: 20px;
+  font-size: 14px;
   line-height: 22px;
   overflow: hidden;
   position: absolute;
-  color: #666;
-  top: -7px;
-  left: 190px;
-  right: 50px;
+  color: #999;
+  text-shadow: -1px -1px 2px #000;
+  top: 0px;
+  left: 200px;
+  right: 60px;
 }
 
 #song_info {
-  font-weight: bold;
   text-align: center;
-  text-shadow: 0 1px 1px #fff;
 }
 
-#timer_left, #timer_right {
-  color: #999;
-
-  &#timer_left {
-    text-align: left;
-  }
-  &#timer_right {
-    right: 48px;
-    text-align: right;
-  }
+#timer_left {
+  text-align: left;
 }
+
+#timer_right {
+  right: 60px;
+  text-align: right;
+}
+

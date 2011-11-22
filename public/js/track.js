@@ -16,7 +16,10 @@ $(function() {
         _.defer(function() {
           Controls.$songInfo.html(window.Controls.songInfoTemplate(self.toJSON()));
         });
-        $(this.view.el).addClass('playing').siblings().removeClass('playing');
+
+        if ($(this.view.el).is(':visible'))
+          $(this.view.el).addClass('playing').siblings().removeClass('playing');
+
         window.Video.skipToPrev = false;
         window.Video.load(this.videos[0]);
       }
@@ -30,12 +33,10 @@ $(function() {
 
   View.Track = Backbone.View.extend({
     tagName: 'tr',
+
     template: _.template($('#track-template').html()),
 
-    events: {
-      'click'    : 'toggleSelect',
-      'dblclick' : 'play'
-    },
+    /*
 
     // TODO app-level response to del keypress (uses select)
     //removeTrack: function() {
@@ -65,42 +66,50 @@ $(function() {
         }).compact().value(), { method: method });
     },
 
-    toggleSelect: function() {
-      $(this.el).toggleClass('selected');
-    },
-
     render: function() {
       $(this.el).html(this.template(this.model.toJSON()));
       this.delegateEvents();
       return this;
     }
-  });
+    */
 
-  /*
-  View.SearchTrack = Backbone.View.extend({
+    render: function() {
+      $(this.el).html(this.template(this.model.toJSON()));
+      return this;
+    },
 
     events: {
       'click'           : 'toggleSelect',
       'dblclick'        : 'play'
     },
 
-    toggleSelect: function() {
-      $(this.el).toggleClass('selected');
+    play: function() {
     },
 
-    play: function(e) {
-      this.queueTrack(e, 'play');
+    toggleSelect: function() {
+      $(this.el).toggleClass('selected');
+    }
+
+  });
+
+  View.SearchTrack = View.SearchResult.extend({
+    template: _.template($('#search-track-template').html()),
+
+    tagName: 'tr',
+
+    events: {
+      'click'           : 'toggleSelect',
+      'dblclick'        : 'play'
+    },
+
+    play: function() {
+      this.queueTrack('play');
       // should load the track list as well
     },
 
-    last: function(e) {
-      this.queueTrack(e, 'last');
-      // should only add the tracks
-    },
-
-    queueTrack: function(e, method) {
+    queueTrack: function(method) {
       $(this.el).addClass('selected');
-      nowPlaying.add(_(Search.results).chain()
+      nowPlaying.add(_(Search.get('track').models).chain()
         .map(function(track) {
           if (!$(track.view.el).hasClass('selected')) return null;
           $(track.view.el).removeClass('selected');
@@ -108,17 +117,10 @@ $(function() {
         }).compact().value(), { method: method });
     },
 
-    render: function() {
-      $(this.el).html(this.template(this.model.toJSON()));
-      return this;
+    toggleSelect: function() {
+      $(this.el).toggleClass('selected');
     }
-  });
-  */
 
-  View.SearchTrack = View.SearchResult.extend({
-    template: _.template($('#search-track-template').html()),
-
-    tagName: 'tr'
   });
 
   View.SearchTracks = View.SearchResults.extend({

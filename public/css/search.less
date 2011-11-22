@@ -1,7 +1,7 @@
 @SEARCH-normal-img-side: 96px;
 @SEARCH-small-img-side: 16px;
 
-#search {
+#search, #playlist {
   color: #bbb;
   font-size: 11px;
 
@@ -74,6 +74,7 @@
 
     tr {
       background: #2a2a2a;
+      text-shadow: -1px -1px 2px #000;
     }
     tr:nth-child(even) {
       background: #262626;
@@ -84,13 +85,12 @@
     tr.selected {
       background: #c0d4df;
       color: #333;
+      text-shadow: 0 1px 1px #fff;
     }
     tr.playing {
       background: #ccc;
       .gradient(#eee, #aaa);
-      .artist, .name {
-        text-shadow: 0 1px 0 #fff;
-      }
+      text-shadow: 0 1px 1px #fff;
       color: #333;
       &.selected {
         background: #d0e4ef;
@@ -99,6 +99,7 @@
 
     .img {
       width: 24px;
+      height: 24px;
       text-align: center;
       img.lastfm {
         display: block;

@@ -107,6 +107,7 @@ $(function() {
 
     initialize: function() {
       var self = this;
+
       self.render();
 
       self.el.sortable({
