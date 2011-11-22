@@ -124,3 +124,22 @@ hr {
     }
   }
 }
+
+#wait, #wait-top {
+  display: none;
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: #000;
+  // TODO Make abstract opacity function.
+  opacity: 0.6;
+  z-index: 1000;
+}
+#wait-top { z-index: 1001; opacity: 1.0; background: transparent; }
+
+#app.wait {
+  #wait, #wait-top {
+    display: block;
+  }
+}
+
+

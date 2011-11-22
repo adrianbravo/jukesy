@@ -104,6 +104,15 @@ $(function() {
       new Model.Modal({ type: 'login' });
     },
 
+    wait: function() {
+      //$('#wait').html('');
+      $('#app').addClass('wait');
+    },
+
+    unwait: function() {
+      $('#app').removeClass('wait');
+    },
+
     searchAll: function(e) {
       if (e.keyCode == 13) {
         Router.navigate('/search/' + encodeURIComponent($('#query').val()), true);
