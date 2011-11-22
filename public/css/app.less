@@ -82,7 +82,7 @@ hr {
 
 }
 
-#main, #now-playing {
+#main {
   color: #999;
 }
 
@@ -105,7 +105,7 @@ hr {
 .jspVerticalBar {
 	width: 8px;
 	background: transparent;
-  opacity: 0.65;
+  .fade(80ms);
   right: 5px;
 }
 .jspHorizontalBar { display: none; }
@@ -113,3 +113,14 @@ hr {
 .jspTrack { background: transparent; }
 .jspDrag { background: #666; }
 .jspCorner { background: #eeeef4; height: 100%; }
+
+
+#quickbar {
+  .jspVerticalBar { opacity: 0.0; }
+  .jspDrag { background: #333; }
+  &:hover {
+    .jspVerticalBar {
+      opacity: 1.0;
+    }
+  }
+}

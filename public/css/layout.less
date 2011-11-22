@@ -15,6 +15,7 @@
   bottom: 0;
   left: 0;
   right: 0;
+  overflow: hidden;
   min-width: @APP-min-width;
 }
 
@@ -80,13 +81,12 @@
   }
 }
 
-#main, #now-playing {
+#main-wrapper {
   position: absolute;
   top: @HEADER-outer-height;
   bottom: @CONTROLS-outer-height;
   left: @SIDEBAR-width;
   right: 0;
-  overflow-y: scroll;
   padding: 0 0 0 4px;
 }
 

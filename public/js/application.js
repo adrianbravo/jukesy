@@ -192,6 +192,7 @@ $(function() {
     },
 
     initialize: function() {
+      $('#main-wrapper').jScrollPane({ autoReinitialise: true, enableKeyboardNavigation: false });
       this.render();
       this.delegateEvents();
     },

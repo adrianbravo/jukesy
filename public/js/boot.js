@@ -20,17 +20,7 @@ function onYouTubePlayerReady(id) {
   Controls.setUpdate();
 }
 
-var windowResized = function() {
-  if ($('body').hasClass('fullscreen')) {
-    var $video = $('#video');
-    $video.height($(window).height() - parseInt($video.css('bottom')));
-    $('#video-shim').height($video.height());
-    Video.player.setSize($video.width(), $video.height());
-  } else {
-    $('#video-shim').height('');
-    $('#quickbar').data('jsp').reinitialise();
-  }
-};
+
 
 $(function() {
   $('#app').css('opacity', '1.0');
@@ -46,12 +36,31 @@ $(function() {
   windowResized();
 });
 
-String.prototype.capitalize = function() {
-  return this.charAt(0).toUpperCase() + this.slice(1);
-}
+
+
+var windowResized = function() {
+  if ($('body').hasClass('fullscreen')) {
+    var $video = $('#video');
+    $video.height($(window).height() - parseInt($video.css('bottom')));
+    $('#video-shim').height($video.height());
+    Video.player.setSize($video.width(), $video.height());
+  } else {
+    $('#video-shim').height('');
+    $('#quickbar').data('jsp').reinitialise();
+  }
+};
+
+
 
 $('a').live('click', function(e) {
   var $self = $(this);
   if (!$self.attr('href'))
     Router.navigate($self.attr('data-href'), true);
 });
+
+
+
+String.prototype.capitalize = function() {
+  return this.charAt(0).toUpperCase() + this.slice(1);
+}
+
