@@ -63,7 +63,6 @@
 
 #volume {
   display: inline-block;
-  .radius(2px);
   background: #222;
   .gradient(#161616, #222);
   width: 80px;
@@ -74,7 +73,6 @@
   cursor: pointer;
 
   .ui-slider-range {
-    .radius(2px 0 0 2px);
     background: #777;
     .gradient(#666, #777);
     height: 10px;
@@ -88,21 +86,19 @@
 }
 
 #timer {
-  .radius(2px);
   background: #222;
-  .gradient(#161616, #222);
+  .gradient(#141414, #181818);
   overflow: hidden;
-  height: 8px;
+  height: 10px;
   z-index: 22;
   margin: 8px 10px;
 
   * {
-    height: 8px;
+    height: 10px;
     z-index: 22;
   }
 
   #timer_loaded {
-    .radius(2px 0 0 2px);
     background: #444;
     .gradient(#363636, #444);
     width: 0px;
@@ -110,7 +106,6 @@
   }
 
   #timer_current {
-    .radius(2px 0 0 2px);
     background: #777;
     .gradient(#666, #777);
     width: 0px;

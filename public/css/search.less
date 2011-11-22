@@ -69,6 +69,8 @@
       background: #323232;
       td {
         border-right: 1px solid #262626;
+        height: 24px;
+        font-weight: bold;
       }
     }
 
@@ -107,6 +109,11 @@
         height: 24px;
         background: #111;
       }
+    }
+
+    .cell {
+      height: 16px;
+      overflow: hidden;
     }
   }
 }
@@ -182,3 +189,11 @@
 }
 */
 
+
+#app.wait {
+  #wait {
+    background: #000;
+    opacity: 0.5;
+    // TODO Make abstract opacity function.
+  }
+}

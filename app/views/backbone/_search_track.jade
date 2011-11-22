@@ -3,6 +3,9 @@ td.avatar
     <% if (image != '') { %>
     img.lastfm(src='{{ image }}')
     <% } %>
-td.name {{ name }}
-td.artist {{ artist }}
-td.listeners {{ listeners }}
+td.name
+  .cell {{ name }}
+td.artist
+  .cell {{ artist }}
+td.listeners
+  .cell {{ listeners }}
