@@ -105,13 +105,13 @@ $(function() {
             artist    : result.artist,
             name      : result.name,
             image     : self.resultImage(result),
-            listeners : result.listeners
+            listeners : result.listeners || 0
           });
         case 'artist':
           return new Model.Artist({
             name      : result.name,
             image     : self.resultImage(result),
-            listeners : result.listeners
+            listeners : result.listeners || 0
           });
         case 'album':
           return new Model.Album({

@@ -144,10 +144,14 @@ $(function() {
       switch (e.keyCode) {
         case 65: // CTRL-A, META-A
           if (e.metaKey || e.ctrlKey) {
-            if (Search.view.el.find('.selected').length < Search.view.el.find('li').length) {
-              Search.view.el.find('li').addClass('selected');
+            var $el = $(Search.get('track').view.el),
+                trackView = Search.get('track').view.collection.models[0].view,
+                selector = trackView.tagName + '.' + trackView.className;
+
+            if ($el.find(selector + '.selected').length < $el.find(selector).length) {
+              $el.find(selector).addClass('selected');
             } else {
-              Search.view.el.find('li').removeClass('selected');
+              $el.find(selector).removeClass('selected');
             }
             return false;
           }

@@ -87,7 +87,15 @@ $(function() {
       this.player.pauseVideo();
     },
 
+    stop: function() {
+      this.stopped = true;
+      this.pause();
+      $(nowPlaying.view.el).find('.playing').removeClass('playing');
+      this.on_state_change(-1);
+    },
+
     play: function() {
+      this.stopped = false;
       this.player.playVideo();
       if (this.state != 1) this.seek(Math.floor(this.currentTime()));
     },

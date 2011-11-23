@@ -100,10 +100,6 @@ $(function() {
   View.Playlist = Backbone.View.extend({
     el: $('#main'),
 
-    events: {
-      'change input.name': 'setName'
-    },
-
     empty_template: _.template($('#playlist-empty-template').html()),
     non_empty_template: _.template($('#playlist-template').html()),
 
@@ -122,11 +118,6 @@ $(function() {
       } else {
         self.el.html(self.empty_template());
       }
-    },
-
-    setName: function(e) {
-      var self = this;
-      self.model.set({ name: self.el.find('input.name').val() })
     }
   });
 

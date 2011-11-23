@@ -18,7 +18,7 @@ $(function() {
         });
 
         if ($(this.view.el).is(':visible'))
-          $(this.view.el).addClass('playing').siblings().removeClass('playing');
+          this.view.setPlaying();
 
         window.Video.skipToPrev = false;
         window.Video.load(this.videos[0]);
@@ -48,17 +48,21 @@ $(function() {
 
       this.model.play();
     },
-
-    render: function() {
-      $(this.el).html(this.template(this.model.toJSON()));
-      this.delegateEvents();
-      return this;
-    }
     */
 
+    initialize: function() {
+      _.bindAll(this, 'setPlaying');
+    },
+
     render: function() {
       $(this.el).html(this.template(this.model.toJSON()));
+      if (this.model === window.nowPlayingTrack)
+        _.defer(this.setPlaying);
       return this;
+    },
+
+    setPlaying: function() {
+      $(this.el).addClass('playing').siblings().removeClass('playing');
     },
 
     events: {
@@ -67,6 +71,7 @@ $(function() {
     },
 
     play: function() {
+      this.model.play();
     },
 
     toggleSelect: function() {
@@ -79,6 +84,7 @@ $(function() {
     template: _.template($('#search-track-template').html()),
 
     tagName: 'tr',
+    className: 'track',
 
     events: {
       'click'           : 'toggleSelect',
