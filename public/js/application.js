@@ -207,10 +207,12 @@ $(function() {
 
     initialize: function() {
       $('#main-wrapper').jScrollPane({ autoReinitialise: true, enableKeyboardNavigation: false }).bind('jsp-scroll-y',
-        function(event, scrollPositionY, isAtTop, isAtBottom) {
+        _.throttle(function(event, scrollPositionY, isAtTop, isAtBottom) {
           var jsp = $(this).data('jsp')
-          // if search and jsp percent scrolled y > .8, query
-        });
+          if (Backbone.History.fragment.match(/^\/search\//) && ($(jsp.getContentPane().parent()).height() * 2) + jsp.getContentPositionY() > jsp.getContentHeight()) {
+            Search.loadMore('track');
+          }
+        }, 300));
       this.render();
       this.delegateEvents();
     },
