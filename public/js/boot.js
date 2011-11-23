@@ -31,7 +31,7 @@ $(function() {
     evaluate    : /<%(.+?)%>/g
   };
 
-  $('#quickbar').jScrollPane({ verticalGutter: -8 });
+  $('#quickbar').jScrollPane({ verticalGutter: -8, enableKeyboardNavigation: false });
   $(window).resize(_.debounce(windowResized));
   windowResized();
 });

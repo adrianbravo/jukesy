@@ -209,7 +209,7 @@ $(function() {
       $('#main-wrapper').jScrollPane({ autoReinitialise: true, enableKeyboardNavigation: false }).bind('jsp-scroll-y',
         _.throttle(function(event, scrollPositionY, isAtTop, isAtBottom) {
           var jsp = $(this).data('jsp')
-          if (Backbone.History.fragment.match(/^\/search\//) && ($(jsp.getContentPane().parent()).height() * 2) + jsp.getContentPositionY() > jsp.getContentHeight()) {
+          if (Backbone.history.fragment.match(/^\/search\//) && ($(jsp.getContentPane().parent()).height() * 2) + jsp.getContentPositionY() > jsp.getContentHeight()) {
             Search.loadMore('track');
           }
         }, 300));

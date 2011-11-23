@@ -34,13 +34,7 @@ $(function() {
       console.log('add tracks', tracks, options);
       var self = this;
 
-      if (!_.isUndefined(window.nowPlayingTrack) && _.include(['play', 'next'], options.method)) {
-        var i = _.indexOf(self.tracks(), nowPlayingTrack);
-        self.playlist.get('tracks').add(tracks, { at: i + 1 });
-      } else {
-        self.playlist.get('tracks').add(tracks);
-      }
-
+      self.playlist.get('tracks').add(tracks);
       self.buildTrackViews(tracks);
 
       if ($(nowPlaying.view.el).is('#main.now-playing'))
