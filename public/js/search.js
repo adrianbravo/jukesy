@@ -3,13 +3,6 @@ $(function() {
   
   /*
   View.Search = Backbone.View.extend({
-    loadMore: function(event, ui) {
-      if ($(event.currentTarget).hasClass('disabled')) return;
-      $(event.currentTarget).addClass('disabled');
-      this.model.set({ page: this.model.get('page') + 1 });
-      this.model.query();
-    },
-
     handleMore: function(results) {
       var totalResults = parseInt(results['opensearch:totalResults'])
         , startIndex   = parseInt(results['opensearch:startIndex'])
@@ -44,13 +37,16 @@ $(function() {
       this.album  = new Collection.Albums();
       this.track  = new Collection.Tracks();
 
-      this.pages = {
-        artist : 1,
-        album  : 1,
-        track  : 1
-      };
-
       this.view = new View.Search({ model: this });
+
+      this.artist.view = new View.SearchArtists({ collection: this.artist });
+      this.album.view  = new View.SearchAlbums({ collection: this.album });
+      this.track.view  = new View.SearchTracks({ collection: this.track });
+
+      this.artist.page = 1;
+      this.album.page  = 1;
+      this.track.page  = 1;
+
       this.query();
     },
 
@@ -63,7 +59,7 @@ $(function() {
         var params = {
           api_key     : self.api_key,
           method      : type + '.search',
-          page        : self.pages[type],
+          page        : self[type].page,
           autocorrect : 1,
           format      : 'json',
           callback    : 'window.Search.queryCallback',
@@ -83,12 +79,21 @@ $(function() {
       _.forEach(['artist', 'album', 'track'], function(type) {
         if (_.isUndefined(data.results[type + 'matches']))
           return;
+        self[type].loading = false;
 
-        self[type].view = new View['Search' + type.capitalize() + 's']({ collection: self[type] });
+        self[type].page++;
+        self[type].view.render();
         _.forEach(data.results[type + 'matches'][type], function(result) {
           self[type].add(self.resultToJSON(type, result));
         });
       });
+    },
+
+    loadMore: function(type) {
+      if (this[type].loading)
+        return;
+      this[type].loading = true;
+      this.query([ 'track' ]);
     },
 
     isCurrentQuery: function(results) {
@@ -168,15 +173,14 @@ $(function() {
         if (self.collection.model == Model[type.capitalize()])
           self.type = type;
       });
-      self.render();
 
       self.collection.bind('add', self.addModel);
       _.bindAll(self, 'addModel');
     },
 
     render: function() {
-      var count = this.collection.models.length;
-      $(this.el).html(this.templateEmpty({ type: this.type }));
+      if (this.collection.models.length == 0)
+        $(this.el).html(this.templateEmpty({ type: this.type }));
     },
 
     addModel: function(model) {
