@@ -37,13 +37,6 @@ $(function() {
     template: _.template($('#track-template').html()),
 
     /*
-
-    // TODO app-level response to del keypress (uses select)
-    //removeTrack: function() {
-    //  nowPlaying.remove(this.model);
-    //  return false;
-    //},
-
     play: function() {
       nowPlaying.setPlaylist(this.model.collection);
 
@@ -54,16 +47,6 @@ $(function() {
       if (this.model === nowPlayingTrack) return false;
 
       this.model.play();
-    },
-
-    queueTrack: function(e, method) {
-      $(this.el).addClass('selected');
-      nowPlaying.add(_(Search.results).chain()
-        .map(function(track) {
-          if (!$(track.view.el).hasClass('selected')) return null;
-          $(track.view.el).removeClass('selected');
-          return (new Model.Track(track.toJSON()));
-        }).compact().value(), { method: method });
     },
 
     render: function() {

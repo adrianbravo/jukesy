@@ -14,6 +14,8 @@ $(function() {
     render: function() {
       var self = this;
 
+      $('#quickbar a').removeClass('active');
+
       this.el.html(this.template({
         empty: _.isEmpty(Playlists.models),
         quick: this.options.quickbar
@@ -106,30 +108,12 @@ $(function() {
     non_empty_template: _.template($('#playlist-template').html()),
 
     initialize: function() {
-      var self = this;
-
-      self.render();
-
-      self.el.sortable({
-        placeholder: 'ui-state-highlight',
-        items: 'tr',
-        axis: 'y',
-        distance: 4,
-        containment: '#playlist',
-        start: function(event, ui) {
-          self.cancelClick = true;
-        },
-        beforeStop: function(event, ui) {
-          //self.el.sortable('cancel');
-        },
-        stop: function(event, ui) {
-          self.model.sortByDOM();
-        },
-      });
+      this.render();
     },
 
     render: function() {
       var self = this;
+
       if (self.model.get('tracks').models.length > 0) {
         self.el.html(self.non_empty_template(self.model.toJSON()));
         _.each(self.model.get('tracks').models, function(track) {

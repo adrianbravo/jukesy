@@ -33,6 +33,7 @@ $(function() {
 
       // TODO nowPlaying.tracks points to collection.models
       if (nowPlaying.playlist.get('tracks').models.length > 0) {
+        $('#quickbar a.home').addClass('active').siblings().removeClass('active');
         nowPlaying.view.render();
       } else {
         MainView.render();
@@ -207,7 +208,9 @@ $(function() {
     },
 
     render: function(template) {
-      $(this.el).html(template ? this.template[template] : this.template.home);
+      template = template || 'home';
+      $('#quickbar .' + template.replace(/([A-Z])/,'-$1').toLowerCase()).addClass('active').siblings().removeClass('active');
+      $(this.el).html(this.template[template]);
     }
 
   });

@@ -10,7 +10,7 @@
 * { outline: none; }
 #app { .fade(300ms); }
 
-html, input, textarea { font-family: 'Salsa'; }
+html, input, textarea { font-family: 'Play', sans-serif; }
 body { line-height: 1.5; .no-select(); }
 strong { font-weight: bold; }
 em { font-style: italic; }
@@ -39,6 +39,7 @@ hr {
 
   .home {
     color: #111;
+    font-family: 'Salsa', sans-serif;
     font-size: 23px;
     line-height: 30px;
     text-shadow: 0 1px 0px #fff;
@@ -117,13 +118,14 @@ hr {
 
 #quickbar {
   .jspVerticalBar { opacity: 0.0; }
-  .jspDrag { background: #333; }
+  .jspDrag { background: #666; }
   &:hover {
     .jspVerticalBar {
-      opacity: 1.0;
+      opacity: 0.5;
     }
   }
 }
+
 
 #wait, #wait-top {
   display: none;
@@ -135,7 +137,6 @@ hr {
   z-index: 1000;
 }
 #wait-top { z-index: 1001; opacity: 1.0; background: transparent; }
-
 #app.wait {
   #wait, #wait-top {
     display: block;

@@ -30,6 +30,7 @@ $(function() {
     },
 
     render: function() {
+      $('#quickbar .quickbar-inner a').removeClass('active');
       $(this.el).html(this.waitstate_template(this.model.toJSON()));
     }
 
