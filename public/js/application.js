@@ -144,8 +144,8 @@ $(function() {
       switch (e.keyCode) {
         case 65: // CTRL-A, META-A
           if (e.metaKey || e.ctrlKey) {
-            var $el = $(Search.get('track').view.el),
-                trackView = Search.get('track').view.collection.models[0].view,
+            var $el = $(Search.track.view.el),
+                trackView = Search.track.view.collection.models[0].view,
                 selector = trackView.tagName + '.' + trackView.className;
 
             if ($el.find(selector + '.selected').length < $el.find(selector).length) {
@@ -206,7 +206,11 @@ $(function() {
     },
 
     initialize: function() {
-      $('#main-wrapper').jScrollPane({ autoReinitialise: true, enableKeyboardNavigation: false });
+      $('#main-wrapper').jScrollPane({ autoReinitialise: true, enableKeyboardNavigation: false }).bind('jsp-scroll-y',
+        function(event, scrollPositionY, isAtTop, isAtBottom) {
+          var jsp = $(this).data('jsp')
+          // if search and jsp percent scrolled y > .8, query
+        });
       this.render();
       this.delegateEvents();
     },

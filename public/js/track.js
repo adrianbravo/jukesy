@@ -98,7 +98,7 @@ $(function() {
 
     queueTrack: function(method) {
       $(this.el).addClass('selected');
-      nowPlaying.add(_(Search.get('track').models).chain()
+      nowPlaying.add(_(Search.track.models).chain()
         .map(function(track) {
           if (!$(track.view.el).hasClass('selected')) return null;
           $(track.view.el).removeClass('selected');

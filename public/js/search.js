@@ -40,11 +40,9 @@ $(function() {
     api_key: '75c8c3065db32d805a292ec1af5631a3',
 
     initialize: function() {
-      this.set({
-        artist : new Collection.Artists(),
-        album  : new Collection.Albums(),
-        track  : new Collection.Tracks()
-      }, { silent: true });
+      this.artist = new Collection.Artists();
+      this.album  = new Collection.Albums();
+      this.track  = new Collection.Tracks();
 
       this.pages = {
         artist : 1,
@@ -57,10 +55,11 @@ $(function() {
     },
 
     // Debounce will keep the queries from firing off if back/forward is repeatedly pressed.
-    query: _.debounce(function() {
+    query: _.debounce(function(types) {
       var self = this;
+      types = types || [ 'artist', 'album', 'track' ];
 
-      _.forEach(['artist', 'album', 'track'], function(type) {
+      _.forEach(types, function(type) {
         var params = {
           api_key     : self.api_key,
           method      : type + '.search',
@@ -77,18 +76,17 @@ $(function() {
 
     queryCallback: function(data) {
       var self = this;
-      if (!self.isCurrentQuery(data.results)) {
+      if (!self.isCurrentQuery(data.results))
         return;
-      }
 
       // Figure out the type by searching json, e.g. results.artistmatches
       _.forEach(['artist', 'album', 'track'], function(type) {
         if (_.isUndefined(data.results[type + 'matches']))
           return;
 
-        self.get(type).view = new View['Search' + type.capitalize() + 's']({ collection: self.get(type) });
+        self[type].view = new View['Search' + type.capitalize() + 's']({ collection: self[type] });
         _.forEach(data.results[type + 'matches'][type], function(result) {
-          self.get(type).add(self.resultToJSON(type, result));
+          self[type].add(self.resultToJSON(type, result));
         });
       });
     },
@@ -167,9 +165,8 @@ $(function() {
     initialize: function() {
       var self = this;
       ['artist', 'album', 'track'].forEach(function(type) {
-        if (self.collection.model == Model[type.capitalize()]) {
+        if (self.collection.model == Model[type.capitalize()])
           self.type = type;
-        }
       });
       self.render();
 
