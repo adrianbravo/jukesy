@@ -16,7 +16,6 @@ async.series([
 
   // Alias app.models.model() to app.model()
   function(next) {
-    console.log('setting model');
     exports.model = function(model) {
       return exports.models.model(model);
     };
@@ -42,8 +41,6 @@ async.series([
     logger.error(('\n\nError in boot process:').red, e);
     return;
   }
-
-    console.log('booting');
 
   // Load controllers
   exports.controllers = config.connectControllers();
