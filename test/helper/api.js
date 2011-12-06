@@ -10,7 +10,7 @@ var request = require('request'),
     utils = require('./utils'),
     app = require('../coverage');
 
-function Request () {
+function Request() {
   return this;
 };
 

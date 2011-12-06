@@ -87,8 +87,9 @@
 
 #timer {
   background: #222;
-  .gradient(#141414, #181818);
+  .gradient(#010101, #313131);
   overflow: hidden;
+  .radius(8px);
   height: 10px;
   z-index: 20;
   margin: 8px 10px;
@@ -100,14 +101,16 @@
 
   #timer_loaded {
     background: #444;
-    .gradient(#363636, #444);
+    .gradient(#363636, #666);
+    .radius(8px);
     width: 0px;
     cursor: pointer;
   }
 
   #timer_current {
     background: #777;
-    .gradient(#666, #777);
+    .gradient(#666, #999);
+    .radius(8px);
     width: 0px;
     position: relative;
   }

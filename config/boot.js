@@ -1,26 +1,49 @@
 var config = require('./'),
     logger = require('../lib/logger'),
     express = require('express'),
-    i18n = require('i18n');
+    i18n = require('i18n'),
+    async = require('async');
 
-// Load models and start connection to mongodb
-exports.models = config.connectModels(config.db.host, config.db.database);
+Error.stackTraceLimit = Infinity;
 
-// Alias app.models.model() to app.model()
-exports.model = function(model) {
-  return exports.models.model(model);
-};
+// Runs as a synchronous series to capture errors in startup process.
+async.series([
 
-// Set up app.controller() for calling controllers by string name
-exports.controller = function(controller) {
-  return exports.controllers[controller];
-};
+  // Load models and start connection to mongodb
+  function(next) {
+    exports.models = config.connectModels(config.db.host, config.db.database, next);
+  },
 
-// CSS, JS and image assets
-exports.assets = config.assets;
+  // Alias app.models.model() to app.model()
+  function(next) {
+    console.log('setting model');
+    exports.model = function(model) {
+      return exports.models.model(model);
+    };
+    next();
+  },
 
-// Start the web app
-exports.boot = function() {
+  // Set up app.controller() for calling controllers by string name
+  function(next) {
+    exports.controller = function(controller) {
+      return exports.controllers[controller];
+    };
+    next();
+  },
+
+  // CSS, JS and image assets
+  function(next) {
+    exports.assets = config.assets;
+    next();
+  },
+
+], function(e) {
+  if (e) {
+    logger.error(('\n\nError in boot process:').red, e);
+    return;
+  }
+
+    console.log('booting');
 
   // Load controllers
   exports.controllers = config.connectControllers();
@@ -54,7 +77,6 @@ exports.boot = function() {
   // Load routes
   require('../routes')(server);
 
-  // TODO is there a sync way to do this?
   server.listen(server.set('port'), function() {
     logger.info(
                 ('Express').magenta.inverse,
@@ -63,6 +85,5 @@ exports.boot = function() {
 
     exports.web = this;
   });
-};
 
-Error.stackTraceLimit = Infinity;
+});

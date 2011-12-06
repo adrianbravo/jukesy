@@ -2,7 +2,6 @@
 @SEARCH-small-img-side: 16px;
 
 #search, #playlist {
-  color: #bbb;
   font-size: 11px;
 
   .wait {
@@ -57,19 +56,20 @@
   .tracks {
 
     td {
-      font-size: 12px;
-      padding: 2px 5px;
+      padding: 2px 10px;
+      &.avatar { padding: 2px; }
       vertical-align: middle;
     }
 
     .name, .artist {
       width: 50%;
     }
+    .listeners {
+    }
 
     thead tr {
       background: #323232;
       td {
-        border-right: 1px solid #262626;
         height: 24px;
         font-weight: bold;
       }
@@ -148,44 +148,4 @@
   }
 }
 */
-
-/*
-.more {
-  position: relative;
-  cursor: pointer;
-  background: #444;
-  color: #ddd;
-  text-shadow: 0 2px 0 #000;
-  margin: 10px auto;
-  padding: 10px;
-  width: 200px;
-  font-size: 16px;
-  text-align: center;
-
-  &.disabled, &.disabled:hover {
-    background: #777;
-    color: #999;
-    cursor: default;
-    text-shadow: 0 0 0;
-  }
-
-  &:hover {
-    background: @lightblue;
-    color: @bluegrey;
-    text-shadow: 0 0 0;
-  }
-
-  .wait {
-    display: none;
-    width: 16px;
-    height: 16px;
-    background: url('/images/more.gif') no-repeat 0 0;
-    position: absolute;
-    top: 14px;
-    right: 14px;
-  }
-  &.disabled .wait { display: block; }
-}
-*/
-
 

@@ -206,13 +206,11 @@ $(function() {
     },
 
     initialize: function() {
-      $('#main-wrapper').jScrollPane({ autoReinitialise: true, enableKeyboardNavigation: false }).bind('jsp-scroll-y',
-        _.throttle(function(event, scrollPositionY, isAtTop, isAtBottom) {
-          var jsp = $(this).data('jsp')
-          if (Backbone.history.fragment.match(/^\/search\//) && ($(jsp.getContentPane().parent()).height() * 2) + jsp.getContentPositionY() > jsp.getContentHeight()) {
-            Search.loadMore('track');
-          }
-        }, 300));
+      $('#main-wrapper').bind('scroll', _.throttle(function() {
+        if (Backbone.history.fragment.match(/^\/search\//) && ($('#main-wrapper').height() * 2) + $('#main-wrapper').scrollTop() > $('#main').height()) {
+          Search.loadMore('track');
+        }
+      }, 300));
       this.render();
       this.delegateEvents();
     },

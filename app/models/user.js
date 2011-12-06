@@ -122,9 +122,9 @@ User.pre('validate', function(next) {
 
   var self = this;
 
-  this.model('User').findOne({ $or: [
-    { _username_i: this._username_i },
-    { email: this.email }
+  self.model('User').findOne({ $or: [
+    { _username_i: self._username_i },
+    { email: self.email }
   ] }, function(e, user) {
     if (user && user._username_i == self._username_i)
       return next(new ValidatorError('username', 'taken'));

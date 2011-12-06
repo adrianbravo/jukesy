@@ -36,6 +36,11 @@ $(function() {
 
     template: _.template($('#track-template').html()),
 
+    events: {
+      'click'           : 'toggleSelect',
+      'dblclick'        : 'play'
+    },
+
     /*
     play: function() {
       nowPlaying.setPlaylist(this.model.collection);
@@ -65,12 +70,8 @@ $(function() {
       $(this.el).addClass('playing').siblings().removeClass('playing');
     },
 
-    events: {
-      'click'           : 'toggleSelect',
-      'dblclick'        : 'play'
-    },
-
     play: function() {
+      console.log('play this shit');
       this.model.play();
     },
 

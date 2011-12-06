@@ -34,9 +34,9 @@ logger.settings(require('./logger')[exports.env]);
 exports.assets = require('./assets')[exports.env];
 
 //
-// Mongoose booter
+// Models builder
 //
-exports.connectModels = function(host, db) {
+exports.connectModels = function(host, db, fn) {
   var mongodbString = 'mongodb://' + host + '/' + db
       ext = '.js';
 
@@ -51,7 +51,8 @@ exports.connectModels = function(host, db) {
 
 
   logger.info('MongoDB'.green.inverse, (' - ' + mongodbString).green);
-  return mongoose.connect(mongodbString);
+
+  return mongoose.connect(mongodbString, fn);
 };
 
 
