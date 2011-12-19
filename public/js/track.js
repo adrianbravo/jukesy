@@ -41,20 +41,6 @@ $(function() {
       'dblclick'        : 'play'
     },
 
-    /*
-    play: function() {
-      nowPlaying.setPlaylist(this.model.collection);
-
-      if (nowPlaying.view.cancelClick) {
-        nowPlaying.view.cancelClick = false;
-        return false;
-      }
-      if (this.model === nowPlayingTrack) return false;
-
-      this.model.play();
-    },
-    */
-
     initialize: function() {
       _.bindAll(this, 'setPlaying');
     },
@@ -67,16 +53,18 @@ $(function() {
       return this;
     },
 
+    play: function() {
+      this.model.play();
+      $(this.el).siblings().removeClass('selected');
+    },
+
     setPlaying: function() {
       $(this.el).addClass('playing').siblings().removeClass('playing');
     },
 
-    play: function() {
-      console.log('play this shit');
-      this.model.play();
-    },
-
-    toggleSelect: function() {
+    toggleSelect: function(e, ui) {
+      if (!(e.altKey || e.metaKey))
+        $(this.el).removeClass('selected').siblings().removeClass('selected');
       $(this.el).toggleClass('selected');
     }
 
@@ -108,8 +96,31 @@ $(function() {
         }).compact().value(), { method: method });
     },
 
-    toggleSelect: function() {
-      $(this.el).toggleClass('selected');
+    toggleSelect: function(e, ui) {
+      if (e.shiftKey) {
+        this.fillSelected($(this.el), $(Search.lastClicked));
+      } else if (!(e.altKey || e.metaKey)) {
+        $(this.el).removeClass('selected').siblings().removeClass('selected');
+        $(this.el).toggleClass('selected');
+      } else {
+        $(this.el).toggleClass('selected');
+      }
+      Search.lastClicked = this.el;
+    },
+
+    fillSelected: function($track1, $track2) {
+      if (!$track1 || !$track2) {
+        return;
+      }
+      if ($track1 == $track2) {
+        $track1.addClass('selected');
+      } else if ($track1.index() > $track2.index()) {
+        $track1.prevUntil($track2).addClass('selected');
+      } else if ($track2.index() > $track1.index()) {
+        $track2.prevUntil($track1).addClass('selected');
+      }
+      $track1.addClass('selected');
+      $track2.addClass('selected');
     }
 
   });
