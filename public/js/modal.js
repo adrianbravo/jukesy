@@ -1,19 +1,19 @@
 $(function(){
+
+
   Model.Modal = Backbone.Model.extend({
     initialize: function() {
       this.view = new View.Modal({ model: this });
     }
   });
 
+
   View.Modal = Backbone.View.extend({
     tagName: 'div',
 
     templates: {
       modal: _.template($('#modal-template').html()),
-      login: _.template($('#login-template').html()),
-    },
-
-    events: {
+      login: _.template($('#login-template').html())
     },
 
     initialize: function() {
@@ -36,5 +36,6 @@ $(function(){
       return this;
     }
   });
+
 
 });

@@ -6,8 +6,9 @@ $(function() {
     template: _.template($('#playlists-template').html()),
 
     initialize: function() {
-      if (this.options.quickbar)
+      if (this.options.quickbar) {
         this.el = $('#my-playlists');
+      }
       this.render();
     },
 
@@ -42,7 +43,9 @@ $(function() {
 
     initialize: function() {
       var self = this;
-      if (!self.isNew()) self.autosave = true;
+      if (!self.isNew()) {
+        self.autosave = true;
+      }
       _.bindAll(self, 'remove', 'sortByDOM', 'saveLocally');
 
       // Loads tracks collection or converts its json to a new collection, silently.
@@ -81,6 +84,7 @@ $(function() {
     }
   });
 
+
   View.PlaylistShort = Backbone.View.extend({
     tagName: 'li',
 
@@ -97,6 +101,7 @@ $(function() {
     }
   });
 
+
   View.Playlist = Backbone.View.extend({
     el: $('#main'),
 
@@ -104,12 +109,12 @@ $(function() {
     non_empty_template: _.template($('#playlist-template').html()),
 
     initialize: function() {
+      window.lastSelected = null;
       this.render();
     },
 
     render: function() {
       var self = this;
-
       if (self.model.get('tracks').models.length > 0) {
         self.el.html(self.non_empty_template(self.model.toJSON()));
         _.each(self.model.get('tracks').models, function(track) {
@@ -121,10 +126,16 @@ $(function() {
     }
   });
 
+
+  //View.PlaylistTrack = View.Track.extend({
+  //});
+
+
   Collection.Playlists = Backbone.Collection.extend({
     model: Model.Playlist,
     localStorage: new Store('Playlists')
   });
+
 
 });
 

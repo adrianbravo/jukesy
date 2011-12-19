@@ -1,4 +1,4 @@
-
+window.Mixins = {};
 window.Collection = {};
 window.Model = {};
 window.View = {};
@@ -54,8 +54,9 @@ var windowResized = function() {
 
 $('a').live('click', function(e) {
   var $self = $(this);
-  if (!$self.attr('href'))
+  if (!$self.attr('href')) {
     Router.navigate($self.attr('data-href'), true);
+  }
 });
 
 

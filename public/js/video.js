@@ -1,5 +1,9 @@
 $(function() {
 
+
+  //
+  // Connects to the chromeless player and uses bindings for controls.
+  //
   Model.Video = Backbone.Model.extend({
     initialize: function() {
       swfobject.embedSWF('http://www.youtube.com/apiplayer?version=3&enablejsapi=1&playerapiid=video&wmode=transparent', // swfUrlStr
@@ -17,7 +21,9 @@ $(function() {
     },
 
     fullscreenOff: function() {
-      if (this.fullscreen) this.toggleFullscreen();
+      if (this.fullscreen) {
+        this.toggleFullscreen();
+      }
     },
 
     toggleFullscreen: function() {
@@ -35,16 +41,16 @@ $(function() {
       Controls.update();
     },
 
-    bytesRatio: function() {
+    loadRatio: function() {
       return this.player.getVideoBytesLoaded() / this.player.getVideoBytesTotal();
     },
 
-    timeRatio: function() {
+    playRatio: function() {
       return this.player.getCurrentTime() / this.player.getDuration();
     },
 
     timers: function() {
-      var current = Math.floor(this.player.getCurrentTime()),
+      var current   = Math.floor(this.player.getCurrentTime()),
           remaining = Math.ceil(this.player.getDuration() - current);
 
       return [
@@ -54,9 +60,11 @@ $(function() {
     },
 
     humanizeSeconds: function(s) {
-      var minutes = Math.floor(s / 60);
-      var seconds = Math.floor(s % 60);
-      if (seconds < 10) seconds = "0" + seconds;
+      var minutes = Math.floor(s / 60),
+          seconds = Math.floor(s % 60);
+      if (seconds < 10) {
+        seconds = "0" + seconds;
+      }
       return minutes + ":" + seconds;
     },
 
@@ -77,9 +85,9 @@ $(function() {
     },
 
     load: function(id) {
-      if (this.state == 3) return;
-
-      // in timeout: display element (unset any css too), wait 2s, animate to opacity 0, 
+      if (this.state == 3) {
+        return;
+      }
       this.player.loadVideoById(id);
     },
 
@@ -97,16 +105,25 @@ $(function() {
     play: function() {
       this.stopped = false;
       this.player.playVideo();
-      if (this.state != 1) this.seek(Math.floor(this.currentTime()));
+      if (this.state != 1) {
+        this.seek(Math.floor(this.currentTime()));
+      }
     },
 
     next: function() {
       var next = false;
       _.each(nowPlaying.tracks(), function(trackModel) {
-        if (next == true) next = trackModel;
-        if (window.nowPlayingTrack === trackModel) next = true;
+        if (next == true) {
+          next = trackModel;
+        }
+        if (window.nowPlayingTrack === trackModel) {
+          next = true;
+        }
       });
-      if (next == true || next == false) next = _.first(nowPlaying.tracks());
+
+      if (next == true || next == false) {
+        next = _.first(nowPlaying.tracks());
+      }
 
       next.play();
     },
@@ -144,16 +161,21 @@ $(function() {
 
     on_error: function(error) {
       if (error == '150') {
-        window.nowPlayingTrack.videos = _.rest(window.nowPlayingTrack.videos);
-        window.nowPlayingTrack.play();
+        nowPlayingTrack.videos = _.rest(nowPlayingTrack.videos);
+        nowPlayingTrack.play();
       }
     },
 
     error: function() {
-      $(window.nowPlayingTrack.view.el).addClass('error');
+      $(nowPlayingTrack.view.el).addClass('error');
+      if (this.lastError == nowPlayingTrack) {
+        return;
+      }
+      this.lastError = nowPlayingTrack;
       this.skipToPrev ? this.prev() : this.next();
     },
 
+    // TODO move this to the track model.
     setTrackVideoIds: function(data) {
       if (!data.feed.entry) {
         window.nowPlayingTrack.videos = [];
@@ -195,7 +217,7 @@ $(function() {
             'start-index' : 1,
             'max-results' : 20,
             format        : 5,
-            callback      : callback,
+            callback      : callback
         });
 
         $.getScript(url);
@@ -211,7 +233,7 @@ $(function() {
       if (!str.match(/remix/i)) filters += ' -remix';
       if (!str.match(/live/i)) filters += ' -live';
       return filters;
-    }, 
+    }
   });
 
 

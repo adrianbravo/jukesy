@@ -1,9 +1,12 @@
 $(function() {
 
+
+  //
+  // Holds reference to the collection of tracks that are currently being played.
+  //
   Model.NowPlaying = Backbone.Model.extend({
     initialize: function() {
-      var self = this;
-      self.setPlaylist(new Model.Playlist());
+      this.setPlaylist(new Model.Playlist());
     },
 
     tracks: function() {
@@ -22,16 +25,14 @@ $(function() {
       if (self.tracks()[0]) self.tracks()[0].play();
     },
 
-    // TODO optimize, verify old track.view makes it to GC
+    // TODO optimize, verify old track.view makes it to garbage collection?
     buildTrackViews: function(tracks) {
       _.each(tracks, function(track) {
         track.view = new View.Track({ model: track });
       });
     },
 
-    // Add a track to the model.
     add: function(tracks, options) {
-      console.log('add tracks', tracks, options);
       var self = this;
 
       self.playlist.get('tracks').add(tracks);
@@ -41,17 +42,21 @@ $(function() {
         self.view.render();
 
       if (!_.isUndefined(window.nowPlayingTrack) && _.include(['play', 'next'], options.method)) {
-        if (options.method == 'play') tracks[0].play();
+        if (options.method == 'play')
+          tracks[0].play();
       } else {
         tracks[0].play();
       }
     }
-
   });
 
+
+  //
+  // Simple extension of playlists with a custom class name.
+  //
   View.NowPlaying = View.Playlist.extend({
     className: 'now-playing'
-    // wat
   });
+
 
 });

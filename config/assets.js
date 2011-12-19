@@ -13,11 +13,13 @@ var assets = {
     'js/boot.js',
     'js/modal.js',
 
-    'js/search.js',
+    'js/mixins/tracks.js',
     'js/track.js',
+    'js/search.js',
     'js/artist.js',
     'js/album.js',
     'js/tag.js',
+    'js/user.js',
 
     'js/playlist.js',
     'js/nowplaying.js',

@@ -1,5 +1,8 @@
 $(function() {
 
+  //
+  // Ties visible controls mostly to the Video model.
+  //
   View.Controls = Backbone.View.extend({
     el: $('#controls'),
 
@@ -13,7 +16,7 @@ $(function() {
       'click #prev'             : 'prev',
       'click #fullscreen'       : 'toggleFullscreen',
       'click #timer_loaded'     : 'seek',
-      'click #mute'             : 'toggleMute',
+      'click #mute'             : 'toggleMute'
       //'click #volume'       : 'volume',
     },
 
@@ -28,25 +31,32 @@ $(function() {
       this.$timerLeft    = $('#timer_left'),
       this.$timerRight   = $('#timer_right'),
       this.$timerLoaded  = $('#timer_loaded'),
-      this.$timerCurrent = $('#timer_current');
+      this.$timerPlayed  = $('#timer_current');
       this.$volume       = $('#volume');
       this.lastMaxVolume = 50;
 
       this.$volume.slider({
-        range: 'min',
-        value: this.lastMaxVolume,
-        min  : 0,
-        max  : 100,
+        range : 'min',
+        value : this.lastMaxVolume,
+        min   : 0,
+        max   : 100,
+
         slide: function(event, ui) {
           self.updateVolume(ui.value);
         },
+
         change: function(event, ui) {
           self.updateVolume(ui.value);
         },
+
         stop: function(event, ui) {
           if (ui.value > 0) self.lastMaxVolume = ui.value;
-        },
+        }
       });
+    },
+
+    render: function() {
+      $(this.el).html(this.template());
     },
 
     setUpdate: function() {
@@ -83,28 +93,28 @@ $(function() {
     },
 
     prev: function() {
-      window.Video.prev();
+      Video.prev();
     },
 
     next: function() {
-      window.Video.next();
+      Video.next();
     },
 
     play: function() {
-      window.Video.play();
+      Video.play();
     },
 
     pause: function() {
-      window.Video.pause();
+      Video.pause();
     },
 
     seek: function(e) {
-      window.Video.seek(window.Video.duration() * e.offsetX / this.$timer.width());
+      Video.seek(Video.duration() * e.offsetX / this.$timer.width());
     },
 
     // ended (0), paused (2), video cued (5) or unstarted (-1).
     updatePlay: function() {
-      if (window.Video.state == 1 || window.Video.state == 3) {
+      if (window.Video.state == 1 || Video.state == 3) {
         $('#play').addClass('pause');
       } else {
         $('#play').removeClass('pause');
@@ -112,28 +122,24 @@ $(function() {
     },
 
     update: function() {
-      var bytesRatio = window.Video.bytesRatio(),
-          timeRatio  = window.Video.timeRatio();
+      var loadRatio = Video.loadRatio(),
+          playRatio = Video.playRatio();
 
-      if (_.isNaN(timeRatio) || _.isNaN(bytesRatio)) {
+      if (_.isNaN(playRatio) || _.isNaN(loadRatio)) {
         this.$timerLoaded.width(0);
-        this.$timerCurrent.width(0);
+        this.$timerPlayed.width(0);
         this.$timerLeft.html('');
         this.$timerRight.html('');
       } else {
-        this.$timerLoaded.width(this.$timer.width() * bytesRatio);
-        this.$timerCurrent.width(this.$timer.width() * timeRatio);
-        var time = window.Video.timers();
+        var time = Video.timers();
+        this.$timerLoaded.width(this.$timer.width() * loadRatio);
+        this.$timerPlayed.width(this.$timer.width() * playRatio);
         this.$timerLeft.html(time[0]);
         this.$timerRight.html(time[1]);
       }
-    },
-
-    render: function() {
-      $(this.el).html(this.template());
-    },
-
+    }
   });
+
 
 });
 

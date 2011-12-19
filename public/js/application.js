@@ -1,6 +1,9 @@
 
 $(function() {
 
+  //
+  // Local routes (single-page app style, motherfucker)
+  //
   AppRouter = Backbone.Router.extend({
     initialize: function() {
       this.bind('appview', Video.fullscreenOff);
@@ -10,17 +13,17 @@ $(function() {
     routes: {
       '/'              : 'home',
       '/search/:query' : 'searchAll',
-      '/settings'      : 'settings',
-      '/favorites'     : 'favorites',
-      '/tag-radio'     : 'tagRadio',
-      '/broadcasts'    : 'broadcasts',
       //'/artist/:query': 'searchArtist',
       //'/album/:query': 'searchAlbum',
       //'/track/:query': 'searchTrack',
+      '/settings'      : 'settings',
+      '/favorites'     : 'favorites',
+      '/tag-radio'     : 'tagRadio',
+      '/broadcasts'    : 'broadcasts'
 
-      //'/playlists'         : 'playlists_index',
-      //'/playlist/:id'      : 'playlist_view',
-      //'/playlist/play/:id' : 'playlist_play',
+      //'/playlists'         : 'playlistsIndex',
+      //'/playlist/:id'      : 'playlistView',
+      //'/playlist/:id?play' : 'playlistPlay',
     },
 
     hideViews: function() {
@@ -64,32 +67,25 @@ $(function() {
       MainView.render('broadcasts');
     },
 
-    playlist_play: function(id) {
-      //nowPlaying.view.delegateEvents({});
+    /*
+    playlistPlay: function(id) {
       this.trigger('appview');
       $('#now-playing').show();
       nowPlaying.setPlaylist(Playlists.get(id));
     },
+    */
 
-    // lastfm/track/search
     searchAll: function(query) {
-      /*
-      if (!_.isUndefined(window.Search)) {
-        window.Search.view.delegateEvents({});
-      }
-      */
-
       query = decodeURIComponent(query);
       this.trigger('appview');
       $('#main').show();
       window.Search = new Model.Search({ query: query });
-
-
-      //window.Search = new Model.Search({ type: type, query: query, method: 'search' });
     }
-
   });
 
+  //
+  // Used for app-wide key bindings.
+  //
   View.App = Backbone.View.extend({
     el: $(document),
 
@@ -97,20 +93,11 @@ $(function() {
       'keypress #query'      : 'searchAll',
       'keydown'              : 'keyMapper',
       'keyup'                : 'setMaxVolume',
-      'click #login'         : 'login',
+      'click #login'         : 'login'
     },
 
     login: function(e) {
       new Model.Modal({ type: 'login' });
-    },
-
-    wait: function() {
-      //$('#wait').html('');
-      $('#app').addClass('wait');
-    },
-
-    unwait: function() {
-      $('#app').removeClass('wait');
     },
 
     searchAll: function(e) {
@@ -126,7 +113,9 @@ $(function() {
     },
 
     setMaxVolume: function(e) {
-      if ($(e.target).is('input, textarea')) return;
+      if ($(e.target).is('input, textarea')) {
+        return;
+      }
       if (e.keyCode == 38 || e.keyCode == 40) {
         var value = Controls.$volume.slider('value');
         if (value) {
@@ -138,8 +127,9 @@ $(function() {
     },
 
     keyMapper: function(e) {
-      if ($(e.target).is('input, textarea')) return;
-
+      if ($(e.target).is('input, textarea')) {
+        return;
+      }
       switch (e.keyCode) {
         case 65: // CTRL-A, META-A
           if (e.metaKey || e.ctrlKey) {
@@ -189,11 +179,12 @@ $(function() {
           return false;
       }
     }
-
   });
 
+  //
+  // Main viewport -- this is where search results, playlists, now playing, and mostly everything else will display.
+  //
   View.Main = Backbone.View.extend({
-
     el: '#main',
 
     template: {
@@ -225,7 +216,6 @@ $(function() {
       $('#quickbar .' + template.replace(/([A-Z])/,'-$1').toLowerCase()).addClass('active').siblings().removeClass('active');
       $(this.el).html(this.template[template]);
     }
-
   });
 
 });
@@ -235,7 +225,6 @@ $(function() {
   window.Video      = new Model.Video();
   window.Controls   = new View.Controls();
   window.Playlists  = new Collection.Playlists();
-
   window.nowPlaying = new Model.NowPlaying();
 
   Playlists.fetch();

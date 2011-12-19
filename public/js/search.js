@@ -1,18 +1,9 @@
 $(function() {
 
-  
-  /*
-  View.Search = Backbone.View.extend({
-    handleMore: function(results) {
-      var totalResults = parseInt(results['opensearch:totalResults'])
-        , startIndex   = parseInt(results['opensearch:startIndex'])
-        , itemsPerPage = parseInt(results['opensearch:itemsPerPage']);
 
-      if (totalResults < startIndex + itemsPerPage) this.el.find('.more').hide();
-    }
-  });
-  */
-
+  //
+  // Displays initial waitstate of search. Should render placeholders for search results.
+  //
   View.Search = Backbone.View.extend({
     el: '#main',
 
@@ -20,17 +11,22 @@ $(function() {
 
     initialize: function() {
       this.render();
+      window.lastSelected = null;
     },
 
     render: function() {
       $('#quickbar .quickbar-inner a').removeClass('active');
       $(this.el).html(this.waitstate_template(this.model.toJSON()));
     }
-
   });
 
+
+  //
+  // Holds collections of search results for tracks, artists, and albums.
+  // Handles querying last.fm for search results as well.
+  //
   Model.Search = Backbone.Model.extend({
-    api_key: '75c8c3065db32d805a292ec1af5631a3',
+    lastfmAPIKey: '75c8c3065db32d805a292ec1af5631a3',
 
     initialize: function() {
       this.artist = new Collection.Artists();
@@ -57,7 +53,7 @@ $(function() {
 
       _.forEach(types, function(type) {
         var params = {
-          api_key     : self.api_key,
+          api_key     : self.lastfmAPIKey,
           method      : type + '.search',
           page        : self[type].page,
           autocorrect : 1,
@@ -145,9 +141,12 @@ $(function() {
       }
       return src;
     }
-
   });
 
+
+  //
+  // Displays a particular search result (e.g. a single track, artist, or album).
+  //
   View.SearchResult = Backbone.View.extend({
     tagName: 'li',
 
@@ -162,6 +161,10 @@ $(function() {
     }
   });
 
+
+  //
+  // Displays a collection of search results.
+  //
   View.SearchResults = Backbone.View.extend({
     tagName: 'ul',
 
@@ -184,13 +187,58 @@ $(function() {
     },
 
     addModel: function(model) {
-      if (this.models.length == 1)
+      if (this.models.length == 1) {
         $(this.view.el).html(this.view.template());
+      }
 
       var view = new this.view.viewObject({ model : model });
       $(this.view.el).find(this.view.viewInner).append(view.el);
     }
   });
+
+
+  //
+  // View behavior for search results that are tracks.
+  //
+  View.SearchTrack = View.SearchResult.extend(_.extend({
+    tagName: 'tr',
+    className: 'track',
+    template: _.template($('#search-track-template').html()),
+
+    events: {
+      'click'    : 'toggleSelect',
+      'dblclick' : 'play'
+    },
+
+    play: function() {
+      this.queueTrack('play');
+    },
+
+    // Adds selected tracks to nowPlaying collection.
+    queueTrack: function(method) {
+      $(this.el).addClass('selected');
+      nowPlaying.add(_(Search.track.models).chain()
+        .map(function(track) {
+          if (!$(track.view.el).hasClass('selected')) return null;
+          $(track.view.el).removeClass('selected');
+          return (new Model.Track(track.toJSON()));
+        }).compact().value(), { method: method });
+    }
+  }, Mixins.TrackSelection));
+
+
+  //
+  // Placeholder for multiple tracks as search results.
+  //
+  View.SearchTracks = View.SearchResults.extend({
+    el: '#search .tracks',
+
+    template: _.template($('#search-tracks-template').html()),
+
+    viewObject: View.SearchTrack,
+    viewInner: 'table tbody'
+  });
+
 
 });
 
