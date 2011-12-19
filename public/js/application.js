@@ -65,8 +65,7 @@ $(function() {
     },
 
     playlist_play: function(id) {
-      // Unbind events for when view is re-created
-      nowPlaying.view.delegateEvents({});
+      //nowPlaying.view.delegateEvents({});
       this.trigger('appview');
       $('#now-playing').show();
       nowPlaying.setPlaylist(Playlists.get(id));
@@ -206,13 +205,19 @@ $(function() {
     },
 
     initialize: function() {
-      $('#main-wrapper').bind('scroll', _.throttle(function() {
+      // Auto-load more search results on scroll.
+      $('#main-wrapper').bind('scroll', this.loadMore());
+
+      this.render();
+      this.delegateEvents();
+    },
+
+    loadMore: function() {
+      return _.throttle(function() {
         if (Backbone.history.fragment.match(/^\/search\//) && ($('#main-wrapper').height() * 2) + $('#main-wrapper').scrollTop() > $('#main').height()) {
           Search.loadMore('track');
         }
-      }, 300));
-      this.render();
-      this.delegateEvents();
+      }, 300);
     },
 
     render: function(template) {

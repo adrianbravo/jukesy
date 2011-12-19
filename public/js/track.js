@@ -60,6 +60,7 @@ $(function() {
     },
 
     render: function() {
+      this.delegateEvents(this.events);
       $(this.el).html(this.template(this.model.toJSON()));
       if (this.model === window.nowPlayingTrack)
         _.defer(this.setPlaying);
