@@ -142,7 +142,7 @@ $(function() {
         _.each(self.model.get('tracks').models, function(track) {
           self.el.find('tbody').append(track.view.render().el);
         });
-      } else if (self.model == window.NowPlaying) {
+      } else if (self.model == window.NowPlaying.playlist) {
         self.el.html(self.template.nowPlayingEmpty);
       } else {
         //self.el.html(self.template.playlistEmpty());

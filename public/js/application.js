@@ -225,6 +225,14 @@ $(function() {
 });
 
 $(function() {
+  // Set up jscrollpane in the quickbar
+  $('#quickbar').jScrollPane({ verticalGutter: -8, enableKeyboardNavigation: false });
+
+  // Bind resize and call it once.
+  $(window).resize(_.debounce(windowResized));
+  windowResized();
+
+  // Global stuff.
   window.AppView    = new View.App();
   window.Video      = new Model.Video();
   window.Controls   = new View.Controls();

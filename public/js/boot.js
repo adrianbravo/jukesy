@@ -1,3 +1,11 @@
+
+// Mustache-style templates, e.g. {{ artist }}
+_.templateSettings = {
+  interpolate : /\{\{(.+?)\}\}/g,
+  evaluate    : /<%(.+?)%>/g
+};
+
+
 // Global stuff.
 window.Mixins = {};
 window.Collection = {};
@@ -10,6 +18,9 @@ window.View = {};
 // This finalizes the boot process from the browser.
 //
 function onYouTubePlayerReady(id) {
+  // Make the app visible. (css for fade effect)
+  $('#app').css('opacity', '1.0');
+
   // Set the video player elements and bind its change and error events.
   Video.player = $('#' + id)[0];
   Video.player.addEventListener('onStateChange', 'Video.onStateChange');
@@ -27,27 +38,6 @@ function onYouTubePlayerReady(id) {
   // Start updater for controls (refreshes timer, etc.)
   Controls.setUpdate();
 }
-
-//
-// Start up!
-//
-$(function() {
-  // Make the app visible. (css for fade effect)
-  $('#app').css('opacity', '1.0');
-
-  // Mustache-style templates, e.g. {{ artist }}
-  _.templateSettings = {
-    interpolate : /\{\{(.+?)\}\}/g,
-    evaluate    : /<%(.+?)%>/g
-  };
-
-  // Set up jscrollpane in the quickbar
-  $('#quickbar').jScrollPane({ verticalGutter: -8, enableKeyboardNavigation: false });
-
-  // Bind resize and call it once.
-  $(window).resize(_.debounce(windowResized));
-  windowResized();
-});
 
 
 // Fires when the window is resized (through _.debounce, so it only happens when input stops).
