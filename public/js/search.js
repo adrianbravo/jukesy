@@ -220,10 +220,10 @@ $(function() {
       this.queueTrack('play');
     },
 
-    // Adds selected tracks to nowPlaying collection.
+    // Adds selected tracks to NowPlaying collection.
     queueTrack: function(method) {
       $(this.el).addClass('selected');
-      nowPlaying.add(_(Search.track.models).chain()
+      NowPlaying.add(_(Search.track.models).chain()
         .map(function(track) {
           if (!$(track.view.el).hasClass('selected')) {
             return null;

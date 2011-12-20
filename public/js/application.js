@@ -34,10 +34,10 @@ $(function() {
       this.trigger('appview');
       $('#main').show();
 
-      // TODO nowPlaying.tracks points to collection.models
-      if (nowPlaying.playlist.get('tracks').models.length > 0) {
+      // TODO NowPlaying.tracks points to collection.models
+      if (NowPlaying.playlist.get('tracks').models.length > 0) {
         $('#quickbar a.home').addClass('active').siblings().removeClass('active');
-        nowPlaying.view.render();
+        NowPlaying.view.render();
       } else {
         MainView.render();
       }
@@ -71,7 +71,7 @@ $(function() {
     playlistPlay: function(id) {
       this.trigger('appview');
       $('#main').show();
-      nowPlaying.setPlaylist(Playlists.get(id));
+      NowPlaying.setPlaylist(Playlists.get(id));
     },
     */
 
@@ -233,7 +233,7 @@ $(function() {
   window.Video      = new Model.Video();
   window.Controls   = new View.Controls();
   window.Playlists  = new Collection.Playlists();
-  window.nowPlaying = new Model.NowPlaying();
+  window.NowPlaying = new Model.NowPlaying();
 
   Playlists.fetch();
   PlaylistsView = new View.Playlists({ quickbar: true });

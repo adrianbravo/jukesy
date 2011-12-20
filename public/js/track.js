@@ -11,7 +11,7 @@ $(function() {
       if (Video.loading) {
         return false;
       }
-      window.nowPlayingTrack = this;
+      window.NowPlayingTrack = this;
 
       if (_.isUndefined(this.videos)) {
         this.getVideos();
@@ -57,7 +57,7 @@ $(function() {
     render: function() {
       this.delegateEvents(this.events);
       $(this.el).html(this.template(this.model.toJSON()));
-      if (this.model === window.nowPlayingTrack) {
+      if (this.model === window.NowPlayingTrack) {
         _.defer(this.setPlaying);
       }
       return this;

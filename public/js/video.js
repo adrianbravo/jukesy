@@ -98,7 +98,7 @@ $(function() {
     stop: function() {
       this.stopped = true;
       this.pause();
-      $(nowPlaying.view.el).find('.playing').removeClass('playing');
+      $(NowPlaying.view.el).find('.playing').removeClass('playing');
       this.onStateChange(-1);
     },
 
@@ -112,17 +112,17 @@ $(function() {
 
     next: function() {
       var next = false;
-      _.each(nowPlaying.tracks(), function(trackModel) {
+      _.each(NowPlaying.tracks(), function(trackModel) {
         if (next == true) {
           next = trackModel;
         }
-        if (window.nowPlayingTrack === trackModel) {
+        if (window.NowPlayingTrack === trackModel) {
           next = true;
         }
       });
 
       if (next == true || next == false) {
-        next = _.first(nowPlaying.tracks());
+        next = _.first(NowPlaying.tracks());
       }
 
       next.play();
@@ -137,11 +137,11 @@ $(function() {
       this.skipToPrev = true;
 
       var prev = null, prevSet = false;
-      if (window.nowPlayingTrack === _.first(nowPlaying.tracks())) {
-        prev = _.last(nowPlaying.tracks());
+      if (window.NowPlayingTrack === _.first(NowPlaying.tracks())) {
+        prev = _.last(NowPlaying.tracks());
       } else {
-        _.each(nowPlaying.tracks(), function(trackModel) {
-          if (window.nowPlayingTrack === trackModel) prevSet = true;
+        _.each(NowPlaying.tracks(), function(trackModel) {
+          if (window.NowPlayingTrack === trackModel) prevSet = true;
           if (!prevSet) prev = trackModel
         });
       }
@@ -161,26 +161,26 @@ $(function() {
 
     onError: function(error) {
       if (error == '150') {
-        nowPlayingTrack.videos = _.rest(nowPlayingTrack.videos);
-        nowPlayingTrack.play();
+        NowPlayingTrack.videos = _.rest(NowPlayingTrack.videos);
+        NowPlayingTrack.play();
       }
     },
 
     error: function() {
-      $(nowPlayingTrack.view.el).addClass('error');
-      if (this.lastError == nowPlayingTrack) {
+      $(NowPlayingTrack.view.el).addClass('error');
+      if (this.lastError == NowPlayingTrack) {
         return;
       }
-      this.lastError = nowPlayingTrack;
+      this.lastError = NowPlayingTrack;
       this.skipToPrev ? this.prev() : this.next();
     },
 
     // TODO move this to the track model.
     setTrackVideoIds: function(data) {
       if (!data.feed.entry) {
-        window.nowPlayingTrack.videos = [];
+        window.NowPlayingTrack.videos = [];
       } else {
-        window.nowPlayingTrack.videos = _.map(data.feed.entry, function(entry) {
+        window.NowPlayingTrack.videos = _.map(data.feed.entry, function(entry) {
           return _.last(entry.id.$t.split('/'));
           /*
           VideoResults.reset();
@@ -197,7 +197,7 @@ $(function() {
       }
       this.loading = false;
       $('#controls #play').removeClass('loading');
-      window.nowPlayingTrack.play();
+      window.NowPlayingTrack.play();
     },
 
     searchByArtistAndTrack: function(artist, track, callback) {

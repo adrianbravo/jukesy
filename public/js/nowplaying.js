@@ -42,11 +42,11 @@ $(function() {
       self.playlist.get('tracks').add(tracks);
       self.buildTrackViews(tracks);
 
-      if ($(nowPlaying.view.el).is('#main.now-playing')) {
+      if ($(NowPlaying.view.el).is('#main.now-playing')) {
         self.view.render();
       }
 
-      if (!_.isUndefined(window.nowPlayingTrack) && _.include(['play', 'next'], options.method)) {
+      if (!_.isUndefined(window.NowPlayingTrack) && _.include(['play', 'next'], options.method)) {
         if (options.method == 'play') {
           tracks[0].play();
         }
