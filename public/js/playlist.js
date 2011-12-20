@@ -65,6 +65,16 @@ $(function() {
         json.tracks = self.get('tracks').toJSON();
         return json;
       };
+
+      self.buildTrackViews(self.get('tracks').models);
+      self.view = new View.Playlist({ model: self });
+    },
+
+    // TODO optimize, verify old track.view makes it to garbage collection?
+    buildTrackViews: function(tracks) {
+      _.each(tracks, function(track) {
+        track.view = new View.Track({ model: track });
+      });
     },
 
     saveLocally: function() {

@@ -19,11 +19,10 @@ $(function() {
       '/settings'      : 'settings',
       '/favorites'     : 'favorites',
       '/tag-radio'     : 'tagRadio',
-      '/broadcasts'    : 'broadcasts'
+      '/broadcasts'    : 'broadcasts',
 
-      //'/playlists'         : 'playlistsIndex',
-      //'/playlist/:id'      : 'playlistView',
-      //'/playlist/:id?play' : 'playlistPlay',
+      '/local/playlists/:id'  : 'playlistView'
+      //'/local/playlists'      : 'playlistsIndex',
     },
 
     hideViews: function() {
@@ -60,13 +59,11 @@ $(function() {
       MainView.render('broadcasts');
     },
 
-    /*
-    playlistPlay: function(id) {
+    playlistView: function(id) {
       this.trigger('appview');
       $('#main').show();
-      NowPlaying.setPlaylist(Playlists.get(id));
+      MainView.render(Playlists.get(id));
     },
-    */
 
     searchAll: function(query) {
       query = decodeURIComponent(query);
