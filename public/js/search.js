@@ -9,13 +9,11 @@ $(function() {
 
     waitstate_template : _.template($('#search-waitstate-template').html()),
 
-    initialize: function() {
-      this.render();
-      window.lastSelected = null;
-    },
-
     render: function() {
       $(this.el).html(this.waitstate_template(this.model.toJSON()));
+      this.model.artist.view = new View.SearchArtists({ collection: this.model.artist });
+      this.model.album.view  = new View.SearchAlbums({ collection: this.model.album });
+      this.model.track.view  = new View.SearchTracks({ collection: this.model.track });
     }
   });
 
@@ -33,10 +31,6 @@ $(function() {
       this.track  = new Collection.Tracks();
 
       this.view = new View.Search({ model: this });
-
-      this.artist.view = new View.SearchArtists({ collection: this.artist });
-      this.album.view  = new View.SearchAlbums({ collection: this.album });
-      this.track.view  = new View.SearchTracks({ collection: this.track });
 
       this.artist.page = 1;
       this.album.page  = 1;
@@ -176,6 +170,7 @@ $(function() {
 
     initialize: function() {
       var self = this;
+
       ['artist', 'album', 'track'].forEach(function(type) {
         if (self.collection.model == Model[type.capitalize()]) {
           self.type = type;

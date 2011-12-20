@@ -1,3 +1,12 @@
-p You're not playing any music right now.
-p You can start by using the search box in the upper right to find your favorite band or song.
-p Or you can use the <strong>tag radio</strong> feature from the left sidebar to listen to music by genre/tag.
+#playlist
+  .header
+    h2.name {{ name }}
+
+  .tracks
+    table
+      thead
+        tr
+          td.art
+          td.name Track
+          td.artist Artist
+      tbody

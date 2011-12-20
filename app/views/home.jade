@@ -6,7 +6,7 @@
   #sidebar
     #quickbar
       .quickbar-inner
-        a.home(data-href= '#/')= __('Now Playing')
+        a.home.now-playing(data-href= '#/')= __('Now Playing')
           .icon
         a.settings(data-href= '#/settings')= __('Settings')
           .icon
@@ -101,6 +101,9 @@ script#playlist-template(type= 'text/template')
 
 script#playlist-empty-template(type= 'text/template')
   != partial('backbone/_playlist_empty')
+
+script#now-playing-empty-template(type= 'text/template')
+  != partial('backbone/_now_playing_empty')
 
 
 //

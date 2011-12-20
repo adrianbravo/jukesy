@@ -119,23 +119,23 @@ $(function() {
   View.Playlist = Backbone.View.extend({
     el: $('#main'),
 
-    empty_template: _.template($('#playlist-empty-template').html()),
-    non_empty_template: _.template($('#playlist-template').html()),
-
-    initialize: function() {
-      window.lastSelected = null;
-      this.render();
+    template: {
+      playlist        : _.template($('#playlist-template').html()),
+      playlistEmpty   : _.template($('#playlist-empty-template').html()),
+      nowPlayingEmpty : _.template($('#now-playing-empty-template').html())
     },
 
     render: function() {
       var self = this;
       if (self.model.get('tracks').models.length > 0) {
-        self.el.html(self.non_empty_template(self.model.toJSON()));
+        self.el.html(self.template.playlist(self.model.toJSON()));
         _.each(self.model.get('tracks').models, function(track) {
           self.el.find('tbody').append(track.view.render().el);
         });
+      } else if (self.model == window.NowPlaying) {
+        self.el.html(self.template.nowPlayingEmpty);
       } else {
-        self.el.html(self.empty_template());
+        //self.el.html(self.template.playlistEmpty());
       }
     }
   });

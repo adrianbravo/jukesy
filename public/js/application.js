@@ -33,14 +33,7 @@ $(function() {
     home: function() {
       this.trigger('appview');
       $('#main').show();
-
-      // TODO NowPlaying.tracks points to collection.models
-      if (NowPlaying.playlist.get('tracks').models.length > 0) {
-        $('#quickbar a.home').addClass('active').siblings().removeClass('active');
-        NowPlaying.view.render();
-      } else {
-        MainView.render();
-      }
+      MainView.render(NowPlaying);
     },
 
     settings: function() {
@@ -77,10 +70,11 @@ $(function() {
 
     searchAll: function(query) {
       query = decodeURIComponent(query);
+      window.Search = new Model.Search({ query: query });
+
       this.trigger('appview');
       $('#main').show();
-      window.Search = new Model.Search({ query: query });
-      $('#quickbar .quickbar-inner a').removeClass('active');
+      MainView.render(Search);
     }
   });
 
@@ -193,13 +187,11 @@ $(function() {
     el: '#main',
 
     template: {
-      home       : _.template($('#home-template').html()),
-      settings   : _.template($('#settings-template').html()),
-      favorites  : _.template($('#favorites-template').html()),
-      tagRadio   : _.template($('#tag-radio-template').html()),
-      broadcasts : _.template($('#broadcasts-template').html())
-      // nowplaying
-      // nowplayingEmpty
+      home          : _.template($('#home-template').html()),
+      settings      : _.template($('#settings-template').html()),
+      favorites     : _.template($('#favorites-template').html()),
+      tagRadio      : _.template($('#tag-radio-template').html()),
+      broadcasts    : _.template($('#broadcasts-template').html())
     },
 
     initialize: function() {
@@ -218,10 +210,17 @@ $(function() {
       }, 300);
     },
 
-    render: function(template) {
-      template = template || 'home';
-      $('#quickbar .' + template.replace(/([A-Z])/,'-$1').toLowerCase()).addClass('active').siblings().removeClass('active');
-      $(this.el).html(this.template[template]);
+    // target can be a model object or a string for a basic template
+    render: function(target) {
+      window.lastSelected = null;
+      if (typeof target == 'object') {
+        $(this.el).html(target.view.render());
+        $('#quickbar .' + target.view.className).addClass('active').siblings().removeClass('active');
+      } else {
+        target = target || 'home';
+        $(this.el).html(this.template[target]);
+        $('#quickbar .' + target.replace(/([A-Z])/,'-$1').toLowerCase()).addClass('active').siblings().removeClass('active');
+      }
     }
   });
 
