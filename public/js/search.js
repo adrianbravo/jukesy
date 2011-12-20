@@ -15,7 +15,6 @@ $(function() {
     },
 
     render: function() {
-      $('#quickbar .quickbar-inner a').removeClass('active');
       $(this.el).html(this.waitstate_template(this.model.toJSON()));
     }
   });
@@ -68,13 +67,15 @@ $(function() {
 
     queryCallback: function(data) {
       var self = this;
-      if (!self.isCurrentQuery(data.results))
+      if (!self.isCurrentQuery(data.results)) {
         return;
+      }
 
       // Figure out the type by searching json, e.g. results.artistmatches
-      _.forEach(['artist', 'album', 'track'], function(type) {
-        if (_.isUndefined(data.results[type + 'matches']))
+      _.forEach([ 'artist', 'album', 'track' ], function(type) {
+        if (_.isUndefined(data.results[type + 'matches'])) {
           return;
+        }
         self[type].loading = false;
 
         self[type].page++;
@@ -86,8 +87,9 @@ $(function() {
     },
 
     loadMore: function(type) {
-      if (this[type].loading)
+      if (this[type].loading) {
         return;
+      }
       this[type].loading = true;
       this.query([ 'track' ]);
     },

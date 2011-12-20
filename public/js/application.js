@@ -80,6 +80,7 @@ $(function() {
       this.trigger('appview');
       $('#main').show();
       window.Search = new Model.Search({ query: query });
+      $('#quickbar .quickbar-inner a').removeClass('active');
     }
   });
 

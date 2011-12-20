@@ -7,10 +7,10 @@ $(function() {
   Model.Track = Backbone.Model.extend({
     play: function() {
       var self = this;
+
       if (Video.loading) {
         return false;
       }
-
       window.nowPlayingTrack = this;
 
       if (_.isUndefined(this.videos)) {
