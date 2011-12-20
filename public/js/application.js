@@ -27,7 +27,7 @@ $(function() {
     },
 
     hideViews: function() {
-      $('#now-playing, #main').hide();
+      $('#main').hide();
     },
 
     home: function() {
@@ -70,7 +70,7 @@ $(function() {
     /*
     playlistPlay: function(id) {
       this.trigger('appview');
-      $('#now-playing').show();
+      $('#main').show();
       nowPlaying.setPlaylist(Playlists.get(id));
     },
     */
