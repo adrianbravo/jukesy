@@ -1,5 +1,5 @@
-
 $(function() {
+
 
   //
   // Local routes (single-page app style, motherfucker)
@@ -84,8 +84,9 @@ $(function() {
     }
   });
 
+
   //
-  // Used for app-wide key bindings.
+  // Used primarily app-wide key bindings.
   //
   View.App = Backbone.View.extend({
     el: $(document),
@@ -93,13 +94,15 @@ $(function() {
     events: {
       'keypress #query'      : 'searchAll',
       'keydown'              : 'keyMapper',
-      'keyup'                : 'setMaxVolume',
-      'click #login'         : 'login'
+      'keyup'                : 'setMaxVolume'
+      //'click #login'         : 'login'
     },
 
+    /*
     login: function(e) {
       new Model.Modal({ type: 'login' });
     },
+    */
 
     searchAll: function(e) {
       if (e.keyCode == 13) {
@@ -182,6 +185,7 @@ $(function() {
     }
   });
 
+
   //
   // Main viewport -- this is where search results, playlists, now playing, and mostly everything else will display.
   //
@@ -194,6 +198,8 @@ $(function() {
       favorites  : _.template($('#favorites-template').html()),
       tagRadio   : _.template($('#tag-radio-template').html()),
       broadcasts : _.template($('#broadcasts-template').html())
+      // nowplaying
+      // nowplayingEmpty
     },
 
     initialize: function() {
@@ -218,6 +224,7 @@ $(function() {
       $(this.el).html(this.template[template]);
     }
   });
+
 
 });
 

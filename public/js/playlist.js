@@ -1,5 +1,9 @@
 $(function() {
 
+
+  //
+  // Displays a list of playlists for the #quickbar
+  //
   View.Playlists = Backbone.View.extend({
     el: $('#main'),
 
@@ -31,9 +35,12 @@ $(function() {
         windowResized();
       }
     }
-
   });
 
+
+  //
+  // Basic playlist model
+  //
   Model.Playlist = Backbone.Model.extend({
     localStorage: new Store('Playlists'),
 
@@ -85,6 +92,10 @@ $(function() {
   });
 
 
+  //
+  // Short playlist view
+  // TODO combine with regular playlist and separate template.
+  //
   View.PlaylistShort = Backbone.View.extend({
     tagName: 'li',
 
@@ -102,6 +113,9 @@ $(function() {
   });
 
 
+  //
+  // Regular playlist view, includes tracks
+  //
   View.Playlist = Backbone.View.extend({
     el: $('#main'),
 
@@ -131,6 +145,9 @@ $(function() {
   //});
 
 
+  //
+  // A collection of playlists (which are also collections, ho ho ho)
+  //
   Collection.Playlists = Backbone.Collection.extend({
     model: Model.Playlist,
     localStorage: new Store('Playlists')

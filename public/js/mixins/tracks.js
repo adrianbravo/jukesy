@@ -1,8 +1,9 @@
 $(function(){
 
-
+  //
+  // Handles ability to mark tracks as selected through clicks
+  //
   Mixins.TrackSelection = {
-
     toggleSelect: function(e) {
       if (e.shiftKey) {
         this.fillSelected($(this.el), $(window.lastSelected));
@@ -29,7 +30,6 @@ $(function(){
       $track1.addClass('selected');
       $track2.addClass('selected');
     }
-
   };
 
 

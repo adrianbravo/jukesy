@@ -15,14 +15,18 @@ $(function() {
 
     setPlaylist: function(playlist) {
       var self = this;
+
       self.playlist = playlist;
-
       self.buildTrackViews(self.tracks());
-
       self.view = new View.NowPlaying({ model: self.playlist });
 
-      if (Video.player) Video.pause(); // TODO pseudostop
-      if (self.tracks()[0]) self.tracks()[0].play();
+       // TODO pseudostop
+      if (Video.player) {
+        Video.pause();
+      }
+      if (self.tracks()[0]) {
+        self.tracks()[0].play();
+      }
     },
 
     // TODO optimize, verify old track.view makes it to garbage collection?
@@ -38,12 +42,14 @@ $(function() {
       self.playlist.get('tracks').add(tracks);
       self.buildTrackViews(tracks);
 
-      if ($(nowPlaying.view.el).is('#main.now-playing'))
+      if ($(nowPlaying.view.el).is('#main.now-playing')) {
         self.view.render();
+      }
 
       if (!_.isUndefined(window.nowPlayingTrack) && _.include(['play', 'next'], options.method)) {
-        if (options.method == 'play')
+        if (options.method == 'play') {
           tracks[0].play();
+        }
       } else {
         tracks[0].play();
       }

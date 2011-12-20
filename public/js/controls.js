@@ -50,7 +50,9 @@ $(function() {
         },
 
         stop: function(event, ui) {
-          if (ui.value > 0) self.lastMaxVolume = ui.value;
+          if (ui.value > 0) {
+            self.lastMaxVolume = ui.value;
+          }
         }
       });
     },

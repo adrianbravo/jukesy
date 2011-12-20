@@ -136,7 +136,9 @@ $(function() {
           size = size || 'large';
       if (_.isArray(result.image)) {
         _.each(result.image, function(image) {
-          if (image.size == size) src = image['#text'];
+          if (image.size == size) {
+            src = image['#text'];
+          }
         });
       } else if (!_.isUndefined(result.image)) {
         src = result.image;
@@ -175,8 +177,9 @@ $(function() {
     initialize: function() {
       var self = this;
       ['artist', 'album', 'track'].forEach(function(type) {
-        if (self.collection.model == Model[type.capitalize()])
+        if (self.collection.model == Model[type.capitalize()]) {
           self.type = type;
+        }
       });
 
       self.collection.bind('add', self.addModel);
@@ -184,8 +187,9 @@ $(function() {
     },
 
     render: function() {
-      if (this.collection.models.length == 0)
+      if (this.collection.models.length == 0) {
         $(this.el).html(this.templateEmpty({ type: this.type }));
+      }
     },
 
     addModel: function(model) {
@@ -221,7 +225,9 @@ $(function() {
       $(this.el).addClass('selected');
       nowPlaying.add(_(Search.track.models).chain()
         .map(function(track) {
-          if (!$(track.view.el).hasClass('selected')) return null;
+          if (!$(track.view.el).hasClass('selected')) {
+            return null;
+          }
           $(track.view.el).removeClass('selected');
           return (new Model.Track(track.toJSON()));
         }).compact().value(), { method: method });

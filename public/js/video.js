@@ -99,7 +99,7 @@ $(function() {
       this.stopped = true;
       this.pause();
       $(nowPlaying.view.el).find('.playing').removeClass('playing');
-      this.on_state_change(-1);
+      this.onStateChange(-1);
     },
 
     play: function() {
@@ -149,7 +149,7 @@ $(function() {
       prev.play();
     },
 
-    on_state_change: function(state) {
+    onStateChange: function(state) {
       this.state = state;
       if (this.state == -1) {
         Controls.$songInfo.html('');
@@ -159,7 +159,7 @@ $(function() {
       window.Controls.updatePlay();
     },
 
-    on_error: function(error) {
+    onError: function(error) {
       if (error == '150') {
         nowPlayingTrack.videos = _.rest(nowPlayingTrack.videos);
         nowPlayingTrack.play();
@@ -238,6 +238,3 @@ $(function() {
 
 
 });
-
-
-

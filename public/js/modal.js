@@ -23,7 +23,7 @@ $(function(){
     },
 
     refresh: function() {
-      $modal = $(this.el).find('.modal');
+      var $modal = $(this.el).find('.modal');
       $modal.css('left', ($(window).width() / 2) - ($modal.width() / 2)).css('top', ($(window).height() / 2) - ($modal.height() / 2));
     },
 
