@@ -11,7 +11,10 @@ $(function() {
       if (Video.loading) {
         return false;
       }
-      window.NowPlayingTrack = this;
+      if (NowPlaying != this.playlist) {
+        this.playlist.play();
+      }
+      NowPlayingTrack = this;
 
       if (_.isUndefined(this.videos)) {
         this.getVideos();

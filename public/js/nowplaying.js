@@ -10,7 +10,7 @@ $(function() {
     },
 
     tracks: function() {
-      return this.playlist.get('tracks').models;
+      return this.playlist.tracks();
     },
 
     setPlaylist: function(playlist) {

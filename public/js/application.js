@@ -31,38 +31,38 @@ $(function() {
 
     home: function() {
       this.trigger('appview');
-      $('#main').show();
       MainView.render(NowPlaying);
+      $('#main').show();
     },
 
     settings: function() {
       this.trigger('appview');
-      $('#main').show();
       MainView.render('settings');
+      $('#main').show();
     },
 
     favorites: function() {
       this.trigger('appview');
-      $('#main').show();
       MainView.render('favorites');
+      $('#main').show();
     },
 
     tagRadio: function() {
       this.trigger('appview');
-      $('#main').show();
       MainView.render('tagRadio');
+      $('#main').show();
     },
 
     broadcasts: function() {
       this.trigger('appview');
-      $('#main').show();
       MainView.render('broadcasts');
+      $('#main').show();
     },
 
     playlistView: function(id) {
       this.trigger('appview');
-      $('#main').show();
       MainView.render(Playlists.get(id));
+      $('#main').show();
     },
 
     searchAll: function(query) {
@@ -70,8 +70,8 @@ $(function() {
       window.Search = new Model.Search({ query: query });
 
       this.trigger('appview');
-      $('#main').show();
       MainView.render(Search);
+      $('#main').show();
     }
   });
 
@@ -212,11 +212,14 @@ $(function() {
       window.lastSelected = null;
       if (typeof target == 'object') {
         $(this.el).html(target.view.render());
-        $('#quickbar .' + target.view.className).addClass('active').siblings().removeClass('active');
       } else {
         target = target || 'home';
         $(this.el).html(this.template[target]);
-        $('#quickbar .' + target.replace(/([A-Z])/,'-$1').toLowerCase()).addClass('active').siblings().removeClass('active');
+      }
+
+      if (Backbone && Backbone.history) {
+        $('#quickbar a').removeClass('active');
+        $('#quickbar a[data-href="#' + Backbone.history.fragment + '"]').addClass('active');
       }
     }
   });
@@ -237,7 +240,11 @@ $(function() {
   window.Video      = new Model.Video();
   window.Controls   = new View.Controls();
   window.Playlists  = new Collection.Playlists();
-  window.NowPlaying = new Model.NowPlaying();
+
+  // Set window.NowPlaying
+  var playlist = new Model.Playlist();
+  playlist.play();
+  //window.NowPlaying = new Model.NowPlaying();
 
   Playlists.fetch();
   PlaylistsView = new View.Playlists({ quickbar: true });

@@ -66,8 +66,33 @@ $(function() {
         return json;
       };
 
-      self.buildTrackViews(self.get('tracks').models);
+      _.each(self.tracks(), function(track) {
+        track.playlist = self;
+      });
+
+      self.buildTrackViews(self.tracks());
       self.view = new View.Playlist({ model: self });
+    },
+
+    tracks: function() {
+      return this.get('tracks').models;
+    },
+
+    play: function() {
+      var self = this;
+      console.log(self)
+      // TODO if nowplaying is new, delete now playing...
+      NowPlaying = self;
+      self.buildTrackViews(self.tracks());
+      //self.view = new View.NowPlaying({ model: self.playlist });
+
+       // TODO pseudostop
+      if (Video.player) {
+        Video.pause();
+      }
+      if (self.tracks()[0]) {
+        self.tracks()[0].play();
+      }
     },
 
     // TODO optimize, verify old track.view makes it to garbage collection?
@@ -85,21 +110,75 @@ $(function() {
       // TODO handle saving remotely
     },
 
+    add: function(tracks, options) {
+      var self = this;
+
+      self.get('tracks').add(tracks);
+      self.buildTrackViews(tracks);
+
+      if ($(self.view.el).is('#main')) {
+        self.view.render();
+      }
+
+      if (self === window.NowPlaying && !_.isUndefined(window.NowPlayingTrack) && _.include(['play', 'next'], options.method)) {
+        if (options.method == 'play') {
+          tracks[0].play();
+        }
+      } else {
+        tracks[0].play();
+      }
+    },
+
     // Remove a track from the model.
     remove: function(model) {
       this.change();
-      this.get('tracks').models = _.without(this.get('tracks').models, model);
+      this.tracks() = _.without(this.tracks(), model);
       model.view.remove();
       model.destroy();
     },
 
     sortByDOM: function() {
-      this.get('tracks').models = _.sortBy(this.get('tracks').models, function(track) {
+      this.get('tracks').models = _.sortBy(this.tracks(), function(track) {
         return _.indexOf($(track.view.el).parent().children(track.view.tagName), track.view.el);
       });
       this.change();
     }
   });
+
+
+
+  //
+  // Regular playlist view, includes tracks
+  //
+  View.Playlist = Backbone.View.extend({
+    el: $('#main'),
+
+    template: {
+      playlist        : _.template($('#playlist-template').html()),
+      playlistEmpty   : _.template($('#playlist-empty-template').html()),
+      nowPlayingEmpty : _.template($('#now-playing-empty-template').html())
+    },
+
+    render: function() {
+      var self = this;
+      if (self.model.tracks().length > 0) {
+        self.el.html(self.template.playlist(self.model.toJSON()));
+        _.each(self.model.tracks(), function(track) {
+          var el = track.view.render().el;
+          $(el).removeClass('selected').removeClass('playing');
+          self.el.find('tbody').append(track.view.render().el);
+        });
+      } else if (self.model == window.NowPlaying.playlist) {
+        self.el.html(self.template.nowPlayingEmpty);
+      } else {
+        //self.el.html(self.template.playlistEmpty());
+      }
+    }
+  });
+
+
+  //View.PlaylistTrack = View.Track.extend({
+  //});
 
 
   //
@@ -121,38 +200,6 @@ $(function() {
       return this;
     }
   });
-
-
-  //
-  // Regular playlist view, includes tracks
-  //
-  View.Playlist = Backbone.View.extend({
-    el: $('#main'),
-
-    template: {
-      playlist        : _.template($('#playlist-template').html()),
-      playlistEmpty   : _.template($('#playlist-empty-template').html()),
-      nowPlayingEmpty : _.template($('#now-playing-empty-template').html())
-    },
-
-    render: function() {
-      var self = this;
-      if (self.model.get('tracks').models.length > 0) {
-        self.el.html(self.template.playlist(self.model.toJSON()));
-        _.each(self.model.get('tracks').models, function(track) {
-          self.el.find('tbody').append(track.view.render().el);
-        });
-      } else if (self.model == window.NowPlaying.playlist) {
-        self.el.html(self.template.nowPlayingEmpty);
-      } else {
-        //self.el.html(self.template.playlistEmpty());
-      }
-    }
-  });
-
-
-  //View.PlaylistTrack = View.Track.extend({
-  //});
 
 
   //
