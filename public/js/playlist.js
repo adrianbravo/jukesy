@@ -78,20 +78,12 @@ $(function() {
       return this.get('tracks').models
     },
 
-    play: function() {
-      var self = this
+    nowPlaying: function() {
+      NowPlaying = this
 
-      // TODO if nowplaying is new, delete now playing...
-      NowPlaying = self
-      self.buildTrackViews(self.tracks())
-      //self.view = new View.NowPlaying({ model: self.playlist })
-
-       // TODO pseudostop
+      // TODO pseudostop
       if (Video.player) {
         Video.pause()
-      }
-      if (self.tracks()[0]) {
-        self.tracks()[0].play()
       }
     },
 
@@ -164,10 +156,10 @@ $(function() {
         _.each(self.model.tracks(), function(track) {
           var el = track.view.render().el
           $(el).removeClass('selected').removeClass('playing')
-          $(self.el).find('tbody').append(track.view.render().el)
+          $(self.el).find('tbody').append(el)
         })
       } else if (self == NowPlaying.view) {
-        $(self.el).html(self.template.nowPlayingEmpty)
+        $(self.el).html(self.template.nowPlayingEmpty())
       } else {
         $(self.el).html(self.template.playlistEmpty())
       }

@@ -11,8 +11,9 @@ $(function() {
       if (Video.loading) {
         return false;
       }
+
       if (NowPlaying != this.playlist) {
-        this.playlist.play();
+        this.playlist.nowPlaying();
       }
       NowPlayingTrack = this;
 
@@ -68,6 +69,7 @@ $(function() {
 
     play: function() {
       this.model.play();
+      this.setPlaying();
       $(this.el).siblings().removeClass('selected');
     },
 

@@ -210,6 +210,8 @@ $(function() {
     // target can be a model object or a string for a basic template
     render: function(target) {
       window.lastSelected = null
+      $(this.el).html('')
+
       if (typeof target == 'object') {
         $(this.el).html(target.view.render().el)
       } else {
@@ -243,8 +245,7 @@ $(function() {
 
   // Set window.NowPlaying
   var playlist = new Model.Playlist()
-  playlist.play()
-  //window.NowPlaying = new Model.NowPlaying()
+  playlist.nowPlaying()
 
   Playlists.fetch()
   PlaylistsView = new View.Playlists({ quickbar: true })
