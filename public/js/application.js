@@ -125,7 +125,19 @@ $(function() {
       if ($(e.target).is('input, textarea')) {
         return
       }
+
       switch (e.keyCode) {
+        case 8: // Delete tracks
+          if (window.visiblePlaylist) {
+            // TODO what if removed track is now playing
+            var tracks = _.filter(visiblePlaylist.tracks(), function(track) {
+              return $(track.view.el).hasClass('selected')
+            })
+            if (tracks.length) {
+              visiblePlaylist.remove(tracks)
+            }
+          }
+          return false;
         case 65: // CTRL-A, META-A
           if (e.metaKey || e.ctrlKey) {
             var $el = $(Search.track.view.el),
@@ -209,10 +221,12 @@ $(function() {
 
     // target can be a model object or a string for a basic template
     render: function(target) {
-      window.lastSelected = null
+      lastSelected = null
+      visiblePlaylist = null
       $(this.el).html('')
 
       if (typeof target == 'object') {
+        visiblePlaylist = target;
         $(this.el).html(target.view.render().el)
       } else {
         target = target || 'home'

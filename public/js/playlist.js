@@ -81,14 +81,12 @@ $(function() {
 
     nowPlaying: function() {
       NowPlaying = this
-
       // TODO pseudostop
       if (Video.player) {
         Video.pause()
       }
     },
 
-    // TODO optimize, verify old track.view makes it to garbage collection?
     buildTrackViews: function(tracks) {
       _.each(tracks, function(track) {
         track.view = new View.Track({ model: track })
@@ -110,12 +108,10 @@ $(function() {
     },
 
     add: function(tracks, options) {
-      var self = this
+      this.get('tracks').add(tracks)
+      this.buildTrackViews(tracks)
 
-      self.get('tracks').add(tracks)
-      self.buildTrackViews(tracks)
-
-      if (self === window.NowPlaying && !_.isUndefined(window.NowPlayingTrack) && _.include(['play', 'next'], options.method)) {
+      if (this === window.NowPlaying && !_.isUndefined(window.NowPlayingTrack) && _.include(['play', 'next'], options.method)) {
         if (options.method == 'play') {
           tracks[0].play()
         }
@@ -126,11 +122,12 @@ $(function() {
     },
 
     // Remove a track from the model.
-    remove: function(model) {
+    remove: function(tracks) {
+      this.get('tracks').remove(tracks)
+      _.each(tracks, function(track) {
+        track.view.remove()
+      })
       this.change()
-      this.tracks() = _.without(this.tracks(), model)
-      model.view.remove()
-      model.destroy()
     },
 
     sortByDOM: function() {
@@ -192,7 +189,7 @@ $(function() {
     },
     
     initialize: function() {
-      _.bindAll(this, 'render')
+      _.bindAll(this, 'render', 'startEdit', 'stopEdit')
       this.model.shortView = this
     },
 

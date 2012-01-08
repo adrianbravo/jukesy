@@ -220,7 +220,8 @@ $(function() {
     // Adds selected tracks to NowPlaying collection.
     queueTrack: function(method) {
       $(this.el).addClass('selected')
-      NowPlaying.add(_(Search.track.models).chain()
+      
+      var tracks = _(Search.track.models).chain()
         .map(function(track) {
           if (!$(track.view.el).hasClass('selected')) {
             return null
@@ -230,7 +231,9 @@ $(function() {
           var copyTrack = new Model.Track(track.toJSON())
           copyTrack.playlist = NowPlaying
           return copyTrack
-        }).compact().value(), { method: method })
+        }).compact().value()
+
+        NowPlaying.add(tracks, { method: method })
     }
   }, Mixins.TrackSelection))
 
