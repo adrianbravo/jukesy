@@ -116,7 +116,7 @@ $(function() {
       self.get('tracks').add(tracks)
       self.buildTrackViews(tracks)
 
-      if ($(self.view.el).is('#main')) {
+      if ($(self.view.el).is(':visible')) {
         self.view.render()
       }
 
@@ -151,8 +151,6 @@ $(function() {
   // Regular playlist view, includes tracks
   //
   View.Playlist = Backbone.View.extend({
-    el: $('#main'),
-
     template: {
       playlist        : _.template($('#playlist-template').html()),
       playlistEmpty   : _.template($('#playlist-empty-template').html()),
@@ -162,17 +160,18 @@ $(function() {
     render: function() {
       var self = this
       if (self.model.tracks().length > 0) {
-        self.el.html(self.template.playlist(self.model.toJSON()))
+        $(self.el).html(self.template.playlist(self.model.toJSON()))
         _.each(self.model.tracks(), function(track) {
           var el = track.view.render().el
           $(el).removeClass('selected').removeClass('playing')
-          self.el.find('tbody').append(track.view.render().el)
+          $(self.el).find('tbody').append(track.view.render().el)
         })
       } else if (self == NowPlaying.view) {
-        self.el.html(self.template.nowPlayingEmpty)
+        $(self.el).html(self.template.nowPlayingEmpty)
       } else {
-        self.el.html(self.template.playlistEmpty())
+        $(self.el).html(self.template.playlistEmpty())
       }
+      return self
     }
   })
 

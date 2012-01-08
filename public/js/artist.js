@@ -11,11 +11,9 @@ $(function() {
 
 
   View.SearchArtists = View.SearchResults.extend({
-    el: '#search .artists',
-
+    className: 'artists',
     viewObject: View.SearchArtist,
     viewInner: 'ul',
-
     template: _.template($('#search-artists-template').html())
   });
 

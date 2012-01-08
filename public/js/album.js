@@ -11,11 +11,9 @@ $(function() {
 
 
   View.SearchAlbums = View.SearchResults.extend({
-    el: '#search .albums',
-
+    className: 'albums',
     viewObject: View.SearchAlbum,
     viewInner: 'ul',
-
     template: _.template($('#search-albums-template').html())
   });
 

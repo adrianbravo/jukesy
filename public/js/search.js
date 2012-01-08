@@ -5,21 +5,17 @@ $(function() {
   // Displays initial waitstate of search. Should render placeholders for search results.
   //
   View.Search = Backbone.View.extend({
-    el: '#main',
-
     waitstate_template : _.template($('#search-waitstate-template').html()),
 
     render: function() {
       $(this.el).html(this.waitstate_template(this.model.toJSON()))
+
       if (_.isUndefined(this.model.artist.view)) {
         this.model.artist.view = new View.SearchArtists({ collection: this.model.artist })
         this.model.album.view  = new View.SearchAlbums({ collection: this.model.album })
         this.model.track.view  = new View.SearchTracks({ collection: this.model.track })
-      } else {
-//        $search.find('.artists').replaceWith(this.model.artist.view.render().el)
-//        $search.find('.albums').replaceWith(this.model.album.view.render().el)
-//        $search.find('.tracks').replaceWith(this.model.track.view.render().el)
       }
+      return this
     }
   })
 
@@ -170,8 +166,6 @@ $(function() {
   // Displays a collection of search results.
   //
   View.SearchResults = Backbone.View.extend({
-    tagName: 'ul',
-
     templateEmpty: _.template($('#search-empty-template').html()),
 
     initialize: function() {
@@ -197,7 +191,7 @@ $(function() {
     addModel: function(model) {
       if (this.models.length == 1) {
         $(this.view.el).html(this.view.template())
-        $('#search').find('.' + this.view.type + 's').replaceWith(this.view.render().el)
+        $('#search').find('.' + this.view.type + 's').replaceWith(this.view.el)
       }
 
       var view = new this.view.viewObject({ model : model })
@@ -245,10 +239,8 @@ $(function() {
   // Placeholder for multiple tracks as search results.
   //
   View.SearchTracks = View.SearchResults.extend({
-    el: '#search .tracks',
-
+    className: 'tracks',
     template: _.template($('#search-tracks-template').html()),
-
     viewObject: View.SearchTrack,
     viewInner: 'table tbody'
   })

@@ -66,7 +66,6 @@ $(function() {
     },
 
     searchAll: function(query) {
-      console.log('search query', query)
       query = decodeURIComponent(query)
       window.Search = new Model.Search({ query: query })
 
@@ -210,11 +209,9 @@ $(function() {
 
     // target can be a model object or a string for a basic template
     render: function(target) {
-      if (target && target.view)
-        console.log('render target', target, target.view, target.view.render())
       window.lastSelected = null
       if (typeof target == 'object') {
-        $(this.el).html(target.view.render())
+        $(this.el).html(target.view.render().el)
       } else {
         target = target || 'home'
         $(this.el).html(this.template[target])
