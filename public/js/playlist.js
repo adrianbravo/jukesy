@@ -11,31 +11,31 @@ $(function() {
 
     initialize: function() {
       if (this.options.quickbar) {
-        this.el = $('#my-playlists');
+        this.el = $('#my-playlists')
       }
-      this.render();
+      this.render()
     },
 
     render: function() {
-      var self = this;
+      var self = this
 
-      $('#quickbar a').removeClass('active');
+      $('#quickbar a').removeClass('active')
 
       this.el.html(this.template({
         empty: _.isEmpty(Playlists.models),
         quick: this.options.quickbar
-      }));
+      }))
 
       _.each(Playlists.models, function(playlist) {
-        var view = new View.PlaylistShort({ model: playlist });
-        self.el.find('.playlists ul').append(view.render().el);
-      });
+        var view = new View.PlaylistShort({ model: playlist })
+        self.el.find('.playlists ul').append(view.render().el)
+      })
 
       if (this.options.quickbar) {
-        windowResized();
+        windowResized()
       }
     }
-  });
+  })
 
 
   //
@@ -49,101 +49,101 @@ $(function() {
     },
 
     initialize: function() {
-      var self = this;
+      var self = this
       if (!self.isNew()) {
-        self.autosave = true;
+        self.autosave = true
       }
-      _.bindAll(self, 'remove', 'sortByDOM', 'saveLocally');
+      _.bindAll(self, 'remove', 'sortByDOM', 'saveLocally')
 
       // Loads tracks collection or converts its json to a new collection, silently.
-      self.set({ tracks: new Collection.Tracks(self.get('tracks') || []) }, { silent: true });
-      self.bind('change', self.saveLocally);
+      self.set({ tracks: new Collection.Tracks(self.get('tracks') || []) }, { silent: true })
+      self.bind('change', self.saveLocally)
 
-      self.oldToJSON = self.toJSON;
+      self.oldToJSON = self.toJSON
       self.toJSON = function() {
-        var json = self.oldToJSON();
-        json.tracks = self.get('tracks').toJSON();
-        return json;
-      };
+        var json = self.oldToJSON()
+        json.tracks = self.get('tracks').toJSON()
+        return json
+      }
 
       _.each(self.tracks(), function(track) {
-        track.playlist = self;
-      });
+        track.playlist = self
+      })
 
-      self.buildTrackViews(self.tracks());
-      self.view = new View.Playlist({ model: self });
+      self.buildTrackViews(self.tracks())
+      self.view = new View.Playlist({ model: self })
     },
 
     tracks: function() {
-      return this.get('tracks').models;
+      return this.get('tracks').models
     },
 
     play: function() {
-      var self = this;
-      console.log(self)
+      var self = this
+
       // TODO if nowplaying is new, delete now playing...
-      NowPlaying = self;
-      self.buildTrackViews(self.tracks());
-      //self.view = new View.NowPlaying({ model: self.playlist });
+      NowPlaying = self
+      self.buildTrackViews(self.tracks())
+      //self.view = new View.NowPlaying({ model: self.playlist })
 
        // TODO pseudostop
       if (Video.player) {
-        Video.pause();
+        Video.pause()
       }
       if (self.tracks()[0]) {
-        self.tracks()[0].play();
+        self.tracks()[0].play()
       }
     },
 
     // TODO optimize, verify old track.view makes it to garbage collection?
     buildTrackViews: function(tracks) {
       _.each(tracks, function(track) {
-        track.view = new View.Track({ model: track });
-      });
+        track.view = new View.Track({ model: track })
+      })
     },
 
     saveLocally: function() {
       if (this.localStorage && this.autosave) {
-        this.save();
-        this.shortView.render();
+        this.save()
+        this.shortView.render()
       }
       // TODO handle saving remotely
     },
 
     add: function(tracks, options) {
-      var self = this;
+      var self = this
 
-      self.get('tracks').add(tracks);
-      self.buildTrackViews(tracks);
+      self.get('tracks').add(tracks)
+      self.buildTrackViews(tracks)
 
       if ($(self.view.el).is('#main')) {
-        self.view.render();
+        self.view.render()
       }
 
       if (self === window.NowPlaying && !_.isUndefined(window.NowPlayingTrack) && _.include(['play', 'next'], options.method)) {
         if (options.method == 'play') {
-          tracks[0].play();
+          tracks[0].play()
         }
       } else {
-        tracks[0].play();
+        tracks[0].play()
       }
     },
 
     // Remove a track from the model.
     remove: function(model) {
-      this.change();
-      this.tracks() = _.without(this.tracks(), model);
-      model.view.remove();
-      model.destroy();
+      this.change()
+      this.tracks() = _.without(this.tracks(), model)
+      model.view.remove()
+      model.destroy()
     },
 
     sortByDOM: function() {
       this.get('tracks').models = _.sortBy(this.tracks(), function(track) {
-        return _.indexOf($(track.view.el).parent().children(track.view.tagName), track.view.el);
-      });
-      this.change();
+        return _.indexOf($(track.view.el).parent().children(track.view.tagName), track.view.el)
+      })
+      this.change()
     }
-  });
+  })
 
 
 
@@ -160,25 +160,25 @@ $(function() {
     },
 
     render: function() {
-      var self = this;
+      var self = this
       if (self.model.tracks().length > 0) {
-        self.el.html(self.template.playlist(self.model.toJSON()));
+        self.el.html(self.template.playlist(self.model.toJSON()))
         _.each(self.model.tracks(), function(track) {
-          var el = track.view.render().el;
-          $(el).removeClass('selected').removeClass('playing');
-          self.el.find('tbody').append(track.view.render().el);
-        });
-      } else if (self.model == window.NowPlaying.playlist) {
-        self.el.html(self.template.nowPlayingEmpty);
+          var el = track.view.render().el
+          $(el).removeClass('selected').removeClass('playing')
+          self.el.find('tbody').append(track.view.render().el)
+        })
+      } else if (self == NowPlaying.view) {
+        self.el.html(self.template.nowPlayingEmpty)
       } else {
-        //self.el.html(self.template.playlistEmpty());
+        self.el.html(self.template.playlistEmpty())
       }
     }
-  });
+  })
 
 
   //View.PlaylistTrack = View.Track.extend({
-  //});
+  //})
 
 
   //
@@ -191,15 +191,15 @@ $(function() {
     template: _.template($('#playlist-short-template').html()),
 
     initialize: function() {
-      _.bindAll(this, 'render');
-      this.model.shortView = this;
+      _.bindAll(this, 'render')
+      this.model.shortView = this
     },
 
     render: function() {
-      $(this.el).html(this.template(this.model.toJSON()));
-      return this;
+      $(this.el).html(this.template(this.model.toJSON()))
+      return this
     }
-  });
+  })
 
 
   //
@@ -208,9 +208,9 @@ $(function() {
   Collection.Playlists = Backbone.Collection.extend({
     model: Model.Playlist,
     localStorage: new Store('Playlists')
-  });
+  })
 
 
-});
+})
 
 

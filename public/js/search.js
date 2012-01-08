@@ -10,12 +10,18 @@ $(function() {
     waitstate_template : _.template($('#search-waitstate-template').html()),
 
     render: function() {
-      $(this.el).html(this.waitstate_template(this.model.toJSON()));
-      this.model.artist.view = new View.SearchArtists({ collection: this.model.artist });
-      this.model.album.view  = new View.SearchAlbums({ collection: this.model.album });
-      this.model.track.view  = new View.SearchTracks({ collection: this.model.track });
+      $(this.el).html(this.waitstate_template(this.model.toJSON()))
+      if (_.isUndefined(this.model.artist.view)) {
+        this.model.artist.view = new View.SearchArtists({ collection: this.model.artist })
+        this.model.album.view  = new View.SearchAlbums({ collection: this.model.album })
+        this.model.track.view  = new View.SearchTracks({ collection: this.model.track })
+      } else {
+//        $search.find('.artists').replaceWith(this.model.artist.view.render().el)
+//        $search.find('.albums').replaceWith(this.model.album.view.render().el)
+//        $search.find('.tracks').replaceWith(this.model.track.view.render().el)
+      }
     }
-  });
+  })
 
 
   //
@@ -26,23 +32,23 @@ $(function() {
     lastfmAPIKey: '75c8c3065db32d805a292ec1af5631a3',
 
     initialize: function() {
-      this.artist = new Collection.Artists();
-      this.album  = new Collection.Albums();
-      this.track  = new Collection.Tracks();
+      this.artist = new Collection.Artists()
+      this.album  = new Collection.Albums()
+      this.track  = new Collection.Tracks()
 
-      this.view = new View.Search({ model: this });
+      this.view = new View.Search({ model: this })
 
-      this.artist.page = 1;
-      this.album.page  = 1;
-      this.track.page  = 1;
+      this.artist.page = 1
+      this.album.page  = 1
+      this.track.page  = 1
 
-      this.query();
+      this.query()
     },
 
     // Debounce will keep the queries from firing off if back/forward is repeatedly pressed.
     query: _.debounce(function(types) {
-      var self = this;
-      types = types || [ 'artist', 'album', 'track' ];
+      var self = this
+      types = types || [ 'artist', 'album', 'track' ]
 
       _.forEach(types, function(type) {
         var params = {
@@ -52,48 +58,48 @@ $(function() {
           autocorrect : 1,
           format      : 'json',
           callback    : 'window.Search.queryCallback',
-        };
-        params[type] = self.get('query');
+        }
+        params[type] = self.get('query')
 
-        $.getScript('http://ws.audioscrobbler.com/2.0/?' + $.param(params));
-      });
+        $.getScript('http://ws.audioscrobbler.com/2.0/?' + $.param(params))
+      })
     }, 600),
 
     queryCallback: function(data) {
-      var self = this;
+      var self = this
       if (!self.isCurrentQuery(data.results)) {
-        return;
+        return
       }
 
       // Figure out the type by searching json, e.g. results.artistmatches
       _.forEach([ 'artist', 'album', 'track' ], function(type) {
         if (_.isUndefined(data.results[type + 'matches'])) {
-          return;
+          return
         }
-        self[type].loading = false;
+        self[type].loading = false
 
-        self[type].page++;
-        self[type].view.render();
+        self[type].page++
+        self[type].view.render()
         _.forEach(data.results[type + 'matches'][type], function(result) {
-          self[type].add(self.resultToJSON(type, result));
-        });
-      });
+          self[type].add(self.resultToJSON(type, result))
+        })
+      })
     },
 
     loadMore: function(type) {
       if (this[type].loading) {
-        return;
+        return
       }
-      this[type].loading = true;
-      this.query([ 'track' ]);
+      this[type].loading = true
+      this.query([ 'track' ])
     },
 
     isCurrentQuery: function(results) {
-      return results ? (this.get('query') == results['@attr'].for) : false;
+      return results ? (this.get('query') == results['@attr'].for) : false
     },
 
     resultToJSON: function(type, result) {
-      var self = this;
+      var self = this
       switch (type) {
         case 'track':
           return new Model.Track({
@@ -101,45 +107,45 @@ $(function() {
             name      : result.name,
             image     : self.resultImage(result),
             listeners : result.listeners || 0
-          });
+          })
         case 'artist':
           return new Model.Artist({
             name      : result.name,
             image     : self.resultImage(result),
             listeners : result.listeners || 0
-          });
+          })
         case 'album':
           return new Model.Album({
             artist  : result.artist,
             name    : result.name,
             albumid : result.id,
             image   : self.resultImage(result),
-          });
+          })
         case 'tag':
           return new Model.Tag({
             name  : result.name,
             count : result.count
-          });
+          })
         default:
-          return null;
+          return null
       }
     },
 
     resultImage: function(result, size){
       var src = '',
-          size = size || 'large';
+          size = size || 'large'
       if (_.isArray(result.image)) {
         _.each(result.image, function(image) {
           if (image.size == size) {
-            src = image['#text'];
+            src = image['#text']
           }
-        });
+        })
       } else if (!_.isUndefined(result.image)) {
-        src = result.image;
+        src = result.image
       }
-      return src;
+      return src
     }
-  });
+  })
 
 
   //
@@ -149,15 +155,15 @@ $(function() {
     tagName: 'li',
 
     initialize: function() {
-      this.model.view = this;
-      this.render();
+      this.model.view = this
+      this.render()
     },
 
     render: function() {
-      $(this.el).html(this.template(this.model.toJSON()));
-      return this;
+      $(this.el).html(this.template(this.model.toJSON()))
+      return this
     }
-  });
+  })
 
 
   //
@@ -169,33 +175,35 @@ $(function() {
     templateEmpty: _.template($('#search-empty-template').html()),
 
     initialize: function() {
-      var self = this;
+      var self = this
 
-      ['artist', 'album', 'track'].forEach(function(type) {
+      ;['artist', 'album', 'track'].forEach(function(type) {
         if (self.collection.model == Model[type.capitalize()]) {
-          self.type = type;
+          self.type = type
         }
-      });
+      })
 
-      self.collection.bind('add', self.addModel);
-      _.bindAll(self, 'addModel');
+      self.collection.bind('add', self.addModel)
+      _.bindAll(self, 'addModel')
     },
 
     render: function() {
       if (this.collection.models.length == 0) {
-        $(this.el).html(this.templateEmpty({ type: this.type }));
+        $(this.el).html(this.templateEmpty({ type: this.type }))
       }
+      return this
     },
 
     addModel: function(model) {
       if (this.models.length == 1) {
-        $(this.view.el).html(this.view.template());
+        $(this.view.el).html(this.view.template())
+        $('#search').find('.' + this.view.type + 's').replaceWith(this.view.render().el)
       }
 
-      var view = new this.view.viewObject({ model : model });
-      $(this.view.el).find(this.view.viewInner).append(view.el);
+      var view = new this.view.viewObject({ model : model })
+      $(this.view.el).find(this.view.viewInner).append(view.el)
     }
-  });
+  })
 
 
   //
@@ -212,22 +220,25 @@ $(function() {
     },
 
     play: function() {
-      this.queueTrack('play');
+      this.queueTrack('play')
     },
 
     // Adds selected tracks to NowPlaying collection.
     queueTrack: function(method) {
-      $(this.el).addClass('selected');
+      $(this.el).addClass('selected')
       NowPlaying.add(_(Search.track.models).chain()
         .map(function(track) {
           if (!$(track.view.el).hasClass('selected')) {
-            return null;
+            return null
           }
-          $(track.view.el).removeClass('selected');
-          return (new Model.Track(track.toJSON()));
-        }).compact().value(), { method: method });
+          $(track.view.el).removeClass('selected')
+
+          var copyTrack = new Model.Track(track.toJSON())
+          copyTrack.playlist = NowPlaying
+          return copyTrack
+        }).compact().value(), { method: method })
     }
-  }, Mixins.TrackSelection));
+  }, Mixins.TrackSelection))
 
 
   //
@@ -240,8 +251,8 @@ $(function() {
 
     viewObject: View.SearchTrack,
     viewInner: 'table tbody'
-  });
+  })
 
 
-});
+})
 
