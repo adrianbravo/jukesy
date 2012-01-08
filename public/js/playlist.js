@@ -58,6 +58,7 @@ $(function() {
       // Loads tracks collection or converts its json to a new collection, silently.
       self.set({ tracks: new Collection.Tracks(self.get('tracks') || []) }, { silent: true })
       self.bind('change', self.saveLocally)
+      self.bind('change', self.renderIfVisible)
 
       self.oldToJSON = self.toJSON
       self.toJSON = function() {
@@ -101,16 +102,18 @@ $(function() {
       }
       // TODO handle saving remotely
     },
+    
+    renderIfVisible: function() {
+      if ($(this.view.el).is(':visible')) {
+        this.view.render()
+      }
+    },
 
     add: function(tracks, options) {
       var self = this
 
       self.get('tracks').add(tracks)
       self.buildTrackViews(tracks)
-
-      if ($(self.view.el).is(':visible')) {
-        self.view.render()
-      }
 
       if (self === window.NowPlaying && !_.isUndefined(window.NowPlayingTrack) && _.include(['play', 'next'], options.method)) {
         if (options.method == 'play') {
