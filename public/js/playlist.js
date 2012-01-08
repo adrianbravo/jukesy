@@ -119,6 +119,7 @@ $(function() {
       } else {
         tracks[0].play()
       }
+      this.change();
     },
 
     // Remove a track from the model.
