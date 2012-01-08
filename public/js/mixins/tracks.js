@@ -8,8 +8,7 @@ $(function(){
       if (e.shiftKey) {
         this.fillSelected($(this.el), $(window.lastSelected));
       } else if (!(e.altKey || e.metaKey)) {
-        $(this.el).removeClass('selected').siblings().removeClass('selected');
-        $(this.el).toggleClass('selected');
+        $(this.el).toggleClass('selected').siblings().removeClass('selected');
       } else {
         $(this.el).toggleClass('selected');
       }
