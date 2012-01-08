@@ -1,7 +1,7 @@
 #app
   #header
     a.home(data-href= '#/')= __('jukesy')
-    input#query(name= 'jksy_query', type= 'text', value= '', placeholder= __('search for music'), spellcheck= 'false')
+    input#query.input(name= 'jksy_query', type= 'text', value= '', placeholder= __('search for music'), spellcheck= 'false')
     #login= __('login')
   #sidebar
     #quickbar
@@ -95,6 +95,9 @@ script#playlists-template(type= 'text/template')
 
 script#playlist-short-template(type= 'text/template')
   != partial('backbone/_playlist_short')
+
+script#playlist-short-edit-template(type= 'text/template')
+  != partial('backbone/_playlist_short_edit')
 
 script#playlist-template(type= 'text/template')
   != partial('backbone/_playlist')

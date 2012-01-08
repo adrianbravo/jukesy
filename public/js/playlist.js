@@ -181,7 +181,13 @@ $(function() {
     tagName: 'li',
 
     template: _.template($('#playlist-short-template').html()),
+    editTemplate: _.template($('#playlist-short-edit-template').html()),
 
+    events: {
+      'click .active'  : 'startEdit',
+      'keypress input' : 'rename'
+    },
+    
     initialize: function() {
       _.bindAll(this, 'render')
       this.model.shortView = this
@@ -190,6 +196,28 @@ $(function() {
     render: function() {
       $(this.el).html(this.template(this.model.toJSON()))
       return this
+    },
+
+    startEdit: function() {
+      var self = this
+
+      $(this.el)
+        .html(this.editTemplate(this.model.toJSON()))
+        .find('input')
+        .focus()
+        .blur(this.stopEdit)
+    },
+    
+    stopEdit: function() {
+      this.render()
+      $(this.el).find('a').addClass('active')
+    },
+    
+    rename: function(e) {
+      if (e.keyCode === 13) {
+        this.model.set({ name: $(this.el).find('input').val() })
+        this.stopEdit()
+      }
     }
   })
 
