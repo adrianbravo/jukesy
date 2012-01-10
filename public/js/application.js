@@ -113,13 +113,18 @@ $(function() {
       switch (e.keyCode) {
         case 8: // DELETE
           if (window.visiblePlaylist == window.lastSelected) {
-            visiblePlaylist.destroy({
-              success: function(model, response) {
-                model.view.remove()
-                model.shortView.remove()
-                Router.navigate('/', true)
-              }
-            });
+            // TODO Replace confirm with modal dialog.
+            if (confirm('Delete the playlist: ' + visiblePlaylist.get('name') + '?')) {
+              visiblePlaylist.destroy({
+                success: function(model, response) {
+                  model.view.remove()
+                  model.shortView.remove()
+                  Router.navigate('/', true)
+                }
+              })
+            } else {
+              // Did not delete.
+            }
           } else if (window.visiblePlaylist) {
             // TODO what if removed track is now playing
             var tracks = _.filter(visiblePlaylist.tracks(), function(track) {
