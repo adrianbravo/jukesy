@@ -184,12 +184,13 @@ $(function() {
     editTemplate: _.template($('#playlist-short-edit-template').html()),
 
     events: {
+      'click'          : 'setLastSelected',
       'click .active'  : 'editEnable',
       'keypress input' : 'rename'
     },
     
     initialize: function() {
-      _.bindAll(this, 'render', 'editEnable', 'editDisable')
+      _.bindAll(this, 'render', 'setLastSelected', 'editEnable', 'editDisable')
       this.model.shortView = this
     },
 
@@ -198,9 +199,12 @@ $(function() {
       return this
     },
 
-    editEnable: function() {
+    setLastSelected: function() {
       var self = this
+      _.defer(function() { lastSelected = self.model })
+    },
 
+    editEnable: function() {
       $(this.el)
         .html(this.editTemplate(this.model.toJSON()))
         .find('input')

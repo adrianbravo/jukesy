@@ -5,6 +5,7 @@ var assets = {
     'js/lib/underscore-min.js',
     'js/lib/backbone.js',
     'js/lib/backbone.localStorage.js',
+    'js/lib/backbone_router_filter.js',
     'js/lib/swfobject.js',
     'js/lib/less-1.1.3.min.js',
     'js/lib/jquery.mousewheel.js',

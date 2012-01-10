@@ -5,11 +5,6 @@ $(function() {
   // Local routes (single-page app style, motherfucker)
   //
   AppRouter = Backbone.Router.extend({
-    initialize: function() {
-      this.bind('appview', Video.fullscreenOff)
-      this.bind('appview', this.hideViews)
-    },
-
     routes: {
       '/'              : 'home',
       '/search/:query' : 'searchAll',
@@ -25,53 +20,42 @@ $(function() {
       //'/local/playlists'      : 'playlistsIndex',
     },
 
-    hideViews: function() {
+    before: function() {
+      visiblePlaylist = null
+      lastSelected = null
+      Video.fullscreenOff
       $('#main').hide()
+      $('#quickbar').data('jsp').reinitialise()
     },
 
     home: function() {
-      this.trigger('appview')
       MainView.render(NowPlaying)
-      $('#main').show()
     },
 
     settings: function() {
-      this.trigger('appview')
       MainView.render('settings')
-      $('#main').show()
     },
 
     favorites: function() {
-      this.trigger('appview')
       MainView.render('favorites')
-      $('#main').show()
     },
 
     tagRadio: function() {
-      this.trigger('appview')
       MainView.render('tagRadio')
-      $('#main').show()
     },
 
     broadcasts: function() {
-      this.trigger('appview')
       MainView.render('broadcasts')
-      $('#main').show()
     },
 
     playlistView: function(id) {
-      this.trigger('appview')
       MainView.render(Playlists.get(id))
-      $('#main').show()
     },
 
     searchAll: function(query) {
       query = decodeURIComponent(query)
       window.Search = new Model.Search({ query: query })
-
-      this.trigger('appview')
       MainView.render(Search)
-      $('#main').show()
     }
   })
 
@@ -128,9 +112,14 @@ $(function() {
 
       switch (e.keyCode) {
         case 8: // DELETE
-          // TODO if lastSelected is null...
-          if (!window.lastSelected) {
-            console.log('no track selected to delete, delete playlist')
+          if (window.visiblePlaylist == window.lastSelected) {
+            visiblePlaylist.destroy({
+              success: function(model, response) {
+                model.view.remove()
+                model.shortView.remove()
+                Router.navigate('/', true)
+              }
+            });
           } else if (window.visiblePlaylist) {
             // TODO what if removed track is now playing
             var tracks = _.filter(visiblePlaylist.tracks(), function(track) {
@@ -224,8 +213,6 @@ $(function() {
 
     // target can be a model object or a string for a basic template
     render: function(target) {
-      lastSelected = null
-      visiblePlaylist = null
       $(this.el).html('')
 
       if (typeof target == 'object') {
@@ -240,6 +227,7 @@ $(function() {
         $('#quickbar a').removeClass('active')
         $('#quickbar a[data-href="#' + Backbone.history.fragment + '"]').addClass('active')
       }
+      $('#main').show()
     }
   })
 
