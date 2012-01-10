@@ -196,6 +196,9 @@ $(function() {
 
     render: function() {
       $(this.el).html(this.template(this.model.toJSON()))
+      if (this == window.visiblePlaylist) {
+        $(this.el).addClass('active')
+      }
       return this
     },
 

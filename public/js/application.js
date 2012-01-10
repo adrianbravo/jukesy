@@ -25,6 +25,7 @@ $(function() {
       lastSelected = null
       Video.fullscreenDisable()
       $('#main').hide()
+      $('#quickbar a').removeClass('active')
       $('#quickbar').data('jsp').reinitialise()
     },
 
@@ -206,7 +207,6 @@ $(function() {
     initialize: function() {
       // Auto-load more search results on scroll.
       $('#main-wrapper').bind('scroll', this.loadMore())
-
       this.render()
       this.delegateEvents()
     },
@@ -231,14 +231,10 @@ $(function() {
         $(this.el).html(this.template[target])
       }
 
-      if (Backbone && Backbone.history) {
-        $('#quickbar a').removeClass('active')
-        $('#quickbar a[data-href="#' + Backbone.history.fragment + '"]').addClass('active')
-      }
+      Backbone && Backbone.history && $('#quickbar a[data-href="#' + Backbone.history.fragment + '"]').addClass('active')
       $('#main').show()
     }
   })
-
 
 })
 
