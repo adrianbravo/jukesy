@@ -83,9 +83,9 @@ $(function() {
     el: $(document),
 
     events: {
-      'keypress #query'      : 'searchAll',
-      'keydown'              : 'keyMapper',
-      'keyup'                : 'setMaxVolume'
+      'keypress #query' : 'searchAll',
+      'keydown'         : 'keyMapper',
+      'keyup'           : 'setMaxVolume'
       //'click #login'         : 'login'
     },
 
@@ -127,8 +127,11 @@ $(function() {
       }
 
       switch (e.keyCode) {
-        case 8: // Delete tracks
-          if (window.visiblePlaylist) {
+        case 8: // DELETE
+          // TODO if lastSelected is null...
+          if (!window.lastSelected) {
+            console.log('no track selected to delete, delete playlist')
+          } else if (window.visiblePlaylist) {
             // TODO what if removed track is now playing
             var tracks = _.filter(visiblePlaylist.tracks(), function(track) {
               return $(track.view.el).hasClass('selected')

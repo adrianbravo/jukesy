@@ -184,12 +184,12 @@ $(function() {
     editTemplate: _.template($('#playlist-short-edit-template').html()),
 
     events: {
-      'click .active'  : 'startEdit',
+      'click .active'  : 'editEnable',
       'keypress input' : 'rename'
     },
     
     initialize: function() {
-      _.bindAll(this, 'render', 'startEdit', 'stopEdit')
+      _.bindAll(this, 'render', 'editEnable', 'editDisable')
       this.model.shortView = this
     },
 
@@ -198,17 +198,17 @@ $(function() {
       return this
     },
 
-    startEdit: function() {
+    editEnable: function() {
       var self = this
 
       $(this.el)
         .html(this.editTemplate(this.model.toJSON()))
         .find('input')
         .focus()
-        .blur(this.stopEdit)
+        .blur(this.editDisable)
     },
     
-    stopEdit: function() {
+    editDisable: function() {
       this.render()
       $(this.el).find('a').addClass('active')
     },
@@ -216,7 +216,7 @@ $(function() {
     rename: function(e) {
       if (e.keyCode === 13) {
         this.model.set({ name: $(this.el).find('input').val() })
-        this.stopEdit()
+        this.editDisable()
       }
     }
   })
