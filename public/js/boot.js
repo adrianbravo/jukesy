@@ -12,14 +12,6 @@ window.Model = {}
 window.View = {}
 window.Mixins = {}
 
-// Conditional logger.
-function debug() {
-  if (true) {
-    _.each(_.toArray(arguments), function(message) {
-      console.log(message)
-    });
-  }
-}
 
 //
 // YouTube API Player callback executes when the chromeless player is read. The function name cannot be changed.
@@ -59,7 +51,10 @@ var windowResized = function() {
   } else {
     // Unset video-shim's height and redraw the quickbar's scrollbar.
     $('#video-shim').height('')
-    $('#quickbar').data('jsp').reinitialise()
+    var jsp = $('#quickbar').data('jsp')
+    if (jsp) {
+      jsp.reinitialise()
+    }
   }
 }
 

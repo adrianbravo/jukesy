@@ -234,14 +234,50 @@ $(function() {
       Backbone && Backbone.history && $('#quickbar a[data-href="#' + Backbone.history.fragment + '"]').addClass('active')
       $('#main').show()
     }
+  }),
+
+  //
+  // Quickbar viewport -- this is where now playing, settings, playlists, etc. are linked
+  //
+  View.Quickbar = Backbone.View.extend({
+    el: '#quickbar',
+
+    events: {
+      'click #new-playlist': 'playlistCreate'
+    },
+
+    template: _.template($('#quickbar-template').html()),
+
+    initialize: function() {
+      _.bindAll(this, 'playlistCreate')
+      this.render()
+    },
+
+    playlistCreate: function() {
+      var playlist = new Model.Playlist()
+      playlist.autosave = true
+
+      playlist.save()
+      Playlists.models.push(playlist)
+      Playlists.reset(Playlists.models)
+      Playlists.view.render()
+
+      playlist.shortView.editEnable()
+      Backbone.history.navigate('/local/playlists/' + playlist.get('id'), true)
+    },
+
+    render: function() {
+      $(this.el).html(this.template())
+      $('#quickbar').jScrollPane({ verticalGutter: -8, enableKeyboardNavigation: false })
+      if (Playlists && Playlists.view) {
+        Playlists.view.render()
+      }
+    }
   })
 
 })
 
 $(function() {
-  // Set up jscrollpane in the quickbar
-  $('#quickbar').jScrollPane({ verticalGutter: -8, enableKeyboardNavigation: false })
-
   // Bind resize and call it once.
   $(window).resize(_.debounce(windowResized))
   windowResized()
@@ -256,9 +292,6 @@ $(function() {
   var playlist = new Model.Playlist()
   playlist.nowPlaying()
 
-  Playlists.fetch()
-  PlaylistsView = new View.Playlists({ quickbar: true })
-
   window.MainView = new View.Main()
+  window.QuickbarView = new View.Quickbar()
 })
-

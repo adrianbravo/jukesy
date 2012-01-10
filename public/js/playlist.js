@@ -20,18 +20,16 @@ $(function() {
       var self = this
 
       $('#quickbar a').removeClass('active')
-
-      this.el.html(this.template({
+      self.el.html(self.template({
         empty: _.isEmpty(Playlists.models),
-        quick: this.options.quickbar
+        quick: self.options.quickbar
       }))
 
       _.each(Playlists.models, function(playlist) {
-        var view = new View.PlaylistShort({ model: playlist })
-        self.el.find('.playlists ul').append(view.render().el)
+        self.el.find('.playlists ul').append(playlist.shortView.render().el)
       })
 
-      if (this.options.quickbar) {
+      if (self.options.quickbar) {
         windowResized()
       }
     }
@@ -73,6 +71,7 @@ $(function() {
 
       self.buildTrackViews(self.tracks())
       self.view = new View.Playlist({ model: self })
+      self.shortView = new View.PlaylistShort({ model: self })
     },
 
     tracks: function() {
@@ -191,7 +190,6 @@ $(function() {
     
     initialize: function() {
       _.bindAll(this, 'render', 'setLastSelected', 'editEnable', 'editDisable')
-      this.model.shortView = this
     },
 
     render: function() {
@@ -199,6 +197,7 @@ $(function() {
       if (this == window.visiblePlaylist) {
         $(this.el).addClass('active')
       }
+      this.delegateEvents()
       return this
     },
 
@@ -234,7 +233,14 @@ $(function() {
   //
   Collection.Playlists = Backbone.Collection.extend({
     model: Model.Playlist,
-    localStorage: new Store('Playlists')
+    localStorage: new Store('Playlists'),
+    initialize: function() {
+      var self = this
+      _.defer(function() {
+        self.fetch()
+        self.view = new View.Playlists({ quickbar: true })
+      })
+    }
   })
 
 
