@@ -23,7 +23,7 @@ $(function() {
     before: function() {
       visiblePlaylist = null
       lastSelected = null
-      Video.fullscreenOff
+      Video.fullscreenDisable()
       $('#main').hide()
       $('#quickbar').data('jsp').reinitialise()
     },
@@ -111,6 +111,9 @@ $(function() {
       }
 
       switch (e.keyCode) {
+        case 192: //ESCAPE
+          Video.fullscreenDisable()
+          return false
         case 8: // DELETE
           if (window.visiblePlaylist == window.lastSelected) {
             // TODO Replace confirm with modal dialog.
@@ -134,7 +137,7 @@ $(function() {
               visiblePlaylist.remove(tracks)
             }
           }
-          return false;
+          return false
         case 65: // CTRL-A, META-A
           if (e.metaKey || e.ctrlKey) {
             var $el = $(Search.track.view.el),
@@ -221,7 +224,7 @@ $(function() {
       $(this.el).html('')
 
       if (typeof target == 'object') {
-        visiblePlaylist = target;
+        visiblePlaylist = target
         $(this.el).html(target.view.render().el)
       } else {
         target = target || 'home'

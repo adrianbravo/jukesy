@@ -17,25 +17,27 @@ $(function() {
                          { id: 'video' }                                         // attributes
       );
 
-      _.bindAll(this, 'toggleFullscreen', 'fullscreenOff');
+      _.bindAll(this, 'toggleFullscreen');
     },
 
-    fullscreenOff: function() {
-      if (this.fullscreen) {
-        this.toggleFullscreen();
-      }
+    fullscreenDisable: function() {
+      this.fullscreen = false;
+      $('#fullscreen').removeClass('off');
+      $('body').removeClass('fullscreen');
+      $('#video').width('').height('');
+    },
+
+    fullscreenEnable: function() {
+      this.fullscreen = true;
+      $('#fullscreen').addClass('off');
+      $('body').addClass('fullscreen');
     },
 
     toggleFullscreen: function() {
       if (this.fullscreen) {
-        this.fullscreen = false;
-        $('#fullscreen').removeClass('off');
-        $('body').removeClass('fullscreen');
-        $('#video').width('').height('');
+        this.fullscreenDisable()
       } else {
-        this.fullscreen = true;
-        $('#fullscreen').addClass('off');
-        $('body').addClass('fullscreen');
+        this.fullscreenEnable()
       }
       windowResized();
       Controls.update();
