@@ -67,6 +67,8 @@ $(function() {
   View.Track = Backbone.View.extend(_.extend({
     tagName: 'tr',
 
+    className: 'track',
+
     template: _.template($('#track-template').html()),
 
     events: {

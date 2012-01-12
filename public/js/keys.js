@@ -91,12 +91,18 @@ $(function() {
     
     // CTRL-A, META-A
     k65: function(e) {
-      if (e.metaKey || e.ctrlKey) {
-        // Rewrite to check Search vs. visiblePlaylist
-        // This should use the mixin if possible
-        var $el = $(Search.track.view.el),
-            trackView = Search.track.view.collection.models[0].view,
-            selector = trackView.tagName + '.' + trackView.className
+      if ((e.metaKey || e.ctrlKey) && window.visiblePlaylist) {
+        var $el, trackView, selector
+
+        if (visiblePlaylist.query) {
+          $el = $(Search.track.view.el)
+          trackView = Search.track.view.collection.models[0].view
+          selector = trackView.tagName + '.' + trackView.className
+        } else {
+          $el = $(visiblePlaylist.view.el)
+          trackView = visiblePlaylist.tracks()[0].view
+          selector = trackView.tagName + '.' + trackView.className
+        }
 
         if ($el.find(selector + '.selected').length < $el.find(selector).length) {
           $el.find(selector).addClass('selected')
@@ -145,6 +151,5 @@ $(function() {
     
   }
   
-  console.log('bind')
   _.bindAll(KeyMapper, 'keypressHasModifier', 'k8', 'k32', 'k37', 'k38', 'k39', 'k40', 'k65', 'k70', 'k77', 'k82', 'k191', 'k192')
 })
