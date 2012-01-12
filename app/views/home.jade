@@ -184,10 +184,11 @@ script#playlists-template(type= 'text/x-handlebars-template')
     ul
 
 script#playlist-short-template(type= 'text/x-handlebars-template')
-  != partial('backbone/_playlist_short')
+  a.playlist(data-href= '#/local/playlists/{{id}}') {{name}}
 
 script#playlist-short-edit-template(type= 'text/x-handlebars-template')
-  != partial('backbone/_playlist_short_edit')
+  a.playlist.edit.active(data-href= '#/local/playlists/{{id}}')
+    input.input(name= 'name', type= 'text', value= '{{name}}')
 
 script#playlist-template(type= 'text/x-handlebars-template')
   #playlist
@@ -226,10 +227,12 @@ script#now-playing-empty-template(type= 'text/x-handlebars-template')
 //
 
 script#modal-template(type= 'text/x-handlebars-template')
-  != partial('backbone/_modal')
+  .modal_wrapper
+    .modal_bg
+    .modal
 
 script#login-template(type= 'text/x-handlebars-template')
-  != partial('backbone/_login')
+  div log in
 
 script(src= 'http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js')
 script(src= 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js')
