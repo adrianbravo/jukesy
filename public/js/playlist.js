@@ -195,8 +195,8 @@ $(function() {
 
     render: function() {
       $(this.el).html(this.template(this.model.toJSON()))
-      if (this == window.visiblePlaylist) {
-        $(this.el).addClass('active')
+      if (this.model == window.visiblePlaylist) {
+        $(this.el).find('a').addClass('active')
       }
       this.delegateEvents()
       return this

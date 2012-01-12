@@ -23,8 +23,6 @@ var assets = {
     'js/user.js',
 
     'js/playlist.js',
-    'js/nowplaying.js',
-
     'js/controls.js',
     'js/video.js',
     'js/application.js'

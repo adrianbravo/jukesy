@@ -131,11 +131,22 @@ $(function() {
             }
           } else if (window.visiblePlaylist) {
             // TODO what if removed track is now playing
-            var tracks = _.filter(visiblePlaylist.tracks(), function(track) {
+            var tracksToRemove = _.filter(visiblePlaylist.tracks(), function(track) {
               return $(track.view.el).hasClass('selected')
             })
-            if (tracks.length) {
-              visiblePlaylist.remove(tracks)
+
+            // Select next track to play
+            var nextTrack = false
+            if (window.NowPlayingTrack && $(NowPlayingTrack.view.el).hasClass('selected')) {
+              nextTrack = NowPlayingTrack.nextUnselected()
+            }
+
+            if (tracksToRemove.length) {
+              visiblePlaylist.remove(tracksToRemove)
+            }
+            
+            if (nextTrack) {
+              nextTrack.play()
             }
           }
           return false

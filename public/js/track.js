@@ -6,39 +6,53 @@ $(function() {
   //
   Model.Track = Backbone.Model.extend({
     play: function() {
-      var self = this;
+      var self = this
 
       if (Video.loading) {
-        return false;
+        return false
       }
 
       if (NowPlaying != this.playlist) {
-        this.playlist.nowPlaying();
+        this.playlist.nowPlaying()
       }
-      NowPlayingTrack = this;
+      NowPlayingTrack = this
 
       if (_.isUndefined(this.videos)) {
-        this.getVideos();
+        this.getVideos()
       } else if (_.isEmpty(this.videos)) {
-        Video.error();
+        Video.error()
       } else {
         _.defer(function() {
-          Controls.$songInfo.html(window.Controls.songInfoTemplate(self.toJSON()));
-        });
+          Controls.$songInfo.html(window.Controls.songInfoTemplate(self.toJSON()))
+        })
 
         if ($(this.view.el).is(':visible')) {
-          this.view.setPlaying();
+          this.view.setPlaying()
         }
 
-        Video.skipToPrev = false;
-        Video.load(this.videos[0]);
+        Video.skipToPrev = false
+        Video.load(this.videos[0])
       }
     },
 
     getVideos: function() {
-      window.Video.searchByArtistAndTrack(this.get('artist'), this.get('name'), 'Video.setTrackVideoIds');
+      window.Video.searchByArtistAndTrack(this.get('artist'), this.get('name'), 'Video.setTrackVideoIds')
+    },
+    
+    nextUnselected: function() {
+      var self = this,
+          nextTrack = false
+      _.each(this.playlist.tracks(), function(track) {
+        var selected = $(track.view.el).hasClass('selected')
+        if (nextTrack === true && !selected) {
+          nextTrack = track
+        } else if (track == self) {
+          nextTrack = true
+        }
+      })
+      return nextTrack
     }
-  });
+  })
 
 
   //
@@ -55,28 +69,28 @@ $(function() {
     },
 
     initialize: function() {
-      _.bindAll(this, 'setPlaying');
+      _.bindAll(this, 'setPlaying')
     },
 
     render: function() {
-      this.delegateEvents(this.events);
-      $(this.el).html(this.template(this.model.toJSON()));
+      this.delegateEvents(this.events)
+      $(this.el).html(this.template(this.model.toJSON()))
       if (this.model === window.NowPlayingTrack) {
-        _.defer(this.setPlaying);
+        _.defer(this.setPlaying)
       }
-      return this;
+      return this
     },
 
     play: function() {
-      this.model.play();
-      this.setPlaying();
-      $(this.el).siblings().removeClass('selected');
+      this.model.play()
+      this.setPlaying()
+      $(this.el).siblings().removeClass('selected')
     },
 
     setPlaying: function() {
-      $(this.el).addClass('playing').siblings().removeClass('playing');
+      $(this.el).addClass('playing').siblings().removeClass('playing')
     }
-  }, Mixins.TrackSelection));
+  }, Mixins.TrackSelection))
 
 
   //
