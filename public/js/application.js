@@ -136,16 +136,23 @@ $(function() {
             })
 
             // Select next track to play
-            var nextTrack = false
+            var nextTrack = false,
+                pauseNext = false
             if (window.NowPlayingTrack && $(NowPlayingTrack.view.el).hasClass('selected')) {
+              if (Video.isNotPlaying) {
+                pauseNext = true
+              }
               nextTrack = NowPlayingTrack.nextUnselected()
             }
 
             if (tracksToRemove.length) {
               visiblePlaylist.remove(tracksToRemove)
             }
-            
+
             if (nextTrack) {
+              if (pauseNext) {
+                Video.pauseNext()
+              }
               nextTrack.play()
             }
           }

@@ -50,7 +50,13 @@ $(function() {
           nextTrack = true
         }
       })
-      return nextTrack
+      
+      if (!nextTrack || nextTrack === true) {
+        var first = this.playlist.tracks()[0]
+        return (first != this) ? first : null
+      } else {
+        return nextTrack
+      }
     }
   })
 

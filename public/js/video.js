@@ -15,22 +15,22 @@ $(function() {
                          null,    // flashVarsObj
                          { allowScriptAccess: 'always', wmode: 'transparent' },  // parameters
                          { id: 'video' }                                         // attributes
-      );
+      )
 
-      _.bindAll(this, 'toggleFullscreen');
+      _.bindAll(this, 'toggleFullscreen')
     },
 
     fullscreenDisable: function() {
-      this.fullscreen = false;
-      $('#fullscreen').removeClass('off');
-      $('body').removeClass('fullscreen');
-      $('#video').width('').height('');
+      this.fullscreen = false
+      $('#fullscreen').removeClass('off')
+      $('body').removeClass('fullscreen')
+      $('#video').width('').height('')
     },
 
     fullscreenEnable: function() {
-      this.fullscreen = true;
-      $('#fullscreen').addClass('off');
-      $('body').addClass('fullscreen');
+      this.fullscreen = true
+      $('#fullscreen').addClass('off')
+      $('body').addClass('fullscreen')
     },
 
     toggleFullscreen: function() {
@@ -39,177 +39,191 @@ $(function() {
       } else {
         this.fullscreenEnable()
       }
-      windowResized();
-      Controls.update();
+      windowResized()
+      Controls.update()
     },
 
     loadRatio: function() {
-      return this.player.getVideoBytesLoaded() / this.player.getVideoBytesTotal();
+      return this.player.getVideoBytesLoaded() / this.player.getVideoBytesTotal()
     },
 
     playRatio: function() {
-      return this.player.getCurrentTime() / this.player.getDuration();
+      return this.player.getCurrentTime() / this.player.getDuration()
     },
 
     timers: function() {
       var current   = Math.floor(this.player.getCurrentTime()),
-          remaining = Math.ceil(this.player.getDuration() - current);
+          remaining = Math.ceil(this.player.getDuration() - current)
 
       return [
         this.humanizeSeconds(current),
         this.humanizeSeconds(remaining)
-       ];
+       ]
     },
 
     humanizeSeconds: function(s) {
       var minutes = Math.floor(s / 60),
-          seconds = Math.floor(s % 60);
+          seconds = Math.floor(s % 60)
       if (seconds < 10) {
-        seconds = "0" + seconds;
+        seconds = "0" + seconds
       }
-      return minutes + ":" + seconds;
+      return minutes + ":" + seconds
     },
 
     volume: function(volume) {
-      this.player.setVolume(volume);
+      this.player.setVolume(volume)
     },
 
     seek: function(time) {
-      this.player.seekTo(time, false);
+      this.player.seekTo(time, false)
     },
 
     duration: function() {
-      return this.player.getDuration();
+      return this.player.getDuration()
     },
 
     currentTime: function() {
-      return this.player.getCurrentTime();
+      return this.player.getCurrentTime()
     },
 
     load: function(id) {
       if (this.state == 3) {
-        return;
+        return
       }
-      this.player.loadVideoById(id);
+      this.player.loadVideoById(id)
     },
 
     pause: function() {
-      this.player.pauseVideo();
+      this.player.pauseVideo()
     },
 
     stop: function() {
-      this.stopped = true;
-      this.pause();
-      $(NowPlaying.view.el).find('.playing').removeClass('playing');
-      this.onStateChange(-1);
+      this.stopped = true
+      this.pause()
+      $(NowPlaying.view.el).find('.playing').removeClass('playing')
+      this.onStateChange(-1)
     },
 
     play: function() {
-      this.stopped = false;
-      this.player.playVideo();
+      this.stopped = false
+      this.player.playVideo()
       if (this.state != 1) {
-        this.seek(Math.floor(this.currentTime()));
+        this.seek(Math.floor(this.currentTime()))
       }
     },
 
     next: function() {
-      var next = false;
+      var next = false
       _.each(NowPlaying.tracks(), function(trackModel) {
         if (next == true) {
-          next = trackModel;
+          next = trackModel
         }
         if (window.NowPlayingTrack === trackModel) {
-          next = true;
+          next = true
         }
-      });
+      })
 
       if (next == true || next == false) {
-        next = _.first(NowPlaying.tracks());
+        next = _.first(NowPlaying.tracks())
       }
 
-      next.play();
+      next.play()
+    },
+    
+    pauseNext: function() {
+      this.pauseNextState = true
+    },
+    
+    isNotPlaying: function() {
+      return this.state != 1
     },
 
     prev: function() {
       if (this.currentTime() > 2) {
-        this.seek(0);
-        return;
+        this.seek(0)
+        return
       }
 
-      this.skipToPrev = true;
+      this.skipToPrev = true
 
-      var prev = null, prevSet = false;
+      var prev = null, prevSet = false
       if (window.NowPlayingTrack === _.first(NowPlaying.tracks())) {
-        prev = _.last(NowPlaying.tracks());
+        prev = _.last(NowPlaying.tracks())
       } else {
         _.each(NowPlaying.tracks(), function(trackModel) {
-          if (window.NowPlayingTrack === trackModel) prevSet = true;
+          if (window.NowPlayingTrack === trackModel) prevSet = true
           if (!prevSet) prev = trackModel
-        });
+        })
       }
 
-      prev.play();
+      prev.play()
     },
 
     onStateChange: function(state) {
-      this.state = state;
+      this.state = state
       if (this.state == -1) {
-        Controls.$songInfo.html('');
+        Controls.$songInfo.html('')
       }
-      if (this.state == 0) this.next();
-      this.player.setPlaybackQuality('hd720');
-      window.Controls.updatePlay();
+      if (this.state == 0) {
+        this.next()
+      }
+      if (this.state == 1 && this.pauseNextState) {
+        this.pauseNextState = false
+        this.pause()
+      }
+      this.player.setPlaybackQuality('hd720')
+      window.Controls.updatePlay()
     },
 
     onError: function(error) {
       if (error == '150') {
-        NowPlayingTrack.videos = _.rest(NowPlayingTrack.videos);
-        NowPlayingTrack.play();
+        NowPlayingTrack.videos = _.rest(NowPlayingTrack.videos)
+        NowPlayingTrack.play()
       }
     },
 
     error: function() {
-      $(NowPlayingTrack.view.el).addClass('error');
+      $(NowPlayingTrack.view.el).addClass('error')
       if (this.lastError == NowPlayingTrack) {
-        return;
+        return
       }
-      this.lastError = NowPlayingTrack;
-      this.skipToPrev ? this.prev() : this.next();
+      this.lastError = NowPlayingTrack
+      this.skipToPrev ? this.prev() : this.next()
     },
 
     // TODO move this to the track model.
     setTrackVideoIds: function(data) {
       if (!data.feed.entry) {
-        window.NowPlayingTrack.videos = [];
+        window.NowPlayingTrack.videos = []
       } else {
         window.NowPlayingTrack.videos = _.map(data.feed.entry, function(entry) {
-          return _.last(entry.id.$t.split('/'));
+          return _.last(entry.id.$t.split('/'))
           /*
-          VideoResults.reset();
+          VideoResults.reset()
           _.each(data.feed.entry, function(video) {
             VideoResults.add({
               author      : video.author[0].name.$t,
               title       : video.title.$t,
               description : video.content.$t,
               youtube_id  : _.last(video.id.$t.split('/')),
-            });
-          });
+            })
+          })
           */
-        });
+        })
       }
-      this.loading = false;
-      $('#controls #play').removeClass('loading');
-      window.NowPlayingTrack.play();
+      this.loading = false
+      $('#controls #play').removeClass('loading')
+      window.NowPlayingTrack.play()
     },
 
     searchByArtistAndTrack: function(artist, track, callback) {
-      this.search('"' + artist + '" "' + track + '"', callback);
+      this.search('"' + artist + '" "' + track + '"', callback)
     },
 
     search: function(query, callback) {
       if (!this.loading) {
-        this.loading = true;
-        $('#controls #play').addClass('loading');
+        this.loading = true
+        $('#controls #play').addClass('loading')
 
         var url = "http://gdata.youtube.com/feeds/api/videos?" + $.param({
             alt           : 'json-in-script',
@@ -220,23 +234,23 @@ $(function() {
             'max-results' : 20,
             format        : 5,
             callback      : callback
-        });
+        })
 
-        $.getScript(url);
+        $.getScript(url)
       }
     }, 
 
     filters: function(str) {
-      var filters = ''; 
-      if (!str.match(/instrumental/i)) filters += ' -instrumental';
-      if (!str.match(/chipmunk/i)) filters += ' -chipmunk';
-      if (!str.match(/karaoke/i)) filters += ' -karaoke';
-      if (!str.match(/cover/i)) filters += ' -cover';
-      if (!str.match(/remix/i)) filters += ' -remix';
-      if (!str.match(/live/i)) filters += ' -live';
-      return filters;
+      var filters = ''
+      if (!str.match(/instrumental/i)) filters += ' -instrumental'
+      if (!str.match(/chipmunk/i)) filters += ' -chipmunk'
+      if (!str.match(/karaoke/i)) filters += ' -karaoke'
+      if (!str.match(/cover/i)) filters += ' -cover'
+      if (!str.match(/remix/i)) filters += ' -remix'
+      if (!str.match(/live/i)) filters += ' -live'
+      return filters
     }
-  });
+  })
 
 
-});
+})
