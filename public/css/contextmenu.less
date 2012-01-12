@@ -1,0 +1,30 @@
+.contextmenu {
+  background: #333;
+  width: 140px;
+  font-size: 12px;
+  position: absolute;
+  z-index: 2500;
+  color: #999;
+  border: 2px solid #333;
+  box-shadow: 0 0 1px #111;
+  .radius(4px);
+  
+  .contextmenu-action {
+    padding: 5px;
+    background: #222;
+    cursor: pointer;
+
+    &:hover {
+      background: @lightblue;
+      color: #333;
+    }
+    .extra {
+      float: right;
+    }
+  }
+  
+  .contextmenu-divider {
+    height: 2px;
+    background: #333;
+  }
+}

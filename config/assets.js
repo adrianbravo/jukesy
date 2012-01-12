@@ -16,6 +16,8 @@ var assets = {
     'js/keys.js',
 
     'js/mixins/tracks.js',
+    'js/mixins/reposition.js',
+    'js/contextmenu.js',
     'js/track.js',
     'js/search.js',
     'js/artist.js',

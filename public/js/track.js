@@ -72,12 +72,13 @@ $(function() {
     template: _.template($('#track-template').html()),
 
     events: {
-      'click'    : 'toggleSelect',
-      'dblclick' : 'play'
+      'click'       : 'toggleSelect',
+      'dblclick'    : 'play',
+      'contextmenu' : 'showContextmenu'
     },
 
     initialize: function() {
-      _.bindAll(this, 'setPlaying')
+      _.bindAll(this, 'setPlaying', 'showContextmenu')
     },
 
     render: function() {
@@ -87,6 +88,26 @@ $(function() {
         _.defer(this.setPlaying)
       }
       return this
+    },
+
+    showContextmenu: function(e) {
+      if (!$(this.el).hasClass('select')) {
+        this.toggleSelect(e)
+      }
+      
+      if (window.Contextmenu) {
+        Contextmenu.hide()
+      }
+      
+      $(window).bind('click.contextclose', function() {
+        if (window.Contextmenu) {
+          Contextmenu.hide()
+          return false
+        }
+      })
+      
+      window.Contextmenu = new Model.Contextmenu(e)
+      return false
     },
 
     play: function() {

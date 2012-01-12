@@ -70,7 +70,8 @@ $(function() {
     events: {
       'keypress #query' : 'searchAll',
       'keydown'         : 'keyMapper',
-      'keyup'           : 'setMaxVolume'
+      'keyup'           : 'setMaxVolume',
+      //'contextmenu'     : 'showContextmenu'
       //'click #login'         : 'login'
     },
 
@@ -79,7 +80,7 @@ $(function() {
       new Model.Modal({ type: 'login' })
     },
     */
-
+    
     searchAll: function(e) {
       if (e.keyCode == 13) {
         Router.navigate('/search/' + encodeURIComponent($('#query').val()), true)
@@ -110,6 +111,10 @@ $(function() {
       if (fn) {
         return fn(e)
       }
+    },
+    
+    showContextmenu: function(e) {
+      return false
     }
   })
 

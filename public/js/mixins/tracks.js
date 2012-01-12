@@ -12,6 +12,10 @@ $(function(){
       } else {
         $(this.el).toggleClass('selected');
       }
+      
+      if (e.type == 'contextmenu') {
+        $(this.el).addClass('selected')
+      }
       window.lastSelected = this.el;
     },
 
