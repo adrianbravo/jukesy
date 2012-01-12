@@ -23,7 +23,7 @@ $(function() {
         Video.error()
       } else {
         _.defer(function() {
-          Controls.$songInfo.html(window.Controls.songInfoTemplate(self.toJSON()))
+          Controls.updateSongInfo()
         })
 
         if ($(this.view.el).is(':visible')) {

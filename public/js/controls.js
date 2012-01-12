@@ -21,19 +21,22 @@ $(function() {
     },
 
     initialize: function() {
-      var self = this;
-      _.bindAll(this, 'update', 'setUpdate');
+      _.bindAll(this, 'update', 'setUpdate')
+      this.render()
+    },
 
-      this.render();
+    render: function() {
+      var self = this
+      $(this.el).html(this.template())
 
       this.$songInfo     = $('#song_info'),
       this.$timer        = $('#timer'),
       this.$timerLeft    = $('#timer_left'),
       this.$timerRight   = $('#timer_right'),
       this.$timerLoaded  = $('#timer_loaded'),
-      this.$timerPlayed  = $('#timer_current');
-      this.$volume       = $('#volume');
-      this.lastMaxVolume = 50;
+      this.$timerPlayed  = $('#timer_current')
+      this.$volume       = $('#volume')
+      this.lastMaxVolume = 50
 
       this.$volume.slider({
         range : 'min',
@@ -42,106 +45,116 @@ $(function() {
         max   : 100,
 
         slide: function(event, ui) {
-          self.updateVolume(ui.value);
+          self.updateVolume(ui.value)
         },
 
         change: function(event, ui) {
-          self.updateVolume(ui.value);
+          self.updateVolume(ui.value)
         },
 
         stop: function(event, ui) {
           if (ui.value > 0) {
-            self.lastMaxVolume = ui.value;
+            self.lastMaxVolume = ui.value
           }
         }
-      });
-    },
-
-    render: function() {
-      $(this.el).html(this.template());
+      })
+      
+      this.updateSongInfo()
     },
 
     setUpdate: function() {
-      this.updateInterval = setInterval(this.update, 100);
+      this.updateInterval = setInterval(this.update, 100)
     },
 
     toggleFullscreen: function() {
-      Video.toggleFullscreen();
+      Video.toggleFullscreen()
     },
 
     toggleMute: function(e) {
       if (!_.isUndefined(e)) {
-        var volume = (this.mute) ? this.lastMaxVolume : 0;
-        this.$volume.slider('value', volume);
-        return;
+        var volume = (this.mute) ? this.lastMaxVolume : 0
+        this.$volume.slider('value', volume)
+        return
       }
 
       if (this.mute) {
-        this.mute = false;
-        $('#mute').removeClass('on');
+        this.mute = false
+        $('#mute').removeClass('on')
       } else {
-        this.mute = true;
-        $('#mute').addClass('on');
+        this.mute = true
+        $('#mute').addClass('on')
       }
     },
 
     updateVolume: function(volume) {
       if (volume && this.mute) {
-        this.toggleMute();
+        this.toggleMute()
       } else if (!volume && !this.mute) {
-        this.toggleMute();
+        this.toggleMute()
       }
-      Video.volume(volume);
+      Video.volume(volume)
     },
 
     prev: function() {
-      Video.prev();
+      Video.prev()
     },
 
     next: function() {
-      Video.next();
+      Video.next()
     },
 
     play: function() {
-      Video.play();
+      Video.play()
     },
 
     pause: function() {
-      Video.pause();
+      Video.pause()
     },
 
     seek: function(e) {
-      Video.seek(Video.duration() * e.offsetX / this.$timer.width());
+      Video.seek(Video.duration() * e.offsetX / this.$timer.width())
     },
 
     // ended (0), paused (2), video cued (5) or unstarted (-1).
     updatePlay: function() {
       if (window.Video.state == 1 || Video.state == 3) {
-        $('#play').addClass('pause');
+        $('#play').addClass('pause')
       } else {
-        $('#play').removeClass('pause');
+        $('#play').removeClass('pause')
       }
     },
 
     update: function() {
+      if (!window.NowPlayingTrack) {
+        return
+      }
+
       var loadRatio = Video.loadRatio(),
-          playRatio = Video.playRatio();
+          playRatio = Video.playRatio()
 
       if (_.isNaN(playRatio) || _.isNaN(loadRatio)) {
-        this.$timerLoaded.width(0);
-        this.$timerPlayed.width(0);
-        this.$timerLeft.html('');
-        this.$timerRight.html('');
+        this.$timerLoaded.width(0)
+        this.$timerPlayed.width(0)
+        this.$timerLeft.html('')
+        this.$timerRight.html('')
       } else {
-        var time = Video.timers();
-        this.$timerLoaded.width(this.$timer.width() * loadRatio);
-        this.$timerPlayed.width(this.$timer.width() * playRatio);
-        this.$timerLeft.html(time[0]);
-        this.$timerRight.html(time[1]);
+        var time = Video.timers()
+        this.$timerLoaded.width(this.$timer.width() * loadRatio)
+        this.$timerPlayed.width(this.$timer.width() * playRatio)
+        this.$timerLeft.html(time[0])
+        this.$timerRight.html(time[1])
+      }
+    },
+    
+    updateSongInfo: function() {
+      if (window.NowPlayingTrack) {
+        this.$songInfo.html(this.songInfoTemplate(NowPlayingTrack.toJSON()))
+      } else {
+        this.$songInfo.html('')
       }
     }
-  });
+  })
 
 
-});
+})
 

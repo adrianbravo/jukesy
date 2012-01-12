@@ -100,11 +100,18 @@ $(function() {
     stop: function() {
       this.stopped = true
       this.pause()
-      $(NowPlaying.view.el).find('.playing').removeClass('playing')
+      if (window.NowPlayingTrack) {
+        $(NowPlayingTrack.view.el).removeClass('playing')
+        NowPlayingTrack = null
+      }
+      Controls.render()
       this.onStateChange(-1)
     },
 
     play: function() {
+      if (!NowPlaying.tracks().length) {
+        return false
+      }
       this.stopped = false
       this.player.playVideo()
       if (this.state != 1) {
@@ -162,7 +169,7 @@ $(function() {
     onStateChange: function(state) {
       this.state = state
       if (this.state == -1) {
-        Controls.$songInfo.html('')
+        Controls.updateSongInfo()
       }
       if (this.state == 0) {
         this.next()

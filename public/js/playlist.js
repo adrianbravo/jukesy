@@ -158,7 +158,7 @@ $(function() {
           $(el).removeClass('selected').removeClass('playing')
           $(self.el).find('tbody').append(el)
         })
-      } else if (self == NowPlaying.view) {
+      } else if (Backbone.history.fragment == '/') {
         $(self.el).html(self.template.nowPlayingEmpty(self.model.toJSON()))
       } else {
         $(self.el).html(self.template.playlistEmpty(self.model.toJSON()))

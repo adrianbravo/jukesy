@@ -143,6 +143,9 @@ $(function() {
                 pauseNext = true
               }
               nextTrack = NowPlayingTrack.nextUnselected()
+              if (nextTrack == null) {
+                Video.stop()
+              }
             }
 
             if (tracksToRemove.length) {
