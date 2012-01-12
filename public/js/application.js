@@ -141,6 +141,8 @@ $(function() {
           return false
         case 65: // CTRL-A, META-A
           if (e.metaKey || e.ctrlKey) {
+            // Rewrite to check Search vs. visiblePlaylist
+            // This should use the mixin if possible
             var $el = $(Search.track.view.el),
                 trackView = Search.track.view.collection.models[0].view,
                 selector = trackView.tagName + '.' + trackView.className

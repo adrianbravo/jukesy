@@ -39,18 +39,15 @@ function onYouTubePlayerReady(id) {
   Controls.setUpdate()
 }
 
-
 // Fires when the window is resized (through _.debounce, so it only happens when input stops).
 var windowResized = function() {
   if ($('body').hasClass('fullscreen')) {
     // Resize the fullscreen video through css and youtube chromeless player api.
     var $video = $('#video')
     $video.height($(window).height() - parseInt($video.css('bottom')))
-    $('#video-shim').height($video.height())
     Video.player.setSize($video.width(), $video.height())
   } else {
-    // Unset video-shim's height and redraw the quickbar's scrollbar.
-    $('#video-shim').height('')
+    // Redraw the quickbar's scrollbar.
     var jsp = $('#quickbar').data('jsp')
     if (jsp) {
       jsp.reinitialise()
