@@ -159,9 +159,9 @@ $(function() {
           $(self.el).find('tbody').append(el)
         })
       } else if (self == NowPlaying.view) {
-        $(self.el).html(self.template.nowPlayingEmpty())
+        $(self.el).html(self.template.nowPlayingEmpty(self.model.toJSON()))
       } else {
-        $(self.el).html(self.template.playlistEmpty())
+        $(self.el).html(self.template.playlistEmpty(self.model.toJSON()))
       }
       return self
     }
@@ -183,13 +183,14 @@ $(function() {
     editTemplate: _.template($('#playlist-short-edit-template').html()),
 
     events: {
+      'dblclick'       : 'nowPlaying',
       'click'          : 'setLastSelected',
       'click .active'  : 'editEnable',
       'keypress input' : 'rename'
     },
     
     initialize: function() {
-      _.bindAll(this, 'render', 'setLastSelected', 'editEnable', 'editDisable')
+      _.bindAll(this, 'render', 'setLastSelected', 'editEnable', 'editDisable', 'nowPlaying')
     },
 
     render: function() {
@@ -206,12 +207,29 @@ $(function() {
       _.defer(function() { lastSelected = self.model })
     },
 
+    nowPlaying: function() {
+      this.suppressEdit = true
+      this.model.nowPlaying()
+      var track = _.first(this.model.tracks())
+      if (track) {
+        track.play()
+      }
+    },
+
     editEnable: function() {
-      $(this.el)
-        .html(this.editTemplate(this.model.toJSON()))
-        .find('input')
-        .focus()
-        .blur(this.editDisable)
+      var self = this
+      _.defer(function() {
+        if (self.suppressEdit) {
+          self.suppressEdit = false
+          return false
+        }
+
+        $(self.el)
+          .html(self.editTemplate(self.model.toJSON()))
+          .find('input')
+          .focus()
+          .blur(self.editDisable)
+      })
     },
     
     editDisable: function() {
