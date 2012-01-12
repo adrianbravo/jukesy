@@ -6,7 +6,7 @@ $(function() {
 
 
   View.SearchAlbum = View.SearchResult.extend({
-    template: _.template($('#search-album-template').html())
+    template: Handlebars.compile($('#search-album-template').html())
   });
 
 

@@ -69,7 +69,7 @@ $(function() {
 
     className: 'track',
 
-    template: _.template($('#track-template').html()),
+    template: Handlebars.compile($('#track-template').html()),
 
     events: {
       'click'       : 'toggleSelect',

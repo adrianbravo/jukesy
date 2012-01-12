@@ -3,7 +3,7 @@ var assets = {
   js: [
     'js/lib/json2.js',
     'js/lib/underscore-min.js',
-    'js/lib/backbone.js',
+    'js/lib/backbone-min.js',
     'js/lib/backbone.localStorage.js',
     'js/lib/backbone_router_filter.js',
     'js/lib/swfobject.js',

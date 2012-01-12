@@ -6,7 +6,7 @@ $(function() {
 
 
   View.SearchArtist = View.SearchResult.extend({
-    template: _.template($('#search-artist-template').html())
+    template: Handlebars.compile($('#search-artist-template').html())
   });
 
 

@@ -206,7 +206,7 @@ $(function() {
   View.SearchTrack = View.SearchResult.extend(_.extend({
     tagName: 'tr',
     className: 'track',
-    template: _.template($('#search-track-template').html()),
+    template: Handlebars.compile($('#search-track-template').html()),
 
     events: {
       'click'    : 'toggleSelect',

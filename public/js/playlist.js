@@ -7,7 +7,7 @@ $(function() {
   View.Playlists = Backbone.View.extend({
     el: $('#main'),
 
-    template: _.template($('#playlists-template').html()),
+    template: Handlebars.compile($('#playlists-template').html()),
 
     initialize: function() {
       if (this.options.quickbar) {
