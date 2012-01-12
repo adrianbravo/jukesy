@@ -87,11 +87,6 @@ $(function() {
       }
     },
 
-    // The event lacks keyboard modifiers (ctrl, alt, shift, meta)
-    keypressHasModifier: function(e) {
-      return (e.metaKey || e.ctrlKey || e.altKey || e.shiftKey) ? true : false
-    },
-
     setMaxVolume: function(e) {
       if ($(e.target).is('input, textarea')) {
         return
@@ -110,7 +105,13 @@ $(function() {
       if ($(e.target).is('input, textarea')) {
         return
       }
+      
+      var fn = KeyMapper['k' + e.keyCode]
+      if (fn) {
+        return fn(e)
+      }
 
+      /*
       switch (e.keyCode) {
         case 192: //ESCAPE
           Video.fullscreenDisable()
@@ -209,6 +210,7 @@ $(function() {
           $('#query').focus()
           return false
       }
+      */
     }
   })
 

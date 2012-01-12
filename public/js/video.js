@@ -17,7 +17,7 @@ $(function() {
                          { id: 'video' }                                         // attributes
       )
 
-      _.bindAll(this, 'toggleFullscreen')
+      _.bindAll(this, 'toggleFullscreen', 'toggleRepeat')
     },
 
     fullscreenDisable: function() {
@@ -41,6 +41,16 @@ $(function() {
       }
       windowResized()
       Controls.update()
+    },
+
+    toggleRepeat: function() {
+      if (this.repeat) {
+        this.repeat = false
+        $('#repeat').removeClass('off')
+      } else {
+        this.repeat = true
+        $('#repeat').addClass('off')
+      }
     },
 
     loadRatio: function() {
@@ -118,8 +128,21 @@ $(function() {
         this.seek(Math.floor(this.currentTime()))
       }
     },
-
+    
+    pauseNext: function() {
+      this.pauseNextState = true
+    },
+    
+    isNotPlaying: function() {
+      return this.state != 1
+    },
+    
     next: function() {
+      if (this.repeat && window.NowPlayingTrack) {
+        NowPlayingTrack.play()
+        return
+      }
+      
       var next = false
       _.each(NowPlaying.tracks(), function(trackModel) {
         if (next == true) {
@@ -136,16 +159,13 @@ $(function() {
 
       next.play()
     },
-    
-    pauseNext: function() {
-      this.pauseNextState = true
-    },
-    
-    isNotPlaying: function() {
-      return this.state != 1
-    },
 
     prev: function() {
+      if (this.repeat && window.NowPlayingTrack) {
+        NowPlayingTrack.play()
+        return
+      }
+      
       if (this.currentTime() > 2) {
         this.seek(0)
         return

@@ -15,6 +15,7 @@ $(function() {
       'click #next'             : 'next',
       'click #prev'             : 'prev',
       'click #fullscreen'       : 'toggleFullscreen',
+      'click #repeat'           : 'toggleRepeat',
       'click #timer_loaded'     : 'seek',
       'click #mute'             : 'toggleMute'
       //'click #volume'       : 'volume',
@@ -68,6 +69,10 @@ $(function() {
 
     toggleFullscreen: function() {
       Video.toggleFullscreen()
+    },
+
+    toggleRepeat: function() {
+      Video.toggleRepeat()
     },
 
     toggleMute: function(e) {

@@ -13,6 +13,7 @@ var assets = {
     'js/lib/jquery.jscrollpane.min.js',
     'js/boot.js',
     'js/modal.js',
+    'js/keys.js',
 
     'js/mixins/tracks.js',
     'js/track.js',
