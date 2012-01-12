@@ -144,9 +144,9 @@ $(function() {
   //
   View.Playlist = Backbone.View.extend({
     template: {
-      playlist        : _.template($('#playlist-template').html()),
-      playlistEmpty   : _.template($('#playlist-empty-template').html()),
-      nowPlayingEmpty : _.template($('#now-playing-empty-template').html())
+      playlist        : Handlebars.compile($('#playlist-template').html()),
+      playlistEmpty   : Handlebars.compile($('#playlist-empty-template').html()),
+      nowPlayingEmpty : Handlebars.compile($('#now-playing-empty-template').html())
     },
 
     render: function() {
@@ -179,8 +179,8 @@ $(function() {
   View.PlaylistShort = Backbone.View.extend({
     tagName: 'li',
 
-    template: _.template($('#playlist-short-template').html()),
-    editTemplate: _.template($('#playlist-short-edit-template').html()),
+    template: Handlebars.compile($('#playlist-short-template').html()),
+    editTemplate: Handlebars.compile($('#playlist-short-edit-template').html()),
 
     events: {
       'dblclick'       : 'nowPlaying',

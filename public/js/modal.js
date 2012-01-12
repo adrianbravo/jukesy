@@ -12,8 +12,8 @@ $(function(){
     tagName: 'div',
 
     templates: {
-      modal: _.template($('#modal-template').html()),
-      login: _.template($('#login-template').html())
+      modal: Handlebars.compile($('#modal-template').html()),
+      login: Handlebars.compile($('#login-template').html())
     },
 
     initialize: function() {

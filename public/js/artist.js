@@ -14,7 +14,7 @@ $(function() {
     className: 'artists',
     viewObject: View.SearchArtist,
     viewInner: 'ul',
-    template: _.template($('#search-artists-template').html())
+    template: Handlebars.compile($('#search-artists-template').html())
   });
 
 

@@ -126,11 +126,11 @@ $(function() {
     el: '#main',
 
     template: {
-      home          : _.template($('#home-template').html()),
-      settings      : _.template($('#settings-template').html()),
-      favorites     : _.template($('#favorites-template').html()),
-      tagRadio      : _.template($('#tag-radio-template').html()),
-      broadcasts    : _.template($('#broadcasts-template').html())
+      home          : Handlebars.compile($('#home-template').html()),
+      settings      : Handlebars.compile($('#settings-template').html()),
+      favorites     : Handlebars.compile($('#favorites-template').html()),
+      tagRadio      : Handlebars.compile($('#tag-radio-template').html()),
+      broadcasts    : Handlebars.compile($('#broadcasts-template').html())
     },
 
     initialize: function() {
@@ -175,7 +175,7 @@ $(function() {
       'click #new-playlist': 'playlistCreate'
     },
 
-    template: _.template($('#quickbar-template').html()),
+    template: Handlebars.compile($('#quickbar-template').html()),
 
     initialize: function() {
       _.bindAll(this, 'playlistCreate')

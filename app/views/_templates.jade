@@ -1,0 +1,218 @@
+script#contextmenu-template(type= 'text/x-handlebars-template')
+  {{#each actions}}
+  .contextmenu-action
+    {{action}}
+    .extra {{extra}}
+  {{/each}}
+
+script#quickbar-template(type= 'text/x-handlebars-template')
+  .quickbar-inner
+    a.home.now-playing(data-href= '#/')= __('Now Playing')
+      .icon
+    //a.settings(data-href= '#/settings')= __('Settings')
+    //  .icon
+    //a.favorites(data-href= '#/favorites')= __('Favorites')
+    //  .icon
+    //hr
+    //a.tag-radio(data-href= '#/tag-radio')= __('Tag Radio')
+    //  .icon
+    //a.broadcasts(data-href= '#/broadcasts')= __('Broadcasts')
+    //  .icon
+    hr
+    a#new-playlist= __('New Playlist')
+      .icon
+    #my-playlists
+      .playlists
+        ul
+
+script#controls-template(type= 'text/x-handlebars-template')
+  .controls-left
+    #prev
+    .d8
+    #play
+    .d8
+    #next
+    .d10
+    #mute
+    .d8
+    #volume
+  #timer
+    #timer_loaded
+      #timer_current
+  .controls-right
+    #repeat.off
+    .d8
+    #fullscreen
+  #timer_left
+  #song_info
+  #timer_right
+
+script#song-info-template(type= 'text/x-handlebars-template')
+  div(title= '{{artist}} - {{name}}')
+    {{artist}} - {{name}}
+
+script#home-template(type= 'text/x-handlebars-template')
+  #home
+    p Coming soon - home!
+
+script#settings-template(type= 'text/x-handlebars-template')
+  #settings
+    p Coming soon - settings!
+
+script#favorites-template(type= 'text/x-handlebars-template')
+  #favorites
+    p Coming soon - favorites!
+
+script#tag-radio-template(type= 'text/x-handlebars-template')
+  #tag-radio
+    p Coming soon - tag radio!
+
+script#broadcasts-template(type= 'text/x-handlebars-template')
+  #broadcasts
+    p Coming soon - broadcasts!
+
+
+//
+// Search templates
+//
+
+script#search-waitstate-template(type= 'text/x-handlebars-template')
+  #search
+    .artists
+      | Searching for artists "{{query}}"
+      .wait
+    .clear
+    .albums
+      | Searching for albums "{{query}}"
+      .wait
+    .clear
+    .tracks
+      | Searching for tracks "{{query}}"
+      .wait
+    .clear
+
+script#search-empty-template(type= 'text/x-handlebars-template')
+  .empty No matching {{type}}s.
+
+script#search-artists-template(type= 'text/x-handlebars-template')
+  ul
+
+script#search-artist-template(type= 'text/x-handlebars-template')
+  .inner
+    .img
+      {{#if image}}
+      img.lastfm(src='{{image}}')
+      {{/if}}
+    .name {{name}}
+    .listeners {{listeners}}
+
+script#search-albums-template(type= 'text/x-handlebars-template')
+  ul
+
+script#search-album-template(type= 'text/x-handlebars-template')
+  .inner
+    .img
+      {{#if image}}
+      img.lastfm(src='{{image}}')
+      {{/if}}
+    .name {{name}}
+    .artist {{artist}}
+    .albumid {{albumid}}
+
+script#search-tracks-template(type= 'text/x-handlebars-template')
+  table
+    thead
+      tr
+        td.art
+        td.name Track
+        td.artist Artist
+        td.listeners Listeners
+    tbody
+
+script#search-track-template(type= 'text/x-handlebars-template')
+  td.avatar
+    .img
+      {{#if image}}
+      img.lastfm(src='{{image}}')
+      {{/if}}
+  td.name
+    .cell {{name}}
+  td.artist
+    .cell {{artist}}
+  td.listeners
+    .cell {{listeners}}
+
+//
+// Playlist templates
+//
+
+script#track-template(type= 'text/x-handlebars-template')
+  td.avatar
+    .img
+      {{#if image}}
+      img.lastfm(src='{{image}}')
+      {{/if}}
+  td.name {{name}}
+  td.artist {{artist}}
+
+
+script#playlists-template(type= 'text/x-handlebars-template')
+  .playlists
+    {{#unless quick}}
+    h2 Playlists
+    {{#if empty}}
+    p You have not saved any playlists yet.
+    {{/if}}
+    {{/unless}}
+    ul
+
+script#playlist-short-template(type= 'text/x-handlebars-template')
+  a.playlist(data-href= '#/local/playlists/{{id}}') {{name}}
+
+script#playlist-short-edit-template(type= 'text/x-handlebars-template')
+  a.playlist.edit.active(data-href= '#/local/playlists/{{id}}')
+    input.input(name= 'name', type= 'text', value= '{{name}}')
+
+script#playlist-template(type= 'text/x-handlebars-template')
+  #playlist
+    .header
+      h2.name {{name}}
+    .tracks
+      table
+        thead
+          tr
+            td.art
+            td.name Track
+            td.artist Artist
+        tbody
+
+script#playlist-empty-template(type= 'text/x-handlebars-template')
+  #playlist
+    .header
+      h2.name {{name}}
+    .tracks
+      table
+        thead
+          tr
+            td.art
+            td.name Track
+            td.artist Artist
+        tbody
+
+script#now-playing-empty-template(type= 'text/x-handlebars-template')
+  p You are not playing any music right now.
+  p You can start by using the search box in the upper right to find your favorite band or song.
+  p Or you can use the <strong>tag radio</strong> feature from the left sidebar to listen to music by genre/tag.
+
+
+//
+// Modal templates
+//
+
+script#modal-template(type= 'text/x-handlebars-template')
+  .modal_wrapper
+    .modal_bg
+    .modal
+
+script#login-template(type= 'text/x-handlebars-template')
+  div log in

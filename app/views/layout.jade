@@ -3,3 +3,8 @@ html
   include includes/head
   body
     != body
+    != partial('_templates.jade')
+    script(src= 'http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js')
+    script(src= 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js')
+    - each script in assets.js
+      script(src= '/' + script)

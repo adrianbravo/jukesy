@@ -1,6 +1,6 @@
 
 // Mustache-style templates, e.g. {{ artist }}
-_.templateSettings = {
+Handlebars.compileSettings = {
   interpolate : /\{\{(.+?)\}\}/g,
   evaluate    : /<%(.+?)%>/g
 }

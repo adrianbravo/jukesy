@@ -6,8 +6,8 @@ $(function() {
   View.Controls = Backbone.View.extend({
     el: $('#controls'),
 
-    template         : _.template($('#controls-template').html()),
-    songInfoTemplate : _.template($('#song-info-template').html()),
+    template         : Handlebars.compile($('#controls-template').html()),
+    songInfoTemplate : Handlebars.compile($('#song-info-template').html()),
 
     events: {
       'click #play:not(.pause)' : 'play',

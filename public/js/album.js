@@ -14,7 +14,7 @@ $(function() {
     className: 'albums',
     viewObject: View.SearchAlbum,
     viewInner: 'ul',
-    template: _.template($('#search-albums-template').html())
+    template: Handlebars.compile($('#search-albums-template').html())
   });
 
 

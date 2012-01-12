@@ -5,7 +5,7 @@ $(function() {
   // Displays initial waitstate of search. Should render placeholders for search results.
   //
   View.Search = Backbone.View.extend({
-    waitstate_template : _.template($('#search-waitstate-template').html()),
+    waitstate_template : Handlebars.compile($('#search-waitstate-template').html()),
 
     render: function() {
       $(this.el).html(this.waitstate_template(this.model.toJSON()))
@@ -166,7 +166,7 @@ $(function() {
   // Displays a collection of search results.
   //
   View.SearchResults = Backbone.View.extend({
-    templateEmpty: _.template($('#search-empty-template').html()),
+    templateEmpty: Handlebars.compile($('#search-empty-template').html()),
 
     initialize: function() {
       var self = this
@@ -243,7 +243,7 @@ $(function() {
   //
   View.SearchTracks = View.SearchResults.extend({
     className: 'tracks',
-    template: _.template($('#search-tracks-template').html()),
+    template: Handlebars.compile($('#search-tracks-template').html()),
     viewObject: View.SearchTrack,
     viewInner: 'table tbody'
   })
