@@ -1,9 +1,7 @@
 $(function() {
   Model.Contextmenu = Backbone.Model.extend({
-    initialize: function(e) {      
+    initialize: function() {
       _.bindAll(this, 'hide')
-      
-      this.event = e
       this.view = new View.Contextmenu({ model: this })
     },
     
@@ -19,7 +17,7 @@ $(function() {
   View.Contextmenu = Backbone.View.extend(_.extend({
     className: 'contextmenu',
     
-    template: _.template($('#contextmenu-template').html()),
+    template: Handlebars.compile($('#contextmenu-template').html()),
     
     initialize: function() {
       this.render()
@@ -30,7 +28,8 @@ $(function() {
       $el.hide().html(this.template(this.model.toJSON()))
       $('#app').append(this.el)
       
-      this.reposition($el, this.model.event.clientX, this.model.event.clientY)
+      var e = this.model.get('event')
+      this.reposition($el, e.clientX, e.clientY)
       $el.show()
       
       return this

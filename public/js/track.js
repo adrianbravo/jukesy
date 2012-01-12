@@ -105,8 +105,17 @@ $(function() {
           return false
         }
       })
-      
-      window.Contextmenu = new Model.Contextmenu(e)
+
+      window.Contextmenu = new Model.Contextmenu({
+        event: e,
+        actions: [
+        { action: 'Play', extra: 'dblclick'},
+        { action: 'Queue Next', extra: 'shift-click' },
+        { action: 'Queue Last' },
+        { action: 'Add to Playlist' },
+        { action: 'Share' }
+        ]
+      })
       return false
     },
 

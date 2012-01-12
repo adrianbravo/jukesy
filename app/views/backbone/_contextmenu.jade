@@ -1,10 +1,5 @@
-.contextmenu-action Play
-  .extra dblclick
-.contextmenu-action Queue Next
-  .extra shift-click
-.contextmenu-action Queue Last
-  
-.contextmenu-divider
-  
-.contextmenu-action Add to Playlist
-.contextmenu-action Share
+{{#each actions}}
+.contextmenu-action
+  {{action}}
+  .extra {{extra}}
+{{/each}}

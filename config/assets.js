@@ -11,6 +11,7 @@ var assets = {
     'js/lib/jquery.mousewheel.js',
     'js/lib/mwheelIntent.js',
     'js/lib/jquery.jscrollpane.min.js',
+    'js/lib/handlebars-1.0.0.beta.2.js',
     'js/boot.js',
     'js/modal.js',
     'js/keys.js',
