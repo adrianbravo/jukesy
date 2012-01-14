@@ -71,7 +71,7 @@ $(function() {
       'keypress #query' : 'searchAll',
       'keydown'         : 'keyMapper',
       'keyup'           : 'setMaxVolume',
-      //'contextmenu'     : 'showContextmenu'
+      'contextmenu'     : 'cancelRightClick'
       //'click #login'         : 'login'
     },
 
@@ -80,6 +80,8 @@ $(function() {
       new Model.Modal({ type: 'login' })
     },
     */
+    
+    cancelRightClick: _.f,
     
     searchAll: function(e) {
       if (e.keyCode == 13) {
@@ -111,10 +113,6 @@ $(function() {
       if (fn) {
         return fn(e)
       }
-    },
-    
-    showContextmenu: function(e) {
-      return false
     }
   })
 

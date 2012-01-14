@@ -8,7 +8,10 @@ $(function(){
       if (e.shiftKey) {
         this.fillSelected($(this.el), $(window.lastSelected));
       } else if (!(e.altKey || e.metaKey)) {
-        $(this.el).toggleClass('selected').siblings().removeClass('selected');
+        if (e.type == 'contextmenu' && $(this.el).hasClass('selected')) {
+        } else {
+          $(this.el).toggleClass('selected').siblings().removeClass('selected');
+        }
       } else {
         $(this.el).toggleClass('selected');
       }

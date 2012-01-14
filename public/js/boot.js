@@ -5,13 +5,18 @@ Handlebars.compileSettings = {
   evaluate    : /<%(.+?)%>/g
 }
 
+// Underscore mixins
+_.mixin({
+  f: function() {
+    return false
+  }
+})
 
 // Global stuff.
 window.Collection = {}
 window.Model = {}
 window.View = {}
 window.Mixins = {}
-
 
 //
 // YouTube API Player callback executes when the chromeless player is read. The function name cannot be changed.

@@ -210,7 +210,8 @@ $(function() {
 
     events: {
       'click'    : 'toggleSelect',
-      'dblclick' : 'play'
+      'dblclick' : 'play',
+//      'contextmenu'
     },
 
     play: function() {

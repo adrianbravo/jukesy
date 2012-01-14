@@ -19,6 +19,10 @@ $(function() {
     
     template: Handlebars.compile($('#contextmenu-template').html()),
     
+    events: {
+      'contextmenu' : 'cancelRightClick'
+    },
+    
     initialize: function() {
       this.render()
     },
@@ -33,6 +37,8 @@ $(function() {
       $el.show()
       
       return this
-    }
+    },
+    
+    cancelRightClick: _.f
   }, Mixins.Reposition))
 })
