@@ -1,5 +1,6 @@
 var config = require('./'),
     logger = require('../lib/logger'),
+    MongoStore = require('connect-mongo'),
     express = require('express'),
     i18n = require('i18n'),
     async = require('async');
@@ -53,7 +54,8 @@ async.series([
   });
 
   server.configure(function() {
-    server.set('port', 8080)
+    var port = config.env == 'production' ? 80 : 8080
+    server.set('port', port)
           .set('host', 'localhost')
           .set('views', __dirname + '/../app/views')
           .set('view engine', 'jade');
@@ -61,7 +63,11 @@ async.series([
     server.use(i18n.init)
           .use(express.bodyParser())
           .use(express.cookieParser())
-          .use(express.session({ secret: 'jukesy' }))
+          .use(express.session({
+            secret: 'jukesy',
+            maxAge: new Date(Date.now() + 3600000),
+            store: new MongoStore({ db: config.db.database })
+          }))
           .use(express.errorHandler({ dumpExceptions: true, showStack: true }))
           .use(express.methodOverride())
           .use(express.static(__dirname + '/../public'))

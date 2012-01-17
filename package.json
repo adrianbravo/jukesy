@@ -22,6 +22,7 @@
     "mongoose"  : "2.2.0",
     "bcrypt"    : "0.3.1",
     "everyauth" : "0.2.20",
+    "connect-mongo" : "0.1.7",
     "jade"      : "0.15.4"
   }
 }
