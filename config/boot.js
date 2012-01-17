@@ -41,22 +41,26 @@ async.series([
           css = '',
           lesscss = '';
 
+      exec('rm public/all.js public/all.css public/less.css');
+
       // Generate all.js
       config.assets.js.forEach(function(partialPath) {
         js += ';' + fs.readFileSync('public/' + partialPath);
       });
-      fs.writeFileSync('public/all.js', js);
-      config.assets.js = [ 'all.js' ];
 
       // Generate all.css and less.css
       config.assets.css.forEach(function(partialPath) {
         css += '' + fs.readFileSync('public/' + partialPath);
       });
-      exec('lessc public/' + config.assets.less[0] + ' public/less.css', function() {});
-      css += fs.readFileSync('public/less.css');
-      fs.writeFileSync('public/all.css', css);
+      exec('lessc -x public/' + config.assets.less[0] + ' public/less.css', function() {
+        css += fs.readFileSync('public/less.css');
+        fs.writeFileSync('public/all.css', css);
+        fs.writeFileSync('public/all.js', js);
+      });
+
+      config.assets.js = [ 'all.js' ];
       config.assets.css = [ 'all.css' ];
-      config.assets.less = [];
+      config.assets.less = []
     }
 
     exports.assets = config.assets;
