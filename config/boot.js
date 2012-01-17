@@ -4,6 +4,7 @@ var config = require('./'),
     express = require('express'),
     i18n = require('i18n'),
     less = require('less'),
+    uglify = require('uglify-js'),
     exec = require('child_process').exec,
     fs = require('fs'),
     async = require('async');
@@ -55,7 +56,12 @@ async.series([
       exec('lessc -x public/' + config.assets.less[0] + ' public/less.css', function() {
         css += fs.readFileSync('public/less.css');
         fs.writeFileSync('public/all.css', css);
-        fs.writeFileSync('public/all.js', js);
+
+        var ast = uglify.parser.parse(js);
+        ast = uglify.uglify.ast_mangle(ast);
+        ast = uglify.uglify.ast_squeeze(ast);
+        fs.writeFileSync('public/all.js', uglify.uglify.gen_code(ast));
+        next();
       });
 
       config.assets.js = [ 'all.js' ];
@@ -64,7 +70,6 @@ async.series([
     }
 
     exports.assets = config.assets;
-    next();
   },
 
 ], function(e) {

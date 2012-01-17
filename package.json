@@ -24,6 +24,7 @@
     "everyauth"     : "0.2.20",
     "connect-mongo" : "0.1.7",
     "less"          : "1.2.0",
+    "uglify-js"     : "1.2.5",
     "jade"          : "0.15.4"
   }
 }
