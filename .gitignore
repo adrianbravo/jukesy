@@ -3,3 +3,6 @@ test/coverage/*
 test/coverage.html
 *.swp
 .DS_Store
+public/all.css
+public/all.js
+public/less.css

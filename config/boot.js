@@ -3,6 +3,9 @@ var config = require('./'),
     MongoStore = require('connect-mongo'),
     express = require('express'),
     i18n = require('i18n'),
+    less = require('less'),
+    exec = require('child_process').exec,
+    fs = require('fs'),
     async = require('async');
 
 Error.stackTraceLimit = Infinity;
@@ -33,6 +36,29 @@ async.series([
 
   // CSS, JS and image assets
   function(next) {
+    if (config.env == 'production') {
+      var js = '',
+          css = '',
+          lesscss = '';
+
+      // Generate all.js
+      config.assets.js.forEach(function(partialPath) {
+        js += ';' + fs.readFileSync('public/' + partialPath);
+      });
+      fs.writeFileSync('public/all.js', js);
+      config.assets.js = [ 'all.js' ];
+
+      // Generate all.css and less.css
+      config.assets.css.forEach(function(partialPath) {
+        css += '' + fs.readFileSync('public/' + partialPath);
+      });
+      exec('lessc public/' + config.assets.less[0] + ' public/less.css', function() {});
+      css += fs.readFileSync('public/less.css');
+      fs.writeFileSync('public/all.css', css);
+      config.assets.css = [ 'all.css' ];
+      config.assets.less = [];
+    }
+
     exports.assets = config.assets;
     next();
   },
