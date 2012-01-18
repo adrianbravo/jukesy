@@ -47,6 +47,3 @@ table {
   border-collapse: collapse;
   border-spacing: 0;
 }
-
-html, #app { background: #222; }
-#app { opacity: 0; }
