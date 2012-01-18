@@ -61,15 +61,18 @@ async.series([
         ast = uglify.uglify.ast_mangle(ast);
         ast = uglify.uglify.ast_squeeze(ast);
         fs.writeFileSync('public/all.js', uglify.uglify.gen_code(ast));
+        exports.assets = config.assets;
         next();
       });
 
       config.assets.js = [ 'all.js' ];
       config.assets.css = [ 'all.css' ];
       config.assets.less = []
+    } else {
+      exports.assets = config.assets;
+      next();
     }
 
-    exports.assets = config.assets;
   },
 
 ], function(e) {
