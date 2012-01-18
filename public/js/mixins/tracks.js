@@ -1,5 +1,6 @@
 $(function(){
 
+
   //
   // Handles ability to mark tracks as selected through clicks
   //

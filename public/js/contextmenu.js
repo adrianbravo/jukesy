@@ -3,6 +3,10 @@ $(function() {
     initialize: function() {
       _.bindAll(this, 'hide')
       this.view = new View.Contextmenu({ model: this })
+      // turn off scrolling for quickbar, main-wrapper
+      $('#quickbar').data('jsp').destroy()
+      $('#main-wrapper').css('overflow-y', 'hidden')
+      windowResized()
     },
     
     hide: function() {
@@ -10,6 +14,10 @@ $(function() {
       this.view.remove()
       this.destroy()
       window.Contextmenu = null
+      // turn on scrolling for quickbar, main-wrapper
+      QuickbarView.render()
+      $('#main-wrapper').css('overflow-y', 'scroll')
+      windowResized()
       return false
     }
   })
