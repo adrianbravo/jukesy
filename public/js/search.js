@@ -209,13 +209,27 @@ $(function() {
     template: Handlebars.compile($('#search-track-template').html()),
 
     events: {
-      'click'    : 'toggleSelect',
-      'dblclick' : 'play',
-//      'contextmenu'
+      'click'       : 'toggleSelect',
+      'dblclick'    : 'play',
+      'contextmenu' : 'showContextmenu'
     },
 
+    initialize: function() {
+      _.bindAll(this, 'play', 'queueTrack', 'queueNext', 'queueLast')
+      this.model.view = this
+      this.render()
+    },
+    
     play: function() {
       this.queueTrack('play')
+    },
+
+    queueNext: function() {
+      this.queueTrack('next')
+    },
+
+    queueLast: function() {
+      this.queueTrack('last')
     },
 
     // Adds selected tracks to NowPlaying collection.
@@ -235,7 +249,24 @@ $(function() {
         }).compact().value()
 
         NowPlaying.add(tracks, { method: method })
+    },
+    
+    showContextmenu: function(e) {
+      if (!$(this.el).hasClass('select')) {
+        this.toggleSelect(e)
+      }
+      
+      new Model.Contextmenu({
+        event: e,
+        actions: [
+          { action: 'Play', extra: 'dblclick', callback: this.play },
+          { action: 'Queue Next', callback: this.queueNext },
+          { action: 'Queue Last', callback: this.queueLast }
+        ]
+      })
+      return false
     }
+
   }, Mixins.TrackSelection))
 
 

@@ -107,6 +107,7 @@ $(function() {
     },
 
     add: function(tracks, options) {
+      // add should be dependent upon play / next / last
       this.get('tracks').add(tracks)
       this.buildTrackViews(tracks)
 
@@ -115,7 +116,7 @@ $(function() {
           tracks[0].play()
         }
       } else {
-        tracks[0].play()
+        //tracks[0].play()
       }
       this.change();
     },

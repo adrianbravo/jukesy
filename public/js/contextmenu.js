@@ -1,12 +1,25 @@
 $(function() {
   Model.Contextmenu = Backbone.Model.extend({
     initialize: function() {
+      if (window.Contextmenu) {
+        Contextmenu.hide()
+      }
+
+      $(window).bind('click.contextclose', function() {
+        if (window.Contextmenu) {
+          Contextmenu.hide()
+          return false
+        }
+      })
+
       _.bindAll(this, 'hide')
       this.view = new View.Contextmenu({ model: this })
       // turn off scrolling for quickbar, main-wrapper
-      $('#quickbar').data('jsp').destroy()
+      //$('#quickbar').data('jsp').destroy()
       $('#main-wrapper').css('overflow-y', 'hidden')
       windowResized()
+      
+      window.Contextmenu = this;
     },
     
     hide: function() {
@@ -15,7 +28,7 @@ $(function() {
       this.destroy()
       window.Contextmenu = null
       // turn on scrolling for quickbar, main-wrapper
-      QuickbarView.render()
+      //QuickbarView.render()
       $('#main-wrapper').css('overflow-y', 'scroll')
       windowResized()
       return false
@@ -32,7 +45,11 @@ $(function() {
     },
     
     initialize: function() {
+      var self = this
       this.render()
+      _.each(this.model.get('actions'), function(action) {
+        $(self.el).find('[name="' + action.action + '"]').click(action.callback)        
+      })
     },
     
     render: function() {

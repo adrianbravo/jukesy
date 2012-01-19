@@ -78,7 +78,7 @@ $(function() {
     },
 
     initialize: function() {
-      _.bindAll(this, 'setPlaying', 'showContextmenu')
+      _.bindAll(this, 'setPlaying', 'showContextmenu', 'play')
     },
 
     render: function() {
@@ -95,25 +95,10 @@ $(function() {
         this.toggleSelect(e)
       }
       
-      if (window.Contextmenu) {
-        Contextmenu.hide()
-      }
-      
-      $(window).bind('click.contextclose', function() {
-        if (window.Contextmenu) {
-          Contextmenu.hide()
-          return false
-        }
-      })
-
-      window.Contextmenu = new Model.Contextmenu({
+      new Model.Contextmenu({
         event: e,
         actions: [
-        { action: 'Play', extra: 'dblclick' },
-        { action: 'Queue Next', extra: 'shift-click' },
-        { action: 'Queue Last' },
-        { action: 'Add to Playlist' },
-        { action: 'Share' }
+          { action: 'Play', extra: 'dblclick', callback: this.play }
         ]
       })
       return false

@@ -1,6 +1,6 @@
 script#contextmenu-template(type= 'text/x-handlebars-template')
   {{#each actions}}
-  .contextmenu-action
+  .contextmenu-action(name= '{{action}}')
     {{action}}
     .extra {{extra}}
   {{/each}}
