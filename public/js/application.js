@@ -158,7 +158,11 @@ $(function() {
       if (typeof target == 'object') {
         visiblePlaylist = target
         $(this.el).html(target.view.render().el)
-        $(target.shortView.el).find('a').addClass('active')
+        if (Backbone.history.fragment == '/now-playing') {
+          $('#quickbar a.now-playing').addClass('active')
+        } else if (target.shortView) {
+          $(target.shortView.el).find('a').addClass('active') 
+        }
       } else {
         target = target || 'home'
         $(this.el).html(this.template[target])

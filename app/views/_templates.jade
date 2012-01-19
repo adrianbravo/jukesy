@@ -123,18 +123,12 @@ script#search-tracks-template(type= 'text/x-handlebars-template')
   table
     thead
       tr
-        td.art
         td.name Track
         td.artist Artist
         td.listeners Listeners
     tbody
 
 script#search-track-template(type= 'text/x-handlebars-template')
-  td.avatar
-    .img
-      {{#if image}}
-      img.lastfm(src='{{image}}')
-      {{/if}}
   td.name
     .cell {{name}}
   td.artist
@@ -147,11 +141,6 @@ script#search-track-template(type= 'text/x-handlebars-template')
 //
 
 script#track-template(type= 'text/x-handlebars-template')
-  td.avatar
-    .img
-      {{#if image}}
-      img.lastfm(src='{{image}}')
-      {{/if}}
   td.name {{name}}
   td.artist {{artist}}
 
@@ -181,7 +170,6 @@ script#playlist-template(type= 'text/x-handlebars-template')
       table
         thead
           tr
-            td.art
             td.name Track
             td.artist Artist
         tbody
@@ -194,7 +182,6 @@ script#playlist-empty-template(type= 'text/x-handlebars-template')
       table
         thead
           tr
-            td.art
             td.name Track
             td.artist Artist
         tbody
