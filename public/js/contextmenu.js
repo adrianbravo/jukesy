@@ -48,7 +48,11 @@ $(function() {
       var self = this
       this.render()
       _.each(this.model.get('actions'), function(action) {
-        $(self.el).find('[name="' + action.action + '"]').click(action.callback)        
+        var $action = $(self.el).find('[name="' + action.action + '"]')
+        $action.click(action.callback)
+        if (action.disabled) {
+          $action.addClass('disabled')
+        }
       })
     },
     

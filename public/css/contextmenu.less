@@ -11,12 +11,19 @@
   .contextmenu-action {
     padding: 5px 15px;
     width: 140px;
-    cursor: pointer;
 
     &:hover {
       background: @lightblue;
       color: #333;
+      cursor: pointer;
     }
+    
+    &.disabled {
+      background: #181818;
+      color: #555;
+      cursor: default;
+    }
+    
     .extra {
       float: right;
     }

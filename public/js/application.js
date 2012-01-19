@@ -170,14 +170,32 @@ $(function() {
     el: '#quickbar',
 
     events: {
-      'click #new-playlist': 'playlistCreate'
+      'click #new-playlist': 'playlistCreate',
+      'contextmenu .now-playing': 'showNowPlayingContextmenu'
     },
 
     template: Handlebars.compile($('#quickbar-template').html()),
 
     initialize: function() {
-      _.bindAll(this, 'playlistCreate')
+      _.bindAll(this, 'playlistCreate', 'showNowPlayingContextmenu', 'clearNowPlaying')
       this.render()
+    },
+    
+    showNowPlayingContextmenu: function(e) {
+      new Model.Contextmenu({
+        event: e,
+        actions: [
+          { action: window.NowPlaying ? NowPlaying.get('name') : '[unsaved playlist]', disabled: true },
+          { action: 'Clear / New', callback: this.clearNowPlaying }
+        ]
+      })
+      return false
+    },
+    
+    clearNowPlaying: function() {
+      var playlist = new Model.Playlist()
+      playlist.nowPlaying()
+      Backbone.history.navigate('/', true)
     },
 
     playlistCreate: function() {
