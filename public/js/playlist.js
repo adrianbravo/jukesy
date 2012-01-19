@@ -107,9 +107,10 @@ $(function() {
     },
 
     add: function(tracks, options) {
-      var self = this
+      var self = this,
+          firstTrack = tracks[0]
       
-      if (options.method == 'next') {
+      if (options.method == 'next' || options.method == 'play') {
         var index = 0
         if (window.NowPlayingTrack) {
           index = _.indexOf(this.tracks(), NowPlayingTrack) + 1
@@ -118,16 +119,17 @@ $(function() {
       } else {
         this.get('tracks').add(tracks)
       }
+      console.log('playing... index', index)
       
       this.buildTrackViews(tracks)
       
       if (options.method == 'play') {
-        tracks[0].play()
+        firstTrack.play()
       }
 
       _.defer(function() {
         if (self === window.NowPlaying && !window.NowPlayingTrack) {
-          tracks[0].play()
+          firstTrack.play()
         }
       })
       
