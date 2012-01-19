@@ -31,8 +31,15 @@ $(function() {
         }
 
         Video.skipToPrev = false
-        Video.load(this.videos[0])
+        if (!this.video) {
+          this.video = this.bestVideo()
+        }
+        Video.load(this.video)
       }
+    },
+    
+    bestVideo: function() {
+      return _.min(this.videos, function(video) { return video.score }).id
     },
 
     getVideos: function() {

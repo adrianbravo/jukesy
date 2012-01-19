@@ -221,10 +221,16 @@ $(function() {
     // TODO move this to the track model.
     setTrackVideoIds: function(data) {
       if (!data.feed.entry) {
-        window.NowPlayingTrack.videos = []
+        NowPlayingTrack.videos = []
       } else {
-        window.NowPlayingTrack.videos = _.map(data.feed.entry, function(entry) {
-          return _.last(entry.id.$t.split('/'))
+        NowPlayingTrack.videos = _.map(data.feed.entry, function(entry) {
+          return {
+            score: _.min([
+              levenshteinenator(NowPlayingTrack.get('artist') + ' - ' + NowPlayingTrack.get('name'), entry.title.$t),
+              levenshteinenator(entry.title.$t, NowPlayingTrack.get('artist') + ' - ' + NowPlayingTrack.get('name'))
+            ]),
+            id: _.last(entry.id.$t.split('/'))
+          }
           /*
           VideoResults.reset()
           _.each(data.feed.entry, function(video) {
