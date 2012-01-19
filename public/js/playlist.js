@@ -80,10 +80,17 @@ $(function() {
 
     nowPlaying: function() {
       NowPlaying = this
-      // TODO pseudostop
       if (Video.player) {
-        Video.pause()
+        Video.stop()
       }
+    },
+    
+    // This overrides clear()
+    clear: function() {
+      var playlist = new Model.Playlist()
+      playlist.nowPlaying()
+      Backbone.history.navigate('/', true)
+      $('#quickbar').data('jsp').reinitialise()
     },
 
     buildTrackViews: function(tracks) {
@@ -119,7 +126,6 @@ $(function() {
       } else {
         this.get('tracks').add(tracks)
       }
-      console.log('playing... index', index)
       
       this.buildTrackViews(tracks)
       

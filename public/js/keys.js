@@ -9,11 +9,15 @@ $(function() {
     
     // DELETE
     k8: function(e) {
+      // TODO Can't we just check on window.lastSelected as a playlist?
       if (window.visiblePlaylist == window.lastSelected) {
         // TODO Replace confirm with modal dialog.
-        if (confirm('Delete the playlist: ' + visiblePlaylist.get('name') + '?')) {
-          visiblePlaylist.destroy({
+        if (confirm('Delete the playlist: ' + lastSelected.get('name') + '?')) {
+          lastSelected.destroy({
             success: function(model, response) {
+              if (window.NowPlaying == lastSelected) {
+                NowPlaying.clear()
+              }
               model.view.remove()
               model.shortView.remove()
               Router.navigate('/', true)
@@ -37,7 +41,7 @@ $(function() {
           }
           nextTrack = NowPlayingTrack.nextUnselected()
           if (nextTrack == null) {
-            Video.stop()
+            NowPlaying.clear()
           }
         }
 

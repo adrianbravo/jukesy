@@ -193,9 +193,7 @@ $(function() {
     },
     
     clearNowPlaying: function() {
-      var playlist = new Model.Playlist()
-      playlist.nowPlaying()
-      Backbone.history.navigate('/', true)
+      NowPlaying.clear()
     },
 
     playlistCreate: function() {
