@@ -107,17 +107,30 @@ $(function() {
     },
 
     add: function(tracks, options) {
-      // add should be dependent upon play / next / last
-      this.get('tracks').add(tracks)
+      var self = this
+      
+      if (options.method == 'next') {
+        var index = 0
+        if (window.NowPlayingTrack) {
+          index = _.indexOf(this.tracks(), NowPlayingTrack) + 1
+        }
+        this.get('tracks').add(tracks.reverse(), { at: index })
+      } else {
+        this.get('tracks').add(tracks)
+      }
+      
       this.buildTrackViews(tracks)
+      
+      if (options.method == 'play') {
+        tracks[0].play()
+      }
 
-      if (this === window.NowPlaying && !_.isUndefined(window.NowPlayingTrack) && _.include(['play', 'next'], options.method)) {
-        if (options.method == 'play') {
+      _.defer(function() {
+        if (self === window.NowPlaying && !window.NowPlayingTrack) {
           tracks[0].play()
         }
-      } else {
-        //tracks[0].play()
-      }
+      })
+      
       this.change();
     },
 
