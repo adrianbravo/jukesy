@@ -7,7 +7,7 @@ $(function() {
     el: $('#controls'),
 
     template         : Handlebars.compile($('#controls-template').html()),
-    songInfoTemplate : Handlebars.compile($('#song-info-template').html()),
+    trackInfoTemplate : Handlebars.compile($('#track-info-template').html()),
 
     events: {
       'click #play:not(.pause)' : 'play',
@@ -30,7 +30,7 @@ $(function() {
       var self = this
       $(this.el).html(this.template())
 
-      this.$songInfo     = $('#song_info'),
+      this.$trackInfo     = $('#track-info'),
       this.$timer        = $('#timer'),
       this.$timerLeft    = $('#timer_left'),
       this.$timerRight   = $('#timer_right'),
@@ -60,7 +60,7 @@ $(function() {
         }
       })
       
-      this.updateSongInfo()
+      this.updateTrackInfo()
     },
 
     setUpdate: function() {
@@ -151,11 +151,11 @@ $(function() {
       }
     },
     
-    updateSongInfo: function() {
+    updateTrackInfo: function() {
       if (window.NowPlayingTrack) {
-        this.$songInfo.html(this.songInfoTemplate(NowPlayingTrack.toJSON()))
+        this.$trackInfo.html(this.trackInfoTemplate(NowPlayingTrack.toJSON()))
       } else {
-        this.$songInfo.html('')
+        this.$trackInfo.html('')
       }
     }
   })

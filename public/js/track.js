@@ -23,7 +23,7 @@ $(function() {
         Video.error()
       } else {
         _.defer(function() {
-          Controls.updateSongInfo()
+          Controls.updateTrackInfo()
         })
 
         if ($(this.view.el).is(':visible')) {

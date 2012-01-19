@@ -189,7 +189,7 @@ $(function() {
     onStateChange: function(state) {
       this.state = state
       if (this.state == -1) {
-        Controls.updateSongInfo()
+        Controls.updateTrackInfo()
       }
       if (this.state == 0) {
         this.next()

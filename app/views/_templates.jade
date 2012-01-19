@@ -44,10 +44,10 @@ script#controls-template(type= 'text/x-handlebars-template')
     .d8
     #fullscreen
   #timer_left
-  #song_info
+  #track-info
   #timer_right
 
-script#song-info-template(type= 'text/x-handlebars-template')
+script#track-info-template(type= 'text/x-handlebars-template')
   div(title= '{{artist}} - {{name}}')
     {{artist}} - {{name}}
 
@@ -201,7 +201,7 @@ script#playlist-empty-template(type= 'text/x-handlebars-template')
 
 script#now-playing-empty-template(type= 'text/x-handlebars-template')
   p You are not playing any music right now.
-  p You can start by using the search box in the upper right to find your favorite band or song.
+  p You can start by using the search box in the upper right to find your favorite band or track.
   p Or you can use the <strong>tag radio</strong> feature from the left sidebar to listen to music by genre/tag.
 
 
