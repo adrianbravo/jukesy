@@ -216,10 +216,13 @@ $(function() {
     },
 
     render: function() {
+      var self = this
       $(this.el).html(this.template(this.model.toJSON()))
-      if (this.model == window.visiblePlaylist) {
-        $(this.el).find('a').addClass('active')
-      }
+      _.defer(function() {
+        if (self.model == window.visiblePlaylist) {
+          $(self.el).find('a').addClass('active')
+        }
+      })
       this.delegateEvents()
       return this
     },

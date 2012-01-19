@@ -7,6 +7,7 @@ $(function() {
   AppRouter = Backbone.Router.extend({
     routes: {
       '/'              : 'home',
+      '/now-playing'   : 'nowPlaying',
       '/search/:query' : 'searchAll',
       //'/artist/:query': 'searchArtist',
       //'/album/:query': 'searchAlbum',
@@ -30,6 +31,10 @@ $(function() {
     },
 
     home: function() {
+      MainView.render()
+    },
+    
+    nowPlaying: function() {
       MainView.render(NowPlaying)
     },
 
@@ -153,12 +158,12 @@ $(function() {
       if (typeof target == 'object') {
         visiblePlaylist = target
         $(this.el).html(target.view.render().el)
+        $(target.shortView.el).find('a').addClass('active')
       } else {
         target = target || 'home'
         $(this.el).html(this.template[target])
       }
 
-      Backbone && Backbone.history && $('#quickbar a[data-href="#' + Backbone.history.fragment + '"]').addClass('active')
       $('#main').show()
     }
   }),
