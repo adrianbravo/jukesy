@@ -12,6 +12,8 @@ var User = module.exports = new Schema({
   password    : { type: String },
   salt        : { type: String },
 
+  // TODO add validators for these fields
+  bio         : { type: String },
   fullname    : { type: String },
   location    : { type: String },
   website     : { type: String },
@@ -19,13 +21,14 @@ var User = module.exports = new Schema({
 })
 
 User.plugin(app.mongoosePlugins.timestamps, { index: true })
-User.plugin(app.mongoosePlugins.accessible, [ 'email', 'password', 'fullname', 'location', 'website' ])
+User.plugin(app.mongoosePlugins.accessible, [ 'email', 'password', 'fullname', 'location', 'website', 'bio' ])
 
 User.method({
   exposeJSON: function(user) {
     var json = {
       username : this.username,
       fullname : this.fullname,
+      bio      : this.bio,
       location : this.location,
       website  : this.website
     }

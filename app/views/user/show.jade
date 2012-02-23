@@ -1,18 +1,20 @@
-h2= (user.fullname ? user.fullname + ' ' : '') + '[' + user.username + ']'
+- if (user.fullname)
+  h1= user.fullname
+  h3= '[' + user.username + ']'
+- else
+  h1= '[' + user.username + ']'
 
-dl
+p.bio= user.bio
 
-  - if (user.location)
-    dt Location
-    dd= user.location
+p
+  if (user.location)
+    = user.location
+  if (user.website)
+    if (user.location)
+      |  &middot; 
+    a(target= '_blank', href= user.website).website= user.website
 
-  - if (user.website)
-    dt Website
-    dd= user.website
-
-  - if (user.email)
-    dt Email
-    dd= user.email
 
 - if (currentUser && currentUser.username == user.username)
-  a.btn.edit Edit
+  div
+    a.btn.edit Edit Profile

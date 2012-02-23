@@ -72,6 +72,8 @@ View.User = Backbone.View.extend(_.extend({
 
   submit: function() {
     this.model.save({
+      fullname: this.$el.find('#user-edit-fullname').val(),
+      bio: this.$el.find('#user-edit-bio').val(),
       location: this.$el.find('#user-edit-location').val(),
       website: this.$el.find('#user-edit-website').val(),
       email: this.$el.find('#user-edit-email').val()

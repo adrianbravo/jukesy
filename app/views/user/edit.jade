@@ -1,6 +1,19 @@
 h2 Edit Account
-form
+form.form-horizontal
   fieldset
+
+    .control-group
+      label.control-label(for= 'user-edit-fullname') Full Name
+      .controls
+        input#user-edit-fullname(type= 'text', name= 'fullname', value= user.fullname)
+        span.help-inline
+
+    .control-group
+      label.control-label(for= 'user-edit-bio') Bio
+      .controls
+        textarea#user-edit-bio.input-large(rows= 3)
+          = escape(user.bio)
+        span.help-inline
 
     .control-group
       label.control-label(for= 'user-edit-location') Location
