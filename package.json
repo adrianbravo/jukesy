@@ -1,30 +1,30 @@
 {
   "author": "Adrian Bravo <me@adrianbravo.net>",
   "name": "jukesy",
-  "description": "A basic node application with several fixins: user authentication, tests, and a clean API.",
+  "description": "music video player",
   "version": "0.0.1",
-  "homepage": "",
+  "homepage": "http://jukesy.com",
   "repository": {
     "url": ""
   },  
   "main": "./",
   "engines": {
-    "node": ">= v0.4.10"
+    "node": ">= v0.6.9"
   },  
   "dependencies": {
-    "i18n"          : "0.3.0",
-    "async"         : "0.1.12",
-    "colors"        : "0.5.1",
-    "vows"          : "0.5.11",
-    "should"        : "0.3.1",
-    "request"       : "2.1.1",
-    "express"       : "2.4.6",
-    "mongoose"      : "2.2.0",
-    "bcrypt"        : "0.3.1",
-    "everyauth"     : "0.2.20",
+    "async"         : "0.1.15",
+    "bcrypt"        : "0.5.0",
+    "express"       : "2.5.4",
+    "mongodb"       : "0.9.8-5",
+    "mongoose"      : "2.5.6",
     "connect-mongo" : "0.1.7",
-    "less"          : "1.2.0",
-    "uglify-js"     : "1.2.5",
-    "jade"          : "0.15.4"
+    "everyauth"     : "0.2.30",
+    "jade"          : "0.20.0",
+    "underscore"    : "1.3.1"
+  },
+  "devDependencies": {
+    "mocha"      : "0.11.0",
+    "chai"       : "0.2.4",
+    "superagent" : "0.3.0"
   }
 }

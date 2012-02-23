@@ -1,39 +1,40 @@
-var app = require('../../');
+module.exports = function(app) {
 
-module.exports = {
-  status : function(req, res, next) {
-    res.send(process.memoryUsage(), 200);
-  },
+  return {
 
-  home: function(req, res, next) {
-    res.render('home', {
-      assets: app.assets
-    });
-  },
+    status : function(req, res, next) {
+      res.send(process.memoryUsage(), 200);
+    },
 
-  // This is not an active endpoint yet.
-  // Add tests.
-  // Primary purpose is to mirror /#/search on front-end.
-  // Should have meta tags for SEO and sharing to social networks.
-  search: function(req, res, next) {
-    console.log(req.param('type'), req.param('method'), req.param('query'));
-    res.render('home', {
-      assets: app.assets
-    });
-    // server.get('/lastfm/:type/:method/:query', ApplicationController.search);
-  },
+    error: function(err, req, res) {
+      var stack = err && err.stack
+      
+      if (!err.code) {
+        err = new app.Error(500)
+      }
+      
+      if (req.xhr) {
+        res.json(err, err.code)
+      } else {
+        switch(err.code) {
+          case 500:
+            res.render('500', { status: 500 })
+            break
+          case 404:
+            res.render('404', { status: 404 })
+            break
+          default:
+            res.json(err, err.code)
+        }
+      }
+      
+      stack && console.error(stack)
+    },
 
-  notFound: function(req, res, next) {
-    res.render('404', { layout: false, status: 404 });
-  },
+    notFound: function(req, res, next) {
+      res.render('404', { status: 404 })
+    }
 
-  internalServerError: function(req, res, next) {
-    res.render('500', { layout: false, status: 500 });
-  },
+  }
 
-  fail: function(req, res, next) {
-    var fail = {};
-    fail.to.run;
-  },
-
-};
+}

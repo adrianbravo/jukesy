@@ -1,0 +1,24 @@
+.modal-header
+  a.close('data-dismiss'= 'modal') &times;
+  h3 Login to jukesy
+.modal-body
+  form
+    fieldset
+
+      .control-group
+        label.control-label(for= 'session-new-login') Username / Email
+        .controls
+          input#session-new-login(type= 'text', name= 'login')
+          span.help-inline
+
+      .control-group
+        label.control-label(for= 'session-new-password') Password
+        .controls
+          input#session-new-password(type= 'password', name= 'password')
+          span.help-inline
+
+  div
+    a.sign-up Don't have an account yet? Sign up.
+.modal-footer
+  a.btn.btn-primary Sign in
+  a.btn('data-dismiss'= 'modal') Cancel

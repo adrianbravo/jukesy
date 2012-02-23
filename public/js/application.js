@@ -1,249 +1,113 @@
-$(function() {
+AppRouter = Backbone.Router.extend({
+  routes: {
+    ''               : 'welcome',
+    'about'          : 'about',
+    'user/:username' : 'userView'
+  },
 
-
-  //
-  // Local routes (single-page app style, motherfucker)
-  //
-  AppRouter = Backbone.Router.extend({
-    routes: {
-      '/'              : 'home',
-      '/now-playing'   : 'nowPlaying',
-      '/search/:query' : 'searchAll',
-      //'/artist/:query': 'searchArtist',
-      //'/album/:query': 'searchAlbum',
-      //'/track/:query': 'searchTrack',
-      '/settings'      : 'settings',
-      '/favorites'     : 'favorites',
-      '/tag-radio'     : 'tagRadio',
-      '/broadcasts'    : 'broadcasts',
-
-      '/local/playlists/:id'  : 'playlistView'
-      //'/local/playlists'      : 'playlistsIndex',
-    },
-
-    before: function() {
-      visiblePlaylist = null
-      lastSelected = null
-      Video.fullscreenDisable()
-      $('#main').hide()
-      $('#quickbar a').removeClass('active')
-      $('#quickbar').data('jsp').reinitialise()
-    },
-
-    home: function() {
-      MainView.render()
-    },
+  initialize: function() {
+    _.bindAll(this, 'error')
+  },
     
-    nowPlaying: function() {
-      MainView.render(NowPlaying)
-    },
+  welcome: function() {
+    MainView.render('welcome')
+  },
 
-    settings: function() {
-      MainView.render('settings')
-    },
-
-    favorites: function() {
-      MainView.render('favorites')
-    },
-
-    tagRadio: function() {
-      MainView.render('tagRadio')
-    },
-
-    broadcasts: function() {
-      MainView.render('broadcasts')
-    },
-
-    playlistView: function(id) {
-      MainView.render(Playlists.get(id))
-    },
-
-    searchAll: function(query) {
-      query = decodeURIComponent(query)
-      window.Search = new Model.Search({ query: query })
-      MainView.render(Search)
-    }
-  })
-
-
-  //
-  // Used primarily app-wide key bindings.
-  //
-  View.App = Backbone.View.extend({
-    el: $(document),
-
-    events: {
-      'keypress #query' : 'searchAll',
-      'keydown'         : 'keyMapper',
-      'keyup'           : 'setMaxVolume',
-      'contextmenu'     : 'cancelRightClick'
-      //'click #login'         : 'login'
-    },
-
-    /*
-    login: function(e) {
-      new Model.Modal({ type: 'login' })
-    },
-    */
+  about: function() {
+    MainView.render('about')
+  },
     
-    cancelRightClick: _.f,
-    
-    searchAll: function(e) {
-      if (e.keyCode == 13) {
-        Router.navigate('/search/' + encodeURIComponent($('#query').val()), true)
-        $('#query').val('').blur()
-      }
-    },
-
-    setMaxVolume: function(e) {
-      if ($(e.target).is('input, textarea')) {
-        return
-      }
-      if (e.keyCode == 38 || e.keyCode == 40) {
-        var value = Controls.$volume.slider('value')
-        if (value) {
-          Controls.lastMaxVolume = value
-        } else {
-          //Video.mute()
-        }
-      }
-    },
-
-    keyMapper: function(e) {
-      if ($(e.target).is('input, textarea')) {
-        return
-      }
+  userView: function(username) {
+    var user = new Model.User({ id: username, username: username })
+    // TODO waitstate ???
       
-      var fn = KeyMapper['k' + e.keyCode]
-      if (fn) {
-        return fn(e)
-      }
-    }
-  })
-
-
-  //
-  // Main viewport -- this is where search results, playlists, now playing, and mostly everything else will display.
-  //
-  View.Main = Backbone.View.extend({
-    el: '#main',
-
-    template: {
-      home          : Handlebars.compile($('#home-template').html()),
-      settings      : Handlebars.compile($('#settings-template').html()),
-      favorites     : Handlebars.compile($('#favorites-template').html()),
-      tagRadio      : Handlebars.compile($('#tag-radio-template').html()),
-      broadcasts    : Handlebars.compile($('#broadcasts-template').html())
-    },
-
-    initialize: function() {
-      // Auto-load more search results on scroll.
-      $('#main-wrapper').bind('scroll', this.loadMore())
-      this.render()
-      this.delegateEvents()
-    },
-
-    loadMore: function() {
-      return _.throttle(function() {
-        if (Backbone.history.fragment.match(/^\/search\//) && ($('#main-wrapper').height() * 2) + $('#main-wrapper').scrollTop() > $('#main').height()) {
-          Search.loadMore('track')
-        }
-      }, 300)
-    },
-
-    // target can be a model object or a string for a basic template
-    render: function(target) {
-      $(this.el).html('')
-
-      if (typeof target == 'object') {
-        visiblePlaylist = target
-        $(this.el).html(target.view.render().el)
-        if (Backbone.history.fragment == '/now-playing') {
-          $('#quickbar a.now-playing').addClass('active')
-        } else if (target.shortView) {
-          $(target.shortView.el).find('a').addClass('active') 
-        }
-      } else {
-        target = target || 'home'
-        $(this.el).html(this.template[target])
-      }
-
-      $('#main').show()
-    }
-  }),
-
-  //
-  // Quickbar viewport -- this is where now playing, settings, playlists, etc. are linked
-  //
-  View.Quickbar = Backbone.View.extend({
-    el: '#quickbar',
-
-    events: {
-      'click #new-playlist': 'playlistCreate',
-      'contextmenu .now-playing': 'showNowPlayingContextmenu'
-    },
-
-    template: Handlebars.compile($('#quickbar-template').html()),
-
-    initialize: function() {
-      _.bindAll(this, 'playlistCreate', 'showNowPlayingContextmenu', 'clearNowPlaying')
-      this.render()
-    },
+    user.fetch({
+      success: function(model, response) {
+        MainView.render(new View.User({ model: model }))
+      },
+      error: this.error
+    })
+  },
     
-    showNowPlayingContextmenu: function(e) {
-      new Model.Contextmenu({
-        event: e,
-        actions: [
-          { action: window.NowPlaying ? NowPlaying.get('name') : '[unsaved playlist]', disabled: true },
-          { action: 'Clear / New', callback: this.clearNowPlaying }
-        ]
-      })
-      return false
-    },
-    
-    clearNowPlaying: function() {
-      NowPlaying.clear()
-    },
+  error: function(model, response) {
+    MainView.render((response && response.status == 404) ? '404' : '500')
+  }
+})
 
-    playlistCreate: function() {
-      var playlist = new Model.Playlist()
-      playlist.autosave = true
+View.Main = Backbone.View.extend({
+  el: $('#main'),
 
-      playlist.save()
-      Playlists.models.push(playlist)
-      Playlists.reset(Playlists.models)
-      Playlists.view.render()
+  templates: {
+    welcome : jade.compile($('#welcome-template').text()),
+    about   : jade.compile($('#about-template').text()),
+    404   : jade.compile($('#404-template').text()),
+    500   : jade.compile($('#500-template').text())
+  },
 
-      playlist.shortView.editEnable()
-      Backbone.history.navigate('/local/playlists/' + playlist.get('id'), true)
-    },
+  initialize: function() {
+    _.bindAll(this, 'render')
+  },
 
-    render: function() {
-      $(this.el).html(this.template())
-      $('#quickbar').jScrollPane({ verticalGutter: -8, enableKeyboardNavigation: false })
-      if (Playlists && Playlists.view) {
-        Playlists.view.render()
+  render: function(template) {
+    // Used for making MainView.render() re-render the last template
+    if (!template) {
+      if (!this.currentTemplate) {
+        return
       }
+      template = this.currentTemplate
     }
-  })
+      
+    if (_.isString(template)) {
+      this.$el.html(this.templates[template]({ currentUser: Session.userJSON() }))
+      this.currentTemplate = template
+    } else if (_.isObject(template)) {
+      this.$el.html(template.render().$el)
+      template.delegateEvents()
+      this.currentTemplate = template
+    }
+  }
+})
 
+View.Alert = Backbone.View.extend({
+  className: 'alert',
+
+  template: jade.compile($('#alert-template').text()),
+
+  render: function() {
+    this.$el.html(this.template({ message: this.options.message }))
+    return this.$el
+  }
 })
 
 $(function() {
-  // Bind resize and call it once.
-  $(window).resize(_.debounce(windowResized))
-  windowResized()
+  $(document).on('click', 'a.sign-up', function() {
+    new View.UserCreate()
+  })
+  
+  window.MainView = new View.Main
+  window.Session = new Model.Session
+  window.ModalView = new View.Modal
 
-  // Global stuff.
-  window.AppView    = new View.App()
-  window.Video      = new Model.Video()
-  window.Controls   = new View.Controls()
-  window.Playlists  = new Collection.Playlists()
+  // hijack links
+  // https://github.com/documentcloud/backbone/issues/456#issuecomment-2557835
+  window.document.addEventListener('click', function(e) {
+    e = e || window.event
+    var target = e.target || e.srcElement
+    if (target.nodeName.toLowerCase() === 'a') {
+      var uri = target.getAttribute('href')
+      if (uri && uri != '/logout') {
+        e.preventDefault()
+        Router.navigate(uri.substr(1), true)
+      }
+    }
+  })
+  window.addEventListener('popstate', function(e) {
+    Router.navigate(location.pathname.substr(1), true)
+  })
+  // done hijacking links
 
-  // Set window.NowPlaying
-  var playlist = new Model.Playlist()
-  playlist.nowPlaying()
+  $('body').addClass('in') // fade in
 
-  window.MainView = new View.Main()
-  window.QuickbarView = new View.Quickbar()
+  window.Router = new AppRouter
+  Backbone.history.start({ pushState: true })
 })

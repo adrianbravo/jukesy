@@ -1,53 +1,37 @@
-var app = require('./'),
-    logger = require('./lib/logger'),
-    error = require('./lib/error'),
-    User = app.model('User'),
-    ApplicationController = app.controller('Application'),
-    UserController = app.controller('User'),
-    SessionController = app.controller('Session');
+module.exports = function(app) {
 
-module.exports = function(server) {
+  var ApplicationController = app.controller('Application')
+    , HomeController = app.controller('Home')
+    , UserController = app.controller('User')
+    , SessionController = app.controller('Session')
+    , User = app.model('User')
   
-  server.get('/status', ApplicationController.status);
-  server.get('/fail', ApplicationController.fail);
-  server.get('/', ApplicationController.home);
+  app.param('username', function(req, res, next, username) {
+    User.findOne({ username: (username || '').toLowerCase() }, function(err, user) {
+      if (err || !user) {
+        return next(new app.Error(err || 404))
+      }
+      req.paramUser = user
+      next()
+    })
+  })
+  
+  app.get('/status', ApplicationController.status)
+  app.get('/', HomeController.welcome)
+  app.get('/about', HomeController.about)
 
-  server.get('/lastfm/:type/:method/:query', ApplicationController.search);
-  //server.get('/playlist
+  app.get('/user', UserController.index)
+  app.post('/user', UserController.create)
+  app.get('/user/:username', app.auth.authenticate, UserController.read)
+  app.put('/user/:username', app.auth.authenticate, app.auth.authorize, UserController.update)
+  app.del('/user/:username', app.auth.authenticate, app.auth.authorize, UserController.delete)
 
-  server.get('/users', UserController.index);
-  server.get('/users/:username', UserController.show);
-  server.post('/users/create', UserController.create);
-  server.post('/users/:username', UserController.update);
-  //server.delete('/users/:username', UserController.delete);
+  app.get('/session/refresh', app.auth.authenticate, SessionController.refresh)
+  app.post('/session', SessionController.create)
+  app.del('/session', SessionController.delete)
+  app.get('/logout', SessionController.delete)
 
-  // users/:user/playlists/playlist-slug, separate output for (.html) and .json
-  // (.html) sends back home layout w/meta tags, .json sends the playlist
+  app.error(ApplicationController.error)
+  app.all('*', ApplicationController.notFound)
 
-  server.post('/login', SessionController.create);
-
-  server.error(function(err, req, res) {
-    if (err.name === 'ValidationError' || err.name === 'ValidatorError')
-      err = new error.ValidationError(err);
-
-    if (!err.code || err.code == 500) {
-      res.render('500', { layout: false, status: 500 });
-    } else if (err.code == 404) {
-      res.render('404', { layout: false, status: 404 });
-    } else {
-      res.send({
-        message : err.message,
-        errors  : err.errors,
-        code    : err.code,
-        type    : err.type
-      }, err.code);
-    }
-
-    if (typeof err.stack != 'undefined' && err.stack)
-      logger.error(err.stack);
-  });
-
-  server.get('/404', ApplicationController.notFound);
-  server.get('/500', ApplicationController.internalServerError);
-  server.all('*', ApplicationController.notFound);
-};
+}

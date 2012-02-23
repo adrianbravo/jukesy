@@ -1,0 +1,18 @@
+h2= (user.fullname ? user.fullname + ' ' : '') + '[' + user.username + ']'
+
+dl
+
+  - if (user.location)
+    dt Location
+    dd= user.location
+
+  - if (user.website)
+    dt Website
+    dd= user.website
+
+  - if (user.email)
+    dt Email
+    dd= user.email
+
+- if (currentUser && currentUser.username == user.username)
+  a.btn.edit Edit

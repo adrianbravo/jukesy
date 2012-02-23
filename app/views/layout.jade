@@ -1,9 +1,22 @@
 !!! 5
 html
-  include includes/head
-  body
-    != body
-    != partial('_templates.jade')
+  include includes/meta
+
+  body.fade
+    include includes/head
+    #modal.modal.hide.fade
+    .container-fluid
+      .row-fluid
+        .span2
+          #sidebar.well.sidebar-nav
+            include includes/sidebar
+        .span10
+          #main
+            != body
+          hr
+          include includes/foot
+
+    != partial('_templates')
     script(src= 'http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js')
     script(src= 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js')
     - each script in assets.js

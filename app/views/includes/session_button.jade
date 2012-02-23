@@ -1,0 +1,10 @@
+- if (typeof currentUser == 'undefined')
+  a.sign-in Login
+- else
+  a.dropdown-toggle('data-toggle'= 'dropdown') Account 
+    b.caret
+  ul.dropdown-menu
+    li
+      a(href= '/user/' + currentUser.username) Settings
+    li
+      a(href= '/logout') Sign Out

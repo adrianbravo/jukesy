@@ -1,41 +1,21 @@
-$(function(){
+View.Modal = Backbone.View.extend({
+  el: '#modal',
 
+  initialize: function() {
+    _.bindAll(this, 'hide', 'focusFirstInput')
+    this.$el = $(this.el)
+  },
 
-  Model.Modal = Backbone.Model.extend({
-    initialize: function() {
-      this.view = new View.Modal({ model: this });
-    }
-  });
+  render: function(el) {
+    this.$el.html(el).modal('show')
+    _.delay(this.focusFirstInput, 500)
+  },
+    
+  focusFirstInput: function() {
+    this.$el.find('input:first').focus()
+  },
 
-
-  View.Modal = Backbone.View.extend({
-    tagName: 'div',
-
-    templates: {
-      modal: Handlebars.compile($('#modal-template').html()),
-      login: Handlebars.compile($('#login-template').html())
-    },
-
-    initialize: function() {
-      this.render();
-      $('body').append($(this.el).addClass('modal_wrapper'));
-      this.refresh();
-    },
-
-    refresh: function() {
-      var $modal = $(this.el).find('.modal');
-      $modal.css('left', ($(window).width() / 2) - ($modal.width() / 2)).css('top', ($(window).height() / 2) - ($modal.height() / 2));
-    },
-
-    render: function() {
-      var $outer = $(this.templates.modal()),
-          $inner = this.templates[this.model.get('type')]();
-      $outer.find('.modal').html($inner);
-
-      $(this.el).html($outer);
-      return this;
-    }
-  });
-
-
-});
+  hide: function() {
+    this.$el.modal('hide')
+  }
+})

@@ -1,83 +1,94 @@
-//
-// Set the current environment
-//
-if (['development', 'test', 'staging', 'production'].indexOf(process.env.NODE_ENV) == -1)
-  process.env.NODE_ENV = 'development';
-exports.env = process.env.NODE_ENV;
+var _ = require('underscore')
+  , fs = require('fs')
+  , express = require('express')
+  , MongoStore = require('connect-mongo')
 
-//
-// Libraries we need in config steps
-//
-var mongoose = require('mongoose'),
-    logger = require('../lib/logger'),
-    async = require('async'),
-    fs = require('fs');
-logger.info('Environment'.red.inverse, (' - ' + exports.env).red);
+module.exports = function(app) {
 
-//
-// Pepper used by bcrypt for hashing password
-//
-exports.pepper = '12febe85f1b1c312b9a44c1744760ddfdfd9660ac94b619ff41e3d344e25ede2f50633237b2c5f68e8bb72181c211920fa49ff4f99547912311a2e4b1ce7814a'
+  _.mixin({
+    capitalize: function(string) {
+      if (!_.isString(string)) {
+        string = ''
+      }
+      return string.charAt(0).toUpperCase() + string.substring(1).toLowerCase()
+    }
+  })
 
-//
-// Database environment settings
-//
-exports.db = require('./database')[exports.env];
+  // Restrict environments to what we anticipate
+  if (['development', 'test', 'staging', 'production'].indexOf(app.set('env')) == -1) {
+    app.set('env', 'development')
+  }
 
-//
-// Logger environment settings
-//
-logger.settings(require('./logger')[exports.env]);
+  app._       = _
+  app.assets  = require('./assets')[app.set('env')]
+  app.mongodb = require('./mongodb')[app.set('env')]
+  app.pepper  = 'herp derp'
 
-//
-// CSS, JS, and image assets
-exports.assets = require('./assets')[exports.env];
+  app.mongoosePlugins = require('../lib/mongoose_plugins')
+  app.auth = require('../lib/auth')
 
-//
-// Models builder
-//
-exports.connectModels = function(host, db, fn) {
-  var mongodbString = 'mongodb://' + host + '/' + db
-      ext = '.js';
+  app.Error   = require('../lib/error')
 
-  logger.info('Models'.yellow.inverse);
-  fs.readdirSync('app/models').forEach(function(file) {
-    if (!file.match(ext + '$'))
-      return;
+  app.model = function(modelName) {
+    return app.db.model(app._.capitalize(modelName))
+  }
 
-    require('../app/models/' + file);
-    logger.info((' - ' + file).yellow);
-  });
+  app.controller = function(controllerName) {
+    return app.controllers[app._.capitalize(controllerName)]
+  }
 
+  // Express config
 
-  logger.info('MongoDB'.green.inverse, (' - ' + mongodbString).green);
+  app.configure('development', 'staging', 'production', function() {
+    app.use(express.logger('dev'))
+  })
 
-  return mongoose.connect(mongodbString, fn);
-};
+  app.configure(function() {
+    var port = 3000
+    switch(app.set('env')) {
+      case 'production':
+        port = 80
+        break
+      case 'test':
+        port = 7357
+        break
+    }
 
+    app.dynamicHelpers({
+      jadeLiteral: function(req, res) {
+        return function(filename) {
+          return fs.readFileSync(__dirname + '/../app/views/' + filename + '.jade', 'utf8')
+        }
+      },
+      assets: function(req, res) {
+        return app.assets
+      },
+      currentUser: function(req, res) {
+        return req.currentUser
+      }
+    })
 
-//
-// Controllers builder
-//
+    app
+      .set('port', port)
+      .set('host', 'localhost')
+      .set('views', __dirname + '/../app/views')
+      .set('view engine', 'jade')
 
-exports.connectControllers = function() {
-  var ext = '_controller.js',
-      controllers = {};
+    app
+      .use(express.bodyParser())
+      .use(express.cookieParser())
+      .use(express.session({
+        secret: 'jukesy', // TODO obfuscate this
+        maxAge: new Date(Date.now() + 3600000),
+        store: new MongoStore({
+          host: app.mongodb.host,
+          db: 'jukesy-sessions'
+        })
+      }))
+      .use(express.errorHandler({ dumpExceptions: true, showStack: true }))
+      .use(express.methodOverride())
+      .use(express.static(__dirname + '/../public'))
+      .use(app.router)
+  })
 
-  logger.info('Controllers'.blue.inverse);
-  fs.readdirSync('app/controllers').forEach(function(file) {
-    if (!file.match(ext + '$'))
-      return;
-
-    var controller = require('../app/controllers/' + file),
-        controllerName = '';
-
-    file.replace(new RegExp(ext + '$'), '').split('_').forEach(function(fileToken) {
-      controllerName += fileToken.charAt(0).toUpperCase() + fileToken.slice(1).toLowerCase(); // Capitalize
-    });
-    controllers[controllerName] = controller;
-
-    logger.info((' - ' + controllerName + ' (' + file + ') ').blue);
-  });
-  return controllers;
-};
+}

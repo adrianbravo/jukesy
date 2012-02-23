@@ -1,0 +1,26 @@
+h2 Edit Account
+form
+  fieldset
+
+    .control-group
+      label.control-label(for= 'user-edit-location') Location
+      .controls
+        input#user-edit-location(type= 'text', name= 'location', value= user.location)
+        span.help-inline
+
+    .control-group
+      label.control-label(for= 'user-edit-website') Website
+      .controls
+        input#user-edit-website(type= 'text', name= 'website', value= user.website)
+        span.help-inline
+
+    .control-group
+      label.control-label(for= 'user-edit-email') Email
+      .controls
+        input#user-edit-email(type= 'text', name= 'email', value= user.email)
+        span.help-inline
+
+p
+  a.btn.edit Cancel
+  | 
+  a.btn.btn-primary Update

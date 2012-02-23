@@ -1,73 +1,48 @@
-var app = require('../../'),
-    error = require('../../lib/error'),
-    User = app.model('User'),
-    async = require('async');
+module.exports = function(app) {
+  var User = app.model('User')
 
-module.exports = {
+  return {
 
-  index: function(req, res, next) {
-    User.find({})
-      .select('username', 'fullname', 'location', 'website', 'bio')
-      .skip(0)
-      .limit(20)
-      .asc('username')
-      .slaveOk()
-      .run(function(e, users) {
-        // TODO e
-        async.map(users, function(user, callback) {
-          callback(null, user.json);
-        }, function(e, users) {
-          // TODO e
-          res.json(users);
-        });
-      });
-  },
+    index: function(req, res, next) {
+      next(new app.Error(501))
+    },
 
-  show: function(req, res, next) {
-    User.findOne({
-      _username_i: req.param('username').toLowerCase()
-    }, function(e, user) {
-      if (e)
-        return next(e);
-      if (!user)
-        return next(new error.NotFound('User does not exist.'));
+    create: function(req, res, next) {
+      User.create(req.body, function(err, user) {
+        if (err || !user) {
+          return next(new app.Error(err || 500))
+        }
+        
+        app.auth.setUser(user, req, res)
+        res.json(user.exposeJSON(user))
+      })
+    },
 
-      res.json(user.json);
-    });
-  },
+    read: function(req, res, next) {
+      var userJSON = req.paramUser.exposeJSON(req.currentUser)
+      if (req.xhr) {
+        res.json(userJSON) 
+      } else {
+        res.render('user/show', { user: userJSON })
+      }
+    },
 
-  create: function(req, res, next) {
-    User.create({
-      username: req.param('username'),
-      password: req.param('password'),
-      email: req.param('email'),
-    }, function(e, user) {
-      if (e)
-        return next(e);
+    update: function(req, res, next) {
+      req.paramUser.updateAttributes(req.body)
+      req.paramUser.save(function(err, user) {
+        if (err || !user) {
+          return next(new app.Error(err || 500))
+        }
 
-      res.json(user.json);
-    });
-  },
+        res.json(user.exposeJSON(req.currentUser))
+      })
+    },
 
-  update: function(req, res, next) {
-    User.findOne({
-      _username_i: req.param('username').toLowerCase()
-    }, function(e, user) {
-      if (e)
-        return next(e);
-      if (!user)
-        return next(new error.NotFound('User does not exist.'));
+    delete: function(req, res, next) {
+      next(new app.Error(501))
+    }
 
-      user.updateAttributes(req.body);
-      user.save(function(e, user) {
-        if (e)
-          return next(e);
-
-        res.json(user.json);
-      });
-    });
   }
 
-};
-
+}
 

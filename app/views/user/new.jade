@@ -1,0 +1,30 @@
+.modal-header
+  a.close('data-dismiss'= 'modal') &times;
+  h3 Sign up for jukesy
+.modal-body
+  form
+    fieldset
+
+      .control-group
+        label.control-label(for= 'user-new-username') Username
+        .controls
+          input#user-new-username(type= 'text', name= 'username')
+          span.help-inline
+
+      .control-group
+        label.control-label(for= 'user-new-email') Email
+        .controls
+          input#user-new-email(type= 'text', name= 'email')
+          span.help-inline
+
+      .control-group
+        label.control-label(for= 'user-new-password') Password
+        .controls
+          input#user-new-password(type= 'password', name= 'password')
+          span.help-inline
+
+  div
+    a.sign-in Already have an account? Sign in.
+.modal-footer
+  a.btn.btn-primary Sign up
+  a.btn('data-dismiss'= 'modal') Cancel

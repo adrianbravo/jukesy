@@ -1,0 +1,4 @@
+--require test/
+--reporter spec
+--ignore-leaks
+--ui bdd

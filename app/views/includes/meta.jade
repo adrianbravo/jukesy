@@ -1,0 +1,14 @@
+head
+  title jukesy
+
+  meta(content= 'Jukesy is a music video player. Find your favorite music videos, and play them without ads. Jukesy helps you search for music from Last.fm and play the most popular YouTube videos for those songs.', name= 'description')
+  meta(content= 'Adrian Bravo', name= 'author')
+  meta(content= 'jukesy, music, music videos, youtube music', name= 'keywords')
+  meta(content= 'width=device-width, initial-scale=1', name= 'viewport')
+
+  - each stylesheet in assets.css
+    link(rel='stylesheet', href='/' + stylesheet, type='text/css')
+  - each stylesheet in assets.less
+    link(rel='stylesheet/less', href='/' + stylesheet, type='text/css')
+  link(href='http://fonts.googleapis.com/css?family=Ruluko|Ubuntu', rel='stylesheet', type='text/css')
+

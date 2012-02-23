@@ -1,0 +1,18 @@
+- if (typeof currentUser == 'undefined')
+  .hero-unit
+    h1 jukesy is a music video player
+    br
+    p Find your favorite music videos, and play them without ads. Jukesy helps you search for music from Last.fm and play the most popular YouTube videos for those songs.
+    p.pull-right
+      a.sign-up.btn.btn-primary.btn-large Sign up &raquo;
+
+- else
+  .alert.alert-info
+    a.close('data-dismiss'= 'alert') &times;
+    div Welcome to Jukesy, #{currentUser.fullname || currentUser.username}.
+
+#video.well
+  h1 This is where the video player will be.
+
+#default
+  h1 This is where search results, playlist contents, etc. will appear.
