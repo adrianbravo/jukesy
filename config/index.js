@@ -25,6 +25,7 @@ module.exports = function(app) {
   app.pepper  = 'herp derp'
 
   app.mongoosePlugins = require('../lib/mongoose_plugins')
+  app.mongooseValidators = require('../lib/mongoose_validators')
   app.auth = require('../lib/auth')
 
   app.Error   = require('../lib/error')

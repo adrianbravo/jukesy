@@ -1,11 +1,12 @@
-var mongoose = require('mongoose'),
-    bcrypt = require('../../lib/bcrypt'), // for bcrypt
-    crypto = require('crypto'),           // for md5
-    Schema = mongoose.Schema,
-    ObjectId = Schema.ObjectId,
-    Mixed = Schema.Types.Mixed,
-    app = require('../../')
-
+var mongoose = require('mongoose')
+  , bcrypt = require('../../lib/bcrypt') // for bcrypt
+  , crypto = require('crypto')           // for md5
+  , Schema = mongoose.Schema
+  , ObjectId = Schema.ObjectId
+  , Mixed = Schema.Types.Mixed
+  , app = require('../../')
+  , validators = app.mongooseValidators
+    
 var User = module.exports = new Schema({
   username    : { type: String, unique: true },
   email       : { type: String, unique: true },
@@ -103,54 +104,18 @@ User.pre('validate', function(next) {
 // Validators
 //
 
-var checkRequired = function(v) {
-  return (v instanceof String || typeof v == 'string') && v.length
-}
-
 // Password
-
-User.path('password').validate(checkRequired, [ 'required' ])
+User.path('password').validate(validators.required, [ 'required' ])
 
 // Username
-
-User.path('username').validate(checkRequired, [ 'required' ])
-
-User.path('username').validate(function(v) {
-  return v.length < 17
-}, [ 'too_long', { maxlength: 16 } ])
-
-User.path('username').validate(function(v) {
-  return v.match(/^([a-z0-9]*)$/i)
-}, [ 'bad_characters', { characters: 'A-Z and 0-9' } ])
-
-User.path('username').validate(function(v, done) {
-  if (this.isNew || this.isModified('username')) {
-    var User = app.model('User')
-    User.findOne({ username: v }, function(err, user) {
-      done(!err && !user)
-    })
-  } else {
-    done(true)
-  }
-}, [ 'already_taken' ])
+User.path('username').validate(validators.required, [ 'required' ])
+User.path('username').validate(validators.tooLong(16), [ 'too_long', { maxlength: 16 } ])
+User.path('username').validate(validators.match(/^([a-z0-9]*)$/i), [ 'bad_characters', { characters: 'A-Z and 0-9' } ])
+User.path('username').validate(validators.alreadyTaken('User', 'username'), [ 'already_taken' ])
 
 // Email
-
-User.path('email').validate(checkRequired, [ 'required' ])
-
-User.path('email').validate(function(v) {
-  return v.match(/^\S+@\S+\.\S+$/)
-}, [ 'bad_format' ])
-
-User.path('email').validate(function(v, done) {
-  if (this.isNew || this.isModified('email')) {
-    var User = app.model('User')
-    User.findOne({ email: v }, function(err, user) {
-      done(!err && !user)
-    })
-  } else {
-    done(true)
-  }
-}, [ 'already_taken' ])
+User.path('email').validate(validators.required, [ 'required' ])
+User.path('email').validate(validators.match(/^\S+@\S+\.\S+$/), [ 'bad_format' ])
+User.path('email').validate(validators.alreadyTaken('User', 'email'), [ 'already_taken' ])
 
 mongoose.model('User', User)
