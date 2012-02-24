@@ -18,7 +18,7 @@ describe('MongooseValidators Library', function() {
     })
   })
   
-  describe('#too_long', function() {
+  describe('#tooLong', function() {
     var tooLong = validators.tooLong(16)
 
     it('returns a function', function() {
@@ -43,7 +43,66 @@ describe('MongooseValidators Library', function() {
         expect(tooLong(0)).to.be.false
       })
     })
+  })
+  
+  describe('#match', function() {
+    var match = validators.match(/[a]+/)
     
+    it('returns a function', function() {
+      expect(match).to.be.a('function')
+    })
+    
+    describe('the function returned by #match(/[a]+/)', function() {
+      it('returns non-null if passed a string of a\'s', function () {
+        expect(match('aaaaaaa')).to.not.equal(null)
+      })
+      
+      it('returns null if passed a string with characters other than a', function () {
+        expect(match('b')).to.equal(null)
+      })
+    })
+  })
+  
+  describe('#alreadyTaken', function() {
+    var alreadyTaken = validators.alreadyTaken('User', 'username')
+      , User = app.model('User')
+    
+    it('returns a function', function() {
+      expect(alreadyTaken).to.be.a('function')
+    })
+    
+    describe('the function returned by #alreadyTaken("User", "username")', function() {
+      
+      beforeEach(function(done) {
+        User.find().remove()
+        User.create({
+          username: 'username',
+          email: 'a@b.c',
+          password: 'test'
+        }, function(err, user) {
+          expect(user).to.exist
+          done()
+        })
+      })
+      
+      it('passes true to callback if a username is not taken', function (done) {
+        var user = new User({ username: 'otherusername' })
+        
+        alreadyTaken.apply(user, [ 'otherusername', function(pass) {
+          expect(pass).to.be.true
+          done()
+        } ])
+      })
+            
+      it('passes false to callback if a username is taken', function (done) {
+        var user = new User({ username: 'username' })
+        alreadyTaken.apply(user, [ 'username', function(pass) {
+          expect(pass).to.be.false
+          done()
+        }])
+      })
+      
+    })
   })
 
 })
