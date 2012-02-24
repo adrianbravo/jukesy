@@ -16,7 +16,7 @@ Mixins.ViewFormErrors = {
       if (field == '$') {
         self.addAlert(error)
       } else {
-        var $group = self.$el.find('input[name=' + field + ']').parents('.control-group')
+        var $group = self.$el.find('.controls [name=' + field + ']').parents('.control-group')
         $group.addClass('error')
         $group.find('span.help-inline').html(parseError(field, error))
       }
@@ -57,9 +57,9 @@ Mixins.ViewFormErrors = {
     if (this.elFocus) {
       $input = this.$el.find(this.elFocus)
     } else {
-      $input = this.$el.find('.error:first input')
+      $input = this.$el.find('.error:first [name]')
       if (!$input.length) {
-        $input = this.$el.find('input:first')
+        $input = this.$el.find('[name]:first')
       }
     }
     return $input

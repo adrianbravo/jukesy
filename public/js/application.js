@@ -93,9 +93,9 @@ $(function() {
   window.document.addEventListener('click', function(e) {
     e = e || window.event
     var target = e.target || e.srcElement
-    if (target.nodeName.toLowerCase() === 'a') {
+    if (target.nodeName.toLowerCase() === 'a' && !target.className.match(/ll/)) { // literal link
       var uri = target.getAttribute('href')
-      if (uri && uri != '/logout') {
+      if (uri) {
         e.preventDefault()
         Router.navigate(uri.substr(1), true)
       }
