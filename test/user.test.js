@@ -29,14 +29,58 @@ describe('User Model', function() {
     })
 
     describe('too_long error', function() {
-
+      var createString = function(length) {
+        var string = ''
+        for (i = 0; i < length; i++) {
+          string += 'a'
+        }
+        return string
+      }
+      
       it('occurs when username.length is greater than 16', function(done) {
-        User.create({
-          username: '1234567890abcdefh'
-        }, function(err, user) {
-          expect(user).to.not.exist
+        User.create({ username: '1234567890abcdefh' }, function(err, user) {
           expect(err.errors.username.type[0]).to.equal('too_long')
-          expect(err.errors.username.type[1]).to.have.keys('maxlength')
+          expect(err.errors.username.type[1].maxlength).to.equal(16)
+          done()
+        })
+      })
+      
+      it('occurs when email.length is greater than 200', function(done) {
+        User.create({ email: createString(201) }, function(err, user) {
+          expect(err.errors.email.type[0]).to.equal('too_long')
+          expect(err.errors.email.type[1].maxlength).to.equal(200)
+          done()
+        })
+      })
+      
+      it('occurs when bio.length is greater than 200', function(done) {
+        User.create({ bio: createString(1001) }, function(err, user) {
+          expect(err.errors.bio.type[0]).to.equal('too_long')
+          expect(err.errors.bio.type[1].maxlength).to.equal(1000)
+          done()
+        })
+      })
+
+      it('occurs when fullname.length is greater than 100', function(done) {
+        User.create({ fullname: createString(101) }, function(err, user) {
+          expect(err.errors.fullname.type[0]).to.equal('too_long')
+          expect(err.errors.fullname.type[1].maxlength).to.equal(100)
+          done()
+        })
+      })
+
+      it('occurs when location.length is greater than 100', function(done) {
+        User.create({ location: createString(101) }, function(err, user) {
+          expect(err.errors.location.type[0]).to.equal('too_long')
+          expect(err.errors.location.type[1].maxlength).to.equal(100)
+          done()
+        })
+      })
+
+      it('occurs when website.length is greater than 200', function(done) {
+        User.create({ website: createString(201) }, function(err, user) {
+          expect(err.errors.website.type[0]).to.equal('too_long')
+          expect(err.errors.website.type[1].maxlength).to.equal(200)
           done()
         })
       })
@@ -60,13 +104,24 @@ describe('User Model', function() {
 
     describe('bad_format error', function() {
 
-      it('occurs when email is badly formatted', function(done) {
+      it('occurs when email does not match pattern', function(done) {
         User.create({
           email: 'a'
         }, function(err, user) {
           expect(user).to.not.exist
           expect(err.errors.email.type[0]).to.equal('bad_format')
           expect(err.errors.email.type[1]).to.not.exist
+          done()
+        })
+      })
+      
+      it('occurs when website does not match pattern', function(done) {
+        User.create({
+          website: 'a'
+        }, function(err, user) {
+          expect(user).to.not.exist
+          expect(err.errors.website.type[0]).to.equal('bad_format')
+          expect(err.errors.website.type[1]).to.not.exist
           done()
         })
       })
@@ -193,7 +248,7 @@ describe('User Model', function() {
         password: 'test',
         fullname: 'test bravo',
         location: 'sf',
-        website: 'jukesy'
+        website: 'http://jukesy.com'
       }, function(err, u) {
         user = u
         expect(user).to.exist

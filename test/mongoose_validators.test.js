@@ -17,7 +17,7 @@ describe('MongooseValidators Library', function() {
       expect(validators.required('123456')).to.equal(6)
     })
   })
-  
+    
   describe('#tooLong', function() {
     var tooLong = validators.tooLong(16)
 
@@ -102,6 +102,25 @@ describe('MongooseValidators Library', function() {
         }])
       })
       
+    })
+  })
+
+  describe('#isURL', function() {
+    it('returns true for non-strings', function() {
+      expect(validators.isURL([])).to.be.true
+      expect(validators.isURL()).to.be.true
+    })
+
+    it('returns true for an empty string', function() {
+      expect(validators.isURL('')).to.be.true
+    })
+    
+    it('returns false for an non-url string', function() {
+      expect(validators.isURL('osjfda')).to.be.false
+    })
+    
+    it('returns true for a string that is a url', function() {
+      expect(validators.isURL('http://twitter.com/')).to.be.true
     })
   })
 

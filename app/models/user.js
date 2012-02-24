@@ -104,18 +104,32 @@ User.pre('validate', function(next) {
 // Validators
 //
 
-// Password
-User.path('password').validate(validators.required, [ 'required' ])
-
 // Username
 User.path('username').validate(validators.required, [ 'required' ])
 User.path('username').validate(validators.tooLong(16), [ 'too_long', { maxlength: 16 } ])
 User.path('username').validate(validators.match(/^([a-z0-9]*)$/i), [ 'bad_characters', { characters: 'A-Z and 0-9' } ])
 User.path('username').validate(validators.alreadyTaken('User', 'username'), [ 'already_taken' ])
 
+// Password
+User.path('password').validate(validators.required, [ 'required' ])
+
 // Email
 User.path('email').validate(validators.required, [ 'required' ])
+User.path('email').validate(validators.tooLong(200), [ 'too_long', { maxlength: 200 } ])
 User.path('email').validate(validators.match(/^\S+@\S+\.\S+$/), [ 'bad_format' ])
 User.path('email').validate(validators.alreadyTaken('User', 'email'), [ 'already_taken' ])
+
+// Bio
+User.path('bio').validate(validators.tooLong(1000), [ 'too_long', { maxlength: 1000 } ])
+
+// Full Name
+User.path('fullname').validate(validators.tooLong(100), [ 'too_long', { maxlength: 100 } ])
+
+// Location
+User.path('location').validate(validators.tooLong(100), [ 'too_long', { maxlength: 100 } ])
+
+// Website
+User.path('website').validate(validators.tooLong(200), [ 'too_long', { maxlength: 200 } ])
+User.path('website').validate(validators.isURL, [ 'bad_format' ])
 
 mongoose.model('User', User)
