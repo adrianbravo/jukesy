@@ -32,9 +32,7 @@ describe('User Model', function() {
 
       it('occurs when username.length is greater than 16', function(done) {
         User.create({
-          username: '1234567890abcdefh',
-          email: 'a@b.c',
-          password: 'a'
+          username: '1234567890abcdefh'
         }, function(err, user) {
           expect(user).to.not.exist
           expect(err.errors.username.type[0]).to.equal('too_long')
@@ -50,8 +48,6 @@ describe('User Model', function() {
       it('occurs when username is has non-accepted characters', function(done) {
         User.create({
           username: '.',
-          email: 'a@b.c',
-          password: 'a'
         }, function(err, user) {
           expect(user).to.not.exist
           expect(err.errors.username.type[0]).to.equal('bad_characters')
@@ -66,9 +62,7 @@ describe('User Model', function() {
 
       it('occurs when email is badly formatted', function(done) {
         User.create({
-          username: 'a',
-          email: 'a',
-          password: 'a'
+          email: 'a'
         }, function(err, user) {
           expect(user).to.not.exist
           expect(err.errors.email.type[0]).to.equal('bad_format')
@@ -190,7 +184,7 @@ describe('User Model', function() {
   })
 
   describe('#exposeJSON', function() {
-    var user
+    var user, admin
 
     beforeEach(function(done) {
       User.create({
@@ -203,7 +197,17 @@ describe('User Model', function() {
       }, function(err, u) {
         user = u
         expect(user).to.exist
-        done()
+        User.create({
+          username: 'admin',
+          email: 'admin@test.test',
+          password: 'admin',
+          fullname: 'admian bravo',
+          admin: true
+        }, function(err, a) {
+          admin = a
+          expect(admin).to.exist
+          done()
+        })
       })
     })
     
@@ -232,19 +236,11 @@ describe('User Model', function() {
     })
 
     it('returns sensitive data when viewer is admin', function(done) {
-      User.create({
-        username: 'admin',
-        email: 'admin@test.test',
-        password: 'admin',
-        fullname: 'admian bravo',
-        admin: true
-      }, function(err, admin) {
-        var json = user.exposeJSON(admin)
-        expect(json).to.exist
-        expect(json).to.have.keys('email', 'username', 'fullname', 'location', 'website', 'bio')
-        expect(json).to.not.have.keys('password')
-        done()
-      })
+      var json = user.exposeJSON(admin)
+      expect(json).to.exist
+      expect(json).to.have.keys('email', 'username', 'fullname', 'location', 'website', 'bio')
+      expect(json).to.not.have.keys('password')
+      done()
     })
 
   })
@@ -384,32 +380,26 @@ describe('User Model', function() {
       }, function(err, u) {
         user = u
         expect(user).to.exist
-        done()
+        setTimeout(done, 1000)
       })
     })
 
     it('sets time.created only on create', function(done) {
-      this.timeout(3000)
       var created = user.time.created
-      setTimeout(function() {
-        user.save(function(err, user) {
-          expect(user).to.exist
-          expect(user.time.created).to.equal(created)
-          done()
-        })
-      }, 1000)
+      user.save(function(err, user) {
+        expect(user).to.exist
+        expect(user.time.created).to.equal(created)
+        done()
+      })
     })
 
     it('sets time.updated on update', function(done) {
-      this.timeout(3000)
       var updated = user.time.updated
-      setTimeout(function() {
-        user.save(function(err, user) {
-          expect(user).to.exist
-          expect(user.time.updated).to.not.equal(updated)
-          done()
-        })
-      }, 1000)
+      user.save(function(err, user) {
+        expect(user).to.exist
+        expect(user.time.updated).to.not.equal(updated)
+        done()
+      })
     })
 
   })
