@@ -8,8 +8,8 @@ var mongoose = require('mongoose')
   , validators = app.mongooseValidators
     
 var User = module.exports = new Schema({
-  username    : { type: String, unique: true },
-  email       : { type: String, unique: true },
+  username    : { type: String, unique: true, set: app.mongooseSetters.toLower },
+  email       : { type: String, unique: true, set: app.mongooseSetters.toLower },
   password    : { type: String },
   salt        : { type: String },
 
@@ -67,9 +67,9 @@ User.static({
 
 User.pre('validate', function(next) {
   if (this.isNew) {
-    this.username = this.username ? this.username.toLowerCase() : ''
+    this.username = this.username || ''
     this.password = this.password || ''
-    this.email = this.email ? this.email.toLowerCase() : ''
+    this.email = this.email || ''
   }
   next()
 })

@@ -24,8 +24,10 @@ module.exports = function(app) {
   app.mongodb = require('./mongodb')[app.set('env')]
   app.pepper  = 'herp derp'
 
+  app.mongooseSetters = require('../lib/mongoose_setters')
   app.mongoosePlugins = require('../lib/mongoose_plugins')
   app.mongooseValidators = require('../lib/mongoose_validators')
+
   app.auth = require('../lib/auth')
 
   app.Error   = require('../lib/error')
