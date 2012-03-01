@@ -40,9 +40,9 @@ function onYouTubePlayerReady(id) {
   Video.player = $('#' + id)[0]
   Video.player.addEventListener('onStateChange', 'Video.onStateChange')
   Video.player.addEventListener('onError', 'Video.onError')
-  Video.volume(20)
+  Video.volume(100)
   
-  Video.load('lxhk-cWQbrs')
+  //Video.load('lxhk-cWQbrs')
 
   // Set up the router and backbone history.
   //window.Router = new AppRouter()
