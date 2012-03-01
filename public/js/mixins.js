@@ -1,5 +1,21 @@
 Mixins.ViewFormErrors = {
   
+  submit: function() {
+    var sendJSON = {}
+    _.each(this.$el.find('[name]'), function(inputEl) {
+      var $input = $(inputEl)
+      sendJSON[$input.attr('name')] = $input.val()
+    })
+    
+    this.model.save(sendJSON, {
+      success: this.submitSuccess,
+      error: this.submitError
+    })
+    
+    return false
+  },
+  
+  
   submitError: function(model, error) {
     this.removeErrors()
     if (error.status) {

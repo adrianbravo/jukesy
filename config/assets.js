@@ -16,6 +16,7 @@ var assets = {
     'js/user.js',
     'js/session.js',
     // ...
+    'js/video.js',
     'js/application.js'
   ],
 

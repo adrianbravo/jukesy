@@ -68,22 +68,8 @@ View.User = Backbone.View.extend(_.extend({
   submitSuccess: function(model, response) {
     this.toggleEdit()
     // TODO alert success
-  },
-
-  submit: function() {
-    this.model.save({
-      fullname: this.$el.find('#user-edit-fullname').val(),
-      bio: this.$el.find('#user-edit-bio').val(),
-      location: this.$el.find('#user-edit-location').val(),
-      website: this.$el.find('#user-edit-website').val(),
-      email: this.$el.find('#user-edit-email').val()
-    }, {
-      success: this.submitSuccess,
-      error: this.submitError
-    })
-    return false
   }
-    
+      
 }, Mixins.ViewFormErrors))
 
 View.UserCreate = Backbone.View.extend(_.extend({
@@ -100,6 +86,7 @@ View.UserCreate = Backbone.View.extend(_.extend({
   initialize: function() {
     _.bindAll(this, 'submit', 'keyDown', 'submitSuccess', 'submitError', 'newSession')
     this.$el = $(this.el)
+    this.model = new Model.User
     this.render()
   },
     
@@ -122,19 +109,6 @@ View.UserCreate = Backbone.View.extend(_.extend({
   submitSuccess: function(model, response) {
     Session.login()
     ModalView.hide()
-  },
-  
-  submit: function() {
-    var user = new Model.User({
-          username: this.$el.find('#user-new-username').val(),
-          password: this.$el.find('#user-new-password').val(),
-          email: this.$el.find('#user-new-email').val()
-        })
-
-    user.save({}, {
-      success: this.submitSuccess,
-      error: this.submitError
-    })
-    return false
   }
+  
 }, Mixins.ViewFormErrors))

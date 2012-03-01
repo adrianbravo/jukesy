@@ -5,7 +5,13 @@ ul.nav.nav-pills
     li
       a.sign-up Sign up
   - else
-    li
-      a(href= '/user/' + currentUser.username) Settings
-    li
-      a.ll(href= '/logout') Logout
+    li.dropdown
+      a.dropdown-toggle('data-toggle'= 'dropdown', href= '#') Account 
+        b.caret
+      ul.dropdown-menu
+        li
+          a(href= '/user/' + currentUser.username) View my profile
+        li
+          a(href= '/user/' + currentUser.username + '/edit') Edit settings
+        li
+          a.ll(href= '/logout') Logout

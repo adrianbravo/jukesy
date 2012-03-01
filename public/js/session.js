@@ -98,17 +98,6 @@ View.SessionCreate = Backbone.View.extend(_.extend({
   submitSuccess: function(user) {
     ModalView.hide()
     this.model.login()
-  },
-      
-  submit: function() {
-    this.model.save({
-      login: this.$el.find('#session-new-login').val(),
-      password: this.$el.find('#session-new-password').val()
-    }, {
-      success: this.submitSuccess,
-      error: this.submitError
-    })
-
-    return false
   }
+        
 }, Mixins.ViewFormErrors))
