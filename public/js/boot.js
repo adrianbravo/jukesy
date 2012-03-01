@@ -13,7 +13,6 @@ window.Model = {}
 window.View = {}
 window.Mixins = {}
 
-
 function cookieParser() {
   var ca = document.cookie.split(';')
     , len = ca.length
@@ -41,11 +40,9 @@ function onYouTubePlayerReady(id) {
   Video.player = $('#' + id)[0]
   Video.player.addEventListener('onStateChange', 'Video.onStateChange')
   Video.player.addEventListener('onError', 'Video.onError')
-  Video.volume(0)
+  Video.volume(20)
   
-  console.log('play!', id)
   Video.load('lxhk-cWQbrs')
-  console.log('loading')
 
   // Set up the router and backbone history.
   //window.Router = new AppRouter()
