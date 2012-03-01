@@ -1,16 +1,9 @@
-#navbar.navbar.navbar-fixed-top
-  .navbar-inner
-    .container
-      a.btn.btn-navbar('data-toggle'= 'collapse', 'data-target'='.nav-collapse')
-        span.icon-bar
-        span.icon-bar
-        span.icon-bar
-      a#brand.brand(href= '/') jukesy
-      .nav-collapse
-        ul.nav
-        .navbar-search.pull-left
-          input.search-query.span2(type= 'text', placeholder= 'Search for music')
-        ul.nav.pull-right
-          li.divider-vertical
-          li#session-button
-            include session_button
+.navbar-inner
+  .container
+    .row
+      .span2
+        a#brand.brand(href= '/') jukesy
+      .span3
+        input#query(type= 'text', placeholder= 'Search for music')
+      #session-button.pull-right
+          include session_button

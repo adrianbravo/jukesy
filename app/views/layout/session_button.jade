@@ -1,10 +1,11 @@
-- if (typeof currentUser == 'undefined')
-  a.sign-in Login
-- else
-  a.dropdown-toggle('data-toggle'= 'dropdown') Account 
-    b.caret
-  ul.dropdown-menu
+ul.nav.nav-pills
+  - if (typeof currentUser == 'undefined')
+    li
+      a.sign-in Login
+    li
+      a.sign-up Sign up
+  - else
     li
       a(href= '/user/' + currentUser.username) Settings
     li
-      a.ll(href= '/logout') Sign Out
+      a.ll(href= '/logout') Logout

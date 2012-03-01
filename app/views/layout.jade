@@ -3,16 +3,19 @@ html
   include layout/meta
 
   body.fade
-    include layout/header
     #modal.modal.hide.fade
-    .container-fluid
-      .row-fluid
+    #header.navbar.navbar-fixed-top
+      include layout/header
+    .container
+      .row
         .span2
-          #sidebar.well.sidebar-nav
+          #sidebar.sidebar-nav
             include layout/sidebar
         .span10
           #main
             != body
+          #video.well
+            h1 video here
           hr
           include layout/footer
 

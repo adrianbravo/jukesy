@@ -110,9 +110,9 @@ $(function() {
   // https://github.com/documentcloud/backbone/issues/456#issuecomment-2557835
   window.document.addEventListener('click', function(e) {
     e = e || window.event
-    var target = e.target || e.srcElement
-    if (target.nodeName.toLowerCase() === 'a' && !target.className.match(/ll/)) { // literal link
-      var uri = target.getAttribute('href')
+    var $target = $(e.target || e.srcElement)
+    if ($target.is('a') && !$target.hasClass('ll')) { // literal link
+      var uri = $target.attr('href')
       if (uri) {
         e.preventDefault()
         Router.navigate(uri.substr(1), true)
