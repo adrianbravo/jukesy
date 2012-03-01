@@ -22,6 +22,7 @@ Model.Session = Backbone.Model.extend({
 
   refresh: function() {
     MainView.render()
+    SidebarView.render()
     this.viewButton.render()
   },
 

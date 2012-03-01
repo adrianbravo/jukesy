@@ -86,6 +86,17 @@ View.Main = Backbone.View.extend({
   }
 })
 
+View.Sidebar = Backbone.View.extend({
+  el: $('#sidebar'),
+  
+  template: jade.compile($('#sidebar-template').text()),
+  
+  render: function() {
+    console.log(Session.userJSON())
+    this.$el.html(this.template({ currentUser: Session.userJSON() }))
+  }
+})
+
 View.Alert = Backbone.View.extend({
   className: 'alert',
 
@@ -105,6 +116,7 @@ $(function() {
   window.MainView = new View.Main
   window.Session = new Model.Session
   window.ModalView = new View.Modal
+  window.SidebarView = new View.Sidebar
 
   // hijack links
   // https://github.com/documentcloud/backbone/issues/456#issuecomment-2557835

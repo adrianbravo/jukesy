@@ -7,3 +7,26 @@ ul.nav.nav-list
     a(href= '/radio')
       i.icon-music
       |  Radio
+  - if (typeof currentUser != 'undefined')
+    li
+      a(href= '/favorites')
+        i.icon-star
+        |  Favorites
+    hr
+    li
+      a(href= '#')
+        i.icon-plus-sign
+        |  Create a playlist
+    li
+      a(href= '/user/#{currentUser.username}/playlists/1')
+        i.icon-empty
+        |  Gorillaz
+    li
+      a(href= '/user/#{currentUser.username}/playlists/2')
+        i.icon-empty
+        |  Hello World
+    li
+      a(href= '/user/#{currentUser.username}/playlists/3')
+        i.icon-empty
+        |  Funk
+

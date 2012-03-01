@@ -10,6 +10,7 @@ textarea,
 }
 body {
   padding-top: 60px;
+  padding-bottom: 40px;
   background: #999;
 }
 
@@ -18,16 +19,19 @@ body {
   box-shadow: 0 2px 0 rgba(48, 48, 48, 0.5);
   
   #query {
-    background: whiteSmoke;
+    background: #999;
+    color: #333;
     margin-top: 8px;
     border: 1px solid #444;
+    &::-webkit-input-placeholder { color: #666; font-style: italic; }
+    &::-moz-placeholder          { color: #666; font-style: italic; }
   }
   
   #brand {
     font-family: 'Ruluko';
     font-weight: bold;
     font-size: 24px;
-    color: #888;
+    color: #999;
     &:hover {
       color: #eee;
     }
@@ -41,18 +45,21 @@ body {
 }
 
 #main {
-  background: whiteSmoke;
+  background: #ccc;
   .radius(5px);
   padding: 20px;
   margin-bottom: 20px;
 }
 
 #sidebar {
+  hr {
+    margin: 4px 0;
+  }
   ul {
     margin: 0 -15px 0 0;
     padding: 0;
     font-size: 14px;
-
+        
     li a {
       margin: 0;
       padding: 3px;
@@ -61,6 +68,7 @@ body {
       line-height: 20px;
 
       &:hover {
+        background: #ccc;
       }
     }
   }
