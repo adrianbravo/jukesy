@@ -8,6 +8,18 @@ module.exports = function(app) {
 
     about: function(req, res, next) {
       res.render('home/about', {})
+    },
+    
+    termsOfService: function(req, res, next) {
+      res.render('home/terms_of_service', {})
+    },
+    
+    privacyPolicy: function(req, res, next) {
+      res.render('home/privacy_policy', {})
+    },
+    
+    nowPlaying: function(req, res, next) {
+      res.render('home/now_playing', {})
     }
 
   }

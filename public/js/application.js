@@ -1,8 +1,11 @@
 AppRouter = Backbone.Router.extend({
   routes: {
-    ''               : 'welcome',
-    'about'          : 'about',
-    'user/:username' : 'userView'
+    ''                 : 'welcome',
+    'about'            : 'about',
+    'terms-of-service' : 'termsOfService',
+    'privacy-policy'   : 'privacyPolicy',
+    'now-playing'      : 'nowPlaying',
+    'user/:username'   : 'userView'
   },
 
   initialize: function() {
@@ -16,7 +19,19 @@ AppRouter = Backbone.Router.extend({
   about: function() {
     MainView.render('about')
   },
-    
+  
+  privacyPolicy: function() {
+    MainView.render('privacyPolicy')
+  },
+  
+  termsOfService: function() {
+    MainView.render('termsOfService')
+  },
+  
+  nowPlaying: function() {
+    MainView.render('nowPlaying')
+  },
+
   userView: function(username) {
     var user = new Model.User({ id: username, username: username })
     // TODO waitstate ???
@@ -38,8 +53,11 @@ View.Main = Backbone.View.extend({
   el: $('#main'),
 
   templates: {
-    welcome : jade.compile($('#welcome-template').text()),
-    about   : jade.compile($('#about-template').text()),
+    welcome        : jade.compile($('#welcome-template').text()),
+    about          : jade.compile($('#about-template').text()),
+    termsOfService : jade.compile($('#terms-of-service-template').text()),
+    privacyPolicy  : jade.compile($('#privacy-policy-template').text()),
+    nowPlaying     : jade.compile($('#now-playing-template').text()),
     404   : jade.compile($('#404-template').text()),
     500   : jade.compile($('#500-template').text())
   },
@@ -101,10 +119,12 @@ $(function() {
       }
     }
   })
+  /*
   window.addEventListener('popstate', function(e) {
     Router.navigate(location.pathname.substr(1), true)
   })
   // done hijacking links
+  */
 
   $('body').addClass('in') // fade in
 
