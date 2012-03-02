@@ -1,22 +1,22 @@
 - if (user.fullname)
-  h1= user.fullname
-  h3= '[' + user.username + ']'
+  h1 #{user.fullname}
+  h3 [#{user.username}]
 - else
-  h1= '[' + user.username + ']'
+  h1 [#{user.username}]
 
 p.bio= user.bio
 
 p
   if (user.location)
-    = user.location
+    #{user.location}
   if (user.website)
     if (user.location)
       |  &middot; 
-    a.ll(target= '_blank', href= user.website).website= user.website
+    a.ll(target= '_blank', href= user.website).website #{user.website}
 
 
 - if (currentUser && currentUser.username == user.username)
   div
-    a.btn.edit Edit Profile
+    a.btn(href= '/user/#{user.username}/edit') Edit Profile
 
 // Playlists

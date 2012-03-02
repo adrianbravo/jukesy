@@ -15,10 +15,11 @@ Mixins.ViewFormErrors = {
     return false
   },
   
-  
   submitError: function(model, error) {
     this.removeErrors()
-    if (error.status) {
+    if (error.status == 401) {
+      this.addAlert('unauthorized')
+    } else if (error.status) {
       this.addErrors(JSON.parse(error.responseText).errors)
     } else {
       this.addAlert()

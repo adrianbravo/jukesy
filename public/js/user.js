@@ -10,19 +10,37 @@ Model.User = Backbone.Model.extend({
 })
 
 
-View.User = Backbone.View.extend(_.extend({
+View.User = Backbone.View.extend({
   template: jade.compile($('#user-show-template').text()),
-  editTemplate: jade.compile($('#user-edit-template').text()),
+    
+  // TODO refactor
+  render: function() {
+    var locals = {
+      user: this.model.toJSON(),
+      currentUser: Session.userJSON()
+    }
+    
+    if (locals.user && locals.currentUser && locals.user.id == locals.currentUser.id) {
+      // TODO
+      //locals.user = locals.currentUser
+      // How do we re-render when a user logs in? (may require extra logic in login process)
+    }
+    this.$el.html(this.template(locals))
+    return this
+  }
+    
+})
+
+View.UserEdit = Backbone.View.extend(_.extend({
+  template: jade.compile($('#user-edit-template').text()),
     
   events: {
-    'click a.btn.edit'    : 'toggleEdit',
     'click a.btn-primary' : 'submit',
     'keypress input'      : 'keyDown'
-
   },
     
   initialize: function() {
-    _.bindAll(this, 'toggleEdit', 'submit', 'keyDown', 'submitSuccess', 'submitError')
+    _.bindAll(this, 'submit', 'keyDown', 'submitSuccess', 'submitError')
   },
     
   // TODO refactor
@@ -31,31 +49,17 @@ View.User = Backbone.View.extend(_.extend({
       user: this.model.toJSON(),
       currentUser: Session.userJSON()
     }
-      
+
     if (locals.user && locals.currentUser && locals.user.id == locals.currentUser.id) {
-      // TODO
-      //locals.user = locals.currentUser
-      // How do we re-render when a user logs in? (may require extra logic in login process)
-    }
-      
-    if (this.edit) {
-      this.$el.html(this.editTemplate(locals))
-    } else {
       this.$el.html(this.template(locals))
-    }
-      
-    return this
-  },
-    
-  toggleEdit: function() {
-    if (this.model.id == Session.user.id && !this.edit) {
-      // rerender as edit
-      this.edit = true
-      MainView.render()
     } else {
-      this.edit = false
-      MainView.render()
+      _.defer(function() {
+        // TODO render 401???
+        //MainView.render('401')
+      })
     }
+
+    return this
   },
     
   keyDown: function(event) {
@@ -66,11 +70,11 @@ View.User = Backbone.View.extend(_.extend({
   },
     
   submitSuccess: function(model, response) {
-    this.toggleEdit()
-    // TODO alert success
+    alert('success!')
   }
       
 }, Mixins.ViewFormErrors))
+
 
 View.UserCreate = Backbone.View.extend(_.extend({
   template: jade.compile($('#user-new-template').text()),
@@ -91,7 +95,7 @@ View.UserCreate = Backbone.View.extend(_.extend({
   },
     
   newSession: function() {
-    new View.SessionCreate({ model: this.model })
+    new View.SessionCreate({ model: Session })
   },
     
   render: function() {

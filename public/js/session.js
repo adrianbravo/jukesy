@@ -21,6 +21,7 @@ Model.Session = Backbone.Model.extend({
   },
 
   refresh: function() {
+    console.log('refresh!')
     MainView.render()
     SidebarView.render()
     this.viewButton.render()
@@ -47,13 +48,19 @@ View.SessionButton = Backbone.View.extend({
   el: $('#session-button'),
 
   events: {
-    'click a.sign-in': 'newSession'
+    'click a.sign-in': 'newSession',
+    'click a.sign-up': 'newUser'
   },
     
   template: jade.compile($('#session-button-template').text()),
 
+  // TODO DRY up use of newSession, newUser
   newSession: function() {
-    new View.SessionCreate({ model: this.model })
+    new View.SessionCreate({ model: Session })
+  },
+  
+  newUser: function() {
+    new View.UserCreate()
   },
 
   render: function() {
@@ -73,8 +80,9 @@ View.SessionCreate = Backbone.View.extend(_.extend({
   elFocus: '#session-new-password',
 
   events: {
-    'click a.btn-primary': 'submit',
-    'keypress input': 'keyDown'
+    'click a.btn-primary' : 'submit',
+    'keypress input'      : 'keyDown',
+    'click a.sign-up'     : 'newUser'
   },
 
   initialize: function() {
@@ -86,6 +94,10 @@ View.SessionCreate = Backbone.View.extend(_.extend({
   render: function() {
     this.$el.html(this.template())
     ModalView.render(this.$el)
+  },
+  
+  newUser: function() {
+    new View.UserCreate()
   },
 
   keyDown: function(event) {

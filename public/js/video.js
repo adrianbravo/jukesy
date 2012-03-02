@@ -4,7 +4,6 @@
 //
 Model.Video = Backbone.Model.extend({
   initialize: function() {
-    console.log('creating video player')
     swfobject.embedSWF('http://www.youtube.com/apiplayer?version=3&enablejsapi=1&playerapiid=video&wmode=transparent', // swfUrlStr
                        'video', // replaceElemIdStr
                        '420',   // width
@@ -15,7 +14,6 @@ Model.Video = Backbone.Model.extend({
                        { allowScriptAccess: 'always', wmode: 'transparent' },  // parameters
                        { id: 'video' }                                         // attributes
     )
-    console.log('hey')
   },
   
   onStateChange: function(state) {

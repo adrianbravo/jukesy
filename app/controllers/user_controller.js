@@ -26,6 +26,15 @@ module.exports = function(app) {
         res.render('user/show', { user: userJSON })
       }
     },
+    
+    edit: function(req, res, next) {
+      var userJSON = req.paramUser.exposeJSON(req.currentUser)
+      if (req.xhr) {
+        res.json(userJSON) 
+      } else {
+        res.render('user/edit', { user: userJSON })
+      }
+    },
 
     update: function(req, res, next) {
       req.paramUser.updateAttributes(req.body)

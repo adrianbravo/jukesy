@@ -1,9 +1,9 @@
 ul.nav.nav-pills
   - if (typeof currentUser == 'undefined')
     li
-      a.sign-in Login
+      a.sign-up(href= '#') Sign up
     li
-      a.sign-up Sign up
+      a.sign-in(href= '#') Login
   - else
     li.dropdown
       a.dropdown-toggle('data-toggle'= 'dropdown', href= '#') Account 

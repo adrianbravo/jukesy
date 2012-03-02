@@ -1,11 +1,12 @@
 AppRouter = Backbone.Router.extend({
   routes: {
-    ''                 : 'welcome',
-    'about'            : 'about',
-    'terms-of-service' : 'termsOfService',
-    'privacy-policy'   : 'privacyPolicy',
-    'now-playing'      : 'nowPlaying',
-    'user/:username'   : 'userView'
+    ''                    : 'welcome',
+    'about'               : 'about',
+    'terms-of-service'    : 'termsOfService',
+    'privacy-policy'      : 'privacyPolicy',
+    'now-playing'         : 'nowPlaying',
+    'user/:username'      : 'userView',
+    'user/:username/edit' : 'userEdit'
   },
 
   initialize: function() {
@@ -43,7 +44,19 @@ AppRouter = Backbone.Router.extend({
       error: this.error
     })
   },
-    
+  
+  userEdit: function(username) {
+    var user = new Model.User({ id: username, username: username })
+    // TODO waitstate ???
+      
+    user.fetch({
+      success: function(model, response) {
+        MainView.render(new View.UserEdit({ model: model }))
+      },
+      error: this.error
+    })
+  },
+  
   error: function(model, response) {
     MainView.render((response && response.status == 404) ? '404' : '500')
   }
@@ -58,6 +71,7 @@ View.Main = Backbone.View.extend({
     termsOfService : jade.compile($('#terms-of-service-template').text()),
     privacyPolicy  : jade.compile($('#privacy-policy-template').text()),
     nowPlaying     : jade.compile($('#now-playing-template').text()),
+    401   : jade.compile($('#401-template').text()),
     404   : jade.compile($('#404-template').text()),
     500   : jade.compile($('#500-template').text())
   },
@@ -67,6 +81,7 @@ View.Main = Backbone.View.extend({
   },
 
   render: function(template) {
+    console.log('mainview.render')
     // Used for making MainView.render() re-render the last template
     if (!template) {
       if (!this.currentTemplate) {
@@ -74,15 +89,19 @@ View.Main = Backbone.View.extend({
       }
       template = this.currentTemplate
     }
-      
+    console.log(this.currentTemplate)
+    
     if (_.isString(template)) {
+      console.log('2')
       this.$el.html(this.templates[template]({ currentUser: Session.userJSON() }))
       this.currentTemplate = template
     } else if (_.isObject(template)) {
+      console.log('3')
       this.$el.html(template.render().$el)
       template.delegateEvents()
       this.currentTemplate = template
     }
+    console.log('4')
   }
 })
 
@@ -108,10 +127,6 @@ View.Alert = Backbone.View.extend({
 })
 
 $(function() {
-  $(document).on('click', 'a.sign-up', function() {
-    new View.UserCreate()
-  })
-  
   window.MainView = new View.Main
   window.Session = new Model.Session
   window.ModalView = new View.Modal

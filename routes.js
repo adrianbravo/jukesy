@@ -26,6 +26,7 @@ module.exports = function(app) {
   app.get('/user', UserController.index)
   app.post('/user', UserController.create)
   app.get('/user/:username', app.auth.authenticate, UserController.read)
+  app.get('/user/:username/edit', app.auth.authenticate, app.auth.authorize, UserController.edit)
   app.put('/user/:username', app.auth.authenticate, app.auth.authorize, UserController.update)
   app.del('/user/:username', app.auth.authenticate, app.auth.authorize, UserController.delete)
 

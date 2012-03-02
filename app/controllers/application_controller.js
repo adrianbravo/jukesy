@@ -23,6 +23,9 @@ module.exports = function(app) {
           case 404:
             res.render('404', { status: 404 })
             break
+          case 401:
+            res.render('401', { status: 401 })
+            break
           default:
             res.json(err, err.code)
         }

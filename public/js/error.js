@@ -6,6 +6,8 @@ window.parseError = function(field, error) {
   }
   
   switch (error) {
+    case 'unauthorized':
+    return 'You\'re not authorized to access that.'
     case 'no_connection':
       return 'There was an error connecting to the server. Please try again in a few minutes.'
     case 'bad_credentials':
