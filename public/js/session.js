@@ -57,10 +57,12 @@ View.SessionButton = Backbone.View.extend({
   // TODO DRY up use of newSession, newUser
   newSession: function() {
     new View.SessionCreate({ model: Session })
+    return false
   },
   
   newUser: function() {
     new View.UserCreate()
+    return false
   },
 
   render: function() {
@@ -98,6 +100,7 @@ View.SessionCreate = Backbone.View.extend(_.extend({
   
   newUser: function() {
     new View.UserCreate()
+    return false
   },
 
   keyDown: function(event) {

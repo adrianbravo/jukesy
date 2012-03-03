@@ -6,21 +6,25 @@ Mixins.ViewFormErrors = {
       var $input = $(inputEl)
       sendJSON[$input.attr('name')] = $input.val()
     })
-    
     this.model.save(sendJSON, {
       success: this.submitSuccess,
       error: this.submitError
     })
-    
     return false
   },
   
   submitError: function(model, error) {
     this.removeErrors()
-    if (error.status == 401) {
+    var errorJSON = {}
+    try {
+      errorJSON = JSON.parse(error.responseText)
+    } catch(e) {}
+    console.log(errorJSON)
+    
+    if (error.status == 401 && !errorJSON.errors) {
       this.addAlert('unauthorized')
     } else if (error.status) {
-      this.addErrors(JSON.parse(error.responseText).errors)
+      this.addErrors(errorJSON.errors)
     } else {
       this.addAlert()
     }

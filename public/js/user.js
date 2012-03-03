@@ -96,6 +96,7 @@ View.UserCreate = Backbone.View.extend(_.extend({
     
   newSession: function() {
     new View.SessionCreate({ model: Session })
+    return false
   },
     
   render: function() {

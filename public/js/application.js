@@ -32,11 +32,10 @@ AppRouter = Backbone.Router.extend({
   nowPlaying: function() {
     MainView.render('nowPlaying')
   },
-
+  
+  // TODO waitstate ???
   userView: function(username) {
     var user = new Model.User({ id: username, username: username })
-    // TODO waitstate ???
-      
     user.fetch({
       success: function(model, response) {
         MainView.render(new View.User({ model: model }))
@@ -45,10 +44,9 @@ AppRouter = Backbone.Router.extend({
     })
   },
   
+  // TODO waitstate ???
   userEdit: function(username) {
     var user = new Model.User({ id: username, username: username })
-    // TODO waitstate ???
-      
     user.fetch({
       success: function(model, response) {
         MainView.render(new View.UserEdit({ model: model }))
