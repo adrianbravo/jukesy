@@ -28,7 +28,7 @@ View.User = Backbone.View.extend({
 
 View.UserEdit = Backbone.View.extend(_.extend({
   template: jade.compile($('#user-edit-template').text()),
-    
+  
   events: {
     'click a.btn-primary' : 'submit',
     'keypress input'      : 'keyDown'
@@ -61,7 +61,16 @@ View.UserEdit = Backbone.View.extend(_.extend({
   },
     
   submitSuccess: function(model, response) {
-    alert('success!')
+    this.removeErrors()
+    var $alert = new View.Alert({
+          className: 'alert-success alert fade',
+          message: 'Your changes have been saved.'
+        }).render()
+      
+    this.$el.find('form').prepend($alert)
+    _.defer(function() {
+      $alert.addClass('in')
+    })
   }
       
 }, Mixins.ViewFormErrors))
