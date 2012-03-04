@@ -6,26 +6,26 @@ Model.User = Backbone.Model.extend({
       url += '/' + this.get('username')
     }
     return url
+  },
+  
+  isCurrentUser: function() {
+    if (!Session.user || Session.user.id != this.id) {
+      return false
+    } else {
+      return true
+    }
   }
 })
 
 
 View.User = Backbone.View.extend({
   template: jade.compile($('#user-show-template').text()),
-    
-  // TODO refactor
+  
   render: function() {
-    var locals = {
+    this.$el.html(this.template({
       user: this.model.toJSON(),
       currentUser: Session.userJSON()
-    }
-    
-    if (locals.user && locals.currentUser && locals.user.id == locals.currentUser.id) {
-      // TODO
-      //locals.user = locals.currentUser
-      // How do we re-render when a user logs in? (may require extra logic in login process)
-    }
-    this.$el.html(this.template(locals))
+    }))
     return this
   }
     
@@ -43,19 +43,15 @@ View.UserEdit = Backbone.View.extend(_.extend({
     _.bindAll(this, 'submit', 'keyDown', 'submitSuccess', 'submitError')
   },
     
-  // TODO refactor
   render: function() {
-    var locals = {
-      user: this.model.toJSON(),
-      currentUser: Session.userJSON()
-    }
-
-    if (locals.user && locals.currentUser && locals.user.id == locals.currentUser.id) {
-      this.$el.html(this.template(locals))
+    if (this.model.isCurrentUser()) {
+      this.$el.html(this.template({
+        user: this.model.toJSON(),
+        currentUser: Session.userJSON()
+      }))
     } else {
       _.defer(function() {
-        // TODO render 401???
-        //MainView.render('401')
+        MainView.render('401')
       })
     }
 

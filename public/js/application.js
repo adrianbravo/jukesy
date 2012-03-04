@@ -78,28 +78,13 @@ View.Main = Backbone.View.extend({
     _.bindAll(this, 'render')
   },
 
-  render: function(template) {
-    console.log('mainview.render')
-    // Used for making MainView.render() re-render the last template
-    if (!template) {
-      if (!this.currentTemplate) {
-        return
-      }
-      template = this.currentTemplate
-    }
-    console.log(this.currentTemplate)
-    
+  render: function(template) {    
     if (_.isString(template)) {
-      console.log('2')
       this.$el.html(this.templates[template]({ currentUser: Session.userJSON() }))
-      this.currentTemplate = template
     } else if (_.isObject(template)) {
-      console.log('3')
       this.$el.html(template.render().$el)
       template.delegateEvents()
-      this.currentTemplate = template
     }
-    console.log('4')
   }
 })
 
@@ -154,5 +139,4 @@ $(function() {
   $('body').addClass('in') // fade in
 
   window.Router = new AppRouter
-  Backbone.history.start({ pushState: true })
 })

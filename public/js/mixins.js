@@ -19,7 +19,6 @@ Mixins.ViewFormErrors = {
     try {
       errorJSON = JSON.parse(error.responseText)
     } catch(e) {}
-    console.log(errorJSON)
     
     if (error.status == 401 && !errorJSON.errors) {
       this.addAlert('unauthorized')

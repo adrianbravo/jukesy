@@ -2,12 +2,10 @@ Model.Session = Backbone.Model.extend({
   urlRoot: '/session',
 
   initialize: function() {
-    var self = this
-
     _.bindAll(this, 'logout', 'login', 'refresh', 'userJSON')
 
-    self.viewButton = new View.SessionButton({ model: this })
-
+    this.viewButton = new View.SessionButton({ model: this })
+    this.initialAttempt = true
     $.ajax({
       url: '/session/refresh',
       dataType: 'json',
@@ -21,10 +19,25 @@ Model.Session = Backbone.Model.extend({
   },
 
   refresh: function() {
-    console.log('refresh!')
-    MainView.render()
+    if (this.initialAttempt) {
+      this.startHistory()
+    } else {
+      Backbone.history.refresh()
+    }
     SidebarView.render()
     this.viewButton.render()
+  },
+  
+  startHistory: function() {
+    this.initialAttempt = false
+    // TODO
+    // Move some of this logic elsewhere
+    Backbone.history.start({ pushState: true })
+    Backbone.history.refresh = function() {
+      var fragment = this.fragment
+      this.navigate('', { trigger: false, replace: true })
+      this.navigate(fragment, { trigger: true, replace: true })
+    }
   },
 
   logout: function() {
