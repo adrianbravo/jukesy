@@ -6,7 +6,8 @@ AppRouter = Backbone.Router.extend({
     'privacy-policy'      : 'privacyPolicy',
     'now-playing'         : 'nowPlaying',
     'user/:username'      : 'userView',
-    'user/:username/edit' : 'userEdit'
+    'user/:username/edit' : 'userEdit',
+    '*derp'               : '404'
   },
 
   initialize: function() {
@@ -63,6 +64,10 @@ AppRouter = Backbone.Router.extend({
   
   error: function(model, response) {
     MainView.render((response && response.status == 404) ? '404' : '500')
+  },
+  
+  404: function() {
+    MainView.render('404')
   }
 })
 
