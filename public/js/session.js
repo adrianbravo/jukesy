@@ -20,24 +20,13 @@ Model.Session = Backbone.Model.extend({
 
   refresh: function() {
     if (this.initialAttempt) {
-      this.startHistory()
+      this.initialAttempt = false
+      Backbone.history.start({ pushState: true })
     } else {
       Backbone.history.refresh()
     }
     SidebarView.render()
     this.viewButton.render()
-  },
-  
-  startHistory: function() {
-    this.initialAttempt = false
-    // TODO
-    // Move some of this logic elsewhere
-    Backbone.history.start({ pushState: true })
-    Backbone.history.refresh = function() {
-      var fragment = this.fragment
-      this.navigate('', { trigger: false, replace: true })
-      this.navigate(fragment, { trigger: true, replace: true })
-    }
   },
 
   logout: function() {

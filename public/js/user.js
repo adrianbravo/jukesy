@@ -9,11 +9,7 @@ Model.User = Backbone.Model.extend({
   },
   
   isCurrentUser: function() {
-    if (!Session.user || Session.user.id != this.id) {
-      return false
-    } else {
-      return true
-    }
+    return Session.user && Session.user.id == this.id
   }
 })
 
@@ -28,7 +24,6 @@ View.User = Backbone.View.extend({
     }))
     return this
   }
-    
 })
 
 View.UserEdit = Backbone.View.extend(_.extend({
@@ -51,7 +46,7 @@ View.UserEdit = Backbone.View.extend(_.extend({
       }))
     } else {
       _.defer(function() {
-        MainView.render('401')
+        MainView.render('404')
       })
     }
 

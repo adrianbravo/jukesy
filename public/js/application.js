@@ -11,6 +11,12 @@ AppRouter = Backbone.Router.extend({
 
   initialize: function() {
     _.bindAll(this, 'error')
+    
+    Backbone.history.refresh = function() {
+      var fragment = this.fragment
+      this.navigate('', { trigger: false, replace: true })
+      this.navigate(fragment, { trigger: true, replace: true })
+    }
   },
     
   welcome: function() {
