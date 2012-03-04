@@ -12,7 +12,7 @@ form
       label.control-label(for= 'user-edit-bio') Bio
       .controls
         textarea#user-edit-bio.input-large(rows= 3, name= 'bio')
-          = escape(user.bio)
+          = escape(user.bio || '')
         span.help-inline
 
     .control-group
