@@ -6,7 +6,7 @@ html
     #modal.modal.hide.fade
     #header.navbar.navbar-fixed-top
       include layout/header
-    .container
+    #container.container
       .row
         .span2
           #sidebar.sidebar-nav
@@ -14,9 +14,12 @@ html
         .span10
           #main
             != body
-          #video
+          #video-wrapper
+            #video
           hr
           include layout/footer
+    #controls
+      include layout/controls
 
     != partial('_templates')
     script(src= 'http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js')

@@ -8,16 +8,26 @@ textarea,
 .navbar-search .search-query {
   font-family: "Ubuntu";
 }
+
 body {
   padding-top: 60px;
   padding-bottom: 40px;
-  background: #999;
+  background: @body-grey;
+}
+
+a:hover {
+  cursor: pointer;
+}
+
+hr {
+  border-top: 1px solid #777;
+  border-bottom: 1px solid #bbb;
 }
 
 #header .navbar-inner {
   background: #333;
   box-shadow: 0 2px 0 rgba(48, 48, 48, 0.5);
-  
+
   a {
     &:hover {
       background-color: rgba(0, 0, 0, 0.2);
@@ -40,7 +50,7 @@ body {
     font-family: 'Ruluko';
     font-weight: bold;
     font-size: 24px;
-    color: #999;
+    color: @body-grey;
     &:hover {
       color: #eee;
     }
@@ -64,6 +74,91 @@ body {
   text-shadow: 0px 1px 0 #bbb;
   box-shadow: inset 0 0 2px 2px #777;
 }
+
+#video-wrapper {
+  background: #333;
+  padding: 20px;
+  
+  #video {
+    background: #000;
+    h1 {
+      color: @body-grey;
+    }
+  }
+}
+
+#controls {
+  background: #222;
+  box-shadow: 0 -2px 0 rgba(48, 48, 48, 0.5);
+  position: fixed;
+  height: 30px;
+  top: auto;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: 0;
+
+  #volume-bar, #timer {
+    display: inline-block;
+    background: #666;
+    height: 10px;
+    .radius(5px);
+    cursor: pointer;
+    .fill {
+      background: @body-grey;
+      width: 40px;
+      height: 10px;
+      .radius(5px 0 0 5px);
+    }
+  }
+  
+  #timer {
+    margin-top: 10px;
+    width: 100%;
+    .fill {
+      width: 500px;
+      .track {
+        width: 300px;
+        background: #ccc;
+        height: 10px;
+        .radius(5px 0 0 5px);
+      }
+    }
+  }
+  
+  #volume-bar {
+    width: 100px;
+  }
+  
+  .control {
+    padding: 3px 8px;
+    display: inline-block;
+    opacity: 0.575;
+    margin: 3px 0;
+    cursor: pointer;
+    &:hover {
+      opacity: 1.00;
+      background: #000;
+    }
+  }
+  
+  .controls-left, .controls-right, .controls-middle {
+    position: fixed;
+    bottom: 0;
+    height: 30px;
+  }
+  
+  .controls-middle {
+    left: 240px;
+    right: 130px;
+  }
+  
+  .controls-right {
+    right: 0;
+  }
+  
+}
+
 
 #sidebar {
   hr {
@@ -90,6 +185,7 @@ body {
 
 footer {
   color: #333;
+  margin-bottom: 40px;
   a {
     color: #333;
     margin: 0 5px;
@@ -97,20 +193,4 @@ footer {
       margin-left: 0;
     }
   }
-}
-
-#video {
-  background: #000;
-  h1 {
-    color: #999;
-  }
-}
-
-a:hover {
-  cursor: pointer;
-}
-
-hr {
-  border-top: 1px solid #777;
-  border-bottom: 1px solid #bbb;
 }
