@@ -19,6 +19,7 @@ var assets = {
     'js/track.js',
     // ...
     'js/video.js',
+    'js/keys.js',
     'js/application.js'
   ],
 

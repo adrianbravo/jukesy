@@ -11,8 +11,6 @@ Model.Video = Backbone.Model.extend({
                        { allowScriptAccess: 'always', wmode: 'transparent' },  // parameters
                        { id: 'video' }                                         // attributes
     )
-    //_.bindAll(this, 'play', 'pause')
-    
     _.defer(function() {
       window.Controls = new View.Controls
     })
@@ -21,10 +19,10 @@ Model.Video = Backbone.Model.extend({
   stop: function() {
     this.stopped = true
     this.pause()
-    //if (window.NowPlayingTrack) {
+    if (window.NowPlayingTrack) {
     //  $(NowPlayingTrack.view.el).removeClass('playing')
-    //  NowPlayingTrack = null
-    //}
+      NowPlayingTrack = null
+    }
     Controls.render()
     this.onStateChange(-1)
   },
@@ -36,10 +34,10 @@ Model.Video = Backbone.Model.extend({
       //Controls.updateTrackInfo()
     }
     if (this.state == 0) {
-      //this.next()
+      this.next()
     }
     if (this.state == 1 && this.pauseNextState) {
-      //this.pauseNextState = false
+      this.pauseNextState = false
       this.pause()
     }
     
