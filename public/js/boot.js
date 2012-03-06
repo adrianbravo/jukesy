@@ -33,6 +33,13 @@ function onYouTubePlayerReady(id) {
   //Video.setUpdate()
 }
 
+// Redraws on resize
+var windowResized = function() {
+  if (window.Controls) {
+    Controls.updateTimer()
+  }
+}
+
 // Used to parse cookies from document
 function cookieParser() {
   var ca = document.cookie.split(';')

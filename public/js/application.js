@@ -142,6 +142,10 @@ View.Alert = Backbone.View.extend({
 })
 
 $(function() {
+  // Bind resize and call it once.
+  $(window).resize(_.debounce(windowResized))
+  windowResized()
+  
   window.DocumentView = new View.Document
   window.MainView = new View.Main
   window.Session = new Model.Session

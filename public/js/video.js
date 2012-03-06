@@ -42,7 +42,8 @@ Model.Video = Backbone.Model.extend({
     }
     
     this.player.setPlaybackQuality('hd720')
-    Controls.updatePlay()
+    Controls.renderPlay()
+    Controls.renderTimer()
   },
   
   playing: function() {
@@ -54,9 +55,6 @@ Model.Video = Backbone.Model.extend({
   },
   
   play: function() {
-    // TODO
-    // change to collection??
-    console.log('Video.play 1')
     if (!NowPlaying.tracks.length) {
       return false
     }
@@ -66,12 +64,10 @@ Model.Video = Backbone.Model.extend({
       this.next()
       return
     }
-    console.log('Video.play 2', NowPlayingTrack)
     
     this.player.playVideo()
-    console.log('Video.play 3')
     if (this.state != 1) {
-      //this.seek(Math.floor(this.currentTime()))
+      this.seek(Math.floor(this.currentTime()))
     }
   },
   
@@ -153,11 +149,11 @@ Model.Video = Backbone.Model.extend({
   },
   
   loadRatio: function() {
-    return this.player.getVideoBytesLoaded() / this.player.getVideoBytesTotal()
+    return this.player && this.player.getVideoBytesLoaded() / this.player.getVideoBytesTotal()
   },
 
   playRatio: function() {
-    return this.player.getCurrentTime() / this.player.getDuration()
+    return this.player && this.player.getCurrentTime() / this.player.getDuration()
   },
   
   onError: function(error) {
@@ -220,8 +216,13 @@ View.Controls = Backbone.View.extend({
   template: jade.compile($('#controls-template').text()),
   
   initialize: function() {
-    _.bindAll(this, 'updatePlay')
+    _.bindAll(this, 'updateTimer')
+    
     this.render()
+    
+    _.defer(function() {
+      setInterval(Controls.updateTimer, 1000 / 8)      
+    })
   },
   
   render: function() {
@@ -247,11 +248,32 @@ View.Controls = Backbone.View.extend({
     }
   },
   
-  updatePlay: function() {
+  renderPlay: function() {
     if (Video.playing()) {
       this.$el.find('#play-pause div').addClass('icon-pause')
     } else {
       this.$el.find('#play-pause div').removeClass('icon-pause')
+    }
+  },
+  
+  renderTimer: function() {
+    if (Video.playing()) {
+      this.$el.find('#timer .progress').addClass('active')
+    } else {
+      this.$el.find('#timer .progress').removeClass('active')
+    }
+  },
+  
+  updateTimer: function() {
+    var load = Video.loadRatio()
+      , play = Video.playRatio()
+      
+    if (load > 0 && load != Infinity) {
+      this.$el.find('#timer .progress').width(load * 100 + '%')
+      this.$el.find('#timer .progress .bar').width(play * 100 + '%')
+    } else {
+      this.$el.find('#timer .progress').width(0)
+      this.$el.find('#timer .progress .bar').width(0)
     }
   },
   

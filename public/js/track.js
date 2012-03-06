@@ -8,7 +8,7 @@ Model.Track = Backbone.Model.extend({
     var self = this
 
     // Do not attempt to play if an attempt to play a video is in progress
-    if (Video.loading) {
+    if (!Video.player || Video.loading) {
       return false
     }
 
@@ -30,7 +30,7 @@ Model.Track = Backbone.Model.extend({
       //  this.view.setPlaying()
       //}
 
-      //Video.skipToPrev = false
+      Video.skipToPrev = false
       if (!this.video) {
         //this.video = this.bestVideo()
         this.video = this.videos[0].id
