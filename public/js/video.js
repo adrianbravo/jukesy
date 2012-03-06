@@ -17,10 +17,16 @@ Model.Video = Backbone.Model.extend({
       window.Controls = new View.Controls
     })
   },
-
-/*  
-  playing: function() {
-    return this.state == 1
+  
+  stop: function() {
+    this.stopped = true
+    this.pause()
+    //if (window.NowPlayingTrack) {
+    //  $(NowPlayingTrack.view.el).removeClass('playing')
+    //  NowPlayingTrack = null
+    //}
+    Controls.render()
+    this.onStateChange(-1)
   },
   
   onStateChange: function(state) {
@@ -33,44 +39,22 @@ Model.Video = Backbone.Model.extend({
       //this.next()
     }
     if (this.state == 1 && this.pauseNextState) {
-      this.pauseNextState = false
+      //this.pauseNextState = false
       this.pause()
     }
+    
     this.player.setPlaybackQuality('hd720')
     Controls.updatePlay()
   },
-
-  onError: function(error) {
-    console.log('Video.onError', error)
-    // play next song if error == '150'
+  
+  playing: function() {
+    return this.state == 1
   },
   
-  load: function(id) {
-    if (this.state == 3) {
-      return
-    }
-    this.player.loadVideoById(id)
-  },
-
   pause: function() {
     this.player.pauseVideo()
   },
   
-  pauseNext: function() {
-    this.pauseNextState = true
-  },
-  
-  stop: function() {
-    this.stopped = true
-    this.pause()
-    //if (window.NowPlayingTrack) {
-    //  $(NowPlayingTrack.view.el).removeClass('playing')
-    //  NowPlayingTrack = null
-    //}
-    //Controls.render()
-    this.onStateChange(-1)
-  },
-
   play: function() {
     // TODO
     // change to collection??
@@ -79,12 +63,79 @@ Model.Video = Backbone.Model.extend({
       return false
     }
     this.stopped = false
+
+    if (!window.NowPlayingTrack) {
+      this.next()
+      return
+    }
     console.log('Video.play 2', NowPlayingTrack)
+    
     this.player.playVideo()
     console.log('Video.play 3')
     if (this.state != 1) {
       //this.seek(Math.floor(this.currentTime()))
     }
+  },
+  
+  next: function() {
+    console.log('Video.next')
+    if (this.repeat && window.NowPlayingTrack) {
+      NowPlayingTrack.play()
+      return
+    }
+      
+    var next = false
+    _.each(NowPlaying.tracks, function(trackModel) {
+      if (next == true) {
+        next = trackModel
+      }
+      if (window.NowPlayingTrack === trackModel) {
+        next = true
+      }
+    })
+
+    if (next == true || next == false) {
+      next = _.first(NowPlaying.tracks)
+    }
+
+    next.play()
+  },
+  
+  prev: function() {
+    if (this.repeat && window.NowPlayingTrack) {
+      NowPlayingTrack.play()
+      return
+    }
+      
+    if (this.currentTime() > 2) {
+      this.seek(0)
+      return
+    }
+
+    this.skipToPrev = true
+
+    var prev = null, prevSet = false
+    if (window.NowPlayingTrack === _.first(NowPlaying.tracks)) {
+      prev = _.last(NowPlaying.tracks)
+    } else {
+      _.each(NowPlaying.tracks, function(trackModel) {
+        if (window.NowPlayingTrack === trackModel) prevSet = true
+        if (!prevSet) prev = trackModel
+      })
+    }
+
+    prev.play()
+  },
+  
+  load: function(id) {
+    if (this.state == 3) {
+      return
+    }
+    this.player.loadVideoById(id)
+  },
+  
+  pauseNext: function() {
+    this.pauseNextState = true
   },
   
   volume: function(volume) {
@@ -109,6 +160,14 @@ Model.Video = Backbone.Model.extend({
 
   playRatio: function() {
     return this.player.getCurrentTime() / this.player.getDuration()
+  },
+  
+  onError: function(error) {
+    console.log('Video.onError', error)
+    if (error == '150') {
+      NowPlayingTrack.videos = _.rest(NowPlayingTrack.videos)
+      NowPlayingTrack.play()
+    }
   },
   
   error: function() {
@@ -155,7 +214,6 @@ Model.Video = Backbone.Model.extend({
     return filters
   }
 
-*/
 })
 
 View.Controls = Backbone.View.extend({
@@ -164,7 +222,7 @@ View.Controls = Backbone.View.extend({
   template: jade.compile($('#controls-template').text()),
   
   initialize: function() {
-    //_.bindAll(this, 'playPause', 'updatePlay')
+    _.bindAll(this, 'updatePlay')
     this.render()
   },
   
@@ -173,14 +231,38 @@ View.Controls = Backbone.View.extend({
   },
   
   events: {
-    //'click #play-pause' : 'playPause',
-    //'click #next'           : 'next',
-    //'click #prev'           : 'prev',
+    'click #play-pause' : 'playPause',
+    'click #next'       : 'next',
+    'click #prev'       : 'prev',
     //'click #fullscreen'     : 'toggleFullscreen',
     //'click #repeat'         : 'toggleRepeat',
     //'click #timer_loaded'   : 'seek',
     //'click #mute'           : 'toggleMute'
     //'click #volume'       : 'volume',
+  },
+  
+  playPause: function(e) {
+    if (Video.playing()) {
+      Video.pause()
+    } else {
+      Video.play()
+    }
+  },
+  
+  updatePlay: function() {
+    if (Video.playing()) {
+      this.$el.find('#play-pause div').addClass('icon-pause')
+    } else {
+      this.$el.find('#play-pause div').removeClass('icon-pause')
+    }
+  },
+  
+  next: function() {
+    Video.next()
+  },
+  
+  prev: function() {
+    Video.prev()
   }
     
 })
@@ -256,55 +338,6 @@ View.Controls = Backbone.View.extend({
       seconds = "0" + seconds
     }
     return minutes + ":" + seconds
-  },
-      
-  next: function() {
-    if (this.repeat && window.NowPlayingTrack) {
-      NowPlayingTrack.play()
-      return
-    }
-      
-    var next = false
-    _.each(NowPlaying.tracks(), function(trackModel) {
-      if (next == true) {
-        next = trackModel
-      }
-      if (window.NowPlayingTrack === trackModel) {
-        next = true
-      }
-    })
-
-    if (next == true || next == false) {
-      next = _.first(NowPlaying.tracks())
-    }
-
-    next.play()
-  },
-
-  prev: function() {
-    if (this.repeat && window.NowPlayingTrack) {
-      NowPlayingTrack.play()
-      return
-    }
-      
-    if (this.currentTime() > 2) {
-      this.seek(0)
-      return
-    }
-
-    this.skipToPrev = true
-
-    var prev = null, prevSet = false
-    if (window.NowPlayingTrack === _.first(NowPlaying.tracks())) {
-      prev = _.last(NowPlaying.tracks())
-    } else {
-      _.each(NowPlaying.tracks(), function(trackModel) {
-        if (window.NowPlayingTrack === trackModel) prevSet = true
-        if (!prevSet) prev = trackModel
-      })
-    }
-
-    prev.play()
   },
 
 })

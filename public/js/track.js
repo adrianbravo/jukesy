@@ -1,5 +1,5 @@
 Model.Track = Backbone.Model.extend({
-/*
+
   initialize: function () {
     _.bindAll(this, 'setVideoIds')
   },
@@ -35,20 +35,17 @@ Model.Track = Backbone.Model.extend({
         //this.video = this.bestVideo()
         this.video = this.videos[0].id
       }
-      console.log('Track.play', this.video)
       Video.load(this.video)
     }
   },
   
   getVideoIds: function() {
     if (Video.search(this.toJSON())) {
-      console.log('Setting setTrackVideoIds', this.setVideoIds, this.sodjafs, this)
       window.setTrackVideoIds = this.setVideoIds
     }
   },
   
   setVideoIds: function(data) {
-    console.log('Track.setVideoIds', data)
     if (!data.feed.entry) {
       this.videos = []
     } else {
@@ -64,7 +61,7 @@ Model.Track = Backbone.Model.extend({
     //$('#controls #play').removeClass('loading')
     this.play()
   }
-*/
+
 })
 
 
