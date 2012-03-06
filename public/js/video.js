@@ -1,7 +1,4 @@
 
-//
-// Connects to the chromeless player and uses bindings for controls.
-//
 Model.Video = Backbone.Model.extend({
   initialize: function() {
     swfobject.embedSWF('http://www.youtube.com/apiplayer?version=3&enablejsapi=1&playerapiid=video&wmode=transparent', // swfUrlStr
@@ -14,9 +11,20 @@ Model.Video = Backbone.Model.extend({
                        { allowScriptAccess: 'always', wmode: 'transparent' },  // parameters
                        { id: 'video' }                                         // attributes
     )
+    //_.bindAll(this, 'play', 'pause')
+    
+    _.defer(function() {
+      window.Controls = new View.Controls
+    })
+  },
+
+/*  
+  playing: function() {
+    return this.state == 1
   },
   
   onStateChange: function(state) {
+    console.log('Video.onStateChange', state)
     this.state = state
     if (this.state == -1) {
       //Controls.updateTrackInfo()
@@ -29,10 +37,11 @@ Model.Video = Backbone.Model.extend({
       this.pause()
     }
     this.player.setPlaybackQuality('hd720')
-    //window.Controls.updatePlay()
+    Controls.updatePlay()
   },
 
   onError: function(error) {
+    console.log('Video.onError', error)
     // play next song if error == '150'
   },
   
@@ -63,11 +72,16 @@ Model.Video = Backbone.Model.extend({
   },
 
   play: function() {
-    //if (!NowPlaying.tracks().length) {
-    //  return false
-    //}
+    // TODO
+    // change to collection??
+    console.log('Video.play 1')
+    if (!NowPlaying.tracks.length) {
+      return false
+    }
     this.stopped = false
+    console.log('Video.play 2', NowPlayingTrack)
     this.player.playVideo()
+    console.log('Video.play 3')
     if (this.state != 1) {
       //this.seek(Math.floor(this.currentTime()))
     }
@@ -88,8 +102,106 @@ Model.Video = Backbone.Model.extend({
   currentTime: function() {
     return this.player.getCurrentTime()
   },
+  
+  loadRatio: function() {
+    return this.player.getVideoBytesLoaded() / this.player.getVideoBytesTotal()
+  },
 
+  playRatio: function() {
+    return this.player.getCurrentTime() / this.player.getDuration()
+  },
+  
+  error: function() {
+    //$(NowPlayingTrack.view.el).addClass('error')
+    if (this.lastError == NowPlayingTrack) {
+      return
+    }
+    this.lastError = NowPlayingTrack
+    console.log('Video.error')
+    //this.skipToPrev ? this.prev() : this.next()
+  },
+
+  search: function(track) {
+    var query = '"' + track.artist + '" "' + track.name + '"'
+    console.log('Video.search (should be false)', this.loading)
+    if (!this.loading) {
+      this.loading = true
+      console.log('Video.search 2', window.setTrackVideoIds, track)
+
+      var url = "http://gdata.youtube.com/feeds/api/videos?" + $.param({
+          alt           : 'json-in-script',
+          category      : 'Music',
+          vq            : (query + this.filters(query)),
+          orderby       : 'relevance',
+          'start-index' : 1,
+          'max-results' : 20,
+          format        : 5,
+          callback      : 'window.setTrackVideoIds'
+      })
+
+      $.getScript(url)
+      return true
+    }
+  }, 
+
+  filters: function(str) {
+    var filters = ''
+    if (!str.match(/instrumental/i)) filters += ' -instrumental'
+    if (!str.match(/chipmunk/i)) filters += ' -chipmunk'
+    if (!str.match(/karaoke/i)) filters += ' -karaoke'
+    if (!str.match(/cover/i)) filters += ' -cover'
+    if (!str.match(/remix/i)) filters += ' -remix'
+    if (!str.match(/live/i)) filters += ' -live'
+    return filters
+  }
+
+*/
 })
+
+View.Controls = Backbone.View.extend({
+  el: $('#controls'),
+  
+  template: jade.compile($('#controls-template').text()),
+  
+  initialize: function() {
+    //_.bindAll(this, 'playPause', 'updatePlay')
+    this.render()
+  },
+  
+  render: function() {
+    this.$el.html(this.template())
+  },
+  
+  events: {
+    //'click #play-pause' : 'playPause',
+    //'click #next'           : 'next',
+    //'click #prev'           : 'prev',
+    //'click #fullscreen'     : 'toggleFullscreen',
+    //'click #repeat'         : 'toggleRepeat',
+    //'click #timer_loaded'   : 'seek',
+    //'click #mute'           : 'toggleMute'
+    //'click #volume'       : 'volume',
+  }
+    
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   /*
   fullscreenDisable: function() {
@@ -125,13 +237,7 @@ Model.Video = Backbone.Model.extend({
     }
   },
 
-  loadRatio: function() {
-    return this.player.getVideoBytesLoaded() / this.player.getVideoBytesTotal()
-  },
 
-  playRatio: function() {
-    return this.player.getCurrentTime() / this.player.getDuration()
-  },
 
   timers: function() {
     var current   = Math.floor(this.player.getCurrentTime()),
@@ -151,11 +257,7 @@ Model.Video = Backbone.Model.extend({
     }
     return minutes + ":" + seconds
   },
-    
-  isNotPlaying: function() {
-    return this.state != 1
-  },
-    
+      
   next: function() {
     if (this.repeat && window.NowPlayingTrack) {
       NowPlayingTrack.play()
@@ -205,70 +307,5 @@ Model.Video = Backbone.Model.extend({
     prev.play()
   },
 
-
-
-  error: function() {
-    $(NowPlayingTrack.view.el).addClass('error')
-    if (this.lastError == NowPlayingTrack) {
-      return
-    }
-    this.lastError = NowPlayingTrack
-    this.skipToPrev ? this.prev() : this.next()
-  },
-
-  // TODO move this to the track model.
-  setTrackVideoIds: function(data) {
-    if (!data.feed.entry) {
-      NowPlayingTrack.videos = []
-    } else {
-      NowPlayingTrack.videos = _.map(data.feed.entry, function(entry) {
-        return {
-          score: _.min([
-            levenshteinenator(NowPlayingTrack.get('artist') + ' - ' + NowPlayingTrack.get('name'), entry.title.$t),
-            levenshteinenator(entry.title.$t, NowPlayingTrack.get('artist') + ' - ' + NowPlayingTrack.get('name'))
-          ]),
-          id: _.last(entry.id.$t.split('/'))
-        }
-      })
-    }
-    this.loading = false
-    $('#controls #play').removeClass('loading')
-    window.NowPlayingTrack.play()
-  },
-
-  searchByArtistAndTrack: function(artist, track, callback) {
-    this.search('"' + artist + '" "' + track + '"', callback)
-  },
-
-  search: function(query, callback) {
-    if (!this.loading) {
-      this.loading = true
-      $('#controls #play').addClass('loading')
-
-      var url = "http://gdata.youtube.com/feeds/api/videos?" + $.param({
-          alt           : 'json-in-script',
-          category      : 'Music',
-          vq            : (query + this.filters(query)),
-          orderby       : 'relevance',
-          'start-index' : 1,
-          'max-results' : 20,
-          format        : 5,
-          callback      : callback
-      })
-
-      $.getScript(url)
-    }
-  }, 
-
-  filters: function(str) {
-    var filters = ''
-    if (!str.match(/instrumental/i)) filters += ' -instrumental'
-    if (!str.match(/chipmunk/i)) filters += ' -chipmunk'
-    if (!str.match(/karaoke/i)) filters += ' -karaoke'
-    if (!str.match(/cover/i)) filters += ' -cover'
-    if (!str.match(/remix/i)) filters += ' -remix'
-    if (!str.match(/live/i)) filters += ' -live'
-    return filters
-  }
 })
 */

@@ -127,6 +127,9 @@ $(function() {
   window.SidebarView = new View.Sidebar
   window.Video = new Model.Video
 
+  var playlist = new Model.Playlist()
+  playlist.nowPlaying()
+
   // hijack links
   // https://github.com/documentcloud/backbone/issues/456#issuecomment-2557835
   window.document.addEventListener('click', function(e) {

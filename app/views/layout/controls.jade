@@ -1,27 +1,26 @@
-
 .controls-left
-  .control
+  .control#backward
     .icon-white.icon-backward
-  .control
-    .icon-white.icon-play#play-pause
-  .control
+  .control#play-pause
+    .icon-white.icon-play
+  .control#forward
     .icon-white.icon-forward
-  .control
+  .control#volume
     .icon-white.icon-volume-down#volume
   #volume-bar
     .fill
 
 .controls-middle
   #timer
-    .fill
-      .track
+    .fill.progress.progress-success.progress-striped.active
+      .track.bar
 
 .controls-right
-  .control
+  .control#repeat
     .icon-white.icon-repeat.off
-  .control
+  .control#random
     .icon-white.icon-random.off
-  .control
-    .icon-white.icon-resize-full#fullscreen
-  .control
+  .control#fullscreen
+    .icon-white.icon-resize-full
+  .control#radio
     .icon-white.icon-signal.off

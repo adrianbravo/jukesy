@@ -20,8 +20,8 @@ a:hover {
 }
 
 hr {
-  border-top: 1px solid #777;
-  border-bottom: 1px solid #bbb;
+  border-top: 1px solid #bbb;
+  border-bottom: 1px solid #fff;
 }
 
 #header .navbar-inner {
@@ -67,18 +67,11 @@ hr {
 }
 
 #main {
-  background: #ccc;
-  padding: 15px 20px 10px 20px;
-  //margin-top: -20px;
   margin-bottom: 20px;
-  text-shadow: 0px 1px 0 #bbb;
-  box-shadow: inset 0 0 2px 2px #777;
+  text-shadow: 0px 1px 0 #ddd;
 }
 
-#video-wrapper {
-  background: #333;
-  padding: 20px;
-  
+#video-wrapper {  
   #video {
     background: #000;
     h1 {
@@ -88,7 +81,7 @@ hr {
 }
 
 #controls {
-  background: #222;
+  background: #333;
   box-shadow: 0 -2px 0 rgba(48, 48, 48, 0.5);
   position: fixed;
   height: 30px;
@@ -102,43 +95,50 @@ hr {
     display: inline-block;
     background: #666;
     height: 10px;
-    .radius(5px);
-    cursor: pointer;
+    .radius(4px);
+    
     .fill {
-      background: @body-grey;
-      width: 40px;
       height: 10px;
-      .radius(5px 0 0 5px);
     }
   }
   
   #timer {
     margin-top: 10px;
     width: 100%;
+    overflow: hidden;
+    
     .fill {
-      width: 500px;
+      width: 500px; ////
+      background: @body-grey;
+      cursor: pointer;
+      
       .track {
-        width: 300px;
-        background: #ccc;
+        width: 300px; ////
         height: 10px;
-        .radius(5px 0 0 5px);
       }
     }
   }
   
   #volume-bar {
     width: 100px;
+    cursor: pointer;
+    
+    .fill {
+      width: 40px; ////
+      background: @body-grey;
+      .radius(4px);
+    }
   }
   
   .control {
     padding: 3px 8px;
     display: inline-block;
-    opacity: 0.575;
+    opacity: 0.5;
     margin: 3px 0;
     cursor: pointer;
     &:hover {
+      .fade(.2s);
       opacity: 1.00;
-      background: #000;
     }
   }
   
