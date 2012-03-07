@@ -220,10 +220,7 @@ View.Controls = Backbone.View.extend({
   
   initialize: function() {
     _.bindAll(this, 'updateTimer')
-    
     this.render()
-    this.$el.find('#repeat').tooltip()
-    this.$el.find('#shuffle').tooltip()
     
     _.defer(function() {
       setInterval(Controls.updateTimer, 1000 / 8)      
@@ -238,9 +235,10 @@ View.Controls = Backbone.View.extend({
     'click #play-pause' : 'playPause',
     'click #next'       : 'next',
     'click #prev'       : 'prev',
-    'click #repeat:not(.disabled)'  : 'toggleRepeat',
-    'click #shuffle:not(.disabled)' : 'toggleShuffle',
-    //'click #fullscreen'     : 'toggleFullscreen',
+    'click #radio'      : 'toggleRadio',
+    'click #fullscreen' : 'toggleFullscreen',
+    'click #repeat'     : 'toggleRepeat',
+    'click #shuffle'    : 'toggleShuffle',
     //'click #timer_loaded'   : 'seek',
     //'click #mute'           : 'toggleMute'
     //'click #volume'       : 'volume',
@@ -294,35 +292,65 @@ View.Controls = Backbone.View.extend({
   // TODO DRY
   toggleRepeat: function() {
     var $repeat = this.$el.find('#repeat')
+    if ($repeat.hasClass('disabled')) {
+      return
+    }
     if (Video.repeat) {
       Video.repeat = false
       $repeat.addClass('off')
-      $repeat.attr('data-original-title', 'Repeat: off')
-      $repeat.tooltip('show')
-      _.delay(function() { $repeat.tooltip('hide') }, 1000)
     } else {
       Video.repeat = true
       $repeat.removeClass('off')
-      $repeat.attr('data-original-title', 'Repeat: on')
-      $repeat.tooltip('show')
-      _.delay(function() { $repeat.tooltip('hide') }, 1000)
     }    
   },
   
   toggleShuffle: function() {
     var $shuffle = this.$el.find('#shuffle')
+    if ($shuffle.hasClass('disabled')) {
+      return
+    }
     if (Video.shuffle) {
       Video.shuffle = false
       $shuffle.addClass('off')
-      $shuffle.attr('data-original-title', 'Shuffle: off')
-      $shuffle.tooltip('show')
-      _.delay(function() { $shuffle.tooltip('hide') }, 1000)
     } else {
       Video.shuffle = true
       $shuffle.removeClass('off')
-      $shuffle.attr('data-original-title', 'Shuffle: on')
-      $shuffle.tooltip('show')
-      _.delay(function() { $shuffle.tooltip('hide') }, 1000)
+    }
+  },
+  
+  toggleFullscreen: function() {
+    if (Video.fullscreen) {
+      this.fullscreenDisable()
+    } else {
+      this.fullscreenEnable()
+    }
+  },
+  
+  fullscreenDisable: function() {
+    Video.fullscreen = false
+    this.$el.find('#fullscreen div').removeClass('icon-resize-small')
+  },
+  
+  fullscreenEnable: function() {
+    Video.fullscreen = true
+    this.$el.find('#fullscreen div').addClass('icon-resize-small')
+  },
+  
+  toggleRadio: function() {
+    var $radio = this.$el.find('#radio')
+    if ($radio.hasClass('disabled')) {
+      return
+    }
+    if (Video.radio) {
+      Video.radio = false
+      $radio.addClass('off')
+      this.$el.find('#shuffle').removeClass('disabled')
+      this.$el.find('#repeat').removeClass('disabled')
+    } else {
+      Video.radio = true
+      $radio.removeClass('off')
+      this.$el.find('#shuffle').addClass('disabled').addClass('off')
+      this.$el.find('#repeat').addClass('disabled').addClass('off')
     }
   }
     

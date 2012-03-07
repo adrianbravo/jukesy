@@ -25,7 +25,15 @@ KeyMapper = {
   keypressHasModifier: function(e) {
     return (e.metaKey || e.ctrlKey || e.altKey || e.shiftKey) ? true : false
   },
-    
+  
+  // ESCAPE
+  k27: function(e) {
+    if (Video.fullscreen) {
+      Controls.toggleFullscreen()
+    }
+    return false
+  },
+  
   // SPACEBAR
   k32: function(e) {
     Controls.playPause()
@@ -59,11 +67,18 @@ KeyMapper = {
     //Controls.$volume.slider('value', Controls.$volume.slider('value') - 5)
     return false
   },
+  
+  // D
+  k68: function(e) {
+    if (this.keypressHasModifier(e)) return
+    Controls.toggleRadio()
+    return false
+  },
       
   // F
   k70: function(e) {
     if (this.keypressHasModifier(e)) return
-    //Video.toggleFullscreen()
+    Controls.toggleFullscreen()
     return false
   },
     
@@ -94,16 +109,10 @@ KeyMapper = {
     //Video.fullscreenOff()
     //$('#query').focus()
     return false
-  },
-    
-  // ESCAPE
-  k192: function(e) {
-    //Video.fullscreenDisable()
-    return false
   }
-    
+      
 }
 
 $(function() {
-  _.bindAll(KeyMapper, 'keypressHasModifier', 'k32', 'k37', 'k38', 'k39', 'k40', 'k70', 'k77', 'k82', 'k83', 'k191', 'k192')
+  _.bindAll(KeyMapper, 'keypressHasModifier', 'k27', 'k32', 'k37', 'k38', 'k39', 'k40', 'k68', 'k70', 'k77', 'k82', 'k83', 'k191')
 })

@@ -1,26 +1,29 @@
-.controls-left
-  .control#prev
-    .icon-white.icon-backward
-  .control#play-pause
-    .icon-white.icon-play
-  .control#next
-    .icon-white.icon-forward
-  .control#volume
-    .icon-white.icon-volume-down#volume
-  #volume-bar
-    .fill
+.container
+  .row
+    .span12
+      .controls-left
+        .control#prev
+          .icon-white.icon-backward
+        .control#play-pause
+          .icon-white.icon-play
+        .control#next
+          .icon-white.icon-forward
+        .control#volume
+          .icon-white.icon-volume-down#volume
+        #volume-bar
+          .fill
 
-.controls-middle
-  #timer
-    .fill.progress.progress-success.progress-striped
-      .track.bar
+      .controls-middle
+        #timer
+          .fill.progress.progress-success.progress-striped
+            .track.bar
 
-.controls-right
-  .control#repeat.off('data-original-title'= 'Repeat: off')
-    .icon-white.icon-repeat
-  .control#shuffle.off('data-original-title'= 'Shuffle: off')
-    .icon-white.icon-random
-  .control#fullscreen
-    .icon-white.icon-resize-full
-  .control#radio
-    .icon-white.icon-signal.off
+      .controls-right
+        .control#repeat.off
+          .icon-white.icon-repeat
+        .control#shuffle.off
+          .icon-white.icon-random
+        .control#radio.off
+          .icon-white.icon-signal
+        .control#fullscreen
+          .icon-white.icon-resize-full

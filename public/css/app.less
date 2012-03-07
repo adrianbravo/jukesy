@@ -29,6 +29,9 @@ hr {
   box-shadow: 0 2px 0 rgba(48, 48, 48, 0.5);
 
   a {
+    &.highlight {
+      background-color: #444;
+    }
     &:hover {
       background-color: rgba(0, 0, 0, 0.2);
     }
@@ -85,6 +88,7 @@ hr {
   background: #333;
   box-shadow: 0 -2px 0 rgba(48, 48, 48, 0.5);
   position: fixed;
+  z-index: 1000000;
   height: 30px;
   top: auto;
   bottom: 0;
@@ -139,9 +143,6 @@ hr {
     opacity: 0.5;
     margin: 3px 0;
     cursor: pointer;
-    &.off {
-      opacity: 0.15;
-    }
     &:hover {
       .fade(.2s);
       opacity: 1.00;
@@ -151,15 +152,24 @@ hr {
     }
   }
   
+  #repeat, #shuffle, #radio {
+    .fade(.2s);
+    opacity: 0.8;
+    &.off {
+      opacity: 0.12;
+    }
+  }
+  .span12 {
+    position: absolute;
+  }
   .controls-left, .controls-right, .controls-middle {
-    position: fixed;
-    bottom: 0;
+    position: absolute;
     height: 30px;
   }
   
   .controls-middle {
     left: 240px;
-    right: 130px;
+    width: 575px;
   }
   
   .controls-right {
