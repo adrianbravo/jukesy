@@ -76,6 +76,7 @@ Model.Video = Backbone.Model.extend({
   },
   
   next: function() {
+    console.log('Video.next')
     var self = this
       , next = null
     
@@ -92,6 +93,7 @@ Model.Video = Backbone.Model.extend({
   },
   
   prev: function() {
+    console.log('Video.prev')
     var self = this
       , prev = null
     
@@ -187,11 +189,6 @@ Model.Video = Backbone.Model.extend({
   
   error: function() {
     //$(this.track.view.el).addClass('error')
-    if (this.lastError == this.track) {
-      return
-    }
-    this.lastError = this.track
-    console.log('Video.error')
     this.skipToPrev ? this.prev() : this.next()
   },
 
@@ -385,7 +382,6 @@ View.Controls = Backbone.View.extend({
     }
   },
   
-    
   dragVolume: function(e) {
     var $target = $(e.target)
     if ($target.parents('#volume-bar').length) {

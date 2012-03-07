@@ -7,7 +7,7 @@ Model.Track = Backbone.Model.extend({
   play: function() {
     var self = this
 
-    // Do not attempt to play if an attempt to play a video is in progress
+    // Do not attempt to play if search is in progress (or player does not exist)
     if (!Video.player || Video.loading) {
       return false
     }
@@ -20,7 +20,7 @@ Model.Track = Backbone.Model.extend({
     if (_.isUndefined(this.videos)) {
       this.getVideoIds()
     } else if (_.isEmpty(this.videos)) {
-      Video.error() // ???
+      Video.error()
     } else {
       _.defer(function() {
         //Controls.updateTrackInfo()

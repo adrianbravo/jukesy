@@ -17,20 +17,9 @@ window.Mixins = {}
 function onYouTubePlayerReady(id) {
   // Set the video player elements and bind its change and error events.
   Video.player = $('#' + id)[0]
+  Video.volume(50)
   Video.player.addEventListener('onStateChange', 'Video.onStateChange')
   Video.player.addEventListener('onError', 'Video.onError')
-  Video.volume(50)
-  
-  //Video.load('lxhk-cWQbrs')
-
-  // Set up the router and backbone history.
-  //window.Router = new AppRouter()
-  //if (!Backbone.history.start()) {
-  //  Router.navigate(window.location.pathname, true)
-  //}
-
-  // Start updater for controls (refreshes timer, etc.)
-  //Video.setUpdate()
 }
 
 // Redraws on resize
