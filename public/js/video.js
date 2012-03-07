@@ -136,6 +136,22 @@ Model.Video = Backbone.Model.extend({
   volume: function(volume) {
     this.player.setVolume(volume)
     $('#volume-bar .fill').width(volume + '%')
+    
+    var $volumeIcon = $('#volume div')
+    $volumeIcon.removeClass('icon-volume-off')
+    $volumeIcon.removeClass('icon-volume-down')
+    $volumeIcon.removeClass('icon-volume-up')
+    if (volume == 0) {
+      $volumeIcon.addClass('icon-volume-off')
+    } else if (volume <= 50) {
+      $volumeIcon.addClass('icon-volume-down')
+    } else {
+      $volumeIcon.addClass('icon-volume-up')
+    }
+  },
+  
+  clearVolumeIcon: function() {
+    var $volume = $('#volume')
   },
 
   seek: function(time) {
@@ -218,7 +234,7 @@ View.Controls = Backbone.View.extend({
   template: jade.compile($('#controls-template').text()),
   
   initialize: function() {
-    _.bindAll(this, 'updateTimer')
+    _.bindAll(this, 'updateTimer', 'dragStop')
     this.render()
     
     _.defer(function() {
@@ -238,6 +254,7 @@ View.Controls = Backbone.View.extend({
     'click #fullscreen' : 'toggleFullscreen',
     'click #repeat'     : 'toggleRepeat',
     'click #shuffle'    : 'toggleShuffle',
+    'click #volume'     : 'toggleMute',
     'mousedown #volume-bar' : 'dragVolume',
     //'click #timer_loaded'   : 'seek',
     //'click #mute'           : 'toggleMute'
@@ -256,20 +273,28 @@ View.Controls = Backbone.View.extend({
     return function(e) {
       var boundedPosition = Math.min(Math.max(e.clientX - offset, 0), width) * 100 / width
       Video.volume(boundedPosition)
+      return boundedPosition
     }
   },
   
-  dragStop: function() {
+  dragStop: function(e) {
     $('body').removeClass('dragging')
+    if (e) {
+      var lastVolume = this.dragger(e)
+      if (lastVolume) {
+        this.lastVolume = this.dragger(e)
+      }
+    }
     $(document).off('mousemove')
     $(document).off('mouseup')
+    this.dragger = null
   },
   
   dragStart: function($target, e) {
-    var dragFill = this.dragFill($target.offset().left, $target.width())
-    dragFill(e)
+    this.dragger = this.dragFill($target.offset().left, $target.width())
+    this.dragger(e)
     $(document).on('mouseup', this.dragStop)
-    $(document).on('mousemove', dragFill)
+    $(document).on('mousemove', this.dragger)
     $('body').addClass('dragging')
   },
   
@@ -280,6 +305,15 @@ View.Controls = Backbone.View.extend({
     }  
     this.dragStop()
     this.dragStart($target, e)
+  },
+  
+  toggleMute: function() {
+    var value = Video.player.getVolume()
+    if (value) {
+      Video.volume(0)
+    } else {
+      Video.volume(this.lastVolume || 50)
+    }
   },
   
   renderPlay: function() {

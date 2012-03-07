@@ -4,7 +4,7 @@ View.Document = Backbone.View.extend({
   events: {
     //'keypress #query' : 'searchAll',
     'keydown'         : 'keyMapper',
-    //'keyup'           : 'setMaxVolume',
+    'keyup'           : 'setLastVolume',
   },
 
   keyMapper: function(e) {
@@ -16,7 +16,25 @@ View.Document = Backbone.View.extend({
     if (fn) {
       return fn(e)
     }
+  },
+  
+  setLastVolume: function(e) {
+    var self = this
+    
+    if ($(e.target).is('input, textarea')) {
+      return
+    }
+    
+    if (e.keyCode == 38 || e.keyCode == 40) {
+      _.defer(function() {
+        var value = Video.player.getVolume()
+        if (value) {
+          Controls.lastVolume = value
+        }
+      })
+    }
   }
+  
 })
 
 KeyMapper = {
@@ -50,7 +68,8 @@ KeyMapper = {
   // UP
   k38: function(e) {
     if (this.keypressHasModifier(e)) return
-    //Controls.$volume.slider('value', Controls.$volume.slider('value') + 5)
+    var value = Video.player.getVolume()
+    Video.volume(value + 2)
     return false
   },
     
@@ -64,7 +83,8 @@ KeyMapper = {
   // DOWN
   k40: function(e) {
     if (this.keypressHasModifier(e)) return
-    //Controls.$volume.slider('value', Controls.$volume.slider('value') - 5)
+    var value = Video.player.getVolume()
+    Video.volume(value - 2)
     return false
   },
   
@@ -85,7 +105,7 @@ KeyMapper = {
   // M
   k77: function(e) {
     if (this.keypressHasModifier(e)) return
-    //Controls.toggleMute(e)
+    Controls.toggleMute()
     return false
   },
     
