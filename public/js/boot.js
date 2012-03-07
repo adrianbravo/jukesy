@@ -38,6 +38,13 @@ var windowResized = function() {
   if (window.Controls) {
     Controls.updateTimer()
   }
+  
+  if (window.Video && Video.fullscreen) {
+    var $video = $('#video')
+    $video.height($(window).height() - parseInt($video.css('bottom')))
+    $video.width($(window).width())
+    Video.player.setSize($video.width(), $video.height())
+  }
 }
 
 // Used to parse cookies from document

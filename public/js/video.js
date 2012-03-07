@@ -3,8 +3,8 @@ Model.Video = Backbone.Model.extend({
   initialize: function() {
     swfobject.embedSWF('http://www.youtube.com/apiplayer?version=3&enablejsapi=1&playerapiid=video&wmode=transparent', // swfUrlStr
                        'video', // replaceElemIdStr
-                       '420',   // width
-                       '240',   // height
+                       '320',   // width
+                       '180',   // height
                        '8',     // swfVersionStr
                        null,    // xiSwfUrlStr
                        null,    // flashVarsObj
@@ -114,9 +114,8 @@ Model.Video = Backbone.Model.extend({
   },
   
   tryRepeat: function() {
-    console.log('trying to repeat')
     if (this.repeat && this.track) {
-      console.log('this.track.play!')
+      // TODO fix this up
       //this.track.play()
       this.seek(0)
       return true
@@ -179,10 +178,9 @@ Model.Video = Backbone.Model.extend({
 
   search: function(track) {
     var query = '"' + track.artist + '" "' + track.name + '"'
-    console.log('Video.search (should be false)', this.loading)
     if (!this.loading) {
       this.loading = true
-      console.log('Video.search 2', window.setTrackVideoIds, track)
+      console.log('Video.search', track)
 
       var url = "http://gdata.youtube.com/feeds/api/videos?" + $.param({
           alt           : 'json-in-script',
@@ -324,16 +322,21 @@ View.Controls = Backbone.View.extend({
     } else {
       this.fullscreenEnable()
     }
+    windowResized()
+    //this.update() ???
   },
   
   fullscreenDisable: function() {
     Video.fullscreen = false
     this.$el.find('#fullscreen div').removeClass('icon-resize-small')
+    $('body').removeClass('fullscreen')
+    $('#video').width('').height('')
   },
   
   fullscreenEnable: function() {
     Video.fullscreen = true
     this.$el.find('#fullscreen div').addClass('icon-resize-small')
+    $('body').addClass('fullscreen')
   },
   
   toggleRadio: function() {
@@ -356,44 +359,7 @@ View.Controls = Backbone.View.extend({
     
 })
 
-
-
-
-
   /*
-  fullscreenDisable: function() {
-    this.fullscreen = false
-    $('#fullscreen').removeClass('off')
-    $('body').removeClass('fullscreen')
-    $('#video').width('').height('')
-  },
-
-  fullscreenEnable: function() {
-    this.fullscreen = true
-    $('#fullscreen').addClass('off')
-    $('body').addClass('fullscreen')
-  },
-
-  toggleFullscreen: function() {
-    if (this.fullscreen) {
-      this.fullscreenDisable()
-    } else {
-      this.fullscreenEnable()
-    }
-    windowResized()
-    Controls.update()
-  },
-
-  toggleRepeat: function() {
-    if (this.repeat) {
-      this.repeat = false
-      $('#repeat').removeClass('off')
-    } else {
-      this.repeat = true
-      $('#repeat').addClass('off')
-    }
-  },
-
 
 
   timers: function() {
