@@ -107,42 +107,39 @@ hr {
 
   #volume-bar, #timer {
     display: inline-block;
-    background: #555;
+    background: #444;
     height: 10px;
-    
-    .fill {
-      background: #999;
-      height: 10px;
-    }
   }
   
   #timer {
-    .radius(0px);
     margin-top: 10px;
     width: 100%;
-    overflow: hidden;
+    overflow: visible;
+    .radius(0px);
     
-    .fill {
+    .fill, .track {
       .radius(0px);
       position: absolute;
+      height: 10px;
       cursor: pointer;
-      
-      .track {
-        .radius(0px);
-        position: absolute;
-        height: 10px;
-      }
+    }
+    .fill {
+      background: #666;
+    }    
+    .track {
+      z-index: 1000001;
     }
   }
   
   #volume-bar {
-    .radius(4px);
+    .radius(5px);
     width: 100px;
     cursor: pointer;
     
     .fill {
-      .radius(4px);
-      width: 50px; ////
+      background: #999;
+      .radius(5px);
+      height: 10px;
     }
   }
   

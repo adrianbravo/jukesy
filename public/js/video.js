@@ -11,6 +11,8 @@ Model.Video = Backbone.Model.extend({
                        { allowScriptAccess: 'always', wmode: 'transparent' },  // parameters
                        { id: 'video' }                                         // attributes
     )
+    _.bindAll(this, 'volume', 'seek')
+    
     _.defer(function() {
       window.Controls = new View.Controls
     })
@@ -234,11 +236,11 @@ View.Controls = Backbone.View.extend({
   template: jade.compile($('#controls-template').text()),
   
   initialize: function() {
-    _.bindAll(this, 'updateTimer', 'dragStop')
+    _.bindAll(this, 'updateTimer', 'dragVolumeStop', 'dragTimerStop')
     this.render()
     
     _.defer(function() {
-      setInterval(Controls.updateTimer, 1000 / 8)      
+      setInterval(Controls.updateTimer, 1000 / 8)
     })
   },
   
@@ -255,10 +257,8 @@ View.Controls = Backbone.View.extend({
     'click #repeat'     : 'toggleRepeat',
     'click #shuffle'    : 'toggleShuffle',
     'click #volume'     : 'toggleMute',
-    'mousedown #volume-bar' : 'dragVolume',
-    //'click #timer_loaded'   : 'seek',
-    //'click #mute'           : 'toggleMute'
-    //'click #volume'       : 'volume',
+    'mousedown #volume-bar'  : 'dragVolume',
+    'mousedown #timer' : 'dragTimer'
   },
   
   playPause: function(e) {
@@ -269,31 +269,32 @@ View.Controls = Backbone.View.extend({
     }
   },
   
-  dragFill: function(offset, width) {
+  dragVolumeFill: function($target, callback) {
     return function(e) {
-      var boundedPosition = Math.min(Math.max(e.clientX - offset, 0), width) * 100 / width
-      Video.volume(boundedPosition)
-      return boundedPosition
+      var w = $target.width()
+        , boundedPosition = Math.min(Math.max(e.clientX - $target.offset().left, 0), w) * 100 / w
+      callback(boundedPosition)
     }
   },
   
-  dragStop: function(e) {
+  dragVolumeStop: function(e) {
     $('body').removeClass('dragging')
     if (e) {
-      var lastVolume = this.dragger(e)
-      if (lastVolume) {
-        this.lastVolume = this.dragger(e)
-      }
+      this.dragger(e, function(lastVolume) {
+        if (lastVolume) {
+          Controls.lastVolume = lastVolume
+        }        
+      })
     }
     $(document).off('mousemove')
     $(document).off('mouseup')
     this.dragger = null
   },
   
-  dragStart: function($target, e) {
-    this.dragger = this.dragFill($target.offset().left, $target.width())
+  dragVolumeStart: function($target, e) {
+    this.dragger = this.dragVolumeFill($target, Video.volume)
     this.dragger(e)
-    $(document).on('mouseup', this.dragStop)
+    $(document).on('mouseup', this.dragVolumeStop)
     $(document).on('mousemove', this.dragger)
     $('body').addClass('dragging')
   },
@@ -303,10 +304,41 @@ View.Controls = Backbone.View.extend({
     if ($target.parents('#volume-bar').length) {
       $target = $target.parents('#volume-bar')
     }  
-    this.dragStop()
-    this.dragStart($target, e)
+    this.dragVolumeStop()
+    this.dragVolumeStart($target, e)
   },
   
+  dragTimerFill: function($target, timerWidth, maxTime, callback) {
+    return function(e) {
+      var w = $target.width()
+        , boundedPosition = Math.min(Math.max(e.clientX - $target.offset().left, 0), w) * maxTime / timerWidth
+      callback(boundedPosition)
+    }
+  },
+  
+  dragTimerStop: function(e) {
+    $('body').removeClass('dragging')
+    $(document).off('mousemove')
+    $(document).off('mouseup')
+    this.dragger = null
+  },
+  
+  dragTimerStart: function($target, e) {
+    this.dragger = this.dragTimerFill($target, $('#timer').width(), Video.duration(), Video.seek)
+    this.dragger(e)
+    $(document).on('mouseup', this.dragTimerStop)
+    $(document).on('mousemove', _.debounce(this.dragger, 300))
+    $('body').addClass('dragging')
+  },
+  
+  dragTimer: function(e) {
+    if ($(e.target).is('#timer')) {
+      return false
+    }  
+    this.dragTimerStop()
+    this.dragTimerStart($('#timer .fill'), e)
+  },
+
   toggleMute: function() {
     var value = Video.player.getVolume()
     if (value) {
@@ -335,13 +367,13 @@ View.Controls = Backbone.View.extend({
   updateTimer: function() {
     var load = Video.loadRatio()
       , play = Video.playRatio()
-      
+    
     if (load > 0 && load != Infinity) {
-      this.$el.find('#timer .progress').width(load * 100 + '%')
-      this.$el.find('#timer .progress .bar').width(play * 100 + '%')
+      this.$el.find('#timer .fill').width(load * 100 + '%')
+      this.$el.find('#timer .track').width(play * 100 + '%')
     } else {
-      this.$el.find('#timer .progress').width(0)
-      this.$el.find('#timer .progress .bar').width(0)
+      this.$el.find('#timer .fill').width(0)
+      this.$el.find('#timer .track').width(0)
     }
   },
   
@@ -426,8 +458,6 @@ View.Controls = Backbone.View.extend({
 })
 
   /*
-
-
   timers: function() {
     var current   = Math.floor(this.player.getCurrentTime()),
         remaining = Math.ceil(this.player.getDuration() - current)
@@ -446,6 +476,4 @@ View.Controls = Backbone.View.extend({
     }
     return minutes + ":" + seconds
   },
-
-})
-*/
+  */
