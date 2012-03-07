@@ -268,76 +268,6 @@ View.Controls = Backbone.View.extend({
       Video.play()
     }
   },
-  
-  dragVolumeFill: function($target, callback) {
-    return function(e) {
-      var w = $target.width()
-        , boundedPosition = Math.min(Math.max(e.clientX - $target.offset().left, 0), w) * 100 / w
-      callback(boundedPosition)
-    }
-  },
-  
-  dragVolumeStop: function(e) {
-    $('body').removeClass('dragging')
-    if (e) {
-      this.dragger(e, function(lastVolume) {
-        if (lastVolume) {
-          Controls.lastVolume = lastVolume
-        }        
-      })
-    }
-    $(document).off('mousemove')
-    $(document).off('mouseup')
-    this.dragger = null
-  },
-  
-  dragVolumeStart: function($target, e) {
-    this.dragger = this.dragVolumeFill($target, Video.volume)
-    this.dragger(e)
-    $(document).on('mouseup', this.dragVolumeStop)
-    $(document).on('mousemove', this.dragger)
-    $('body').addClass('dragging')
-  },
-  
-  dragVolume: function(e) {
-    var $target = $(e.target)
-    if ($target.parents('#volume-bar').length) {
-      $target = $target.parents('#volume-bar')
-    }  
-    this.dragVolumeStop()
-    this.dragVolumeStart($target, e)
-  },
-  
-  dragTimerFill: function($target, timerWidth, maxTime, callback) {
-    return function(e) {
-      var w = $target.width()
-        , boundedPosition = Math.min(Math.max(e.clientX - $target.offset().left, 0), w) * maxTime / timerWidth
-      callback(boundedPosition)
-    }
-  },
-  
-  dragTimerStop: function(e) {
-    $('body').removeClass('dragging')
-    $(document).off('mousemove')
-    $(document).off('mouseup')
-    this.dragger = null
-  },
-  
-  dragTimerStart: function($target, e) {
-    this.dragger = this.dragTimerFill($target, $('#timer').width(), Video.duration(), Video.seek)
-    this.dragger(e)
-    $(document).on('mouseup', this.dragTimerStop)
-    $(document).on('mousemove', _.debounce(this.dragger, 300))
-    $('body').addClass('dragging')
-  },
-  
-  dragTimer: function(e) {
-    if ($(e.target).is('#timer')) {
-      return false
-    }  
-    this.dragTimerStop()
-    this.dragTimerStart($('#timer .fill'), e)
-  },
 
   toggleMute: function() {
     var value = Video.player.getVolume()
@@ -453,8 +383,79 @@ View.Controls = Backbone.View.extend({
       this.$el.find('#shuffle').addClass('disabled').addClass('off')
       this.$el.find('#repeat').addClass('disabled').addClass('off')
     }
-  }
+  },
+  
     
+  dragVolume: function(e) {
+    var $target = $(e.target)
+    if ($target.parents('#volume-bar').length) {
+      $target = $target.parents('#volume-bar')
+    }  
+    this.dragVolumeStop()
+    this.dragVolumeStart($target, e)
+  },
+  
+  dragVolumeStart: function($target, e) {
+    this.dragger = this.dragVolumeFill($target, Video.volume)
+    this.dragger(e)
+    $(document).on('mouseup', this.dragVolumeStop)
+    $(document).on('mousemove', this.dragger)
+    $('body').addClass('dragging')
+  },
+  
+  dragVolumeFill: function($target, callback) {
+    return function(e) {
+      var w = $target.width()
+        , boundedPosition = Math.min(Math.max(e.clientX - $target.offset().left, 0), w) * 100 / w
+      callback(boundedPosition)
+    }
+  },
+  
+  dragVolumeStop: function(e) {
+    $('body').removeClass('dragging')
+    if (e) {
+      this.dragger(e, function(lastVolume) {
+        if (lastVolume) {
+          Controls.lastVolume = lastVolume
+        }        
+      })
+    }
+    $(document).off('mousemove')
+    $(document).off('mouseup')
+    this.dragger = null
+  },
+  
+  dragTimer: function(e) {
+    if ($(e.target).is('#timer')) {
+      return false
+    }  
+    this.dragTimerStop()
+    this.dragTimerStart($('#timer .fill'), e)
+  },
+  
+  dragTimerStart: function($target, e) {
+    this.dragger = this.dragTimerFill($target, $('#timer').width(), Video.duration(), Video.seek)
+    this.dragger(e)
+    $(document).on('mouseup', this.dragTimerStop)
+    $(document).on('mousemove', _.debounce(this.dragger, 300))
+    $('body').addClass('dragging')
+  },
+  
+  dragTimerFill: function($target, timerWidth, maxTime, callback) {
+    return function(e) {
+      var w = $target.width()
+        , boundedPosition = Math.min(Math.max(e.clientX - $target.offset().left, 0), w) * maxTime / timerWidth
+      callback(boundedPosition)
+    }
+  },
+  
+  dragTimerStop: function(e) {
+    $('body').removeClass('dragging')
+    $(document).off('mousemove')
+    $(document).off('mouseup')
+    this.dragger = null
+  }
+  
 })
 
   /*
