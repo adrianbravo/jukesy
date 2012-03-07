@@ -135,6 +135,7 @@ Model.Video = Backbone.Model.extend({
   
   volume: function(volume) {
     this.player.setVolume(volume)
+    $('#volume-bar .fill').width(volume + '%')
   },
 
   seek: function(time) {
@@ -237,6 +238,7 @@ View.Controls = Backbone.View.extend({
     'click #fullscreen' : 'toggleFullscreen',
     'click #repeat'     : 'toggleRepeat',
     'click #shuffle'    : 'toggleShuffle',
+    'mousedown #volume-bar' : 'dragVolume',
     //'click #timer_loaded'   : 'seek',
     //'click #mute'           : 'toggleMute'
     //'click #volume'       : 'volume',
@@ -248,6 +250,36 @@ View.Controls = Backbone.View.extend({
     } else {
       Video.play()
     }
+  },
+  
+  dragFill: function(offset, width) {
+    return function(e) {
+      var boundedPosition = Math.min(Math.max(e.clientX - offset, 0), width) * 100 / width
+      Video.volume(boundedPosition)
+    }
+  },
+  
+  dragStop: function() {
+    $('body').removeClass('dragging')
+    $(document).off('mousemove')
+    $(document).off('mouseup')
+  },
+  
+  dragStart: function($target, e) {
+    var dragFill = this.dragFill($target.offset().left, $target.width())
+    dragFill(e)
+    $(document).on('mouseup', this.dragStop)
+    $(document).on('mousemove', dragFill)
+    $('body').addClass('dragging')
+  },
+  
+  dragVolume: function(e) {
+    var $target = $(e.target)
+    if ($target.parents('#volume-bar').length) {
+      $target = $target.parents('#volume-bar')
+    }  
+    this.dragStop()
+    this.dragStart($target, e)
   },
   
   renderPlay: function() {

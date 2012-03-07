@@ -19,7 +19,7 @@ function onYouTubePlayerReady(id) {
   Video.player = $('#' + id)[0]
   Video.player.addEventListener('onStateChange', 'Video.onStateChange')
   Video.player.addEventListener('onError', 'Video.onError')
-  Video.volume(100)
+  Video.volume(50)
   
   //Video.load('lxhk-cWQbrs')
 

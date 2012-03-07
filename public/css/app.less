@@ -14,6 +14,10 @@ body {
   padding-bottom: 40px;
   background: @body-grey;
 
+  &.dragging {
+    .no-select();
+  }
+  
   #video {
     background: #000;
     box-shadow: 0 0 0 2px rgba(48, 48, 48, 0.5);
