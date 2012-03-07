@@ -19,10 +19,12 @@ Model.Video = Backbone.Model.extend({
   stop: function() {
     this.stopped = true
     this.pause()
-    if (window.NowPlayingTrack) {
-    //  $(NowPlayingTrack.view.el).removeClass('playing')
-      NowPlayingTrack = null
+    if (this.track) {
+      this.track = null
+      //this.track.view.render()
+      //  $(this.track.view.el).removeClass('playing')
     }
+    
     Controls.render()
     this.onStateChange(-1)
   },
@@ -60,7 +62,7 @@ Model.Video = Backbone.Model.extend({
     }
     this.stopped = false
 
-    if (!window.NowPlayingTrack) {
+    if (!this.track) {
       this.next()
       return
     }
@@ -72,52 +74,35 @@ Model.Video = Backbone.Model.extend({
   },
   
   next: function() {
-    console.log('Video.next')
-    if (this.repeat && window.NowPlayingTrack) {
-      NowPlayingTrack.play()
+    var self = this
+      , next = null
+    
+    if (this.tryRepeat()) {
       return
     }
-      
-    var next = false
-    _.each(NowPlaying.tracks, function(trackModel) {
-      if (next == true) {
-        next = trackModel
-      }
-      if (window.NowPlayingTrack === trackModel) {
-        next = true
-      }
-    })
-
-    if (next == true || next == false) {
+    
+    if (this.track === _.last(NowPlaying.tracks)) {
       next = _.first(NowPlaying.tracks)
+    } else {
+      next = NowPlaying.tracks[_.indexOf(NowPlaying.tracks, this.track) + 1]
     }
-
     next.play()
   },
   
   prev: function() {
-    if (this.repeat && window.NowPlayingTrack) {
-      NowPlayingTrack.play()
+    var self = this
+      , prev = null
+    
+    if (this.tryRepeat() || this.trySeek()) {
       return
     }
-      
-    if (this.currentTime() > 2) {
-      this.seek(0)
-      return
-    }
-
+    
     this.skipToPrev = true
-
-    var prev = null, prevSet = false
-    if (window.NowPlayingTrack === _.first(NowPlaying.tracks)) {
+    if (this.track === _.first(NowPlaying.tracks)) {
       prev = _.last(NowPlaying.tracks)
     } else {
-      _.each(NowPlaying.tracks, function(trackModel) {
-        if (window.NowPlayingTrack === trackModel) prevSet = true
-        if (!prevSet) prev = trackModel
-      })
+      prev = NowPlaying.tracks[_.indexOf(NowPlaying.tracks, this.track) - 1]
     }
-
     prev.play()
   },
   
@@ -126,6 +111,23 @@ Model.Video = Backbone.Model.extend({
       return
     }
     this.player.loadVideoById(id)
+  },
+  
+  tryRepeat: function() {
+    console.log('trying to repeat')
+    if (this.repeat && this.track) {
+      console.log('this.track.play!')
+      //this.track.play()
+      this.seek(0)
+      return true
+    }
+  },
+  
+  trySeek: function() {
+    if (this.currentTime() > 2) {
+      this.seek(0)
+      return true
+    }
   },
   
   pauseNext: function() {
@@ -159,19 +161,20 @@ Model.Video = Backbone.Model.extend({
   onError: function(error) {
     console.log('Video.onError', error)
     if (error == '150') {
-      NowPlayingTrack.videos = _.rest(NowPlayingTrack.videos)
-      NowPlayingTrack.play()
+      //this.track.playNextVideo()
+      this.track.videos = _.rest(this.track.videos)
+      this.track.play()
     }
   },
   
   error: function() {
-    //$(NowPlayingTrack.view.el).addClass('error')
-    if (this.lastError == NowPlayingTrack) {
+    //$(this.track.view.el).addClass('error')
+    if (this.lastError == this.track) {
       return
     }
-    this.lastError = NowPlayingTrack
+    this.lastError = this.track
     console.log('Video.error')
-    //this.skipToPrev ? this.prev() : this.next()
+    this.skipToPrev ? this.prev() : this.next()
   },
 
   search: function(track) {
@@ -219,6 +222,8 @@ View.Controls = Backbone.View.extend({
     _.bindAll(this, 'updateTimer')
     
     this.render()
+    this.$el.find('#repeat').tooltip()
+    this.$el.find('#shuffle').tooltip()
     
     _.defer(function() {
       setInterval(Controls.updateTimer, 1000 / 8)      
@@ -233,8 +238,9 @@ View.Controls = Backbone.View.extend({
     'click #play-pause' : 'playPause',
     'click #next'       : 'next',
     'click #prev'       : 'prev',
+    'click #repeat:not(.disabled)'  : 'toggleRepeat',
+    'click #shuffle:not(.disabled)' : 'toggleShuffle',
     //'click #fullscreen'     : 'toggleFullscreen',
-    //'click #repeat'         : 'toggleRepeat',
     //'click #timer_loaded'   : 'seek',
     //'click #mute'           : 'toggleMute'
     //'click #volume'       : 'volume',
@@ -283,23 +289,44 @@ View.Controls = Backbone.View.extend({
   
   prev: function() {
     Video.prev()
+  },
+  
+  // TODO DRY
+  toggleRepeat: function() {
+    var $repeat = this.$el.find('#repeat')
+    if (Video.repeat) {
+      Video.repeat = false
+      $repeat.addClass('off')
+      $repeat.attr('data-original-title', 'Repeat: off')
+      $repeat.tooltip('show')
+      _.delay(function() { $repeat.tooltip('hide') }, 1000)
+    } else {
+      Video.repeat = true
+      $repeat.removeClass('off')
+      $repeat.attr('data-original-title', 'Repeat: on')
+      $repeat.tooltip('show')
+      _.delay(function() { $repeat.tooltip('hide') }, 1000)
+    }    
+  },
+  
+  toggleShuffle: function() {
+    var $shuffle = this.$el.find('#shuffle')
+    if (Video.shuffle) {
+      Video.shuffle = false
+      $shuffle.addClass('off')
+      $shuffle.attr('data-original-title', 'Shuffle: off')
+      $shuffle.tooltip('show')
+      _.delay(function() { $shuffle.tooltip('hide') }, 1000)
+    } else {
+      Video.shuffle = true
+      $shuffle.removeClass('off')
+      $shuffle.attr('data-original-title', 'Shuffle: on')
+      $shuffle.tooltip('show')
+      _.delay(function() { $shuffle.tooltip('hide') }, 1000)
+    }
   }
     
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

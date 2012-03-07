@@ -139,9 +139,15 @@ hr {
     opacity: 0.5;
     margin: 3px 0;
     cursor: pointer;
+    &.off {
+      opacity: 0.15;
+    }
     &:hover {
       .fade(.2s);
       opacity: 1.00;
+    }
+    &.disabled {
+      opacity: 0.1;
     }
   }
   

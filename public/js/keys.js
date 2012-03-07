@@ -1,3 +1,24 @@
+View.Document = Backbone.View.extend({
+  el: $(document),
+
+  events: {
+    //'keypress #query' : 'searchAll',
+    'keydown'         : 'keyMapper',
+    //'keyup'           : 'setMaxVolume',
+  },
+
+  keyMapper: function(e) {
+    if ($(e.target).is('input, textarea')) {
+      return
+    }
+      
+    var fn = KeyMapper['k' + e.keyCode]
+    if (fn) {
+      return fn(e)
+    }
+  }
+})
+
 KeyMapper = {
     
   // The event lacks keyboard modifiers (ctrl, alt, shift, meta)
@@ -56,7 +77,14 @@ KeyMapper = {
   // R
   k82: function(e) {
     if (this.keypressHasModifier(e)) return
-    //Controls.toggleRepeat(e)
+    Controls.toggleRepeat()
+    return false
+  },
+ 
+  // S
+  k83: function(e) {
+    if (this.keypressHasModifier(e)) return
+    Controls.toggleShuffle()
     return false
   },
     
@@ -77,5 +105,5 @@ KeyMapper = {
 }
 
 $(function() {
-  _.bindAll(KeyMapper, 'keypressHasModifier', 'k32', 'k37', 'k38', 'k39', 'k40', 'k70', 'k77', 'k82', 'k191', 'k192')
+  _.bindAll(KeyMapper, 'keypressHasModifier', 'k32', 'k37', 'k38', 'k39', 'k40', 'k70', 'k77', 'k82', 'k83', 'k191', 'k192')
 })

@@ -71,27 +71,6 @@ AppRouter = Backbone.Router.extend({
   }
 })
 
-View.Document = Backbone.View.extend({
-  el: $(document),
-
-  events: {
-    //'keypress #query' : 'searchAll',
-    'keydown'         : 'keyMapper',
-    //'keyup'           : 'setMaxVolume',
-  },
-
-  keyMapper: function(e) {
-    if ($(e.target).is('input, textarea')) {
-      return
-    }
-      
-    var fn = KeyMapper['k' + e.keyCode]
-    if (fn) {
-      return fn(e)
-    }
-  }
-})
-
 View.Main = Backbone.View.extend({
   el: $('#main'),
 

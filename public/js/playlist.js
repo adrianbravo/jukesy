@@ -7,7 +7,7 @@ Model.Playlist = Backbone.Model.extend({
     // defaults for testing
     this.tracks = []
     var track
-    track = new Model.Track({ artist: 'Wugazi', name: 'Shame On Blue' })
+    track = new Model.Track({ artist: 'Battles', name: 'Ice Cream' })
     track.playlist = this
     this.tracks.push(track)
     track = new Model.Track({ artist: 'Kid Koala', name: 'Fender Bender' })

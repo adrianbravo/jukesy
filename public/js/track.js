@@ -3,7 +3,7 @@ Model.Track = Backbone.Model.extend({
   initialize: function () {
     _.bindAll(this, 'setVideoIds')
   },
-  
+    
   play: function() {
     var self = this
 
@@ -15,7 +15,7 @@ Model.Track = Backbone.Model.extend({
     if (NowPlaying != this.playlist) {
       this.playlist.nowPlaying()
     }
-    NowPlayingTrack = this
+    Video.track = this
 
     if (_.isUndefined(this.videos)) {
       this.getVideoIds()
