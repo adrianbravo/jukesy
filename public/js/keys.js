@@ -1,10 +1,17 @@
-View.Document = Backbone.View.extend({
+View.KeyboardShortcuts = Backbone.View.extend({
   el: $(document),
+  
+  template: jade.compile($('#keyboard-shortcuts-template').text()),
 
   events: {
     //'keypress #query' : 'searchAll',
     'keydown'         : 'keyMapper',
     'keyup'           : 'setLastVolume',
+    'click #keyboard-shortcuts' : 'render'
+  },
+  
+  render: function() {
+    ModalView.render(this.template())
   },
 
   keyMapper: function(e) {
@@ -34,7 +41,6 @@ View.Document = Backbone.View.extend({
       })
     }
   }
-  
 })
 
 KeyMapper = {

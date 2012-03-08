@@ -1,0 +1,53 @@
+.modal-header
+  a.close('data-dismiss'= 'modal') &times;
+  h3 Keyboard shortcuts
+.modal-body#keyboard-shortcuts-modal
+  .span2
+    ul.unstyled
+      li
+        .key /
+        | search
+      li
+        .key SPACE
+        | pause / play
+      li
+        .key ESC
+        | exit fullscreen
+      li
+        .key.big F
+        | toggle fullscreen
+  .span2
+    ul.unstyled
+      li
+        .key
+          .icon.icon-arrow-up
+        | increase volume
+      li
+        .key
+          .icon.icon-arrow-down
+        | decrease volume
+      li
+        .key
+          .icon.icon-arrow-left
+        | previous song
+      li
+        .key
+          .icon.icon-arrow-right
+        | next song
+  .span2
+    ul.unstyled
+      li
+        .key.big M
+        | toggle mute
+      li
+        .key.big R
+        | toggle repeat
+      li
+        .key.big S
+        | toggle shuffle
+      li
+        .key.big D
+        | toggle discovery
+  .clear
+.modal-footer
+  a.btn('data-dismiss'= 'modal') Close

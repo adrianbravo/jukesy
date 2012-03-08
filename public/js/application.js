@@ -124,7 +124,7 @@ $(function() {
   $(window).resize(_.debounce(windowResized))
   windowResized()
   
-  window.DocumentView = new View.Document
+  window.KeyboardShortcutsView = new View.KeyboardShortcuts
   window.MainView = new View.Main
   window.Session = new Model.Session
   window.ModalView = new View.Modal
