@@ -1,5 +1,6 @@
 @import "include.less";
 @import "layout.less";
+@import "playlist.less";
 
 input,
 button,
@@ -12,7 +13,7 @@ textarea,
 body {
   padding-top: 60px;
   padding-bottom: 40px;
-  background: @body-grey;
+  background: #ddd;
 
   &.dragging {
     .no-select();
@@ -26,13 +27,13 @@ body {
   }
 }
 
-a:hover {
-  cursor: pointer;
+hr {
+  border-top-color: #999;
+  border-bottom-color: #eee;
 }
 
-hr {
-  border-top: 1px solid #bbb;
-  border-bottom: 1px solid #f6f6f6;
+a:hover {
+  cursor: pointer;
 }
 
 #header .navbar-inner {
@@ -47,6 +48,7 @@ hr {
       background-color: rgba(0, 0, 0, 0.2);
     }
   }
+  
   #query {
     background: #ddd;
     color: #333;
@@ -55,8 +57,7 @@ hr {
     &::-webkit-input-placeholder { color: #666; font-style: italic; }
     &::-moz-placeholder          { color: #666; font-style: italic; }
     &:focus {
-      outline: 2px solid #666;
-      background: #eee;
+      background: #fff;
     }
   }
   
@@ -64,7 +65,7 @@ hr {
     font-family: 'Ruluko';
     font-weight: bold;
     font-size: 24px;
-    color: @body-grey;
+    color: #ccc;
     &:hover {
       color: #eee;
     }
@@ -82,7 +83,6 @@ hr {
 
 #main {
   margin-bottom: 20px;
-  text-shadow: 0px 1px 0 #ddd;
 }
 
 #controls {
@@ -188,13 +188,13 @@ hr {
         
     li a {
       margin: 0;
-      padding: 3px;
+      padding: 2px 4px;
       color: #333;
       font-size: 14px;
       line-height: 20px;
 
       &:hover {
-        background: #ccc;
+        background: #eee;
       }
     }
   }
@@ -214,7 +214,7 @@ footer {
 
 #video {
   background: #000;
-  box-shadow: 0 0 0 2px rgba(48, 48, 48, 0.5);
+  box-shadow: 0 0 0 2px rgba(48, 48, 48, 0.7);
   position: fixed;
   bottom: 30px;
   right: 0;

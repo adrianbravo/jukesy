@@ -23,8 +23,7 @@ Model.Video = Backbone.Model.extend({
     this.pause()
     if (this.track) {
       this.track = null
-      //this.track.view.render()
-      //  $(this.track.view.el).removeClass('playing')
+      //this.track.view.$el.removeClass('playing')
     }
     
     Controls.render()

@@ -89,7 +89,7 @@ View.UserCreate = Backbone.View.extend(_.extend({
     
   initialize: function() {
     _.bindAll(this, 'submit', 'keyDown', 'submitSuccess', 'submitError', 'newSession')
-    this.$el = $(this.el)
+    this.$el = $(this.el) // TODO this may be unnecessary
     this.model = new Model.User
     this.render()
   },

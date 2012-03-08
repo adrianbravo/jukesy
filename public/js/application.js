@@ -37,7 +37,7 @@ AppRouter = Backbone.Router.extend({
   },
   
   nowPlaying: function() {
-    MainView.render('nowPlaying')
+    MainView.render(NowPlaying.nowPlayingView)
   },
   
   // TODO waitstate ???
@@ -79,7 +79,6 @@ View.Main = Backbone.View.extend({
     about          : jade.compile($('#about-template').text()),
     termsOfService : jade.compile($('#terms-of-service-template').text()),
     privacyPolicy  : jade.compile($('#privacy-policy-template').text()),
-    nowPlaying     : jade.compile($('#now-playing-template').text()),
     401   : jade.compile($('#401-template').text()),
     404   : jade.compile($('#404-template').text()),
     500   : jade.compile($('#500-template').text())
@@ -152,7 +151,6 @@ $(function() {
   window.addEventListener('popstate', function(e) {
     Router.navigate(location.pathname.substr(1), true)
   })
-  // done hijacking links
   */
 
   $('body').addClass('in') // fade in

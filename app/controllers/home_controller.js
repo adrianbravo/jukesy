@@ -19,7 +19,7 @@ module.exports = function(app) {
     },
     
     nowPlaying: function(req, res, next) {
-      res.render('home/now_playing', {})
+      res.render('home/now_playing', { tracks: [] })
     }
 
   }

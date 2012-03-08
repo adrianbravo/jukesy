@@ -2,6 +2,7 @@ Model.Track = Backbone.Model.extend({
 
   initialize: function () {
     _.bindAll(this, 'setVideoIds')
+    this.view = new View.Track({ model: this })
   },
     
   play: function() {
@@ -26,6 +27,7 @@ Model.Track = Backbone.Model.extend({
         //Controls.updateTrackInfo()
       })
 
+      this.view.setPlaying()
       //if ($(this.view.el).is(':visible')) {
       //  this.view.setPlaying()
       //}
@@ -64,8 +66,24 @@ Model.Track = Backbone.Model.extend({
 
 })
 
-
-
+View.Track = Backbone.View.extend({
+  tagName: 'tr',
+  
+  template: jade.compile($('#track-template').text()),
+  
+  initialize: function() {
+    this.render()
+  },
+  
+  render: function() {
+    this.$el.html(this.template(this.model.toJSON()))
+    return this
+  },
+  
+  setPlaying: function() {
+    this.$el.addClass('playing').siblings().removeClass('playing')
+  }
+})
 
 
 
