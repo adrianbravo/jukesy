@@ -1,7 +1,10 @@
+@lightGrey: #ccc;
+
 @import "include.less";
 @import "layout.less";
 @import "playlist.less";
 @import "controls.less";
+
 
 input,
 button,
@@ -66,7 +69,7 @@ a:hover {
     font-family: 'Ruluko';
     font-weight: bold;
     font-size: 24px;
-    color: #ccc;
+    color: @lightGrey;
     &:hover {
       color: #eee;
     }
@@ -97,13 +100,13 @@ a:hover {
         
     li a {
       margin: 0;
-      padding: 2px 4px;
+      padding: 1px 4px;
       color: #333;
       font-size: 14px;
       line-height: 20px;
 
       &:hover {
-        background: #eee;
+        background: @lightGrey;
       }
     }
   }

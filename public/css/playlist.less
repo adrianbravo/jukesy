@@ -3,31 +3,59 @@
     background: #d6d6d6;
   }
   tbody tr:hover td {
-    background: #ccc;
+    background: @lightGrey;
     color: #333;
   }
 }
 
 #now-playing {
-  .icon-play-circle {
+  .no-select();
+  
+  .icon-white {
     display: none;
   }
+  
+  a {
+    color: #333;
+    max-height: 18px;
+    overflow: hidden;
+    display: inline-block;
+  }
+  
   .artist {
     width: 300px;
   }
+  
   .play {
     width: 14px;
     padding: 6px 5px;
   }
+  
+  .error {
+    td {
+      background: rgba(204, 102, 102, 0.5);
+      a {
+        color: #fff;
+      }
+      
+      .icon-exclamation-sign {
+        display: block;
+      }
+    }
+  }
+  
   .playing {
     td {
       background: rgba(102, 204, 102, 0.7);
-      color: #fff;
+      a {
+        color: #fff;
+      }
       
       .icon-play-circle {
         display: block;
       }
     }
+    
     &:hover td {
       background: rgba(102, 204, 102, 1);
     }

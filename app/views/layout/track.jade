@@ -1,4 +1,7 @@
 td.play
   i.icon-white.icon-play-circle
-td.name= name
-td.artist= artist
+  i.icon-white.icon-exclamation-sign
+td.name
+  a(href= '/artist/' + encodeURIComponent(artist) + '/track/' + encodeURIComponent(name))= name
+td.artist
+  a(href= '/artist/' + encodeURIComponent(artist))= artist

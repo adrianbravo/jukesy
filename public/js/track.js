@@ -8,7 +8,6 @@ Model.Track = Backbone.Model.extend({
   play: function() {
     var self = this
 
-    // Do not attempt to play if search is in progress (or player does not exist)
     if (!Video.player || Video.loading) {
       return false
     }
@@ -23,15 +22,12 @@ Model.Track = Backbone.Model.extend({
     } else if (_.isEmpty(this.videos)) {
       Video.error()
     } else {
-      _.defer(function() {
-        //Controls.updateTrackInfo()
-      })
-
+      //_.defer(function() {
+      //  Controls.updateTrackInfo()
+      //})
+      
       this.view.setPlaying()
-      //if ($(this.view.el).is(':visible')) {
-      //  this.view.setPlaying()
-      //}
-
+      
       Video.skipToPrev = false
       if (!this.video) {
         //this.video = this.bestVideo()
@@ -69,6 +65,10 @@ Model.Track = Backbone.Model.extend({
 View.Track = Backbone.View.extend({
   tagName: 'tr',
   
+  events: {
+    'dblclick': 'play'
+  },
+  
   template: jade.compile($('#track-template').text()),
   
   initialize: function() {
@@ -78,6 +78,10 @@ View.Track = Backbone.View.extend({
   render: function() {
     this.$el.html(this.template(this.model.toJSON()))
     return this
+  },
+  
+  play: function() {
+    this.model.play()
   },
   
   setPlaying: function() {

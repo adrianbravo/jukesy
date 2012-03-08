@@ -9,10 +9,19 @@ Model.Playlist = Backbone.Model.extend({
     // defaults for testing
     this.tracks = []
     var track
-    track = new Model.Track({ artist: 'Cake', name: 'Short Skirt Long Jacket' })
+    track = new Model.Track({ artist: 'Beatles', name: 'Mother Nature\'s Son' })
     track.playlist = this
     this.tracks.push(track)
-    track = new Model.Track({ artist: 'Battles', name: 'Sweetie & Shag' })
+    track = new Model.Track({ artist: 'Cake', name: 'I Bombed Korea' })
+    track.playlist = this
+    this.tracks.push(track)
+    track = new Model.Track({ artist: 'Sly & the Family Stone', name: 'Spaced Cowboy' })
+    track.playlist = this
+    this.tracks.push(track)
+    track = new Model.Track({ artist: 'Beastie Boys', name: 'Sabotage' })
+    track.playlist = this
+    this.tracks.push(track)
+    track = new Model.Track({ artist: 'Röyksopp', name: 'Happy Up Here' })
     track.playlist = this
     this.tracks.push(track)
     track = new Model.Track({ artist: 'qowirqorwg', name: 'osjfdaosjdfoasjf ojsdfoa ojsfoaf sofnska sdfask' })

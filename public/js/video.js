@@ -23,7 +23,7 @@ Model.Video = Backbone.Model.extend({
     this.pause()
     if (this.track) {
       this.track = null
-      //this.track.view.$el.removeClass('playing')
+      this.track.view.$el.removeClass('playing')
     }
     
     Controls.render()
@@ -187,7 +187,7 @@ Model.Video = Backbone.Model.extend({
   },
   
   error: function() {
-    //$(this.track.view.el).addClass('error')
+    $(this.track.view.el).addClass('error')
     this.skipToPrev ? this.prev() : this.next()
   },
 
