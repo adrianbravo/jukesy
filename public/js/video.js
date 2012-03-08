@@ -67,7 +67,7 @@ Model.Video = Backbone.Model.extend({
       this.next()
       return
     }
-    
+        
     this.player.playVideo()
     if (this.state != 1) {
       this.seek(Math.floor(this.currentTime()))
@@ -75,15 +75,14 @@ Model.Video = Backbone.Model.extend({
   },
   
   next: function() {
-    console.log('Video.next')
     var self = this
       , next = null
     
-    if (this.tryRepeat()) {
+    if (this.loading || this.tryRepeat()) {
       return
     }
     
-    if (this.track === _.last(NowPlaying.tracks)) {
+    if (this.track === _.last(NowPlaying.tracks) || _.isUndefined(this.track)) {
       next = _.first(NowPlaying.tracks)
     } else {
       next = NowPlaying.tracks[_.indexOf(NowPlaying.tracks, this.track) + 1]
@@ -92,16 +91,15 @@ Model.Video = Backbone.Model.extend({
   },
   
   prev: function() {
-    console.log('Video.prev')
     var self = this
       , prev = null
     
-    if (this.tryRepeat() || this.trySeek()) {
+    if (this.loading || this.tryRepeat() || this.trySeek()) {
       return
     }
     
     this.skipToPrev = true
-    if (this.track === _.first(NowPlaying.tracks)) {
+    if (this.track === _.first(NowPlaying.tracks) || _.isUndefined(this.track)) {
       prev = _.last(NowPlaying.tracks)
     } else {
       prev = NowPlaying.tracks[_.indexOf(NowPlaying.tracks, this.track) - 1]
@@ -195,7 +193,6 @@ Model.Video = Backbone.Model.extend({
     var query = '"' + track.artist + '" "' + track.name + '"'
     if (!this.loading) {
       this.loading = true
-      console.log('Video.search', track)
 
       var url = "http://gdata.youtube.com/feeds/api/videos?" + $.param({
           alt           : 'json-in-script',
