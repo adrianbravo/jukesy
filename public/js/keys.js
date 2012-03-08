@@ -126,8 +126,10 @@ KeyMapper = {
   // /
   k191: function(e) {
     if (this.keypressHasModifier(e)) return
-    //Video.fullscreenOff()
-    //$('#query').focus()
+    if (Video.fullscreen) {
+      Controls.toggleFullscreen()
+    }
+    $('#query').focus()
     return false
   }
       
