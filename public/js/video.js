@@ -281,9 +281,9 @@ View.Controls = Backbone.View.extend({
   
   renderTimer: function() {
     if (Video.playing()) {
-      this.$el.find('#timer .progress').addClass('active')
+      this.$el.find('#timer').addClass('active')
     } else {
-      this.$el.find('#timer .progress').removeClass('active')
+      this.$el.find('#timer').removeClass('active')
     }
   },
   
