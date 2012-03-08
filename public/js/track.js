@@ -85,7 +85,10 @@ View.Track = Backbone.View.extend({
   },
   
   setPlaying: function() {
-    this.$el.addClass('playing').siblings().removeClass('playing')
+    _.each(this.model.playlist.tracks, function(track) {
+      track.view.$el.removeClass('playing')
+    })
+    this.$el.addClass('playing')
   }
 })
 

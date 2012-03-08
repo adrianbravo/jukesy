@@ -78,7 +78,7 @@ Model.Video = Backbone.Model.extend({
     var self = this
       , next = null
     
-    if (this.loading || this.tryRepeat()) {
+    if (this.loading || this.state == 3 || this.tryRepeat()) {
       return
     }
     
@@ -94,7 +94,7 @@ Model.Video = Backbone.Model.extend({
     var self = this
       , prev = null
     
-    if (this.loading || this.tryRepeat() || this.trySeek()) {
+    if (this.loading || this.state == 3 || this.tryRepeat() || this.trySeek()) {
       return
     }
     
