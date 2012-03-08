@@ -1,0 +1,91 @@
+#controls {
+  background: #333;
+  box-shadow: 0 -2px 0 rgba(48, 48, 48, 0.5);
+  position: fixed;
+  z-index: 1000000;
+  height: 30px;
+  top: auto;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: 0;
+
+  #volume-bar, #timer {
+    display: inline-block;
+    background: #444;
+    height: 10px;
+  }
+  
+  #timer {
+    margin-top: 10px;
+    width: 100%;
+    overflow: visible;
+    .radius(0px);
+    
+    .fill, .track {
+      .radius(0px);
+      position: absolute;
+      height: 10px;
+      cursor: pointer;
+    }
+    .fill {
+      background: #666;
+    }    
+    .track {
+      z-index: 1000001;
+    }
+  }
+  
+  #volume-bar {
+    .radius(5px);
+    width: 100px;
+    cursor: pointer;
+    
+    .fill {
+      background: #999;
+      .radius(5px);
+      height: 10px;
+    }
+  }
+  
+  .control {
+    padding: 3px 8px;
+    display: inline-block;
+    opacity: 0.5;
+    margin: 3px 0;
+    cursor: pointer;
+    &:hover {
+      .fade(.2s);
+      opacity: 1.00;
+    }
+    &.disabled {
+      opacity: 0.1;
+    }
+  }
+  
+  #repeat, #shuffle, #radio {
+    .fade(.2s);
+    opacity: 0.8;
+    &.off {
+      opacity: 0.12;
+    }
+  }
+  
+  .span12 {
+    position: absolute;
+  }
+  
+  .controls-left, .controls-right, .controls-middle {
+    position: absolute;
+    height: 30px;
+  }
+  
+  .controls-middle {
+    left: 240px;
+    width: 575px;
+  }
+  
+  .controls-right {
+    right: 0;
+  }
+}
