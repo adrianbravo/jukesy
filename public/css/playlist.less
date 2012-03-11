@@ -8,62 +8,14 @@
   }
 }
 
-#now-playing {
+
+
+
+
+
+#now-playing, #search {
   .no-select();
   
-  .icon-white {
-    display: none;
-  }
-  
-  a {
-    color: #333;
-    max-height: 18px;
-    overflow: hidden;
-    display: inline-block;
-  }
-  
-  .artist {
-    width: 300px;
-  }
-  
-  .play {
-    width: 14px;
-    padding: 6px 5px;
-  }
-  
-  .error {
-    td {
-      background: rgba(204, 102, 102, 0.5);
-      a {
-        color: #fff;
-      }
-      
-      .icon-exclamation-sign {
-        display: block;
-      }
-    }
-  }
-  
-  .playing {
-    td {
-      background: rgba(102, 204, 102, 0.7);
-      a {
-        color: #fff;
-      }
-      
-      .icon-play-circle {
-        display: block;
-      }
-    }
-    
-    &:hover td {
-      background: rgba(102, 204, 102, 1);
-    }
-  }
-  
-}
-
-#search {
   .artist a, .name a {
     color: #333;
     max-height: 18px;
@@ -71,12 +23,10 @@
     display: inline-block;
   }
   
-  #search-tracks {
-    .artist {
-      width: 300px;
-    }
+  :not(#search-artists) .artist {
+    width: 300px;
   }
-  
+
   td.dd {
     width: 14px;
     border-right: 2px solid #ddd;
@@ -94,7 +44,41 @@
       }
     }
   }
+
+  .error {
+    td {
+      background: rgba(204, 102, 102, 0.5);
+      &.artist a, &.name a {
+        color: #fff;
+      }
+    }
+    td.play {
+      a {
+        display: none;
+      }
+    }
+  }
   
+  .playing {
+    td {
+      background: rgba(102, 204, 102, 0.7);
+      &.artist a, &.name a {
+        color: #fff;
+      }
+    }
+    td.play {
+      a {
+        background: rgba(62, 164, 62, 1);
+        &:hover {
+          background: rgba(32, 134, 32, 1);
+        }
+      }
+    }
+    &:hover td {
+      background: rgba(102, 204, 102, 1);
+    }
+  }
+    
   td.play {
     width: 22px;
     
@@ -109,24 +93,4 @@
     }
   }
   
-  #search-artists {
-    ul {
-      list-style: none;
-      li {
-        .radius(4px);
-        background: #06f;
-        color: #fff;
-        width: 96px;
-        margin: 0 10px 10px 0;
-        padding: 10px;
-        float: left;
-        overflow: hidden;
-      
-        img {
-          width: 96px;
-          height: 96px;
-        }
-      }
-    }
-  }
 }

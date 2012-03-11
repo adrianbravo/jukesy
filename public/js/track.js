@@ -66,7 +66,7 @@ View.Track = Backbone.View.extend({
   tagName: 'tr',
   
   events: {
-    'dblclick': 'play'
+    'click td.play a': 'play'
   },
   
   template: jade.compile($('#track-template').text()),
@@ -76,7 +76,7 @@ View.Track = Backbone.View.extend({
   },
   
   render: function() {
-    this.$el.html(this.template(this.model.toJSON()))
+    this.$el.html(this.template({ track: this.model }))
     return this
   },
   
@@ -91,21 +91,6 @@ View.Track = Backbone.View.extend({
     this.$el.addClass('playing')
   }
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

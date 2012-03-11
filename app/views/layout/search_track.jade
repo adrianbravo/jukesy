@@ -1,37 +1,5 @@
 #search
   h2 #{track} by #{artist}
+  
+  h3 Similar Tracks
   #search-tracks
-    h3 Similar Tracks
-    - if (!tracks)
-      p Found nothing
-    - else if (tracks.length)
-      table.table.table-striped
-        thead
-          tr
-            th.dropdown
-            th.play
-            th Track
-            th Artist
-        tbody
-          - each track in tracks
-            tr
-              td.dd
-                .dropdown
-                  a.dropdown-toggle('data-toggle'= 'dropdown')
-                    i.icon-chevron-down
-                  ul.dropdown-menu
-                    li
-                      a Play
-                    li
-                      a Queue Next
-                    li
-                      a Queue Last
-              td.play
-                a
-                  .icon-play.icon-white
-              td.name
-                a(href= '/artist/' + encodeURIComponent(track.get('artist')) + '/track/' + encodeURIComponent(track.get('name')))= track.get('name')
-              td.artist
-                a(href= '/artist/' + encodeURIComponent(track.get('artist')))= track.get('artist')
-    - else
-      p Loading...

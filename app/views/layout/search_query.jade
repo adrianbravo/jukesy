@@ -1,61 +1,11 @@
 #search
   h2 Search: #{query}
+  
+  h3 Artists
   #search-artists
-    h3 Artists
-    - if (!artists)
-      p Found nothing
-    - else if (artists.length)
-      ul
-        - each artist in artists
-          li
-            img(src= artist.get('image'))
-            .artist
-              a(href= '/artist/' + encodeURIComponent(artist.get('name')))= artist.get('name')
-        .clear
-    - else
-      p Loading...
-      
+  
+  h3 Albums
   #search-albums
-    h3 Albums
-    - if (!albums)
-      p Found nothing
-    - else if (albums.length)
-      p Listing albums here
-    - else
-      p Loading...
 
+  h3 Tracks
   #search-tracks
-    h3 Tracks
-    - if (!tracks)
-      p Found nothing
-    - else if (tracks.length)
-      table.table.table-striped
-        thead
-          tr
-            th.dropdown
-            th.play
-            th Track
-            th Artist
-        tbody
-          - each track in tracks
-            tr
-              td.dd
-                .dropdown
-                  a.dropdown-toggle('data-toggle'= 'dropdown')
-                    i.icon-chevron-down
-                  ul.dropdown-menu
-                    li
-                      a Play
-                    li
-                      a Queue Next
-                    li
-                      a Queue Last
-              td.play
-                a
-                  .icon-play.icon-white
-              td.name
-                a(href= '/artist/' + encodeURIComponent(track.get('artist')) + '/track/' + encodeURIComponent(track.get('name')))= track.get('name')
-              td.artist
-                a(href= '/artist/' + encodeURIComponent(track.get('artist')))= track.get('artist')
-    - else
-      p Loading...
