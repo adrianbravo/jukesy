@@ -4,7 +4,7 @@ View.KeyboardShortcuts = Backbone.View.extend({
   template: jade.compile($('#keyboard-shortcuts-template').text()),
 
   events: {
-    //'keypress #query' : 'searchAll',
+    'keypress #query' : 'searchAll',
     'keydown'         : 'keyMapper',
     'keyup'           : 'setLastVolume',
     'click #keyboard-shortcuts' : 'render'
@@ -13,7 +13,14 @@ View.KeyboardShortcuts = Backbone.View.extend({
   render: function() {
     ModalView.render(this.template())
   },
-
+  
+  searchAll: function(e) {
+    if (e.keyCode == 13) {
+      Router.navigate('/search/' + encodeURIComponent($('#query').val()), true)
+      $('#query').val('').blur()
+    }
+  },
+  
   keyMapper: function(e) {
     if ($(e.target).is('input, textarea')) {
       return

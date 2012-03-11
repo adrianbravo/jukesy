@@ -7,6 +7,10 @@ AppRouter = Backbone.Router.extend({
     'now-playing'         : 'nowPlaying',
     'user/:username'      : 'userView',
     'user/:username/edit' : 'userEdit',
+    //'artist/:artist'              : 'searchArtist',
+    //'artist/:artist/album/:album' : 'searchAlbum',
+    'artist/*artist/track/*track' : 'searchTrack',
+    'search/*query'               : 'searchQuery',
     '*derp'               : '404'
   },
 
@@ -61,6 +65,27 @@ AppRouter = Backbone.Router.extend({
       error: this.error
     })
   },
+  
+  /*
+  // finds similar artists, top tracks, list of albums
+  searchArtist: function(artist) {
+    //MainView.render(new View.SearchArtist({ artist: artist }))
+  },
+  
+  // lists tracks in an album (the inputs for this may be wrong)
+  searchAlbum: function(artist, album) {
+    //MainView.render(new View.SearchAlbum({ artist: artist, album: album }))
+  },
+  */
+  
+  searchTrack: function(artist, track) {
+    console.log(artist + ', ' + track)
+    MainView.render(new View.SearchTrack({ artist: artist, track: track }))
+  },
+  
+  searchQuery: function(query) {
+    MainView.render(new View.SearchQuery({ query: query }))
+  },  
   
   error: function(model, response) {
     MainView.render((response && response.status == 404) ? '404' : '500')

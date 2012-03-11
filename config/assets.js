@@ -15,8 +15,12 @@ var assets = {
     // ...
     'js/user.js',
     'js/session.js',
+    'js/search.js',
     'js/playlist.js',
+    'js/artist.js',
+    'js/album.js',
     'js/track.js',
+    'js/tag.js',
     // ...
     'js/video.js',
     'js/keys.js',

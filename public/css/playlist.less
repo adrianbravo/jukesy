@@ -60,4 +60,73 @@
       background: rgba(102, 204, 102, 1);
     }
   }
+  
+}
+
+#search {
+  .artist a, .name a {
+    color: #333;
+    max-height: 18px;
+    overflow: hidden;
+    display: inline-block;
+  }
+  
+  #search-tracks {
+    .artist {
+      width: 300px;
+    }
+  }
+  
+  td.dd {
+    width: 14px;
+    border-right: 2px solid #ddd;
+    
+    .dropdown {
+      a.dropdown-toggle {
+        opacity: 0.75;
+        &:hover {
+          opacity: 1;
+        }
+      }
+      
+      &.open .dropdown-toggle {
+        background: transparent;
+      }
+    }
+  }
+  
+  td.play {
+    width: 22px;
+    
+    a {
+      background: #999;
+      .radius(2px);
+      padding: 5px;
+      
+      &:hover {
+        background: #333
+      }
+    }
+  }
+  
+  #search-artists {
+    ul {
+      list-style: none;
+      li {
+        .radius(4px);
+        background: #06f;
+        color: #fff;
+        width: 96px;
+        margin: 0 10px 10px 0;
+        padding: 10px;
+        float: left;
+        overflow: hidden;
+      
+        img {
+          width: 96px;
+          height: 96px;
+        }
+      }
+    }
+  }
 }
