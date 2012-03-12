@@ -84,12 +84,11 @@ Model.Search = Backbone.Model.extend({
         break
     }
     this.view = new View[_.capitalize(this.type) + 's' + 'SearchResults']({ model: this })
+    
     _.defer(function() {
       self.view.render()
+      $.getJSON('http://ws.audioscrobbler.com/2.0/?' + $.param(params), self.queryCallback)
     })
-
-    
-    $.getJSON('http://ws.audioscrobbler.com/2.0/?' + $.param(params), this.queryCallback)
   },
   
   queryCallback: function(data) {

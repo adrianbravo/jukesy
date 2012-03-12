@@ -29,6 +29,8 @@ View.User = Backbone.View.extend({
 View.UserEdit = Backbone.View.extend(_.extend({
   template: jade.compile($('#user-edit-template').text()),
   
+  elAlert: 'form',
+  
   events: {
     'click a.btn-primary' : 'submit',
     'keypress input'      : 'keyDown'
