@@ -21,7 +21,6 @@ View.SearchQuery = Backbone.View.extend({
   }
 })
 
-
 View.SearchTrack = Backbone.View.extend({
   template: jade.compile($('#search-track-template').text()),
   
@@ -118,7 +117,9 @@ Model.Search = Backbone.Model.extend({
         var model = new Model[_.capitalize(self.type) + 'SearchResult'](self.resultToJSON(result))
         self.results.push(model)
       })
-      console.log(this.type, this.view)
+      
+      console.log(this.type, this.results)
+      
       if (!this.view.$innerEl().length) {
         this.view.render()
       }
@@ -156,14 +157,15 @@ Model.Search = Backbone.Model.extend({
       case 'artist':
         return new Model.Artist({
           name      : result.name,
-          image     : self.resultImage(result)
+          image     : self.resultImage(result),
+          listeners : result.listeners
         })
       case 'album':
         return new Model.Album({
           artist  : result.artist,
           name    : result.name,
           image   : self.resultImage(result),
-          albumid : result.id
+          mbid    : result.mbid
         })
       case 'tag':
         return new Model.Tag({
@@ -330,13 +332,15 @@ View.SearchResult = {
 View.AlbumSearchResult = Backbone.View.extend(_.extend({
   tagName: 'li',
   template: jade.compile($('#album-search-result-template').text()),
-  type: 'album'
+  type: 'album',
+  className :'span4'
 }, View.SearchResult))
 
 View.ArtistSearchResult = Backbone.View.extend(_.extend({
   tagName: 'li',
   template: jade.compile($('#artist-search-result-template').text()),
-  type: 'artist'
+  type: 'artist',
+  className :'span4'
 }, View.SearchResult))
 
 View.TrackSearchResult = Backbone.View.extend(_.extend({

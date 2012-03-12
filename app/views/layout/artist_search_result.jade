@@ -1,1 +1,5 @@
-.name= artist.get('name')
+.image
+  img(src= artist.get('image'))
+.info
+  .name
+    a(href= '/artist/' + encodeURIComponent(artist.get('name')))= artist.get('name')

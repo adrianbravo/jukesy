@@ -13,8 +13,12 @@
 
 
 
-#now-playing, #search {
+.tracks {
   .no-select();
+  
+  .artist {
+    width: 300px;
+  }
   
   .artist a, .name a {
     color: #333;
@@ -23,13 +27,9 @@
     display: inline-block;
   }
   
-  :not(#search-artists) .artist {
-    width: 300px;
-  }
-
   td.dd {
     width: 14px;
-    border-right: 2px solid #ddd;
+    border-right: 1px solid #ddd;
     
     .dropdown {
       a.dropdown-toggle {
@@ -92,5 +92,102 @@
       }
     }
   }
+
+}
+.artists {
+  ul {
+    list-style: none;
+    
+    .span4 {
+      margin-left: 0;
+      margin-right: 10px;
+    }
+    
+    li {
+      background: #d6d6d6;
+      box-shadow: 0 0 2px #aaa;
+      margin-bottom: 10px;
+      padding: 5px;
+      
+      .image {
+        display: inline-block;
+        margin-right: 10px;
+        width: 48px;
+        height: 48px;
+        padding: 2px;
+        .radius(2px);
+        background: #fff;
+        
+        img {
+          width: 48px;
+          height: 48px;
+        }
+      }
+      
+      .info {
+        display: inline-block;
+        width: 238px;
+        vertical-align: top;
+      }
+      
+      a {
+        color: #333;
+      }
+      
+      .name a {
+        max-height: 36px;
+        overflow: hidden;
+      }
+    }
+  }
+}
   
+.albums {
+  ul {
+    list-style: none;
+    
+    .span4 {
+      margin-left: 0;
+      margin-right: 10px;
+    }
+    
+    li {
+      background: #d6d6d6;
+      box-shadow: 0 0 2px #aaa;
+      margin-bottom: 10px;
+      padding: 5px;
+      
+      .image {
+        display: inline-block;
+        margin-right: 10px;
+        width: 48px;
+        height: 48px;
+        padding: 2px;
+        .radius(2px);
+        background: #fff;
+        
+        img {
+          width: 48px;
+          height: 48px;
+        }
+      }
+      .info {
+        display: inline-block;
+        width: 238px;
+        vertical-align: top;
+      }
+      a {
+        color: #333;
+      }
+      
+      .artist a {
+        max-height: 18px;
+        overflow: hidden;
+      }
+      .name a {
+        max-height: 36px;
+        overflow: hidden;
+      }
+    }
+  }
 }

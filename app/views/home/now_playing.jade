@@ -1,12 +1,13 @@
 h1 Now Playing
 - if (tracks.length)
-  table#now-playing.table.table-striped
-    thead
-      tr
-        th.dd
-        th.play
-        th Track
-        th Artist
-    tbody
+  .tracks
+    table#now-playing.table.table-striped
+      thead
+        tr
+          th.dd
+          th.play
+          th Track
+          th Artist
+      tbody
 - else
   p There are no tracks in this playlist. Try searching for something.
