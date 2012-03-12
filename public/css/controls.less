@@ -1,6 +1,7 @@
 #controls {
-  background: #333;
-  box-shadow: 0 -2px 0 rgba(48, 48, 48, 0.5);
+  background: #111;
+  //box-shadow: 0 -2px 0 rgba(48, 48, 48, 0.5);
+  border-top: 2px solid @blue;
   position: fixed;
   z-index: 1000000;
   height: 30px;
@@ -12,7 +13,7 @@
 
   #volume-bar, #timer {
     display: inline-block;
-    background: #444;
+    background: #222;
     height: 10px;
   }
   
@@ -29,10 +30,11 @@
       cursor: pointer;
     }
     .fill {
-      background: #666;
+      background: #333;
     }    
     .track {
       z-index: 1000001;
+      background-color: @blue;
     }
   }
   
@@ -41,19 +43,22 @@
     cursor: pointer;
     
     .fill {
-      background: #999;
+      background: @blue;
       height: 10px;
     }
   }
   
   .control {
     padding: 3px 8px;
+    width: 10px;
     display: inline-block;
-    opacity: 0.5;
+    opacity: 1;
     margin: 3px 0;
     cursor: pointer;
+    color: @blue;
     &:hover {
       .fade(.2s);
+      color: #fff;
       opacity: 1.00;
     }
     &.disabled {
@@ -63,10 +68,15 @@
   
   #repeat, #shuffle, #radio {
     .fade(.2s);
-    opacity: 0.8;
+    opacity: 1;
     &.off {
-      opacity: 0.12;
+      color: @blue;
+      opacity: 0.33;
     }
+  }
+  
+  #fullscreen {
+    opacity: 1;
   }
   
   .span12 {

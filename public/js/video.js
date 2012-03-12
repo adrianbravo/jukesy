@@ -396,10 +396,13 @@ View.Controls = Backbone.View.extend({
   },
   
   dragVolumeFill: function($target, callback) {
-    return function(e) {
+    return function(e, secondCallback) {
       var w = $target.width()
         , boundedPosition = Math.min(Math.max(e.clientX - $target.offset().left, 0), w) * 100 / w
       callback(boundedPosition)
+      if (!_.isUndefined(secondCallback)) {
+        secondCallback(boundedPosition)
+      }
     }
   },
   

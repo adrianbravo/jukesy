@@ -61,6 +61,7 @@ Model.Search = Backbone.Model.extend({
           autocorrect : 1,
           format      : 'json'
         }
+      , self = this
 
     switch (this.get('method')) {
       case 'artist.search':
@@ -86,6 +87,10 @@ Model.Search = Backbone.Model.extend({
         break
     }
     this.view = new View[_.capitalize(this.type) + 's' + 'SearchResults']({ model: this })
+    _.defer(function() {
+      self.view.render()
+    })
+
     
     $.getJSON('http://ws.audioscrobbler.com/2.0/?' + $.param(params), this.queryCallback)
   },
@@ -117,8 +122,6 @@ Model.Search = Backbone.Model.extend({
         var model = new Model[_.capitalize(self.type) + 'SearchResult'](self.resultToJSON(result))
         self.results.push(model)
       })
-      
-      console.log(this.type, this.results)
       
       if (!this.view.$innerEl().length) {
         this.view.render()

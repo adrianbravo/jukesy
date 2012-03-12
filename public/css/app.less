@@ -1,37 +1,22 @@
-@lightGrey: #ccc;
+@blue: rgba(51, 181, 229, 1);
 
 @import "include.less";
 @import "layout.less";
 @import "playlist.less";
 @import "controls.less";
 
-.btn-group .btn-mini.dropdown-toggle {
-  padding-left: 6px;
-  padding-right: 6px;
-  
-  .caret {
-    margin-top: 6px;
-  }  
-}
-
+body,
 input,
 button,
 select,
 textarea,
 .navbar-search .search-query {
-  font-family: "Ubuntu";
-}
-
-table.table {
-  td {
-    .radius(2px);
-  }
+  font-family: 'Baumans';
 }
 
 body {
   padding-top: 60px;
-  padding-bottom: 40px;
-  background: #ddd;
+  padding-bottom: 240px;
 
   &.dragging {
     .no-select();
@@ -45,52 +30,41 @@ body {
   }
 }
 
-hr {
-  border-top-color: #ccc;
-  border-bottom-color: #eee;
-}
-
 a:hover {
   cursor: pointer;
 }
 
-#header .navbar-inner {
-  background: #333;
-  box-shadow: 0 2px 0 rgba(48, 48, 48, 0.5);
-
-  a {
-    &.highlight {
-      background-color: #444;
-    }
-    &:hover {
-      background-color: rgba(0, 0, 0, 0.2);
-    }
-  }
-  
+#header .navbar-inner {  
   #query {
     background: #ddd;
-    color: #333;
-    margin-top: 8px;
-    border: 1px solid #444;
-    &::-webkit-input-placeholder { color: #666; font-style: italic; }
-    &::-moz-placeholder          { color: #666; font-style: italic; }
+    //color: #333;
+    margin-top: 6px;
+    margin-bottom: 0;
+    //border: 1px solid #444;
+    &::-webkit-input-placeholder, &::-moz-placeholder {
+      color: #666;
+    }
     &:focus {
-      background: #fff;
+      &::-webkit-input-placeholder, &::-moz-placeholder {
+        color: #fff;
+      }
+      //outline: thin solid @blue;
+      background: @blue;
+      color: #fff;
     }
   }
   
   #brand {
-    font-family: 'Ruluko';
-    font-weight: bold;
-    font-size: 24px;
-    color: @lightGrey;
+    //font-size: 24px;
+    color: @blue;
     &:hover {
-      color: #eee;
+      color: #fff;
     }
   }
   
   #session-button {
     .nav {
+      //margin-top: 8px;
       margin-right: 0;
       .caret {
         margin-top: 8px;
@@ -114,23 +88,16 @@ a:hover {
         
     li a {
       margin: 0;
-      padding: 1px 4px;
-      color: #333;
+      padding: 4px 4px;
       font-size: 14px;
       line-height: 20px;
-
-      &:hover {
-        background: @lightGrey;
-      }
     }
   }
 }
 
 footer {
-  color: #333;
   margin-bottom: 260px;
   a {
-    color: #333;
     margin: 0 5px;
     &:first-child {
       margin-left: 0;
@@ -140,7 +107,6 @@ footer {
 
 #video {
   background: #000;
-  box-shadow: 0 0 0 2px rgba(48, 48, 48, 0.7);
   position: fixed;
   bottom: 30px;
   left: 0;
