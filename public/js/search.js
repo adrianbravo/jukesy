@@ -10,8 +10,8 @@ View.SearchQuery = Backbone.View.extend({
   initialize: function(options) {
     this.query = options.query
     
-    this.artistModel = new Model.Search({ artist: options.query, method: 'artist.search' })
-    this.albumModel = new Model.Search({ album: options.query, method: 'album.search' })
+    this.artistModel = new Model.Search({ artist: options.query, method: 'artist.search', max: 4 })
+    this.albumModel = new Model.Search({ album: options.query, method: 'album.search', max: 6 })
     this.trackModel = new Model.Search({ track: options.query, method: 'track.search' })
   },
   
@@ -124,6 +124,10 @@ Model.Search = Backbone.Model.extend({
         this.view.render()
       }
 
+      if (this.page == 1 && this.get('max') && (this.type == 'artist' || this.type == 'album')) {
+        this.results = _.first(this.results, this.get('max'))
+      }
+      
       _.forEach(this.results, function(result) {
         self.view.$innerEl().append(result.view.$el)
       })

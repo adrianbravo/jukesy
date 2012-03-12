@@ -3,8 +3,8 @@ Model.Video = Backbone.Model.extend({
   initialize: function() {
     swfobject.embedSWF('http://www.youtube.com/apiplayer?version=3&enablejsapi=1&playerapiid=video&wmode=transparent', // swfUrlStr
                        'video', // replaceElemIdStr
-                       '320',   // width
-                       '180',   // height
+                       '270',   // width
+                       '150',   // height
                        '8',     // swfVersionStr
                        null,    // xiSwfUrlStr
                        null,    // flashVarsObj
