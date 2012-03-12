@@ -12,25 +12,32 @@
   }
   
   td.dd {
+    .no-select();
     width: 14px;
-    height: 18px;
+    height: 18px;    
     
     .dropdown {
-      a.dropdown-toggle {
-        opacity: 0.2;
+      .dropdown-toggle {
+        padding: 10px 8px;
+        opacity: 0.4;
+        margin-left: -6px;
+        
         &:hover {
           text-decoration: none;
           opacity: 1;
         }
       }
-      
+
       &.open .dropdown-toggle {
+        background: transparent;
         color: @blue;
       }
     }
   }
 
   td.play {
+    .no-select();
+    
     width: 22px;
     a {
       .radius(2px);
