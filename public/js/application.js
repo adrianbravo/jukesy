@@ -120,6 +120,7 @@ View.Main = Backbone.View.extend({
       this.$el.html(template.render().$el)
       template.delegateEvents()
     }
+    $('body').scrollTop(0)
   }
 })
 

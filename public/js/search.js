@@ -40,9 +40,6 @@ View.SearchTrack = Backbone.View.extend({
   }
 })
 
-
-
-
 Model.Search = Backbone.Model.extend({
   key: '75c8c3065db32d805a292ec1af5631a3',
 

@@ -52,31 +52,35 @@
     padding: 3px 8px;
     width: 10px;
     display: inline-block;
-    opacity: 1;
     margin: 3px 0;
     cursor: pointer;
     color: @blue;
+  }
+  #prev, #play-pause, #next, #volume {
+    opacity: 0.33;
     &:hover {
-      .fade(.2s);
-      color: #fff;
-      opacity: 1.00;
-    }
-    &.disabled {
-      opacity: 0.1;
+      opacity: 1;
     }
   }
   
   #repeat, #shuffle, #radio {
-    .fade(.2s);
     opacity: 1;
     &.off {
-      color: @blue;
       opacity: 0.33;
     }
   }
   
   #fullscreen {
     opacity: 1;
+    &:hover {
+      color: @blue
+    }
+  }
+  
+  .control {
+    &.disabled {
+      opacity: 0.1;
+    }
   }
   
   .span12 {
@@ -95,30 +99,5 @@
   
   .controls-right {
     right: 0;
-  }
-}
-
-#keyboard-shortcuts-modal {
-  font-size: 10px;
-  line-height: 10px;
-  
-  .key {
-    .radius(2px);
-    display: inline-block;
-    background: #eee;
-    .gradient(#fff, #eee);
-    padding: 1px 7px;
-    border: 1px solid #ccc;
-    border-bottom: 2px solid #ccc;
-    margin: 0 10px 5px 0;
-    color: rgba(0, 0, 0, 0.6);
-    font-family: 'Ubuntu Mono';
-    text-shadow: 0 1px 0 #fff;
-    &.big {
-      font-size: 13px;
-    }
-    .icon {
-      opacity: 0.6;
-    }
   }
 }

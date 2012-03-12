@@ -1,34 +1,51 @@
 .tracks {
-  .no-select();
+  //.no-select();
   
   .artist {
     width: 300px;
   }
   
   .artist a, .name a {
-    //color: #333;
+    display: inline-block;
     max-height: 18px;
     overflow: hidden;
-    display: inline-block;
   }
   
   td.dd {
     width: 14px;
-    //border-right: 1px solid #ddd;
+    height: 18px;
     
     .dropdown {
       a.dropdown-toggle {
-        opacity: 0.75;
+        opacity: 0.2;
         &:hover {
+          text-decoration: none;
           opacity: 1;
         }
       }
       
       &.open .dropdown-toggle {
-        //background: transparent;
+        color: @blue;
       }
     }
   }
+
+  td.play {
+    width: 22px;
+    a {
+      .radius(2px);
+      padding: 5px 8px;
+      background: @blue;
+      color: #fff;
+      opacity: 1;
+      
+      &:hover {
+        text-decoration: none;
+        opacity: 1;
+      }
+    }
+  }
+
 
   .error {
     td {
@@ -63,21 +80,6 @@
       //background: rgba(102, 204, 102, 1);
     }
   }
-    
-  td.play {
-    width: 22px;
-    
-    a {
-      //background: #999;
-      .radius(2px);
-      padding: 5px;
-      
-      &:hover {
-        //background: #333
-      }
-    }
-  }
-
 }
 .artists {
   ul {
