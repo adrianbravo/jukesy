@@ -47,11 +47,12 @@ View.SearchQueryArtist = View.BaseSearch.extend({
   }
 })
 
+// Essentially View.SearchTrackSimilar
 View.SearchTrack = View.BaseSearch.extend({
   template: jade.compile($('#search-track-template').text()),
   initialize: function(options) {
     this.options = options
-    new Model.Search({ artist: options.artist, track: options.track, method: 'track.getSimilar', limit: 150 })
+    new Model.Search({ artist: options.artist, track: options.track, method: 'track.getSimilar', limit: 250 })
   }
 })
 
@@ -72,6 +73,31 @@ View.SearchArtist = View.BaseSearch.extend({
     new Model.Search({ artist: options.artist, method: 'artist.getTopTracks', limit: 15, showMore: urlArtist(options.artist) + '/top-tracks' })
   }
 })
+
+View.SearchArtistTopTracks = View.BaseSearch.extend({
+  template: jade.compile($('#search-artist-top-tracks-template').text()),
+  initialize: function(options) {
+    this.options = options
+    this.model = new Model.Search({ artist: options.artist, method: 'artist.getTopTracks', limit: 30, loadMore: true })
+  }
+})
+
+View.SearchArtistTopAlbums = View.BaseSearch.extend({
+  template: jade.compile($('#search-artist-top-albums-template').text()),
+  initialize: function(options) {
+    this.options = options
+    this.model = new Model.Search({ artist: options.artist, method: 'artist.getTopAlbums', limit: 30, loadMore: true })
+  }
+})
+
+View.SearchArtistSimilar = View.BaseSearch.extend({
+  template: jade.compile($('#search-artist-similar-template').text()),
+  initialize: function(options) {
+    this.options = options
+    this.model = new Model.Search({ artist: options.artist, method: 'artist.getSimilar', limit: 240, loadMore: true })
+  }
+})
+
 
 Model.Search = Backbone.Model.extend({
   key: '75c8c3065db32d805a292ec1af5631a3',
@@ -166,9 +192,23 @@ Model.Search = Backbone.Model.extend({
     
     if (data.results) {
       this.resultsMeta = {
-        start   : data.results['opensearch:startIndex'],
-        perPage : data.results['opensearch:itemsPerPage'],
-        total   : data.results['opensearch:totalResults']
+        start   : parseInt(data.results['opensearch:startIndex']),
+        perPage : parseInt(data.results['opensearch:itemsPerPage']),
+        total   : parseInt(data.results['opensearch:totalResults'])
+      }
+    } else if (data.topalbums) {
+      var meta = data.topalbums['@attr']
+      this.resultsMeta = {
+        start   : (parseInt(meta.page) - 1) * parseInt(meta.perPage),
+        perPage : parseInt(meta.perPage),
+        total   : parseInt(meta.total)
+      }
+    } else if (data.toptracks) {
+      var meta = data.toptracks['@attr']
+      this.resultsMeta = {
+        start   : (parseInt(meta.page) - 1) * parseInt(meta.perPage),
+        perPage : parseInt(meta.perPage),
+        total   : parseInt(meta.total)
       }
     }
     
@@ -230,10 +270,12 @@ Model.Search = Backbone.Model.extend({
     }
   },
   
-  updateLoadMore: function(results) {    
-    if (!this.resultsMeta || !this.resultsMeta.start || !this.resultsMeta.perPage || !this.resultsMeta.total) {
+  updateLoadMore: function(results) {
+    if (!this.resultsMeta) {
+      this.view.$el.find('.load-more').remove()
       return
     }
+    
     this.view.$el.find('.load-more a').button('reset')
     
     if (parseInt(this.resultsMeta.start) + parseInt(this.resultsMeta.perPage) > parseInt(this.resultsMeta.total)) {
@@ -308,6 +350,7 @@ Model.Search = Backbone.Model.extend({
     if (this.loading) {
       return
     }
+    
     this.loading = true
     this.view.$el.find('.load-more a').button('loading').addClass('disabled')
     this.query()

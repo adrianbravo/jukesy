@@ -9,12 +9,15 @@ AppRouter = Backbone.Router.extend({
     'user/:username/edit' : 'userEdit',
     'artist/*artist/album/*album' : 'searchAlbum',
     'artist/*artist/track/*track' : 'searchTrack',
+    'artist/*artist/top-tracks'   : 'searchArtistTopTracks',
+    'artist/*artist/top-albums'   : 'searchArtistTopAlbums',
+    'artist/*artist/similar'      : 'searchArtistSimilar',
     'artist/*artist'              : 'searchArtist',
     'search/*query/track'         : 'searchQueryTrack',
     'search/*query/album'         : 'searchQueryAlbum',
     'search/*query/artist'        : 'searchQueryArtist',
     'search/*query'               : 'searchQuery',
-    '*derp'               : '404'
+    '*derp'         : '404'
   },
 
   initialize: function() {
@@ -72,6 +75,18 @@ AppRouter = Backbone.Router.extend({
   // finds similar artists, top tracks, list of albums
   searchArtist: function(artist) {
     MainView.render(new View.SearchArtist({ artist: artist }))
+  },
+  
+  searchArtistTopTracks: function(artist) {
+    MainView.render(new View.SearchArtistTopTracks({ artist: artist }))
+  },
+  
+  searchArtistTopAlbums: function(artist) {
+    MainView.render(new View.SearchArtistTopAlbums({ artist: artist }))
+  },
+  
+  searchArtistSimilar: function(artist) {
+    MainView.render(new View.SearchArtistSimilar({ artist: artist }))
   },
   
   searchAlbum: function(artist, album) {
