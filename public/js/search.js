@@ -10,7 +10,7 @@ View.SearchQuery = Backbone.View.extend({
   initialize: function(options) {
     this.query = options.query
     
-    this.artistModel = new Model.Search({ artist: options.query, method: 'artist.search', max: 4 })
+    this.artistModel = new Model.Search({ artist: options.query, method: 'artist.search', max: 3 })
     this.albumModel = new Model.Search({ album: options.query, method: 'album.search', max: 6 })
     this.trackModel = new Model.Search({ track: options.query, method: 'track.search' })
   },
@@ -336,14 +336,14 @@ View.AlbumSearchResult = Backbone.View.extend(_.extend({
   tagName: 'li',
   template: jade.compile($('#album-search-result-template').text()),
   type: 'album',
-  className :'span4'
+  //className :'span3'
 }, View.SearchResult))
 
 View.ArtistSearchResult = Backbone.View.extend(_.extend({
   tagName: 'li',
   template: jade.compile($('#artist-search-result-template').text()),
   type: 'artist',
-  className :'span4'
+  //className :'span3'
 }, View.SearchResult))
 
 View.TrackSearchResult = Backbone.View.extend(_.extend({

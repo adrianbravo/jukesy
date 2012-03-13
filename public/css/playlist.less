@@ -37,15 +37,17 @@
     .no-select();
     
     width: 22px;
+    
     a {
       .radius(2px);
       padding: 5px 8px;
-      background: @blue;
-      color: #fff;
+      color: @blue;
       opacity: 1;
       
       &:hover {
         text-decoration: none;
+        background: @blue;
+        color: #fff;
         opacity: 1;
       }
     }
@@ -54,7 +56,6 @@
 
   .error {
     td {
-      //background: rgba(204, 102, 102, 0.5);
       &.artist a, &.name a {
         //color: #fff;
       }
@@ -89,16 +90,12 @@
 .artists {
   ul {
     list-style: none;
-    
-    .span4 {
-      margin-left: 0;
-      margin-right: 10px;
-    }
-    
+        
     li {
-      //background: #d6d6d6;
+      display: block;
+      float: left;
+      width: 33%;
       margin-bottom: 10px;
-      padding: 5px;
       
       .image {
         display: inline-block;
@@ -107,9 +104,14 @@
         height: 48px;
         padding: 2px;
         .radius(2px);
-        //background: #fff;
+        background: @blue;
+        
+        &:hover {
+          background: #fff;
+        }
         
         img {
+          background: #fff;
           width: 48px;
           height: 48px;
         }
@@ -117,12 +119,8 @@
       
       .info {
         display: inline-block;
-        width: 238px;
+        //width: 148px;
         vertical-align: top;
-      }
-      
-      a {
-        //color: #333;
       }
       
       .name a {
@@ -137,15 +135,11 @@
   ul {
     list-style: none;
     
-    .span4 {
-      margin-left: 0;
-      margin-right: 10px;
-    }
-    
     li {
-      //background: #d6d6d6;
+      display: block;
+      float: left;
+      width: 33%;
       margin-bottom: 10px;
-      padding: 5px;
       
       .image {
         display: inline-block;
@@ -154,22 +148,23 @@
         height: 48px;
         padding: 2px;
         .radius(2px);
-        //background: #fff;
+        background: @blue;
+        &:hover {
+          background: #fff;
+        }
         
         img {
+          background: #fff;
           width: 48px;
           height: 48px;
         }
       }
+      
       .info {
         display: inline-block;
-        width: 238px;
+        //width: 148px;
         vertical-align: top;
       }
-      a {
-        //color: #333;
-      }
-      
       .artist a {
         max-height: 18px;
         overflow: hidden;

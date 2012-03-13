@@ -11,6 +11,7 @@
   left: 0;
   right: 0;
   margin: 0;
+  font-size: 12px;
 
   #volume-bar, #timer {
     display: inline-block;
@@ -35,7 +36,6 @@
     }    
     .track {
       z-index: 1000001;
-      background-color: @blue;
     }
   }
   
@@ -44,7 +44,6 @@
     cursor: pointer;
     
     .fill {
-      background: @blue;
       height: 10px;
     }
   }
@@ -55,13 +54,21 @@
     display: inline-block;
     margin: 3px 0;
     cursor: pointer;
-    color: @blue;
   }
-  #prev, #play-pause, #next, #volume {
-    opacity: 0.33;
-    &:hover {
+  
+  #volume-bar, #timer {
+    &#volume-bar .fill, &#timer .track {
+      background-color: @blue;
       opacity: 1;
     }
+  }
+  
+  .control {
+    color: @blue;
+    opacity: 0.5;
+  }
+  #prev, #play-pause, #next, #volume {
+    opacity: 1;
   }
   
   #repeat, #shuffle, #radio {
