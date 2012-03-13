@@ -21,6 +21,7 @@ View.SearchQuery = Backbone.View.extend({
   }
 })
 
+// TODO dry these three
 View.SearchQueryTrack = Backbone.View.extend({
   template: jade.compile($('#search-query-track-template').text()),
   
@@ -98,6 +99,27 @@ View.SearchQueryArtist = Backbone.View.extend({
     return this
   }
 })
+
+/*
+View.SearchTrack = Backbone.View.extend({
+  template: jade.compile($('#search-track-template').text()),
+  
+  initialize: function(options) {
+    this.artist = options.artist
+    this.track = options.track
+    
+    this.model = new Model.Search({ artist: options.artist, track: options.track, method: 'track.getSimilar', limit: 150 })
+  },
+  
+  render: function() {
+    this.$el.html(this.template({
+      artist : this.artist,
+      track  : this.track
+    }))
+    return this
+  }
+})
+*/
 
 View.SearchTrack = Backbone.View.extend({
   template: jade.compile($('#search-track-template').text()),
