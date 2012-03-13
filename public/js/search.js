@@ -47,6 +47,58 @@ View.SearchQueryTrack = Backbone.View.extend({
   }
 })
 
+View.SearchQueryAlbum = Backbone.View.extend({
+  template: jade.compile($('#search-query-album-template').text()),
+  
+  innerEl: {
+    track : '#search-albums ul'
+  },
+  
+  events: {
+    'click .load-more a': 'loadMore'
+  },
+  
+  loadMore: function() {
+    this.model.loadMore()
+  },
+  
+  initialize: function(options) {
+    this.query = options.query
+    this.model = new Model.Search({ album: options.query, method: 'album.search', limit: 30, loadMore: true })
+  },
+  
+  render: function() {
+    this.$el.html(this.template({ query: this.query }))
+    return this
+  }
+})
+
+View.SearchQueryArtist = Backbone.View.extend({
+  template: jade.compile($('#search-query-artist-template').text()),
+  
+  innerEl: {
+    track : '#search-artists ul'
+  },
+  
+  events: {
+    'click .load-more a': 'loadMore'
+  },
+  
+  loadMore: function() {
+    this.model.loadMore()
+  },
+  
+  initialize: function(options) {
+    this.query = options.query
+    this.model = new Model.Search({ artist: options.query, method: 'artist.search', limit: 30, loadMore: true })
+  },
+  
+  render: function() {
+    this.$el.html(this.template({ query: this.query }))
+    return this
+  }
+})
+
 View.SearchTrack = Backbone.View.extend({
   template: jade.compile($('#search-track-template').text()),
   
@@ -132,18 +184,23 @@ Model.Search = Backbone.Model.extend({
     // TODO check if view is visible before continuing
     var results
     
+    if (data.results) {
+      this.resultsMeta = {
+        start   : data.results['opensearch:startIndex'],
+        perPage : data.results['opensearch:itemsPerPage'],
+        total   : data.results['opensearch:totalResults']
+      }
+    }
+    
     switch (this.get('method')) {
       case 'artist.search':
         results = data.results.artistmatches && data.results.artistmatches.artist
-        this.updateLoadMore(data.results)
         break
       case 'album.search':
         results = data.results.albummatches && data.results.albummatches.album
-        this.updateLoadMore(data.results)
         break
       case 'track.search':
         results = data.results.trackmatches && data.results.trackmatches.track
-        this.updateLoadMore(data.results)
         break
       case 'track.getSimilar':
         results = data.similartracks && data.similartracks.track
@@ -165,7 +222,9 @@ Model.Search = Backbone.Model.extend({
       if (!this.view.$innerEl().length) {
         this.view.render()
       }
-
+      
+      this.updateLoadMore(results)
+      
       if (this.page == 1 && this.get('limit') && (this.type == 'artist' || this.type == 'album')) {
         this.results = _.first(this.results, this.get('limit'))
       }
@@ -179,9 +238,13 @@ Model.Search = Backbone.Model.extend({
     }
   },
   
-  updateLoadMore: function(results) {
+  updateLoadMore: function(results) {    
+    if (!this.resultsMeta || !this.resultsMeta.start || !this.resultsMeta.perPage || !this.resultsMeta.total) {
+      return
+    }
     this.view.$el.find('.load-more a').button('reset')
-    if (parseInt(results['opensearch:startIndex']) + parseInt(results['opensearch:itemsPerPage']) > parseInt(results['opensearch:totalResults'])) {
+    
+    if (parseInt(this.resultsMeta.start) + parseInt(this.resultsMeta.perPage) > parseInt(this.resultsMeta.total)) {
       this.view.$el.find('.load-more').remove()
     } else {
       this.page++

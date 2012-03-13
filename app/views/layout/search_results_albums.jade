@@ -11,7 +11,12 @@
   br
   
   ul.unstyled
+  .clear
   
+  - if (loadMore)
+    .load-more
+      a.btn.btn-primary('data-loading-text'= 'Loading...') Load more
+
 - else
   h3 #{displayType}
   p Loading...
