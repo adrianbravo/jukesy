@@ -1,5 +1,6 @@
 #search
-  h2 #{track} by #{artist}
+  h2 #{track} by 
+    a(href= '/artist/#{encodeURIComponent(artist)}') #{artist}
   
   #search-tracks.tracks
   .clear

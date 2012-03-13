@@ -1,5 +1,5 @@
-a.image(href= '/artist/' + encodeURIComponent(artist.get('name')))
+a.image(href= urlArtist(artist.get('name')))
   img(src= artist.get('image'))
 .info
   .name
-    a(href= '/artist/' + encodeURIComponent(artist.get('name')))= artist.get('name')
+    a(href= urlArtist(artist.get('name')))= artist.get('name')

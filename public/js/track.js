@@ -4,7 +4,7 @@ Model.Track = Backbone.Model.extend({
     _.bindAll(this, 'setVideoIds')
     this.view = new View.Track({ model: this })
   },
-    
+      
   play: function() {
     var self = this
 

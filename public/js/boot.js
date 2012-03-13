@@ -58,3 +58,16 @@ function cookieParser() {
   }
   window.Cookies = Cookies
 }
+
+function urlTrack(artist, track) {
+  return '/artist/' + encodeURIComponent(artist) + '/track/' + encodeURIComponent(track)
+}
+
+function urlAlbum(artist, album) {
+  return '/artist/' + encodeURIComponent(artist) + '/album/' + encodeURIComponent(album)
+}
+
+function urlArtist(artist) {
+  return '/artist/' + encodeURIComponent(artist)
+}
+
