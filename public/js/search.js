@@ -10,9 +10,9 @@ View.SearchQuery = Backbone.View.extend({
   initialize: function(options) {
     this.query = options.query
     
-    this.artistModel = new Model.Search({ artist: options.query, method: 'artist.search', limit: 3, showMore: true })
-    this.albumModel = new Model.Search({ album: options.query, method: 'album.search', limit: 6, showMore: true })
-    this.trackModel = new Model.Search({ track: options.query, method: 'track.search', limit: 15, showMore: true })
+    this.artistModel = new Model.Search({ artist: options.query, method: 'artist.search', limit: 3, showMore: ('/search/' + options.query + '/artist') })
+    this.albumModel = new Model.Search({ album: options.query, method: 'album.search', limit: 6, showMore: ('/search/' + options.query + '/album') })
+    this.trackModel = new Model.Search({ track: options.query, method: 'track.search', limit: 15, showMore: ('/search/' + options.query + '/track') })
   },
   
   render: function() {
@@ -150,9 +150,9 @@ View.SearchArtist = Backbone.View.extend({
   initialize: function(options) {
     this.artist = options.artist
     
-    this.similarArtist = new Model.Search({ artist: options.artist, method: 'artist.getSimilar', limit: 3, showMore: true })
-    this.topAlbum = new Model.Search({ artist: options.artist, method: 'artist.getTopAlbums', limit: 6, showMore: true })
-    this.topTrack = new Model.Search({ artist: options.artist, method: 'artist.getTopTracks', limit: 15, showMore: true })
+    this.similarArtist = new Model.Search({ artist: options.artist, method: 'artist.getSimilar', limit: 3, showMore: urlArtist(options.artist) + '/similar' })
+    this.topAlbum = new Model.Search({ artist: options.artist, method: 'artist.getTopAlbums', limit: 6, showMore: urlArtist(options.artist) + '/top-albums' })
+    this.topTrack = new Model.Search({ artist: options.artist, method: 'artist.getTopTracks', limit: 15, showMore: urlArtist(options.artist) + '/top-tracks' })
   },
   
   render: function() {
