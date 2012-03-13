@@ -1,12 +1,6 @@
 View.SearchQuery = Backbone.View.extend({
   template: jade.compile($('#search-query-template').text()),
-  
-  innerEl: {
-    artist : '#search-artists ul',
-    album  : '#search-albums ul',
-    track  : '#search-tracks tbody',
-  },
-  
+    
   initialize: function(options) {
     this.query = options.query
     
@@ -24,11 +18,7 @@ View.SearchQuery = Backbone.View.extend({
 // TODO dry these three
 View.SearchQueryTrack = Backbone.View.extend({
   template: jade.compile($('#search-query-track-template').text()),
-  
-  innerEl: {
-    track : '#search-tracks tbody'
-  },
-  
+    
   events: {
     'click .load-more a': 'loadMore'
   },
@@ -50,11 +40,7 @@ View.SearchQueryTrack = Backbone.View.extend({
 
 View.SearchQueryAlbum = Backbone.View.extend({
   template: jade.compile($('#search-query-album-template').text()),
-  
-  innerEl: {
-    track : '#search-albums ul'
-  },
-  
+    
   events: {
     'click .load-more a': 'loadMore'
   },
@@ -76,10 +62,6 @@ View.SearchQueryAlbum = Backbone.View.extend({
 
 View.SearchQueryArtist = Backbone.View.extend({
   template: jade.compile($('#search-query-artist-template').text()),
-  
-  innerEl: {
-    track : '#search-artists ul'
-  },
   
   events: {
     'click .load-more a': 'loadMore'
@@ -140,13 +122,7 @@ View.SearchAlbum = Backbone.View.extend({
 
 View.SearchArtist = Backbone.View.extend({
   template: jade.compile($('#search-artist-template').text()),
-  
-  innerEl: {
-    artist : '#search-artists ul',
-    album  : '#search-albums ul',
-    track  : '#search-tracks tbody',
-  },
-  
+    
   initialize: function(options) {
     this.artist = options.artist
     
