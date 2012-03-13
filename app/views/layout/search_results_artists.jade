@@ -1,0 +1,17 @@
+- if (!artists)
+  h3 #{displayType}
+  p Found nothing
+
+- else if (artists.length)
+
+  - if (showMore)
+    a.btn.btn-primary.show-more.pull-right(href= '/search/#{query}/#{type}') Show more &raquo;
+  h3 #{displayType}
+  .clear
+  br
+  
+  ul.unstyled
+
+- else
+  h3 #{displayType}
+  p Loading...

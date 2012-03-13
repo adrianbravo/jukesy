@@ -7,9 +7,10 @@ AppRouter = Backbone.Router.extend({
     'now-playing'         : 'nowPlaying',
     'user/:username'      : 'userView',
     'user/:username/edit' : 'userEdit',
-    //'artist/:artist'              : 'searchArtist',
-    //'artist/:artist/album/:album' : 'searchAlbum',
+    //'artist/*artist'              : 'searchArtist',
+    //'artist/*artist/album/*album' : 'searchAlbum',
     'artist/*artist/track/*track' : 'searchTrack',
+    'search/*query/track'         : 'searchQueryTrack',
     'search/*query'               : 'searchQuery',
     '*derp'               : '404'
   },
@@ -79,13 +80,16 @@ AppRouter = Backbone.Router.extend({
   */
   
   searchTrack: function(artist, track) {
-    console.log(artist + ', ' + track)
     MainView.render(new View.SearchTrack({ artist: artist, track: track }))
   },
   
   searchQuery: function(query) {
     MainView.render(new View.SearchQuery({ query: query }))
   },  
+  
+  searchQueryTrack: function(query) {
+    MainView.render(new View.SearchQueryTrack({ query: query }))
+  },
   
   error: function(model, response) {
     MainView.render((response && response.status == 404) ? '404' : '500')

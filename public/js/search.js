@@ -10,9 +10,35 @@ View.SearchQuery = Backbone.View.extend({
   initialize: function(options) {
     this.query = options.query
     
-    this.artistModel = new Model.Search({ artist: options.query, method: 'artist.search', max: 3 })
-    this.albumModel = new Model.Search({ album: options.query, method: 'album.search', max: 6 })
-    this.trackModel = new Model.Search({ track: options.query, method: 'track.search' })
+    this.artistModel = new Model.Search({ artist: options.query, method: 'artist.search', limit: 3, showMore: true })
+    this.albumModel = new Model.Search({ album: options.query, method: 'album.search', limit: 6, showMore: true })
+    this.trackModel = new Model.Search({ track: options.query, method: 'track.search', limit: 15, showMore: true })
+  },
+  
+  render: function() {
+    this.$el.html(this.template({ query: this.query }))
+    return this
+  }
+})
+
+View.SearchQueryTrack = Backbone.View.extend({
+  template: jade.compile($('#search-query-track-template').text()),
+  
+  innerEl: {
+    track : '#search-tracks tbody'
+  },
+  
+  events: {
+    'click .load-more a': 'loadMore'
+  },
+  
+  loadMore: function() {
+    this.model.loadMore()
+  },
+  
+  initialize: function(options) {
+    this.query = options.query
+    this.model = new Model.Search({ track: options.query, method: 'track.search', limit: 30, loadMore: true })
   },
   
   render: function() {
@@ -28,7 +54,7 @@ View.SearchTrack = Backbone.View.extend({
     this.artist = options.artist
     this.track = options.track
     
-    this.model = new Model.Search({ artist: options.artist, track: options.track, method: 'track.getSimilar' })
+    this.model = new Model.Search({ artist: options.artist, track: options.track, method: 'track.getSimilar', limit: 150 })
   },
   
   render: function() {
@@ -44,7 +70,7 @@ Model.Search = Backbone.Model.extend({
   key: '75c8c3065db32d805a292ec1af5631a3',
 
   initialize: function() {
-    _.bindAll(this, 'queryCallback')
+    _.bindAll(this, 'queryCallback', 'loadMore')
     this.results = []
     this.page = 1
     this.query()
@@ -56,6 +82,7 @@ Model.Search = Backbone.Model.extend({
           method      : this.get('method'),
           page        : this.page,
           autocorrect : 1,
+          limit       : this.get('limit') || 30,
           format      : 'json'
         }
       , self = this
@@ -65,44 +92,58 @@ Model.Search = Backbone.Model.extend({
         params.artist = this.get('artist')
         this.type = 'artist'
         this.parseType = 'artist'
+        this.displayType = 'Artists'
         break
       case 'album.search':
         params.album = this.get('album')
         this.type = 'album'
         this.parseType = 'album'
+        this.displayType = 'Albums'
         break
       case 'track.search':
         params.track = this.get('track')
         this.type = 'track'
         this.parseType = 'track'
+        this.displayType = 'Tracks'
         break
       case 'track.getSimilar':
         params.artist = this.get('artist')
         params.track = this.get('track')
         this.type = 'track'
         this.parseType = 'similarTrack'
+        this.displayType = 'Similar Tracks'
         break
     }
-    this.view = new View[_.capitalize(this.type) + 's' + 'SearchResults']({ model: this })
+    
+    if (!this.view) {
+      this.view = new View['SearchResults' + _.capitalize(this.type) + 's']({ model: this })
+    }
     
     _.defer(function() {
-      self.view.render()
+      if (!self.view.$innerEl().length) {
+        self.view.render()
+      }
+      
       $.getJSON('http://ws.audioscrobbler.com/2.0/?' + $.param(params), self.queryCallback)
     })
   },
   
   queryCallback: function(data) {
     // TODO check if view is visible before continuing
-    var results, type
+    var results
+    
     switch (this.get('method')) {
       case 'artist.search':
         results = data.results.artistmatches && data.results.artistmatches.artist
+        this.updateLoadMore(data.results)
         break
       case 'album.search':
         results = data.results.albummatches && data.results.albummatches.album
+        this.updateLoadMore(data.results)
         break
       case 'track.search':
         results = data.results.trackmatches && data.results.trackmatches.track
+        this.updateLoadMore(data.results)
         break
       case 'track.getSimilar':
         results = data.similartracks && data.similartracks.track
@@ -113,9 +154,11 @@ Model.Search = Backbone.Model.extend({
   
   appendResults: function(results) {
     var self = this
+    
+    this.loading = false
     if (_.isArray(results)) {
       _.forEach(results, function(result) {
-        var model = new Model[_.capitalize(self.type) + 'SearchResult'](self.resultToJSON(result))
+        var model = new Model['SearchResult' + _.capitalize(self.type)](self.resultToJSON(result))
         self.results.push(model)
       })
       
@@ -123,18 +166,25 @@ Model.Search = Backbone.Model.extend({
         this.view.render()
       }
 
-      if (this.page == 1 && this.get('max') && (this.type == 'artist' || this.type == 'album')) {
-        this.results = _.first(this.results, this.get('max'))
+      if (this.page == 1 && this.get('limit') && (this.type == 'artist' || this.type == 'album')) {
+        this.results = _.first(this.results, this.get('limit'))
       }
       
       _.forEach(this.results, function(result) {
         self.view.$innerEl().append(result.view.$el)
       })
-      
-      //this.page++
     } else {
       this.resultsNotFound()
       this.view.render()
+    }
+  },
+  
+  updateLoadMore: function(results) {
+    this.view.$el.find('.load-more a').button('reset')
+    if (parseInt(results['opensearch:startIndex']) + parseInt(results['opensearch:itemsPerPage']) > parseInt(results['opensearch:totalResults'])) {
+      this.view.$el.find('.load-more').remove()
+    } else {
+      this.page++
     }
   },
   
@@ -193,19 +243,16 @@ Model.Search = Backbone.Model.extend({
       src = result.image
     }
     return src
-  }
+  },
   
-  /*
-
-  loadMore: function(type) {
-    if (this[type].loading) {
+  loadMore: function() {
+    if (this.loading) {
       return
     }
-    this[type].loading = true
-    this.query([ 'track' ])
-  },
-
-  */
+    this.loading = true
+    this.view.$el.find('.load-more a').button('loading').addClass('disabled')
+    this.query()
+  }
   
 })
 
@@ -288,36 +335,45 @@ View.SearchResults = {
   initialize: function() {
     this.render()
   },
+  
   $innerEl: function() {
     return $(this.innerElSelector)
   },
+  
   render: function() {
-    var json = {}
+    var json = {
+      type: this.model.type,
+      query: this.model.get(this.model.type),
+      displayType: this.model.displayType,
+      showMore: this.model.get('showMore'),
+      loadMore: this.model.get('loadMore')
+    }
     json[this.type] = this.model.results
-    $(this.elSelector).html(this.template(json))
+    this.$el = $(this.elSelector)
+    this.$el.html(this.template(json))
     return this
   }
 }
 
-View.ArtistsSearchResults = Backbone.View.extend(_.extend({
-  template: jade.compile($('#artists-search-results-template').text()),
-  innerElSelector: '#search #search-artists ul',
-  elSelector: '#search #search-artists',
-  type: 'artists'
+View.SearchResultsTracks = Backbone.View.extend(_.extend({
+  template: jade.compile($('#search-results-tracks-template').text()),
+  innerElSelector: '#search #search-tracks tbody',
+  elSelector: '#search #search-tracks',
+  type: 'tracks'
 }, View.SearchResults))
 
-View.AlbumsSearchResults = Backbone.View.extend(_.extend({
-  template: jade.compile($('#albums-search-results-template').text()),
+View.SearchResultsAlbums = Backbone.View.extend(_.extend({
+  template: jade.compile($('#search-results-albums-template').text()),
   innerElSelector: '#search #search-albums ul',
   elSelector: '#search #search-albums',
   type: 'albums'
 }, View.SearchResults))
 
-View.TracksSearchResults = Backbone.View.extend(_.extend({
-  template: jade.compile($('#tracks-search-results-template').text()),
-  innerElSelector: '#search #search-tracks tbody',
-  elSelector: '#search #search-tracks',
-  type: 'tracks'
+View.SearchResultsArtists = Backbone.View.extend(_.extend({
+  template: jade.compile($('#search-results-artists-template').text()),
+  innerElSelector: '#search #search-artists ul',
+  elSelector: '#search #search-artists',
+  type: 'artists'
 }, View.SearchResults))
 
 View.SearchResult = {  
@@ -332,40 +388,38 @@ View.SearchResult = {
   }  
 }
 
-View.AlbumSearchResult = Backbone.View.extend(_.extend({
-  tagName: 'li',
-  template: jade.compile($('#album-search-result-template').text()),
-  type: 'album',
-  //className :'span3'
-}, View.SearchResult))
-
-View.ArtistSearchResult = Backbone.View.extend(_.extend({
-  tagName: 'li',
-  template: jade.compile($('#artist-search-result-template').text()),
-  type: 'artist',
-  //className :'span3'
-}, View.SearchResult))
-
-View.TrackSearchResult = Backbone.View.extend(_.extend({
+View.SearchResultTrack = Backbone.View.extend(_.extend({
   tagName: 'tr',
-  template: jade.compile($('#track-search-result-template').text()),
+  template: jade.compile($('#search-result-track-template').text()),
   type: 'track'
 }, View.SearchResult))
 
-Model.AlbumSearchResult = Backbone.Model.extend({
+View.SearchResultAlbum = Backbone.View.extend(_.extend({
+  tagName: 'li',
+  template: jade.compile($('#search-result-album-template').text()),
+  type: 'album'
+}, View.SearchResult))
+
+View.SearchResultArtist = Backbone.View.extend(_.extend({
+  tagName: 'li',
+  template: jade.compile($('#search-result-artist-template').text()),
+  type: 'artist'
+}, View.SearchResult))
+
+Model.SearchResultTrack = Backbone.Model.extend({
   initialize: function() {
-    this.view = new View.AlbumSearchResult({ model: this })
+    this.view = new View.SearchResultTrack({ model: this })
   }
 })
 
-Model.ArtistSearchResult = Backbone.Model.extend({
+Model.SearchResultAlbum = Backbone.Model.extend({
   initialize: function() {
-    this.view = new View.ArtistSearchResult({ model: this })
+    this.view = new View.SearchResultAlbum({ model: this })
   }
 })
 
-Model.TrackSearchResult = Backbone.Model.extend({
+Model.SearchResultArtist = Backbone.Model.extend({
   initialize: function() {
-    this.view = new View.TrackSearchResult({ model: this })
+    this.view = new View.SearchResultArtist({ model: this })
   }
 })

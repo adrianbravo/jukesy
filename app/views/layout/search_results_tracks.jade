@@ -1,0 +1,27 @@
+- if (!tracks)
+  h3 #{displayType}
+  p Found nothing
+
+- else if (tracks.length)
+  
+  - if (showMore)
+    a.btn.btn-primary.show-more.pull-right(href= '/search/#{query}/#{type}') Show more &raquo;
+  h3 #{displayType}
+  .clear
+      
+  table.table.table-striped
+    thead
+      tr
+        th.dropdown
+        th.play
+        th Track
+        th Artist
+    tbody
+    
+  - if (loadMore)
+    .load-more
+      a.btn.btn-primary('data-loading-text'= 'Loading...') Load more
+
+- else
+  h3 #{displayType}
+  p Loading...
