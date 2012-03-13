@@ -1,139 +1,75 @@
-View.SearchQuery = Backbone.View.extend({
+View.BaseSearch = Backbone.View.extend({
+  events: {
+    'click .load-more a': 'loadMore'
+  },
+  
+  loadMore: function() {
+    this.model.loadMore()
+  },
+  
+  render: function() {
+    this.$el.html(this.template(this.options))
+    return this
+  }  
+})
+
+View.SearchQuery = View.BaseSearch.extend({
   template: jade.compile($('#search-query-template').text()),
-    
   initialize: function(options) {
-    this.query = options.query
-    
-    this.artistModel = new Model.Search({ artist: options.query, method: 'artist.search', limit: 3, showMore: ('/search/' + options.query + '/artist') })
-    this.albumModel = new Model.Search({ album: options.query, method: 'album.search', limit: 6, showMore: ('/search/' + options.query + '/album') })
-    this.trackModel = new Model.Search({ track: options.query, method: 'track.search', limit: 15, showMore: ('/search/' + options.query + '/track') })
-  },
-  
-  render: function() {
-    this.$el.html(this.template({ query: this.query }))
-    return this
+    this.options = options
+    new Model.Search({ artist: options.query, method: 'artist.search', limit: 3, showMore: ('/search/' + options.query + '/artist') })
+    new Model.Search({ album: options.query, method: 'album.search', limit: 6, showMore: ('/search/' + options.query + '/album') })
+    new Model.Search({ track: options.query, method: 'track.search', limit: 15, showMore: ('/search/' + options.query + '/track') })
   }
 })
 
-// TODO dry these three
-View.SearchQueryTrack = Backbone.View.extend({
+View.SearchQueryTrack = View.BaseSearch.extend({
   template: jade.compile($('#search-query-track-template').text()),
-    
-  events: {
-    'click .load-more a': 'loadMore'
-  },
-  
-  loadMore: function() {
-    this.model.loadMore()
-  },
-  
   initialize: function(options) {
-    this.query = options.query
+    this.options = options
     this.model = new Model.Search({ track: options.query, method: 'track.search', limit: 30, loadMore: true })
-  },
-  
-  render: function() {
-    this.$el.html(this.template({ query: this.query }))
-    return this
   }
 })
 
-View.SearchQueryAlbum = Backbone.View.extend({
+View.SearchQueryAlbum = View.BaseSearch.extend({
   template: jade.compile($('#search-query-album-template').text()),
-    
-  events: {
-    'click .load-more a': 'loadMore'
-  },
-  
-  loadMore: function() {
-    this.model.loadMore()
-  },
-  
   initialize: function(options) {
-    this.query = options.query
+    this.options = options
     this.model = new Model.Search({ album: options.query, method: 'album.search', limit: 30, loadMore: true })
-  },
-  
-  render: function() {
-    this.$el.html(this.template({ query: this.query }))
-    return this
   }
 })
 
-View.SearchQueryArtist = Backbone.View.extend({
+View.SearchQueryArtist = View.BaseSearch.extend({
   template: jade.compile($('#search-query-artist-template').text()),
-  
-  events: {
-    'click .load-more a': 'loadMore'
-  },
-  
-  loadMore: function() {
-    this.model.loadMore()
-  },
-  
   initialize: function(options) {
-    this.query = options.query
+    this.options = options
     this.model = new Model.Search({ artist: options.query, method: 'artist.search', limit: 30, loadMore: true })
-  },
-  
-  render: function() {
-    this.$el.html(this.template({ query: this.query }))
-    return this
   }
 })
 
-View.SearchTrack = Backbone.View.extend({
+View.SearchTrack = View.BaseSearch.extend({
   template: jade.compile($('#search-track-template').text()),
-  
   initialize: function(options) {
-    this.artist = options.artist
-    this.track = options.track
-    
-    this.model = new Model.Search({ artist: options.artist, track: options.track, method: 'track.getSimilar', limit: 150 })
-  },
-  
-  render: function() {
-    this.$el.html(this.template({
-      artist : this.artist,
-      track  : this.track
-    }))
-    return this
+    this.options = options
+    new Model.Search({ artist: options.artist, track: options.track, method: 'track.getSimilar', limit: 150 })
   }
 })
 
-View.SearchAlbum = Backbone.View.extend({
+View.SearchAlbum = View.BaseSearch.extend({
   template: jade.compile($('#search-album-template').text()),
-  
   initialize: function(options) {
-    this.artist = options.artist
-    this.album = options.album
-    
+    this.options = options    
     this.model = new Model.Search({ artist: options.artist, album: options.album, method: 'album.getInfo' })
-  },
-  
-  render: function() {
-    this.$el.html(this.template({
-      artist : this.artist,
-      album  : this.album
-    }))
-    return this
   }
 })
 
-View.SearchArtist = Backbone.View.extend({
+View.SearchArtist = View.BaseSearch.extend({
   template: jade.compile($('#search-artist-template').text()),
-    
   initialize: function(options) {
-    this.artist = options.artist
-    
-    this.similarArtist = new Model.Search({ artist: options.artist, method: 'artist.getSimilar', limit: 3, showMore: urlArtist(options.artist) + '/similar' })
-    this.topAlbum = new Model.Search({ artist: options.artist, method: 'artist.getTopAlbums', limit: 6, showMore: urlArtist(options.artist) + '/top-albums' })
-    this.topTrack = new Model.Search({ artist: options.artist, method: 'artist.getTopTracks', limit: 15, showMore: urlArtist(options.artist) + '/top-tracks' })
-  },
-  
-  render: function() {
-    this.$el.html(this.template({ artist: this.artist }))
-    return this
+    this.options = options
+    new Model.Search({ artist: options.artist, method: 'artist.getSimilar', limit: 3, showMore: urlArtist(options.artist) + '/similar' })
+    new Model.Search({ artist: options.artist, method: 'artist.getTopAlbums', limit: 6, showMore: urlArtist(options.artist) + '/top-albums' })
+    new Model.Search({ artist: options.artist, method: 'artist.getTopTracks', limit: 15, showMore: urlArtist(options.artist) + '/top-tracks' })
   }
 })
 
