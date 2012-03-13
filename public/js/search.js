@@ -100,7 +100,6 @@ View.SearchQueryArtist = Backbone.View.extend({
   }
 })
 
-/*
 View.SearchTrack = Backbone.View.extend({
   template: jade.compile($('#search-track-template').text()),
   
@@ -119,23 +118,45 @@ View.SearchTrack = Backbone.View.extend({
     return this
   }
 })
-*/
 
-View.SearchTrack = Backbone.View.extend({
-  template: jade.compile($('#search-track-template').text()),
+View.SearchAlbum = Backbone.View.extend({
+  template: jade.compile($('#search-album-template').text()),
   
   initialize: function(options) {
     this.artist = options.artist
-    this.track = options.track
+    this.album = options.album
     
-    this.model = new Model.Search({ artist: options.artist, track: options.track, method: 'track.getSimilar', limit: 150 })
+    this.model = new Model.Search({ artist: options.artist, album: options.album, method: 'album.getInfo' })
   },
   
   render: function() {
     this.$el.html(this.template({
       artist : this.artist,
-      track  : this.track
+      album  : this.album
     }))
+    return this
+  }
+})
+
+View.SearchArtist = Backbone.View.extend({
+  template: jade.compile($('#search-artist-template').text()),
+  
+  innerEl: {
+    artist : '#search-artists ul',
+    album  : '#search-albums ul',
+    track  : '#search-tracks tbody',
+  },
+  
+  initialize: function(options) {
+    this.artist = options.artist
+    
+    this.similarArtist = new Model.Search({ artist: options.artist, method: 'artist.getSimilar', limit: 3, showMore: true })
+    this.topAlbum = new Model.Search({ artist: options.artist, method: 'artist.getTopAlbums', limit: 6, showMore: true })
+    this.topTrack = new Model.Search({ artist: options.artist, method: 'artist.getTopTracks', limit: 15, showMore: true })
+  },
+  
+  render: function() {
+    this.$el.html(this.template({ artist: this.artist }))
     return this
   }
 })
@@ -162,11 +183,36 @@ Model.Search = Backbone.Model.extend({
       , self = this
 
     switch (this.get('method')) {
+      case 'artist.getSimilar':
+        params.artist = this.get('artist'),
+        this.type = 'artist'
+        this.parseType = 'artist'
+        this.displayType = 'Similar Artists'
+        break
+      case 'artist.getTopAlbums':
+        params.artist = this.get('artist'),
+        this.type = 'album'
+        this.parseType = 'deepAlbum'
+        this.displayType = 'Top Albums'
+        break
+      case 'artist.getTopTracks':
+        params.artist = this.get('artist'),
+        this.type = 'track'
+        this.parseType = 'deepTrack'
+        this.displayType = 'Top Tracks'
+        break
       case 'artist.search':
         params.artist = this.get('artist')
         this.type = 'artist'
         this.parseType = 'artist'
         this.displayType = 'Artists'
+        break
+      case 'album.getInfo':
+        params.artist = this.get('artist')
+        params.album = this.get('album')
+        this.type = 'track'
+        this.parseType = 'deepTrack'
+        this.displayType = 'Track List'
         break
       case 'album.search':
         params.album = this.get('album')
@@ -174,18 +220,18 @@ Model.Search = Backbone.Model.extend({
         this.parseType = 'album'
         this.displayType = 'Albums'
         break
+      case 'track.getSimilar':
+        params.artist = this.get('artist')
+        params.track = this.get('track')
+        this.type = 'track'
+        this.parseType = 'deepTrack'
+        this.displayType = 'Similar Tracks'
+        break
       case 'track.search':
         params.track = this.get('track')
         this.type = 'track'
         this.parseType = 'track'
         this.displayType = 'Tracks'
-        break
-      case 'track.getSimilar':
-        params.artist = this.get('artist')
-        params.track = this.get('track')
-        this.type = 'track'
-        this.parseType = 'similarTrack'
-        this.displayType = 'Similar Tracks'
         break
     }
     
@@ -215,17 +261,29 @@ Model.Search = Backbone.Model.extend({
     }
     
     switch (this.get('method')) {
+      case 'artist.getSimilar':
+        results = data.similarartists && data.similarartists.artist
+        break
+      case 'artist.getTopAlbums':
+        results = data.topalbums && data.topalbums.album
+        break
+      case 'artist.getTopTracks':
+        results = data.toptracks && data.toptracks.track
+        break
       case 'artist.search':
         results = data.results.artistmatches && data.results.artistmatches.artist
+        break
+      case 'album.getInfo':
+        results = data.album && data.album.tracks && data.album.tracks.track
         break
       case 'album.search':
         results = data.results.albummatches && data.results.albummatches.album
         break
-      case 'track.search':
-        results = data.results.trackmatches && data.results.trackmatches.track
-        break
       case 'track.getSimilar':
         results = data.similartracks && data.similartracks.track
+        break
+      case 'track.search':
+        results = data.results.trackmatches && data.results.trackmatches.track
         break
     }
     this.appendResults(results)
@@ -280,23 +338,27 @@ Model.Search = Backbone.Model.extend({
   resultToJSON: function(result) {
     var self = this
     switch (this.parseType) {
-      case 'similarTrack':
+      case 'deepTrack':
         return new Model.Track({
           artist    : result.artist.name,
           name      : result.name,
-          image     : self.resultImage(result)
         })
       case 'track':
         return new Model.Track({
           artist    : result.artist,
           name      : result.name,
-          image     : self.resultImage(result)
         })
       case 'artist':
         return new Model.Artist({
           name      : result.name,
-          image     : self.resultImage(result),
-          listeners : result.listeners
+          image     : self.resultImage(result)
+        })
+      case 'deepAlbum':
+        return new Model.Album({
+          artist  : result.artist.name,
+          name    : result.name,
+          image   : self.resultImage(result),
+          mbid    : result.mbid
         })
       case 'album':
         return new Model.Album({
