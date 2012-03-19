@@ -4,18 +4,27 @@ td.dd
       i.icon-chevron-down
     ul.dropdown-menu
       li
-        a Play
+        a.playNow Play
       li
-        a Queue Next
+        a.queueNext Queue Next
       li
-        a Queue Last
+        a.queueLast Queue Last
+      
       li.divider
+      
       li
-        a Add to Favorites
+        a.addToPlaylist Add To Playlist...
+      li
+        a.addToFavorites Add To Favorites
+      li
+        a.ban Ban
+
 td.play
-  a
+  a.playNow
     .icon-play.icon-white
+
 td.name
   a(href= urlTrack(track.get('artist'), track.get('name')))= track.get('name')
+
 td.artist
   a(href= urlArtist(track.get('artist')))= track.get('artist')

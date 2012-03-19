@@ -99,26 +99,6 @@ View.SearchArtistSimilar = View.BaseSearch.extend({
 })
 
 /*
-  //
-  // View behavior for search results that are tracks.
-  //
-  View.SearchTrack = View.SearchResult.extend(_.extend({
-    tagName: 'tr',
-    className: 'track',
-    template: Handlebars.compile($('#search-track-template').html()),
-
-    events: {
-      'click'       : 'toggleSelect',
-      'dblclick'    : 'play',
-      'contextmenu' : 'showContextmenu'
-    },
-
-    initialize: function() {
-      _.bindAll(this, 'play', 'queueTrack', 'queueNext', 'queueLast')
-      this.model.view = this
-      this.render()
-    },
-    
     play: function() {
       this.queueTrack('play')
     },
@@ -149,28 +129,13 @@ View.SearchArtistSimilar = View.BaseSearch.extend({
 
         NowPlaying.add(tracks, { method: method })
     },
-    
-    showContextmenu: function(e) {
-      if (!$(this.el).hasClass('select')) {
-        this.toggleSelect(e)
-      }
-      
-      new Model.Contextmenu({
-        event: e,
-        actions: [
-          { action: 'Play', extra: 'dblclick', callback: this.play },
-          { action: 'Queue Next', callback: this.queueNext },
-          { action: 'Queue Last', callback: this.queueLast }
-        ]
-      })
-      return false
-    }
 
   }, Mixins.TrackSelection))
 */
 
 View.SearchResults = {  
   initialize: function() {
+    _.bindAll(this, 'render')
     this.render()
   },
   
@@ -179,17 +144,33 @@ View.SearchResults = {
   },
   
   render: function() {
-    var json = {
-      type: this.model.type,
-      query: this.model.get(this.model.type),
-      displayType: this.model.displayType,
-      showMore: this.model.get('showMore'),
-      loadMore: this.model.get('loadMore')
-    }
+    var self = this
+      , json = {
+          type: this.model.type,
+          query: this.model.get(this.model.type),
+          displayType: this.model.displayType,
+          showMore: this.model.get('showMore'),
+          loadMore: this.model.get('loadMore')
+        }
     json[this.type] = this.model.results
     this.$el = $(this.elSelector)
     this.$el.html(this.template(json))
+    
+    if (_.isArray(this.model.results) && this.$innerEl().length) {
+      _.forEach(this.model.results, function(result) {
+        self.$innerEl().append(result.view.$el)
+      })
+    }
+    this.renderLoadMore()
     return this
+  },
+  
+  renderLoadMore: function() {
+    if (this.model.loading) {
+      this.$el.find('.load-more a').button('loading').addClass('disabled')
+    } else {
+      this.$el.find('.load-more a').button('reset')
+    }
   }
 }
 
@@ -218,6 +199,7 @@ View.SearchResult = {
   initialize: function() {
     this.render()
   },
+  
   render: function() {
     var json = {}
     json[this.type] = this.model
@@ -229,7 +211,31 @@ View.SearchResult = {
 View.SearchResultTrack = Backbone.View.extend(_.extend({
   tagName: 'tr',
   template: jade.compile($('#search-result-track-template').text()),
-  type: 'track'
+  type: 'track',
+  
+  events: {
+    'click .playNow'   : 'playNow',
+    'click .queueNext' : 'queueNext',
+    'click .queueLast' : 'queueLast'
+  },
+  
+  initialize: function() {
+    _.bindAll(this, 'playNow', 'queueNext', 'queueLast')
+    this.render()
+  },
+  
+  playNow: function() {
+    console.log('Play Now')
+  },
+  
+  queueNext: function() {
+    console.log('Queue Next')
+  },
+  
+  queueLast: function() {
+    console.log('Queue Last')
+  },
+
 }, View.SearchResult))
 
 View.SearchResultAlbum = Backbone.View.extend(_.extend({
@@ -247,6 +253,10 @@ View.SearchResultArtist = Backbone.View.extend(_.extend({
 Model.SearchResultTrack = Backbone.Model.extend({
   initialize: function() {
     this.view = new View.SearchResultTrack({ model: this })
+  },
+    
+  queueTrack: function() {
+    console.log('Queue Track to NowPlaying')
   }
 })
 
