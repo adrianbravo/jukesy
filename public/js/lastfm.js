@@ -33,11 +33,9 @@ Model.LastFM = Backbone.Model.extend({
   },
   
   queryCallback: function(data) {
-    var results
-    
     this.loading = false
     this.paginationParser[this.paginationType || 'noPagination'].apply(this, [ data ])
-    this.appendResults(this.parseResults(data))
+    this.appendResults(this.pluckResults(data))
     this.trigger('queryCallback')
   },
   
@@ -50,8 +48,7 @@ Model.LastFM = Backbone.Model.extend({
     
     if (_.isArray(results)) {
       _.forEach(results, function(result) {
-        var model = new Model['SearchResult' + _.capitalize(self.type)](self.resultParser[self.resultType].apply(self, [ result ]))
-        self.results.push(model)
+        self.results.push(new Model['SearchResult' + _.capitalize(self.type)](self.resultParser[self.resultType].apply(self, [ result ])))
       })
       this.params.page++
     } else {
@@ -65,7 +62,7 @@ Model.LastFM = Backbone.Model.extend({
       this.type = 'artist'
       this.resultType = 'artist'
       this.displayType = 'Similar Artists'
-      this.parseResults = function(data) {
+      this.pluckResults = function(data) {
         return data.similarartists && data.similarartists.artist
       }
     },
@@ -75,7 +72,7 @@ Model.LastFM = Backbone.Model.extend({
       this.resultType = 'deepAlbum'
       this.paginationType = 'topalbums'
       this.displayType = 'Top Albums'
-      this.parseResults = function(data) {
+      this.pluckResults = function(data) {
         return data.topalbums && data.topalbums.album
       }
     },
@@ -85,7 +82,7 @@ Model.LastFM = Backbone.Model.extend({
       this.resultType = 'deepTrack'
       this.paginationType = 'toptracks'
       this.displayType = 'Top Tracks'
-      this.parseResults = function(data) {
+      this.pluckResults = function(data) {
         return data.toptracks && data.toptracks.track
       }
     },
@@ -95,7 +92,7 @@ Model.LastFM = Backbone.Model.extend({
       this.resultType = 'artist'
       this.paginationType = 'search'
       this.displayType = 'Artists'
-      this.parseResults = function(data) {
+      this.pluckResults = function(data) {
         return data.results.artistmatches && data.results.artistmatches.artist
       }
     },
@@ -105,7 +102,7 @@ Model.LastFM = Backbone.Model.extend({
       this.type = 'track'
       this.resultType = 'deepTrack'
       this.displayType = 'Track List'
-      this.parseResults = function(data) {
+      this.pluckResults = function(data) {
         return data.album && data.album.tracks && data.album.tracks.track
       }
     },
@@ -115,7 +112,7 @@ Model.LastFM = Backbone.Model.extend({
       this.resultType = 'album'
       this.paginationType = 'search'
       this.displayType = 'Albums'
-      this.parseResults = function(data) {
+      this.pluckResults = function(data) {
         return data.results.albummatches && data.results.albummatches.album
       }
     },
@@ -125,7 +122,7 @@ Model.LastFM = Backbone.Model.extend({
       this.type = 'track'
       this.resultType = 'deepTrack'
       this.displayType = 'Similar Tracks'
-      this.parseResults = function(data) {
+      this.pluckResults = function(data) {
         return data.similartracks && data.similartracks.track
       }
     },
@@ -135,7 +132,7 @@ Model.LastFM = Backbone.Model.extend({
       this.resultType = 'track'
       this.paginationType = 'search'
       this.displayType = 'Tracks'
-      this.parseResults = function(data) {
+      this.pluckResults = function(data) {
         return data.results.trackmatches && data.results.trackmatches.track
       }
     }
@@ -249,7 +246,6 @@ Model.LastFM = Backbone.Model.extend({
   updateLoadMore: function() {
     if (!this.pagination || (this.pagination.start + this.pagination.perPage > this.pagination.total)) {
       this.set('loadMore', false)
-      
       if (this.view) {
         this.view.$el.find('.load-more').remove()
       }
@@ -260,11 +256,9 @@ Model.LastFM = Backbone.Model.extend({
     if (!this.show) {
       return
     }
-    
     if (!this.view) {
       this.view = new View['SearchResults' + _.capitalize(this.type) + 's']({ model: this })
     }
-    
     // TODO prevent from rendering on query if view already rendered
     _.defer(this.view.render)
   }
