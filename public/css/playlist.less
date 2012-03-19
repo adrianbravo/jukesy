@@ -7,6 +7,7 @@
     text-align: center;
   }
 }
+
 .tracks {
   .artist {
     width: 300px;
@@ -44,7 +45,6 @@
 
   td.play {
     .no-select();
-    
     width: 22px;
     
     a {
@@ -61,41 +61,60 @@
       }
     }
   }
+}
 
-
+#now-playing {
   .error {
     td {
+      background: red;
       &.artist a, &.name a {
-        //color: #fff;
+        color: #fff;
       }
     }
     td.play {
       a {
-        display: none;
+        color: #fff;
+        &:hover {
+          background: #fff;
+          color: red;
+        }
+      }
+    }
+    td.dd {
+      .dropdown {
+        .dropdown-toggle {
+          color: #fff;
+        }
       }
     }
   }
   
   .playing {
     td {
-      //background: rgba(102, 204, 102, 0.7);
+      background: @blue;
       &.artist a, &.name a {
-        //color: #fff;
+        color: #fff;
       }
     }
     td.play {
       a {
-        //background: rgba(62, 164, 62, 1);
+        color: #fff;
         &:hover {
-          //background: rgba(32, 134, 32, 1);
+          background: #fff;
+          color: @blue;
         }
       }
     }
-    &:hover td {
-      //background: rgba(102, 204, 102, 1);
+    td.dd {
+      .dropdown {
+        .dropdown-toggle {
+          color: #fff;
+        }
+      }
     }
   }
 }
+
 .artists {
   ul {
     list-style: none;

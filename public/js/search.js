@@ -98,41 +98,6 @@ View.SearchArtistSimilar = View.BaseSearch.extend({
   }
 })
 
-/*
-    play: function() {
-      this.queueTrack('play')
-    },
-
-    queueNext: function() {
-      this.queueTrack('next')
-    },
-
-    queueLast: function() {
-      this.queueTrack('last')
-    },
-
-    // Adds selected tracks to NowPlaying collection.
-    queueTrack: function(method) {
-      $(this.el).addClass('selected')
-      
-      var tracks = _(Search.track.models).chain()
-        .map(function(track) {
-          if (!$(track.view.el).hasClass('selected')) {
-            return null
-          }
-          $(track.view.el).removeClass('selected')
-
-          var copyTrack = new Model.Track(track.toJSON())
-          copyTrack.playlist = NowPlaying
-          return copyTrack
-        }).compact().value()
-
-        NowPlaying.add(tracks, { method: method })
-    },
-
-  }, Mixins.TrackSelection))
-*/
-
 View.SearchResults = {  
   initialize: function() {
     _.bindAll(this, 'render')
@@ -225,15 +190,15 @@ View.SearchResultTrack = Backbone.View.extend(_.extend({
   },
   
   playNow: function() {
-    console.log('Play Now')
+    this.model.addTrack('play')
   },
   
   queueNext: function() {
-    console.log('Queue Next')
+    this.model.addTrack('next')
   },
   
   queueLast: function() {
-    console.log('Queue Last')
+    this.model.addTrack('last')
   },
 
 }, View.SearchResult))
@@ -255,8 +220,39 @@ Model.SearchResultTrack = Backbone.Model.extend({
     this.view = new View.SearchResultTrack({ model: this })
   },
     
-  queueTrack: function() {
-    console.log('Queue Track to NowPlaying')
+  addTrack: function(method) {    
+    var position
+      , clone = new Model.Track(this.toJSON())
+
+    // check for now playing track
+    /*
+        // Adds selected tracks to NowPlaying collection.
+        queueTrack: function(method) {
+          $(this.el).addClass('selected')
+          var tracks = _(Search.track.models).chain()
+            .map(function(track) {
+              if (!$(track.view.el).hasClass('selected')) {
+                return null
+              }
+              $(track.view.el).removeClass('selected')
+
+              var copyTrack = new Model.Track(track.toJSON())
+              copyTrack.playlist = NowPlaying
+              return copyTrack
+            }).compact().value()
+
+            NowPlaying.add(tracks, { method: method })
+        },
+    */
+    
+    if (method == 'play' || method == 'next') {
+      if (Video.track) {
+        position = _.indexOf(NowPlaying.tracks, Video.track) + 1
+      } else {
+        position = 0
+      }
+    }
+    NowPlaying.add(clone, position)
   }
 })
 

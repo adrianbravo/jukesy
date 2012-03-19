@@ -4,44 +4,29 @@ Model.Playlist = Backbone.Model.extend({
     _.bindAll(this, 'nowPlaying')
     
     this.nowPlayingView = new View.NowPlaying({ model: this })
+    this.tracks = []
     
     //
     // defaults for testing
-    this.tracks = []
-    var track
-    track = new Model.Track({ artist: 'Battles', name: 'Race : Out' })
+    this.add(new Model.Track({ artist: 'Battles', name: 'Race : Out' }))
+    this.add(new Model.Track({ artist: 'Beatles', name: 'Mother Nature\'s Son' }))
+    this.add(new Model.Track({ artist: 'Cake', name: 'Short Skirt/Long Jacket' }))
+    this.add(new Model.Track({ artist: 'Sly & the Family Stone', name: 'Spaced Cowboy' }))
+    this.add(new Model.Track({ artist: 'Beastie Boys', name: 'Sabotage' }))
+    this.add(new Model.Track({ artist: 'Röyksopp', name: 'Happy Up Here' }))
+    this.add(new Model.Track({ artist: 'qowirqorwg', name: 'osjfdaosjdfoasjf ojsdfoa ojsfoaf sofnska sdfask' }))
+    this.add(new Model.Track({ artist: 'Wugazi', name: 'Shame On Blue' }))
+    this.add(new Model.Track({ artist: 'Kid Koala', name: 'Fender Bender' }))
+    this.add(new Model.Track({ artist: 'Beck', name: 'Where It\'s At' }))
+    this.add(new Model.Track({ artist: 'The Unicorns', name : 'Jellybones' }))
+  },
+  
+  add: function(track, position) {
+    if (_.isUndefined(position)) {
+      position = this.tracks.length
+    }
+    this.tracks.splice(position, 0, track)
     track.playlist = this
-    this.tracks.push(track)
-    track = new Model.Track({ artist: 'Beatles', name: 'Mother Nature\'s Son' })
-    track.playlist = this
-    this.tracks.push(track)
-    track = new Model.Track({ artist: 'Cake', name: 'Short Skirt/Long Jacket' })
-    track.playlist = this
-    this.tracks.push(track)
-    track = new Model.Track({ artist: 'Sly & the Family Stone', name: 'Spaced Cowboy' })
-    track.playlist = this
-    this.tracks.push(track)
-    track = new Model.Track({ artist: 'Beastie Boys', name: 'Sabotage' })
-    track.playlist = this
-    this.tracks.push(track)
-    track = new Model.Track({ artist: 'Röyksopp', name: 'Happy Up Here' })
-    track.playlist = this
-    this.tracks.push(track)
-    track = new Model.Track({ artist: 'qowirqorwg', name: 'osjfdaosjdfoasjf ojsdfoa ojsfoaf sofnska sdfask' })
-    track.playlist = this
-    this.tracks.push(track)
-    track = new Model.Track({ artist: 'Wugazi', name: 'Shame On Blue' })
-    track.playlist = this
-    this.tracks.push(track)
-    track = new Model.Track({ artist: 'Kid Koala', name: 'Fender Bender' })
-    track.playlist = this
-    this.tracks.push(track)
-    track = new Model.Track({ artist: 'Beck', name: 'Where It\'s At' })
-    track.playlist = this
-    this.tracks.push(track)
-    track = new Model.Track({ artist: 'The Unicorns', name : 'Jellybones' })
-    track.playlist = this
-    this.tracks.push(track)
   },
   
   nowPlaying: function() {
