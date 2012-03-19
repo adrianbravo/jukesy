@@ -10,7 +10,7 @@ Model.LastFM = Backbone.Model.extend({
   },
   
   // query
-  //   sets params, type, parseType, displayType (h3) based on method
+  //   sets params, type, resultType, displayType (h3) based on method
   //   creates view if doesn't exist
   //   defers render of view if innerEl doesn't exist
   //   defers query to lastfm
@@ -26,69 +26,18 @@ Model.LastFM = Backbone.Model.extend({
   //     
   
   query: function() {
-    var params = {
-          api_key     : this.key,
-          method      : this.get('method'),
-          page        : this.page,
-          autocorrect : 1,
-          limit       : this.get('limit') || 30,
-          format      : 'json'
-        }
-      , self = this
-
-    switch (this.get('method')) {
-      case 'artist.getSimilar':
-        params.artist = this.get('artist'),
-        this.type = 'artist'
-        this.parseType = 'artist'
-        this.displayType = 'Similar Artists'
-        break
-      case 'artist.getTopAlbums':
-        params.artist = this.get('artist'),
-        this.type = 'album'
-        this.parseType = 'deepAlbum'
-        this.displayType = 'Top Albums'
-        break
-      case 'artist.getTopTracks':
-        params.artist = this.get('artist'),
-        this.type = 'track'
-        this.parseType = 'deepTrack'
-        this.displayType = 'Top Tracks'
-        break
-      case 'artist.search':
-        params.artist = this.get('artist')
-        this.type = 'artist'
-        this.parseType = 'artist'
-        this.displayType = 'Artists'
-        break
-      case 'album.getInfo':
-        params.artist = this.get('artist')
-        params.album = this.get('album')
-        this.type = 'track'
-        this.parseType = 'deepTrack'
-        this.displayType = 'Track List'
-        break
-      case 'album.search':
-        params.album = this.get('album')
-        this.type = 'album'
-        this.parseType = 'album'
-        this.displayType = 'Albums'
-        break
-      case 'track.getSimilar':
-        params.artist = this.get('artist')
-        params.track = this.get('track')
-        this.type = 'track'
-        this.parseType = 'deepTrack'
-        this.displayType = 'Similar Tracks'
-        break
-      case 'track.search':
-        params.track = this.get('track')
-        this.type = 'track'
-        this.parseType = 'track'
-        this.displayType = 'Tracks'
-        break
+    var self = this
+    this.method = this.get('method')
+    this.params = {
+      api_key     : this.key,
+      method      : this.method,
+      page        : this.page,
+      autocorrect : 1,
+      limit       : this.get('limit') || 30,
+      format      : 'json'
     }
-    
+    this.methodParser[this.method].apply(this)
+        
     if (!this.view) {
       this.view = new View['SearchResults' + _.capitalize(this.type) + 's']({ model: this })
     }
@@ -98,8 +47,7 @@ Model.LastFM = Backbone.Model.extend({
         self.view.render()
       }
       
-      console.log('query, params', params)
-      $.getJSON('http://ws.audioscrobbler.com/2.0/?' + $.param(params), self.queryCallback)
+      $.getJSON('http://ws.audioscrobbler.com/2.0/?' + $.param(self.params), self.queryCallback)
     })
   },
   
@@ -107,29 +55,9 @@ Model.LastFM = Backbone.Model.extend({
     // TODO check if view is visible before continuing
     var results
     
-    if (data.results) {
-      this.resultsMeta = {
-        start   : parseInt(data.results['opensearch:startIndex']),
-        perPage : parseInt(data.results['opensearch:itemsPerPage']),
-        total   : parseInt(data.results['opensearch:totalResults'])
-      }
-    } else if (data.topalbums) {
-      var meta = data.topalbums['@attr']
-      this.resultsMeta = {
-        start   : (parseInt(meta.page) - 1) * parseInt(meta.perPage),
-        perPage : parseInt(meta.perPage),
-        total   : parseInt(meta.total)
-      }
-    } else if (data.toptracks) {
-      var meta = data.toptracks['@attr']
-      this.resultsMeta = {
-        start   : (parseInt(meta.page) - 1) * parseInt(meta.perPage),
-        perPage : parseInt(meta.perPage),
-        total   : parseInt(meta.total)
-      }
-    }
+    this.paginationParser[this.paginationType || 'noPagination'].apply(this, [ data ])
     
-    switch (this.get('method')) {
+    switch (this.method) {
       case 'artist.getSimilar':
         results = data.similarartists && data.similarartists.artist
         break
@@ -169,7 +97,7 @@ Model.LastFM = Backbone.Model.extend({
     
     if (_.isArray(results)) {
       _.forEach(results, function(result) {
-        var model = new Model['SearchResult' + _.capitalize(self.type)](self.resultParser[self.parseType].apply(self, [ result ]))
+        var model = new Model['SearchResult' + _.capitalize(self.type)](self.resultParser[self.resultType].apply(self, [ result ]))
         self.results.push(model)
       })
       
@@ -178,11 +106,7 @@ Model.LastFM = Backbone.Model.extend({
       }
       
       this.updateLoadMore(results)
-      
-      if (this.page == 1 && this.get('limit') && (this.type == 'artist' || this.type == 'album')) {
-        this.results = _.first(this.results, this.get('limit'))
-      }
-      
+            
       _.forEach(this.results, function(result) {
         self.view.$innerEl().append(result.view.$el)
       })
@@ -192,13 +116,13 @@ Model.LastFM = Backbone.Model.extend({
   },
   
   updateLoadMore: function(results) {
-    if (!this.resultsMeta) {
+    if (!this.pagination) {
       this.view.$el.find('.load-more').remove()
       return
     }
     this.view.$el.find('.load-more a').button('reset')
     
-    if (parseInt(this.resultsMeta.start) + parseInt(this.resultsMeta.perPage) > parseInt(this.resultsMeta.total)) {
+    if (parseInt(this.pagination.start) + parseInt(this.pagination.perPage) > parseInt(this.pagination.total)) {
       this.view.$el.find('.load-more').remove()
     } else {
       this.page++
@@ -208,6 +132,99 @@ Model.LastFM = Backbone.Model.extend({
   resultsNotFound: function() {
     delete this.results
     this.view.render()
+  },
+  
+  methodParser: {
+    'artist.getSimilar': function() {
+      this.params.artist = this.get('artist'),
+      this.type = 'artist'
+      this.resultType = 'artist'
+      this.displayType = 'Similar Artists'
+      return this
+    },
+    'artist.getTopAlbums': function() {
+      this.params.artist = this.get('artist'),
+      this.type = 'album'
+      this.resultType = 'deepAlbum'
+      this.paginationType = 'topalbums'
+      this.displayType = 'Top Albums'
+      return this
+    },
+    'artist.getTopTracks': function() {
+      this.params.artist = this.get('artist'),
+      this.type = 'track'
+      this.resultType = 'deepTrack'
+      this.paginationType = 'toptracks'
+      this.displayType = 'Top Tracks'
+      return this
+    },
+    'artist.search': function() {
+      this.params.artist = this.get('artist')
+      this.type = 'artist'
+      this.resultType = 'artist'
+      this.paginationType = 'search'
+      this.displayType = 'Artists'
+      return this
+    },
+    'album.getInfo': function() {
+      this.params.artist = this.get('artist')
+      this.params.album = this.get('album')
+      this.type = 'track'
+      this.resultType = 'deepTrack'
+      this.displayType = 'Track List'
+      return this
+    },
+    'album.search': function() {
+      this.params.album = this.get('album')
+      this.type = 'album'
+      this.resultType = 'album'
+      this.paginationType = 'search'
+      this.displayType = 'Albums'
+      return this
+    },
+    'track.getSimilar': function() {
+      this.params.artist = this.get('artist')
+      this.params.track = this.get('track')
+      this.type = 'track'
+      this.resultType = 'deepTrack'
+      this.displayType = 'Similar Tracks'
+      return this
+    },
+    'track.search': function() {
+      this.params.track = this.get('track')
+      this.type = 'track'
+      this.resultType = 'track'
+      this.paginationType = 'search'
+      this.displayType = 'Tracks'
+      return this
+    }
+  },
+  
+  paginationParser: {
+    search: function(data) {
+      this.pagination = {
+        start   : parseInt(data.results['opensearch:startIndex']),
+        perPage : parseInt(data.results['opensearch:itemsPerPage']),
+        total   : parseInt(data.results['opensearch:totalResults'])  
+      }
+    },
+    topalbums: function(data) {
+      var meta = data.topalbums['@attr']
+      this.pagination = {
+        start   : (parseInt(meta.page) - 1) * parseInt(meta.perPage),
+        perPage : parseInt(meta.perPage),
+        total   : parseInt(meta.total)
+      }
+    },
+    toptracks: function(data) {
+      var meta = data.toptracks['@attr']
+      this.pagination = {
+        start   : (parseInt(meta.page) - 1) * parseInt(meta.perPage),
+        perPage : parseInt(meta.perPage),
+        total   : parseInt(meta.total)
+      }
+    },
+    noPagination: function(data) {}
   },
   
   resultParser: {

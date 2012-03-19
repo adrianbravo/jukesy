@@ -8,15 +8,16 @@
     a.btn.btn-primary.show-more.pull-right(href= showMore) Show more &raquo;
   h3 #{displayType}
   .clear
-      
-  table.table.table-striped
-    thead
-      tr
-        th.dropdown
-        th.play
-        th Track
-        th Artist
-    tbody
+
+  .tracks
+    table.table.table-striped
+      thead
+        tr
+          th.dropdown
+          th.play
+          th Track
+          th Artist
+      tbody
     
   - if (loadMore)
     .load-more

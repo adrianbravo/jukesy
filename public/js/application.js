@@ -72,7 +72,6 @@ AppRouter = Backbone.Router.extend({
     })
   },
   
-  // finds similar artists, top tracks, list of albums
   searchArtist: function(artist) {
     MainView.render(new View.SearchArtist({ artist: artist }))
   },
