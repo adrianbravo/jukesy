@@ -45,6 +45,7 @@ View.NowPlaying = Backbone.View.extend({
     this.$el.html(this.template({ tracks: this.model.tracks }))
     _.each(this.model.tracks, function(track) {
       self.$el.find('tbody').append(track.view.$el)
+      track.view.delegateEvents()
     })
     return this
   }
