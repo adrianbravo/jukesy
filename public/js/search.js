@@ -17,9 +17,9 @@ View.SearchQuery = View.BaseSearch.extend({
   template: jade.compile($('#search-query-template').text()),
   initialize: function(options) {
     this.options = options
-    new Model.Search({ artist: options.query, method: 'artist.search', limit: 3, showMore: ('/search/' + options.query + '/artist') })
-    new Model.Search({ album: options.query, method: 'album.search', limit: 6, showMore: ('/search/' + options.query + '/album') })
-    new Model.Search({ track: options.query, method: 'track.search', limit: 15, showMore: ('/search/' + options.query + '/track') })
+    new Model.LastFM({ artist: options.query, method: 'artist.search', limit: 3, showMore: ('/search/' + options.query + '/artist') })
+    new Model.LastFM({ album: options.query, method: 'album.search', limit: 6, showMore: ('/search/' + options.query + '/album') })
+    new Model.LastFM({ track: options.query, method: 'track.search', limit: 15, showMore: ('/search/' + options.query + '/track') })
   }
 })
 
@@ -27,7 +27,7 @@ View.SearchQueryTrack = View.BaseSearch.extend({
   template: jade.compile($('#search-query-track-template').text()),
   initialize: function(options) {
     this.options = options
-    this.model = new Model.Search({ track: options.query, method: 'track.search', limit: 30, loadMore: true })
+    this.model = new Model.LastFM({ track: options.query, method: 'track.search', limit: 30, loadMore: true })
   }
 })
 
@@ -35,7 +35,7 @@ View.SearchQueryAlbum = View.BaseSearch.extend({
   template: jade.compile($('#search-query-album-template').text()),
   initialize: function(options) {
     this.options = options
-    this.model = new Model.Search({ album: options.query, method: 'album.search', limit: 30, loadMore: true })
+    this.model = new Model.LastFM({ album: options.query, method: 'album.search', limit: 30, loadMore: true })
   }
 })
 
@@ -43,7 +43,7 @@ View.SearchQueryArtist = View.BaseSearch.extend({
   template: jade.compile($('#search-query-artist-template').text()),
   initialize: function(options) {
     this.options = options
-    this.model = new Model.Search({ artist: options.query, method: 'artist.search', limit: 30, loadMore: true })
+    this.model = new Model.LastFM({ artist: options.query, method: 'artist.search', limit: 30, loadMore: true })
   }
 })
 
@@ -52,7 +52,7 @@ View.SearchTrack = View.BaseSearch.extend({
   template: jade.compile($('#search-track-template').text()),
   initialize: function(options) {
     this.options = options
-    new Model.Search({ artist: options.artist, track: options.track, method: 'track.getSimilar', limit: 250 })
+    new Model.LastFM({ artist: options.artist, track: options.track, method: 'track.getSimilar', limit: 250 })
   }
 })
 
@@ -60,7 +60,7 @@ View.SearchAlbum = View.BaseSearch.extend({
   template: jade.compile($('#search-album-template').text()),
   initialize: function(options) {
     this.options = options    
-    this.model = new Model.Search({ artist: options.artist, album: options.album, method: 'album.getInfo' })
+    this.model = new Model.LastFM({ artist: options.artist, album: options.album, method: 'album.getInfo' })
   }
 })
 
@@ -68,9 +68,9 @@ View.SearchArtist = View.BaseSearch.extend({
   template: jade.compile($('#search-artist-template').text()),
   initialize: function(options) {
     this.options = options
-    new Model.Search({ artist: options.artist, method: 'artist.getSimilar', limit: 3, showMore: urlArtist(options.artist) + '/similar' })
-    new Model.Search({ artist: options.artist, method: 'artist.getTopAlbums', limit: 6, showMore: urlArtist(options.artist) + '/top-albums' })
-    new Model.Search({ artist: options.artist, method: 'artist.getTopTracks', limit: 15, showMore: urlArtist(options.artist) + '/top-tracks' })
+    new Model.LastFM({ artist: options.artist, method: 'artist.getSimilar', limit: 3, showMore: urlArtist(options.artist) + '/similar' })
+    new Model.LastFM({ artist: options.artist, method: 'artist.getTopAlbums', limit: 6, showMore: urlArtist(options.artist) + '/top-albums' })
+    new Model.LastFM({ artist: options.artist, method: 'artist.getTopTracks', limit: 15, showMore: urlArtist(options.artist) + '/top-tracks' })
   }
 })
 
@@ -78,7 +78,7 @@ View.SearchArtistTopTracks = View.BaseSearch.extend({
   template: jade.compile($('#search-artist-top-tracks-template').text()),
   initialize: function(options) {
     this.options = options
-    this.model = new Model.Search({ artist: options.artist, method: 'artist.getTopTracks', limit: 30, loadMore: true })
+    this.model = new Model.LastFM({ artist: options.artist, method: 'artist.getTopTracks', limit: 30, loadMore: true })
   }
 })
 
@@ -86,7 +86,7 @@ View.SearchArtistTopAlbums = View.BaseSearch.extend({
   template: jade.compile($('#search-artist-top-albums-template').text()),
   initialize: function(options) {
     this.options = options
-    this.model = new Model.Search({ artist: options.artist, method: 'artist.getTopAlbums', limit: 30, loadMore: true })
+    this.model = new Model.LastFM({ artist: options.artist, method: 'artist.getTopAlbums', limit: 30, loadMore: true })
   }
 })
 
@@ -94,7 +94,7 @@ View.SearchArtistSimilar = View.BaseSearch.extend({
   template: jade.compile($('#search-artist-similar-template').text()),
   initialize: function(options) {
     this.options = options
-    this.model = new Model.Search({ artist: options.artist, method: 'artist.getSimilar', limit: 240, loadMore: true })
+    this.model = new Model.LastFM({ artist: options.artist, method: 'artist.getSimilar', limit: 240, loadMore: true })
   }
 })
 
@@ -103,12 +103,15 @@ Model.Search = Backbone.Model.extend({
   key: '75c8c3065db32d805a292ec1af5631a3',
 
   initialize: function() {
-    _.bindAll(this, 'queryCallback', 'loadMore')
-    this.results = []
-    this.page = 1
-    this.query()
+    //_.bindAll(this, 'queryCallback', 'loadMore')
+    //this.results = []
+    //this.page = 1
+    //this.query()
+    console.log(this.toJSON())
+    this.lastfm = new Model.LastFM(this.toJSON())
   },
-    
+  
+  /*
   query: function() {
     var params = {
           api_key     : this.key,
@@ -284,11 +287,11 @@ Model.Search = Backbone.Model.extend({
       this.page++
     }
   },
-  
+      // LastFM
   resultsNotFound: function() {
     delete this.results
   },
-  
+      // LastFM
   resultToJSON: function(result) {
     var self = this
     switch (this.parseType) {
@@ -330,7 +333,7 @@ Model.Search = Backbone.Model.extend({
         return null
     }
   },
-
+    // LastFM
   resultImage: function(result, size){
     var src = '',
         size = size || 'large'
@@ -354,7 +357,9 @@ Model.Search = Backbone.Model.extend({
     this.loading = true
     this.view.$el.find('.load-more a').button('loading').addClass('disabled')
     this.query()
+    // LastFM
   }
+  */
   
 })
 
