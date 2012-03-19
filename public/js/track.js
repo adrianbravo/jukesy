@@ -15,6 +15,10 @@ Model.Track = Backbone.Model.extend({
     if (NowPlaying != this.playlist) {
       this.playlist.nowPlaying()
     }
+    
+    if (Video.track) {
+      Video.track.view.unsetPlaying()
+    }
     Video.track = this
 
     if (_.isUndefined(this.videos)) {
@@ -62,13 +66,15 @@ Model.Track = Backbone.Model.extend({
 
 })
 
-View.Track = Backbone.View.extend({
+View.Track = Backbone.View.extend(_.extend({
   tagName: 'tr',
   
   events: {
-    'click td.play a': 'play'
+    'click td.play a' : 'play',
+    'click td.dd'     : 'dropdown',
+    'click'           : 'toggleSelect'
   },
-  
+    
   template: jade.compile($('#track-template').text()),
   
   initialize: function() {
@@ -84,13 +90,21 @@ View.Track = Backbone.View.extend({
     this.model.play()
   },
   
+  dropdown: function() {
+    this.$el.find('.dropdown-toggle').dropdown('toggle')
+    return false
+  },
+  
+  unsetPlaying: function() {
+    this.$el.removeClass('playing')
+    this.$el.find('.icon-music').addClass('icon-play').removeClass('icon-music')
+  },
+  
   setPlaying: function() {
-    _.each(this.model.playlist.tracks, function(track) {
-      track.view.$el.removeClass('playing')
-    })
     this.$el.addClass('playing')
+    this.$el.find('.icon-play').addClass('icon-music').removeClass('icon-play')
   }
-})
+}, Mixins.TrackSelection))
 
 
 

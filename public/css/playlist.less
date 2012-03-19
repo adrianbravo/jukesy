@@ -8,196 +8,217 @@
   }
 }
 
-.tracks {
-  .artist {
-    width: 300px;
-  }
+#main {
   
-  .artist a, .name a {
-    display: inline-block;
-    max-height: 18px;
-    overflow: hidden;
-  }
+  .tracks {
+    
+    .artist {
+      width: 300px;
+    }
   
-  td.dd {
-    .no-select();
-    width: 14px;
-    height: 18px;    
-    
-    .dropdown {
-      .dropdown-toggle {
-        padding: 10px 8px;
-        opacity: 0.4;
-        margin-left: -6px;
-        
-        &:hover {
-          text-decoration: none;
-          opacity: 1;
-        }
-      }
-
-      &.open .dropdown-toggle {
-        background: transparent;
-        color: @blue;
-      }
+    .artist a, .name a {
+      display: inline-block;
+      max-height: 18px;
+      overflow: hidden;
     }
-  }
-
-  td.play {
-    .no-select();
-    width: 22px;
-    
-    a {
-      .radius(2px);
-      padding: 5px 8px;
-      color: @blue;
-      opacity: 1;
-      
-      &:hover {
-        text-decoration: none;
-        background: @blue;
-        color: #fff;
-        opacity: 1;
-      }
-    }
-  }
-}
-
-#now-playing {
-  .error {
-    td {
-      background: #666;
-      opacity: 1;
-      &.artist a, &.name a {
-        color: #fff;
-      }
-    }
-    td.play {
-      a {
-        display: none;
-      }
-    }
+  
     td.dd {
+      .no-select();
+      width: 14px;
+      height: 18px;    
+    
       .dropdown {
-        display: none;
-      }
-    }
-  }
-  
-  .playing {
-    td {
-      background: @blue;
-      &.artist a, &.name a {
-        color: #fff;
-      }
-    }
-    td.play {
-      a {
-        color: #fff;
-        &:hover {
-          background: #fff;
+        .dropdown-toggle {
+          padding: 10px 8px;
+          opacity: 0.4;
+          margin-left: -6px;
+        
+          &:hover {
+            text-decoration: none;
+            opacity: 1;
+          }
+        }
+
+        &.open .dropdown-toggle {
+          background: transparent;
           color: @blue;
         }
       }
     }
-    td.dd {
-      .dropdown {
-        .dropdown-toggle {
+
+    td.play {
+      .no-select();
+      width: 22px;
+    
+      a {
+        .radius(2px);
+        padding: 5px 8px;
+        color: @blue;
+        opacity: 1;
+      
+        &:hover {
+          text-decoration: none;
+          background: @blue;
+          color: #fff;
+          opacity: 1;
+        }
+      }
+    }
+  
+    .selected {
+      .no-select();
+      td {
+        background: @blue;
+        &.artist a, &.name a {
           color: #fff;
         }
       }
-    }
-  }
-}
-
-.artists {
-  ul {
-    list-style: none;
-        
-    li {
-      display: block;
-      float: left;
-      width: 33%;
-      margin-bottom: 15px;
-      
-      .image {
-        display: inline-block;
-        margin-right: 10px;
-        width: 48px;
-        height: 48px;
-        padding: 2px;
-        .radius(2px);
-        background: @blue;
-        
-        &:hover {
-          background: #fff;
-        }
-        
-        img {
-          background: #fff;
-          width: 48px;
-          height: 48px;
+      td.play {
+        a {
+          color: #fff;
+          &:hover {
+            background: #fff;
+            color: @blue;
+          }
         }
       }
-      
-      .info {
-        display: inline-block;
-        width: 185px;
-        vertical-align: top;
-      }
-      
-      .name a {
-        display: block;
-        max-height: 36px;
-        overflow: hidden;
+      td.dd .dropdown .dropdown-toggle {
+        color: #fff;
       }
     }
-  }
-}
   
-.albums {
-  ul {
-    list-style: none;
-    
-    li {
-      display: block;
-      float: left;
-      width: 33%;
-      margin-bottom: 15px;
-      
-      .image {
-        display: inline-block;
-        margin-right: 10px;
-        width: 48px;
-        height: 48px;
-        padding: 2px;
-        .radius(2px);
-        background: @blue;
-        &:hover {
-          background: #fff;
+  }
+
+  #now-playing {
+    .error {
+      td {
+        background: #666;
+        opacity: 0.8;
+        &.artist a, &.name a {
+          color: #fff;
         }
+      }
+      td.play {
+        a {
+          display: none;
+        }
+      }
+      td.dd {
+        .dropdown {
+          display: none;
+        }
+      }
+    }
+  
+    .playing {      
+      td {
+        //background: @blue;
+        &.artist a, &.name a {
+          color: #fff;
+        }
+      }
+      td.play {
+        a {
+          color: #fff;
+          background: transparent;
+          cursor: default;
+        }
+      }
+      td.dd .dropdown .dropdown-toggle {
+        color: #fff;
+      }
+    }
+  }
+
+  .artists {
+    ul {
+      list-style: none;
         
-        img {
-          background: #fff;
+      li {
+        display: block;
+        float: left;
+        width: 33%;
+        margin-bottom: 15px;
+      
+        .image {
+          display: inline-block;
+          margin-right: 10px;
           width: 48px;
           height: 48px;
+          padding: 2px;
+          .radius(2px);
+          background: @blue;
+        
+          &:hover {
+            background: #fff;
+          }
+        
+          img {
+            background: #fff;
+            width: 48px;
+            height: 48px;
+          }
+        }
+      
+        .info {
+          display: inline-block;
+          width: 185px;
+          vertical-align: top;
+        }
+      
+        .name a {
+          display: block;
+          max-height: 36px;
+          overflow: hidden;
         }
       }
+    }
+  }
+  
+  .albums {
+    ul {
+      list-style: none;
+    
+      li {
+        display: block;
+        float: left;
+        width: 33%;
+        margin-bottom: 15px;
       
-      .info {
-        display: inline-block;
-        width: 185px;
-        vertical-align: top;
-      }
-      .artist a {
-        display: block;
-        max-height: 18px;
-        overflow: hidden;
-      }
-      .name a {
-        display: block;
-        max-height: 36px;
-        overflow: hidden;
+        .image {
+          display: inline-block;
+          margin-right: 10px;
+          width: 48px;
+          height: 48px;
+          padding: 2px;
+          .radius(2px);
+          background: @blue;
+          &:hover {
+            background: #fff;
+          }
+        
+          img {
+            background: #fff;
+            width: 48px;
+            height: 48px;
+          }
+        }
+      
+        .info {
+          display: inline-block;
+          width: 185px;
+          vertical-align: top;
+        }
+        .artist a {
+          display: block;
+          max-height: 18px;
+          overflow: hidden;
+        }
+        .name a {
+          display: block;
+          max-height: 36px;
+          overflow: hidden;
+        }
       }
     }
   }

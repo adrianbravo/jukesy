@@ -181,7 +181,10 @@ View.SearchResultTrack = Backbone.View.extend(_.extend({
   events: {
     'click .playNow'   : 'playNow',
     'click .queueNext' : 'queueNext',
-    'click .queueLast' : 'queueLast'
+    'click .queueLast' : 'queueLast',
+    'click td.dd'     : 'dropdown',
+    'click'           : 'toggleSelect'
+
   },
   
   initialize: function() {
@@ -200,8 +203,12 @@ View.SearchResultTrack = Backbone.View.extend(_.extend({
   queueLast: function() {
     this.model.addTrack('last')
   },
-
-}, View.SearchResult))
+  
+  dropdown: function() {
+    this.$el.find('.dropdown-toggle').dropdown('toggle')
+    return false
+  }
+}, View.SearchResult, Mixins.TrackSelection))
 
 View.SearchResultAlbum = Backbone.View.extend(_.extend({
   tagName: 'li',

@@ -138,7 +138,8 @@ View.Main = Backbone.View.extend({
     _.bindAll(this, 'render')
   },
 
-  render: function(template) {    
+  render: function(template) {
+    lastSelected = false
     if (_.isString(template)) {
       this.$el.html(this.templates[template]({ currentUser: Session.userJSON() }))
     } else if (_.isObject(template)) {
