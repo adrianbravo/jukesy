@@ -6,8 +6,6 @@ Model.Playlist = Backbone.Model.extend({
     this.nowPlayingView = new View.NowPlaying({ model: this })
     this.tracks = []
     
-    //
-    // defaults for testing
     this.add(new Model.Track({ artist: 'Battles', name: 'Race : Out' }))
     this.add(new Model.Track({ artist: 'Beatles', name: 'Mother Nature\'s Son' }))
     this.add(new Model.Track({ artist: 'Cake', name: 'Short Skirt/Long Jacket' }))

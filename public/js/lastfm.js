@@ -150,7 +150,7 @@ Model.LastFM = Backbone.Model.extend({
       }
     },
     topalbums: function(data) {
-      var meta = data.topalbums['@attr']
+      var meta = data.topalbums && data.topalbums['@attr']
       if (!meta) {
         this.pagination = null
         return
@@ -162,7 +162,7 @@ Model.LastFM = Backbone.Model.extend({
       }
     },
     toptracks: function(data) {
-      var meta = data.toptracks['@attr']
+      var meta = data.toptracks && data.toptracks['@attr']
       if (!meta) {
         this.pagination = null
         return

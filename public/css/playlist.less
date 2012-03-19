@@ -66,25 +66,20 @@
 #now-playing {
   .error {
     td {
-      background: red;
+      background: #666;
+      opacity: 1;
       &.artist a, &.name a {
         color: #fff;
       }
     }
     td.play {
       a {
-        color: #fff;
-        &:hover {
-          background: #fff;
-          color: red;
-        }
+        display: none;
       }
     }
     td.dd {
       .dropdown {
-        .dropdown-toggle {
-          color: #fff;
-        }
+        display: none;
       }
     }
   }
