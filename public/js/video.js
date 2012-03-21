@@ -31,7 +31,6 @@ Model.Video = Backbone.Model.extend({
   },
   
   onStateChange: function(state) {
-    console.log('Video.onStateChange', state)
     this.state = state
     if (this.state == -1) {
       //Controls.updateTrackInfo()

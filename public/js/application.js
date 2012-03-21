@@ -140,6 +140,8 @@ View.Main = Backbone.View.extend({
 
   render: function(template) {
     lastSelected = false
+    this.$el.find('.tracks tbody tr.selected').removeClass('selected')
+    
     if (_.isString(template)) {
       this.$el.html(this.templates[template]({ currentUser: Session.userJSON() }))
     } else if (_.isObject(template)) {

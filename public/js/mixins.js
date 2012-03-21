@@ -1,3 +1,65 @@
+Mixins.TrackViewEvents = {
+
+  addTrack: function(method) {    
+    var position
+      , self = this
+      , clone = new Model.Track(this.model.toJSON())
+
+    // check for now playing track
+    /*
+        // Adds selected tracks to NowPlaying collection.
+        queueTrack: function(method) {
+          $(this.el).addClass('selected')
+          var tracks = _(Search.track.models).chain()
+            .map(function(track) {
+              if (!$(track.view.el).hasClass('selected')) {
+                return null
+              }
+              $(track.view.el).removeClass('selected')
+
+              var copyTrack = new Model.Track(track.toJSON())
+              copyTrack.playlist = NowPlaying
+              return copyTrack
+            }).compact().value()
+
+            NowPlaying.add(tracks, { method: method })
+        },
+    */
+    
+    if (method == 'play' || method == 'next') {
+      if (Video.track) {
+        position = _.indexOf(NowPlaying.tracks, Video.track) + 1
+      } else {
+        position = 0
+      }
+    }
+    NowPlaying.add(clone, position)
+    
+    _.defer(function() {
+      self.$el.removeClass('selected').siblings().removeClass('selected')
+    })
+    return clone
+  },
+    
+  playNow: function() {
+    this.addTrack('play').play()
+  },
+  
+  queueNext: function() {
+    this.addTrack('next')
+  },
+  
+  queueLast: function() {
+    this.addTrack('last')
+  },
+  
+  dropdown: function() {
+    this.$el.find('.dropdown-toggle').dropdown('toggle')
+    return false
+  }
+  
+}
+
 Mixins.TrackSelection = {
   
   toggleSelect: function(e) {

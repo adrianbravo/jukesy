@@ -11,7 +11,7 @@ Model.Track = Backbone.Model.extend({
     if (!Video.player || Video.loading) {
       return false
     }
-
+    
     if (NowPlaying != this.playlist) {
       this.playlist.nowPlaying()
     }
@@ -37,6 +37,7 @@ Model.Track = Backbone.Model.extend({
         //this.video = this.bestVideo()
         this.video = this.videos[0].id
       }
+      
       Video.load(this.video)
     }
   },
@@ -66,32 +67,30 @@ Model.Track = Backbone.Model.extend({
 
 })
 
-View.Track = Backbone.View.extend(_.extend({
+View.Track = Backbone.View.extend(_.extend(Mixins.TrackSelection, Mixins.TrackViewEvents, {
   tagName: 'tr',
-  
+  template: jade.compile($('#track-template').text()),
+    
   events: {
-    'click td.play a' : 'play',
-    'click td.dd'     : 'dropdown',
+    'click .play-now' : 'playNow',
+    'click .dropdown' : 'dropdown',
     'click'           : 'toggleSelect'
   },
-    
-  template: jade.compile($('#track-template').text()),
   
   initialize: function() {
+    _.bindAll(this, 'playNow', 'queueNext', 'queueLast')
     this.render()
   },
   
   render: function() {
     this.$el.html(this.template({ track: this.model }))
+    this.delegateEvents()
     return this
   },
   
-  play: function() {
+  playNow: function() {
     this.model.play()
-  },
-  
-  dropdown: function() {
-    this.$el.find('.dropdown-toggle').dropdown('toggle')
+    this.$el.find('.dropdown').removeClass('open')
     return false
   },
   
@@ -104,7 +103,7 @@ View.Track = Backbone.View.extend(_.extend({
     this.$el.addClass('playing')
     this.$el.find('.icon-play').addClass('icon-music').removeClass('icon-play')
   }
-}, Mixins.TrackSelection))
+}))
 
 
 

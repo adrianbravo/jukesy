@@ -160,7 +160,7 @@ View.SearchResultsArtists = Backbone.View.extend(_.extend({
   type: 'artists'
 }, View.SearchResults))
 
-View.SearchResult = {  
+View.SearchResult = Backbone.View.extend({  
   initialize: function() {
     this.render()
   },
@@ -169,97 +169,45 @@ View.SearchResult = {
     var json = {}
     json[this.type] = this.model
     this.$el.html(this.template(json))
+    this.delegateEvents()
     return this
-  }  
-}
+  }
+})
 
-View.SearchResultTrack = Backbone.View.extend(_.extend({
+View.SearchResultTrack = View.SearchResult.extend(_.extend(Mixins.TrackSelection, Mixins.TrackViewEvents, {
   tagName: 'tr',
   template: jade.compile($('#search-result-track-template').text()),
   type: 'track',
   
   events: {
-    'click .playNow'   : 'playNow',
-    'click .queueNext' : 'queueNext',
-    'click .queueLast' : 'queueLast',
-    'click td.dd'     : 'dropdown',
-    'click'           : 'toggleSelect'
-
+    'click .play-now'   : 'playNow',
+    'click .dropdown'   : 'dropdown',
+    'click .queue-next' : 'queueNext',
+    'click .queue-last' : 'queueLast',
+    'click'             : 'toggleSelect'
   },
   
   initialize: function() {
     _.bindAll(this, 'playNow', 'queueNext', 'queueLast')
     this.render()
-  },
-  
-  playNow: function() {
-    this.model.addTrack('play')
-  },
-  
-  queueNext: function() {
-    this.model.addTrack('next')
-  },
-  
-  queueLast: function() {
-    this.model.addTrack('last')
-  },
-  
-  dropdown: function() {
-    this.$el.find('.dropdown-toggle').dropdown('toggle')
-    return false
   }
-}, View.SearchResult, Mixins.TrackSelection))
+}))
 
-View.SearchResultAlbum = Backbone.View.extend(_.extend({
+View.SearchResultAlbum = View.SearchResult.extend({
   tagName: 'li',
   template: jade.compile($('#search-result-album-template').text()),
   type: 'album'
-}, View.SearchResult))
+})
 
-View.SearchResultArtist = Backbone.View.extend(_.extend({
+View.SearchResultArtist = View.SearchResult.extend({
   tagName: 'li',
   template: jade.compile($('#search-result-artist-template').text()),
   type: 'artist'
-}, View.SearchResult))
+})
 
 Model.SearchResultTrack = Backbone.Model.extend({
   initialize: function() {
     this.view = new View.SearchResultTrack({ model: this })
-  },
-    
-  addTrack: function(method) {    
-    var position
-      , clone = new Model.Track(this.toJSON())
-
-    // check for now playing track
-    /*
-        // Adds selected tracks to NowPlaying collection.
-        queueTrack: function(method) {
-          $(this.el).addClass('selected')
-          var tracks = _(Search.track.models).chain()
-            .map(function(track) {
-              if (!$(track.view.el).hasClass('selected')) {
-                return null
-              }
-              $(track.view.el).removeClass('selected')
-
-              var copyTrack = new Model.Track(track.toJSON())
-              copyTrack.playlist = NowPlaying
-              return copyTrack
-            }).compact().value()
-
-            NowPlaying.add(tracks, { method: method })
-        },
-    */
-    
-    if (method == 'play' || method == 'next') {
-      if (Video.track) {
-        position = _.indexOf(NowPlaying.tracks, Video.track) + 1
-      } else {
-        position = 0
-      }
-    }
-    NowPlaying.add(clone, position)
   }
 })
 
