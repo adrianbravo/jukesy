@@ -133,3 +133,17 @@ footer {
     }
   }
 }
+
+#meow {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  .alert {
+    opacity: 0;
+    .fade(1s);
+  }
+  
+  &.on .alert {
+    opacity: 1;
+  }  
+}

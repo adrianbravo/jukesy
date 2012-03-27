@@ -5,6 +5,10 @@ _.mixin({
       string = ''
     }
     return string.charAt(0).toUpperCase() + string.substring(1).toLowerCase()
+  },
+  
+  plural: function(count, singular, plural) {
+    return count == 1 ? singular : plural
   }
 })
 

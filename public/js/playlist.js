@@ -1,4 +1,8 @@
 Model.Playlist = Backbone.Model.extend({
+  defaults: {
+    name: 'Untitled Playlist'
+  },
+  
   initialize: function() {
     console.log('Playlist.initialize')
     _.bindAll(this, 'nowPlaying')
@@ -9,6 +13,8 @@ Model.Playlist = Backbone.Model.extend({
   
   addTracks: function(tracks, position) {
     var self = this
+      , message = 'Added ' + tracks.length + ' ' + _.plural(tracks.length, 'track', 'tracks') + ' to ' + this.get('name') + '.'
+      
     if (_.isUndefined(position)) {
       position = this.tracks.length
     }
@@ -16,14 +22,17 @@ Model.Playlist = Backbone.Model.extend({
       self.tracks.splice(position++, 0, track)
       track.playlist = self
     })
+    Meow.render(message)
   },
   
   removeTracks: function(tracks) {
     var self = this
+      , message = 'Removed ' + tracks.length + ' ' + _.plural(tracks.length, 'track', 'tracks') + ' from ' + this.get('name') + '.'
+    
     _.each(tracks, function(track) {
       self.tracks.splice(_.indexOf(self.tracks, track), 1)
     })
-    
+    Meow.render(message)
   },
   
   nowPlaying: function() {

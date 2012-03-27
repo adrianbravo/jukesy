@@ -182,6 +182,7 @@ $(function() {
   window.ModalView = new View.Modal
   window.SidebarView = new View.Sidebar
   window.Video = new Model.Video
+  window.Meow = new View.Meow
 
   var playlist = new Model.Playlist()
   playlist.nowPlaying()

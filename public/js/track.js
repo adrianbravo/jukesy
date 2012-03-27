@@ -38,6 +38,7 @@ Model.Track = Backbone.Model.extend({
         this.video = this.videos[0].id
       }
       
+      Meow.render('Now playing ' + this.get('name') + ' by ' + this.get('artist') + '.')
       Video.load(this.video)
     }
   },
