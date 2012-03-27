@@ -7,16 +7,23 @@ Model.Playlist = Backbone.Model.extend({
     this.tracks = []
   },
   
-  add: function(track, position) {
+  addTracks: function(tracks, position) {
+    var self = this
     if (_.isUndefined(position)) {
       position = this.tracks.length
     }
-    this.tracks.splice(position, 0, track)
-    track.playlist = this
+    _.each(tracks, function(track) {
+      self.tracks.splice(position++, 0, track)
+      track.playlist = self
+    })
   },
   
-  removeTrack: function(track) {
-    this.tracks.splice(_.indexOf(this.tracks, track), 1)
+  removeTracks: function(tracks) {
+    var self = this
+    _.each(tracks, function(track) {
+      self.tracks.splice(_.indexOf(self.tracks, track), 1)
+    })
+    
   },
   
   nowPlaying: function() {

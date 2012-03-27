@@ -4,25 +4,25 @@ Mixins.TrackViewEvents = {
     if (this.model.playing) {
       Video.next()
     }
-    this.model.playlist.removeTrack(this.model)
+    this.model.playlist.removeTracks([ this.model ])
     this.model.playlist.nowPlayingView.render()
     //this.model.playlist.view.render()
   },
       
   playNow: function() {
     var clone = new Model.Track(this.model.toJSON())
-    NowPlaying.add(clone, Video.track ? _.indexOf(NowPlaying.tracks, Video.track) + 1 : 0)
+    NowPlaying.addTracks([ clone ], Video.track ? _.indexOf(NowPlaying.tracks, Video.track) + 1 : 0)
     clone.play()
   },
   
   queueNext: function() {
     var clone = new Model.Track(this.model.toJSON())
-    NowPlaying.add(clone, Video.track ? _.indexOf(NowPlaying.tracks, Video.track) + 1 : 0)
+    NowPlaying.addTracks([ clone ], Video.track ? _.indexOf(NowPlaying.tracks, Video.track) + 1 : 0)
   },
   
   queueLast: function() {
     var clone = new Model.Track(this.model.toJSON())
-    NowPlaying.add(clone)
+    NowPlaying.addTracks([ clone ])
   },
   
   dropdown: function() {
