@@ -7,8 +7,8 @@ Model.Track = Backbone.Model.extend({
       
   play: function() {
     var self = this
-
-    if (!Video.player || Video.loading) {
+    
+    if (!Video.player || Video.loading || this.playing) {
       return false
     }
     
@@ -17,7 +17,7 @@ Model.Track = Backbone.Model.extend({
     }
     
     if (Video.track) {
-      Video.track.view.unsetPlaying()
+      Video.track.unsetPlaying()
     }
     Video.track = this
 
@@ -30,7 +30,7 @@ Model.Track = Backbone.Model.extend({
       //  Controls.updateTrackInfo()
       //})
       
-      this.view.setPlaying()
+      this.setPlaying()
       
       Video.skipToPrev = false
       if (!this.video) {
@@ -63,6 +63,16 @@ Model.Track = Backbone.Model.extend({
     Video.loading = false
     //$('#controls #play').removeClass('loading')
     this.play()
+  },
+  
+  unsetPlaying: function() {
+    this.playing = false
+    this.view.$el.removeClass('playing').find('.icon-music').addClass('icon-play').removeClass('icon-music')
+  },
+  
+  setPlaying: function() {
+    this.playing = true
+    this.view.$el.addClass('playing').find('.icon-play').addClass('icon-music').removeClass('icon-play')
   }
 
 })
@@ -92,17 +102,8 @@ View.Track = Backbone.View.extend(_.extend(Mixins.TrackSelection, Mixins.TrackVi
     this.model.play()
     this.$el.find('.dropdown').removeClass('open')
     return false
-  },
-  
-  unsetPlaying: function() {
-    this.$el.removeClass('playing')
-    this.$el.find('.icon-music').addClass('icon-play').removeClass('icon-music')
-  },
-  
-  setPlaying: function() {
-    this.$el.addClass('playing')
-    this.$el.find('.icon-play').addClass('icon-music').removeClass('icon-play')
   }
+  
 }))
 
 
