@@ -8,6 +8,19 @@
   - if (showMore)
     a.btn.btn-primary.show-more.pull-right(href= showMore) Show more &raquo;
   h3 #{displayType}
+  br
+  .btn-group
+    button.btn.btn-large.play-all Play All
+    button.btn.btn-large.dropdown-toggle('data-toggle'= 'dropdown')
+      span.caret
+    ul.dropdown-menu
+      li
+        a.play-all Play All
+      li
+        a.queue-next Queue Next
+      li
+        a.queue-last Queue Last
+  
   .clear
 
   .tracks

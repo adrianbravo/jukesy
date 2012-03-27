@@ -71,6 +71,14 @@ Model.LastFM = Backbone.Model.extend({
     }
   },
   
+  cloneResults: function() {
+    return _(this.results).chain()
+      .map(function(track) {
+        return new Model.Track(track.toJSON())
+      })
+      .value()
+  },
+  
   addQueriedTrackToResults: function() {
     this.results.push(new Model['SearchResult' + _.capitalize(this.type)](this.resultParser[this.resultType].apply(this, [{
       name: this.get('track'),

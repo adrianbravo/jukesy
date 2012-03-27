@@ -11,7 +11,7 @@ Model.Video = Backbone.Model.extend({
                        { allowScriptAccess: 'always', wmode: 'transparent' },  // parameters
                        { id: 'video' }                                         // attributes
     )
-    _.bindAll(this, 'volume', 'seek')
+    _.bindAll(this, 'volume', 'seek', 'stop')
     
     _.defer(function() {
       window.Controls = new View.Controls
@@ -22,8 +22,8 @@ Model.Video = Backbone.Model.extend({
     this.stopped = true
     this.pause()
     if (this.track) {
+      this.track.unsetPlaying()
       this.track = null
-      this.track.view.$el.removeClass('playing')
     }
     
     Controls.render()

@@ -126,6 +126,7 @@ View.SearchResults = {
         self.$innerEl().append(result.view.$el)
       })
     }
+    this.delegateEvents()
     this.renderLoadMore()
     return this
   },
@@ -143,7 +144,29 @@ View.SearchResultsTracks = Backbone.View.extend(_.extend({
   template: jade.compile($('#search-results-tracks-template').text()),
   innerElSelector: '#search #search-tracks .tracks tbody',
   elSelector: '#search #search-tracks',
-  type: 'tracks'
+  type: 'tracks',
+  
+  events: {
+    'click .play-all'   : 'playAll',
+    'click .queue-next' : 'queueNext',
+    'click .queue-last' : 'queueLast'
+  },
+  
+  playAll: function() {
+    var clones = this.model.cloneResults()
+      , playlist = new Model.Playlist // start with a fresh playlist
+    playlist.nowPlaying()
+    NowPlaying.addTracks(clones, Video.track ? _.indexOf(NowPlaying.tracks, Video.track) + 1 : 0)
+    clones[0].play()
+  },
+  
+  queueNext: function() {
+    NowPlaying.addTracks(this.model.cloneResults(), Video.track ? _.indexOf(NowPlaying.tracks, Video.track) + 1 : 0)
+  },
+  
+  queueLast: function() {
+    NowPlaying.addTracks(this.model.cloneResults())
+  }
 }, View.SearchResults))
 
 View.SearchResultsAlbums = Backbone.View.extend(_.extend({
