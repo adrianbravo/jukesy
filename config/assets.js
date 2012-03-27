@@ -7,7 +7,7 @@ var assets = {
     'js/lib/swfobject.js',
     'js/lib/less-1.1.3.min.js',
     'js/lib/jade.min.js',
-    'bootstrap/js/bootstrap.min.js',
+    'bootstrap/js/bootstrap.js',
     'js/boot.js',
     'js/mixins.js',
     'js/error.js',

@@ -2,7 +2,7 @@ Model.LastFM = Backbone.Model.extend({
   key: '75c8c3065db32d805a292ec1af5631a3',
 
   initialize: function() {
-    _.bindAll(this, 'queryCallback', 'isCurrentQuery')
+    _.bindAll(this, 'queryCallback', 'isCurrentQuery', 'setCurrentSearch')
     this.results = []
     this.show = true
     this.method = this.get('method')
@@ -20,8 +20,12 @@ Model.LastFM = Backbone.Model.extend({
     this.on('queryCallback', this.updateView)
     this.on('queryCallback', this.updateLoadMore)
     
-    window.CurrentSearch[this.type] = this
+    this.setCurrentSearch()
     this.query()
+  },
+  
+  setCurrentSearch: function() {
+    window.CurrentSearch[this.type] = this
   },
   
   query: function() {

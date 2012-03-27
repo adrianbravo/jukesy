@@ -77,15 +77,14 @@ Model.Track = Backbone.Model.extend({
 
 })
 
-View.Track = Backbone.View.extend(_.extend(Mixins.TrackSelection, Mixins.TrackViewEvents, {
+View.Track = Backbone.View.extend(_.extend(Mixins.TrackViewEvents, {
   tagName: 'tr',
   template: jade.compile($('#track-template').text()),
     
   events: {
     'click .play-now' : 'playNow',
     'click .remove'   : 'removeTrack',
-    'click .dropdown' : 'dropdown',
-    'click'           : 'toggleSelect'
+    'click .dropdown' : 'dropdown'
   },
   
   initialize: function() {
@@ -106,114 +105,3 @@ View.Track = Backbone.View.extend(_.extend(Mixins.TrackSelection, Mixins.TrackVi
   }
   
 }))
-
-
-
-
-
-
-
-
-
-
-/*
-$(function() {
-
-
-  //
-  // Basic track model.
-  //
-  Model.Track = Backbone.Model.extend({
-
-    bestVideo: function() {
-      return _.min(this.videos, function(video) { return video.score }).id
-    },
-    
-    nextUnselected: function() {
-      var self = this,
-          nextTrack = false
-      _.each(this.playlist.tracks(), function(track) {
-        var selected = $(track.view.el).hasClass('selected')
-        if (nextTrack === true && !selected) {
-          nextTrack = track
-        } else if (track == self) {
-          nextTrack = true
-        }
-      })
-      
-      if (!nextTrack || nextTrack === true) {
-        var first = this.playlist.tracks()[0]
-        return (first != this) ? first : null
-      } else {
-        return nextTrack
-      }
-    }
-  })
-
-
-  //
-  // Track view, which should be extended for several uses (playlist, now playing, search results).
-  //
-  View.Track = Backbone.View.extend(_.extend({
-    tagName: 'tr',
-
-    className: 'track',
-
-    template: Handlebars.compile($('#track-template').html()),
-
-    events: {
-      'click'       : 'toggleSelect',
-      'dblclick'    : 'play',
-      'contextmenu' : 'showContextmenu'
-    },
-
-    initialize: function() {
-      _.bindAll(this, 'setPlaying', 'showContextmenu', 'play')
-    },
-
-    render: function() {
-      this.delegateEvents(this.events)
-      $(this.el).html(this.template(this.model.toJSON()))
-      if (this.model === window.NowPlayingTrack) {
-        _.defer(this.setPlaying)
-      }
-      return this
-    },
-
-    showContextmenu: function(e) {
-      if (!$(this.el).hasClass('select')) {
-        this.toggleSelect(e)
-      }
-      
-      new Model.Contextmenu({
-        event: e,
-        actions: [
-          { action: 'Play', extra: 'dblclick', callback: this.play }
-        ]
-      })
-      return false
-    },
-
-    play: function() {
-      this.model.play()
-      this.setPlaying()
-      $(this.el).siblings().removeClass('selected')
-    },
-
-    setPlaying: function() {
-      $(this.el).addClass('playing').siblings().removeClass('playing')
-    }
-  }, Mixins.TrackSelection))
-
-
-  //
-  // Basic tracks collection.
-  //
-  Collection.Tracks = Backbone.Collection.extend({
-    model: Model.Track
-  });
-
-
-});
-
-*/

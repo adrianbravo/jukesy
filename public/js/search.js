@@ -174,7 +174,7 @@ View.SearchResult = Backbone.View.extend({
   }
 })
 
-View.SearchResultTrack = View.SearchResult.extend(_.extend(Mixins.TrackSelection, Mixins.TrackViewEvents, {
+View.SearchResultTrack = View.SearchResult.extend(_.extend(Mixins.TrackViewEvents, {
   tagName: 'tr',
   template: jade.compile($('#search-result-track-template').text()),
   type: 'track',
@@ -183,8 +183,7 @@ View.SearchResultTrack = View.SearchResult.extend(_.extend(Mixins.TrackSelection
     'click .play-now'   : 'playNow',
     'click .dropdown'   : 'dropdown',
     'click .queue-next' : 'queueNext',
-    'click .queue-last' : 'queueLast',
-    'click'             : 'toggleSelect'
+    'click .queue-last' : 'queueLast'
   },
   
   initialize: function() {

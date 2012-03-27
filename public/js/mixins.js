@@ -17,27 +17,6 @@ Mixins.TrackViewEvents = {
       , clone = new Model.Track(this.model.toJSON())
     
     
-    // check for now playing track
-    /*
-        // Adds selected tracks to NowPlaying collection.
-        queueTrack: function(method) {
-          $(this.el).addClass('selected')
-          var tracks = _(Search.track.models).chain()
-            .map(function(track) {
-              if (!$(track.view.el).hasClass('selected')) {
-                return null
-              }
-              $(track.view.el).removeClass('selected')
-
-              var copyTrack = new Model.Track(track.toJSON())
-              copyTrack.playlist = NowPlaying
-              return copyTrack
-            }).compact().value()
-
-            NowPlaying.add(tracks, { method: method })
-        },
-    */
-    
     if (method == 'play' || method == 'next') {
       if (Video.track) {
         position = _.indexOf(playlist.tracks, Video.track) + 1
@@ -46,10 +25,6 @@ Mixins.TrackViewEvents = {
       }
     }
     playlist.add(clone, position)
-    
-    _.defer(function() {
-      self.$el.removeClass('selected').siblings().removeClass('selected')
-    })
     return clone
   },
     
@@ -68,43 +43,6 @@ Mixins.TrackViewEvents = {
   dropdown: function() {
     this.$el.find('.dropdown-toggle').dropdown('toggle')
     return false
-  }
-  
-}
-
-Mixins.TrackSelection = {
-  
-  toggleSelect: function(e) {
-    if (e.shiftKey) {
-      this.fillSelected(this.$el, window.lastSelected.$el)
-    } else if (!(e.altKey || e.metaKey)) {
-      if (e.type == 'contextmenu' && this.$el.hasClass('selected')) {
-      } else {
-        this.$el.toggleClass('selected').siblings().removeClass('selected');
-      }
-    } else {
-      this.$el.toggleClass('selected');
-    }
-      
-    if (e.type == 'contextmenu') {
-      this.$el.addClass('selected')
-    }
-    window.lastSelected = this
-  },
-
-  fillSelected: function($track1, $track2) {
-    if (!$track1 || !$track2) {
-      return
-    }
-    if ($track1 == $track2) {
-      $track1.addClass('selected')
-    } else if ($track1.index() > $track2.index()) {
-      $track1.prevUntil($track2).addClass('selected')
-    } else if ($track2.index() > $track1.index()) {
-      $track2.prevUntil($track1).addClass('selected')
-    }
-    $track1.addClass('selected')
-    $track2.addClass('selected')
   }
   
 }
