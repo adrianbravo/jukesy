@@ -1,6 +1,17 @@
 Mixins.TrackViewEvents = {
 
-  addTrack: function(method) {    
+  removeTrack: function() {
+    if (this.model.playing) {
+      // when deleting multiple songs, this will be more complex
+      Video.next()
+    }
+
+    this.model.playlist.removeTrack(this.model)
+    this.model.playlist.nowPlayingView.render()
+    //this.model.playlist.view.render()
+  },
+  
+  addTrack: function(method, playlist) {    
     var position
       , self = this
       , clone = new Model.Track(this.model.toJSON())
@@ -29,12 +40,12 @@ Mixins.TrackViewEvents = {
     
     if (method == 'play' || method == 'next') {
       if (Video.track) {
-        position = _.indexOf(NowPlaying.tracks, Video.track) + 1
+        position = _.indexOf(playlist.tracks, Video.track) + 1
       } else {
         position = 0
       }
     }
-    NowPlaying.add(clone, position)
+    playlist.add(clone, position)
     
     _.defer(function() {
       self.$el.removeClass('selected').siblings().removeClass('selected')
@@ -43,15 +54,15 @@ Mixins.TrackViewEvents = {
   },
     
   playNow: function() {
-    this.addTrack('play').play()
+    this.addTrack('play', NowPlaying).play()
   },
   
   queueNext: function() {
-    this.addTrack('next')
+    this.addTrack('next', NowPlaying)
   },
   
   queueLast: function() {
-    this.addTrack('last')
+    this.addTrack('last', NowPlaying)
   },
   
   dropdown: function() {

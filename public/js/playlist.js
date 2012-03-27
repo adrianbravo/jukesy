@@ -15,6 +15,10 @@ Model.Playlist = Backbone.Model.extend({
     track.playlist = this
   },
   
+  removeTrack: function(track) {
+    this.tracks.splice(_.indexOf(this.tracks, track), 1)
+  },
+  
   nowPlaying: function() {
     window.NowPlaying = this
     if (Video.player) {

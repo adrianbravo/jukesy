@@ -83,6 +83,7 @@ View.Track = Backbone.View.extend(_.extend(Mixins.TrackSelection, Mixins.TrackVi
     
   events: {
     'click .play-now' : 'playNow',
+    'click .remove'   : 'removeTrack',
     'click .dropdown' : 'dropdown',
     'click'           : 'toggleSelect'
   },
