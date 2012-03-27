@@ -194,10 +194,11 @@ $(function() {
   window.document.addEventListener('click', function(e) {
     e = e || window.event
     var $target = $(e.target || e.srcElement)
-    //console.log($target, e, $target.parents('a'))
-    //e.preventDefault()
-    //return false
-    // TODO handle case where target is child of <a> tag
+    
+    if (!$target.is('a')) {
+      $target = $target.parents('a')
+    }
+    
     if ($target.is('a') && !$target.hasClass('ll')) { // literal link
       var uri = $target.attr('href')
       if (uri) {
