@@ -4,7 +4,8 @@ Mixins.TrackViewEvents = {
     var position
       , self = this
       , clone = new Model.Track(this.model.toJSON())
-
+    
+    
     // check for now playing track
     /*
         // Adds selected tracks to NowPlaying collection.

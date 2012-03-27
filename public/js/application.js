@@ -178,6 +178,7 @@ $(function() {
   $(window).resize(_.debounce(windowResized))
   windowResized()
   
+  window.CurrentSearch = {}
   window.KeyboardShortcutsView = new View.KeyboardShortcuts
   window.MainView = new View.Main
   window.Session = new Model.Session

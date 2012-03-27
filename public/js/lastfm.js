@@ -2,7 +2,7 @@ Model.LastFM = Backbone.Model.extend({
   key: '75c8c3065db32d805a292ec1af5631a3',
 
   initialize: function() {
-    _.bindAll(this, 'queryCallback')
+    _.bindAll(this, 'queryCallback', 'isCurrentQuery')
     this.results = []
     this.show = true
     this.method = this.get('method')
@@ -20,6 +20,7 @@ Model.LastFM = Backbone.Model.extend({
     this.on('queryCallback', this.updateView)
     this.on('queryCallback', this.updateLoadMore)
     
+    window.CurrentSearch[this.type] = this
     this.query()
   },
   
@@ -34,9 +35,16 @@ Model.LastFM = Backbone.Model.extend({
   
   queryCallback: function(data) {
     this.loading = false
+    if (!this.isCurrentQuery()) {
+      return false
+    }
     this.paginationParser[this.paginationType || 'noPagination'].apply(this, [ data ])
     this.appendResults(this.pluckResults(data))
     this.trigger('queryCallback')
+  },
+  
+  isCurrentQuery: function() {
+    return CurrentSearch[this.type] == this
   },
   
   appendResults: function(results) {
@@ -47,6 +55,9 @@ Model.LastFM = Backbone.Model.extend({
     }
     
     if (_.isArray(results)) {
+      if (this.method == 'track.getSimilar') {
+        this.addQueriedTrackToResults()
+      }
       _.forEach(results, function(result) {
         self.results.push(new Model['SearchResult' + _.capitalize(self.type)](self.resultParser[self.resultType].apply(self, [ result ])))
       })
@@ -56,11 +67,27 @@ Model.LastFM = Backbone.Model.extend({
     }
   },
   
+  addQueriedTrackToResults: function() {
+    this.results.push(new Model['SearchResult' + _.capitalize(this.type)](this.resultParser[this.resultType].apply(this, [{
+      name: this.get('track'),
+      artist: {
+        name: this.get('artist')
+      }
+    }])))    
+  },
+  
+  setType: function(type, deep) {
+    this.resultType = deep ? 'deep' + _.capitalize(type) : type
+    this.type = type
+    
+    // set global here
+    //window['Search' + _.capitalize(type) + 's'] = this
+  },
+  
   methodParser: {
     'artist.getSimilar': function() {
       this.params.artist = this.get('artist'),
-      this.type = 'artist'
-      this.resultType = 'artist'
+      this.setType('artist')
       this.displayType = 'Similar Artists'
       this.pluckResults = function(data) {
         return data.similarartists && data.similarartists.artist
@@ -68,8 +95,7 @@ Model.LastFM = Backbone.Model.extend({
     },
     'artist.getTopAlbums': function() {
       this.params.artist = this.get('artist'),
-      this.type = 'album'
-      this.resultType = 'deepAlbum'
+      this.setType('album', true)
       this.paginationType = 'topalbums'
       this.displayType = 'Top Albums'
       this.pluckResults = function(data) {
@@ -78,8 +104,7 @@ Model.LastFM = Backbone.Model.extend({
     },
     'artist.getTopTracks': function() {
       this.params.artist = this.get('artist'),
-      this.type = 'track'
-      this.resultType = 'deepTrack'
+      this.setType('track', true)
       this.paginationType = 'toptracks'
       this.displayType = 'Top Tracks'
       this.pluckResults = function(data) {
@@ -88,8 +113,7 @@ Model.LastFM = Backbone.Model.extend({
     },
     'artist.search': function() {
       this.params.artist = this.get('artist')
-      this.type = 'artist'
-      this.resultType = 'artist'
+      this.setType('artist')
       this.paginationType = 'search'
       this.displayType = 'Artists'
       this.pluckResults = function(data) {
@@ -99,8 +123,7 @@ Model.LastFM = Backbone.Model.extend({
     'album.getInfo': function() {
       this.params.artist = this.get('artist')
       this.params.album = this.get('album')
-      this.type = 'track'
-      this.resultType = 'deepTrack'
+      this.setType('track', true)
       this.displayType = 'Track List'
       this.pluckResults = function(data) {
         return data.album && data.album.tracks && data.album.tracks.track
@@ -108,8 +131,7 @@ Model.LastFM = Backbone.Model.extend({
     },
     'album.search': function() {
       this.params.album = this.get('album')
-      this.type = 'album'
-      this.resultType = 'album'
+      this.setType('album')
       this.paginationType = 'search'
       this.displayType = 'Albums'
       this.pluckResults = function(data) {
@@ -119,8 +141,7 @@ Model.LastFM = Backbone.Model.extend({
     'track.getSimilar': function() {
       this.params.artist = this.get('artist')
       this.params.track = this.get('track')
-      this.type = 'track'
-      this.resultType = 'deepTrack'
+      this.setType('track', true)
       this.displayType = 'Similar Tracks'
       this.pluckResults = function(data) {
         return data.similartracks && data.similartracks.track
@@ -128,8 +149,7 @@ Model.LastFM = Backbone.Model.extend({
     },
     'track.search': function() {
       this.params.track = this.get('track')
-      this.type = 'track'
-      this.resultType = 'track'
+      this.setType('track')
       this.paginationType = 'search'
       this.displayType = 'Tracks'
       this.pluckResults = function(data) {
@@ -253,7 +273,7 @@ Model.LastFM = Backbone.Model.extend({
   },
   
   updateView: function() {
-    if (!this.show) {
+    if (!this.show || !this.isCurrentQuery()) {
       return
     }
     if (!this.view) {
