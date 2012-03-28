@@ -150,6 +150,20 @@ Model.LastFM = Backbone.Model.extend({
         return data.results.albummatches && data.results.albummatches.album
       }
     },
+    'chart.getTopArtists': function() {
+      this.setType('artist')
+      this.displayType = 'Top Artists on Last.fm'
+      this.pluckResults = function(data) {
+        return data.artists && data.artists.artist
+      }
+    },
+    'chart.getTopTracks': function() {
+      this.setType('track', true)
+      this.displayType = 'Top Tracks on Last.fm'
+      this.pluckResults = function(data) {
+        return data.tracks && data.tracks.track
+      }
+    },
     'track.getSimilar': function() {
       this.params.artist = this.get('artist')
       this.params.track = this.get('track')
@@ -248,9 +262,9 @@ Model.LastFM = Backbone.Model.extend({
     }
   },
   
-  resultImage: function(result, size){
+  resultImage: function(result){
     var src = '',
-        size = size || 'large'
+        size = this.get('imageSize') || 'extralarge'
     if (_.isArray(result.image)) {
       _.each(result.image, function(image) {
         if (image.size == size) {

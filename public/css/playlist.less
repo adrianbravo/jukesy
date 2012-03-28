@@ -152,6 +152,38 @@
     }
   }
   
+  .welcome .artists {
+    ul li {
+      width: 20%;
+      .image {
+        display: inline-block;
+        margin-right: 10px;
+        width: 128px;
+        height: 128px;
+        padding: 2px;
+        .radius(2px);
+        background: @blue;
+        
+        &:hover {
+          background: #fff;
+        }
+        
+        img {
+          background: #fff;
+          width: 128px;
+          height: 128px;
+        }
+      
+        .info {
+          display: inline-block;
+          width: 128px;
+          vertical-align: top;
+        }
+      }
+    }
+  }
+  
+  
   .albums {
     ul {
       list-style: none;

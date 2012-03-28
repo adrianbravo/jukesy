@@ -31,7 +31,8 @@ AppRouter = Backbone.Router.extend({
   },
     
   welcome: function() {
-    MainView.render('welcome')
+    //MainView.render('welcome')
+    MainView.render(new View.Welcome)
   },
 
   about: function() {
@@ -125,7 +126,7 @@ View.Main = Backbone.View.extend({
   el: $('#main'),
 
   templates: {
-    welcome        : jade.compile($('#welcome-template').text()),
+    //welcome        : jade.compile($('#welcome-template').text()),
     about          : jade.compile($('#about-template').text()),
     termsOfService : jade.compile($('#terms-of-service-template').text()),
     privacyPolicy  : jade.compile($('#privacy-policy-template').text()),

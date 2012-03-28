@@ -7,8 +7,9 @@
   - if (showMore)
     a.btn.btn-primary.show-more.pull-right(href= showMore) Show more &raquo;
   h3 #{displayType}
-  .clear
-  br
+  - if (showMore)
+    .clear
+    br
 
   .albums
     ul.unstyled
