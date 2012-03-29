@@ -156,9 +156,9 @@ View.SearchResultsTracks = Backbone.View.extend(_.extend({
   type: 'tracks',
   
   events: {
-    'click .play-all'   : 'playAll',
-    'click .queue-next' : 'queueNext',
-    'click .queue-last' : 'queueLast'
+    'click .play-all'       : 'playAll',
+    'click .queue-all-next' : 'queueNext',
+    'click .queue-all-last' : 'queueLast'
   },
   
   playAll: function() {
