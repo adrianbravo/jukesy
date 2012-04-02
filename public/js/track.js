@@ -3,6 +3,7 @@ Model.Track = Backbone.Model.extend({
   initialize: function () {
     _.bindAll(this, 'setVideoIds')
     this.view = new View.Track({ model: this })
+    this.viewTrackInfo = new View.TrackInfo({ model: this })
   },
       
   play: function() {
@@ -70,13 +71,23 @@ Model.Track = Backbone.Model.extend({
   unsetPlaying: function() {
     this.playing = false
     this.view.$el.removeClass('playing').find('.icon-music').addClass('icon-play').removeClass('icon-music')
+    this.viewTrackInfo.render()
   },
   
   setPlaying: function() {
     this.playing = true
     this.view.$el.addClass('playing').find('.icon-play').addClass('icon-music').removeClass('icon-play')
+    this.viewTrackInfo.render()
   }
 
+})
+
+View.TrackInfo = Backbone.View.extend({
+  template: jade.compile($('#track-info-template').text()),
+
+  render: function() {
+    $('#controls .track-info').html(!this.model.playing ? '' : this.template({ track: this.model }))
+  }
 })
 
 View.Track = Backbone.View.extend(_.extend(Mixins.TrackViewEvents, {
