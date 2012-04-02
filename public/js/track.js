@@ -40,6 +40,7 @@ Model.Track = Backbone.Model.extend({
       
       Meow.render('Now playing ' + this.get('name') + ' by ' + this.get('artist') + '.')
       Video.load(this.video)
+      Video.play()
     }
   },
   

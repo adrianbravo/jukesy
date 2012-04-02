@@ -73,11 +73,15 @@ Model.Video = Backbone.Model.extend({
     }
   },
   
+  isInitialLoad: function() {
+    return this.state == -1 && !this.loadRatio() && !this.playRatio()
+  },
+
   next: function() {
     var self = this
       , next = null
     
-    if (this.loading || this.state == 3 || this.tryRepeat()) {
+    if (this.loading || this.state == 3 || this.isInitialLoad() || this.tryRepeat()) {
       return
     }
     
@@ -86,7 +90,12 @@ Model.Video = Backbone.Model.extend({
     } else {
       next = NowPlaying.tracks[_.indexOf(NowPlaying.tracks, this.track) + 1]
     }
-    next.play()
+
+    if (next === this.track) {
+      this.seek(0)
+    } else {
+      next.play()
+    }
   },
   
   prev: function() {
