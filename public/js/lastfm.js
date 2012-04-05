@@ -20,6 +20,7 @@ Model.LastFM = Backbone.Model.extend({
     this.on('queryCallback', this.updateView)
     this.on('queryCallback', this.updateLoadMore)
     
+    // TODO should only happen if this result set needs a view
     this.setCurrentSearch()
     this.query()
   },
@@ -39,6 +40,7 @@ Model.LastFM = Backbone.Model.extend({
   
   queryCallback: function(data) {
     this.loading = false
+    // TODO should only happen if this result set needs a view
     if (!this.isCurrentQuery()) {
       return false
     }
