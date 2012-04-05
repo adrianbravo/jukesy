@@ -132,7 +132,7 @@ View.SearchResults = {
     
     if (_.isArray(this.model.results) && this.$innerEl().length) {
       _.forEach(this.model.results, function(result) {
-        self.$innerEl().append(result.view.$el)
+        self.$innerEl().append(result.view.render().$el)
       })
     }
     this.delegateEvents()
@@ -193,15 +193,12 @@ View.SearchResultsArtists = Backbone.View.extend(_.extend({
 }, View.SearchResults))
 
 View.SearchResult = Backbone.View.extend({  
-  initialize: function() {
-    this.render()
-  },
-  
   render: function() {
     var json = {}
     json[this.type] = this.model
     this.$el.html(this.template(json))
     this.delegateEvents()
+    delete json
     return this
   }
 })

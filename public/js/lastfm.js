@@ -64,6 +64,7 @@ Model.LastFM = Backbone.Model.extend({
       if (this.method == 'track.getSimilar') {
         this.addQueriedTrackToResults()
       }
+   
       _.forEach(results, function(result) {
         self.results.push(new Model['SearchResult' + _.capitalize(self.type)](self.resultParser[self.resultType].apply(self, [ result ])))
       })
@@ -89,13 +90,10 @@ Model.LastFM = Backbone.Model.extend({
       }
     }])))    
   },
-  
+
   setType: function(type, deep) {
     this.resultType = deep ? 'deep' + _.capitalize(type) : type
     this.type = type
-    
-    // set global here
-    //window['Search' + _.capitalize(type) + 's'] = this
   },
   
   methodParser: {
@@ -307,7 +305,6 @@ Model.LastFM = Backbone.Model.extend({
     if (!this.view) {
       this.view = new View['SearchResults' + _.capitalize(this.type) + 's']({ model: this })
     }
-    // TODO prevent from rendering on query if view already rendered
     _.defer(this.view.render)
   }
 })
