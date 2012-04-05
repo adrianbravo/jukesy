@@ -3,8 +3,8 @@ Model.Video = Backbone.Model.extend({
   initialize: function() {
     swfobject.embedSWF('http://www.youtube.com/apiplayer?version=3&enablejsapi=1&playerapiid=video&wmode=transparent', // swfUrlStr
                        'video', // replaceElemIdStr
-                       '270',   // width
-                       '150',   // height
+                       '640',   // width
+                       '360',   // height
                        '8',     // swfVersionStr
                        null,    // xiSwfUrlStr
                        null,    // flashVarsObj
@@ -218,15 +218,19 @@ Model.Video = Backbone.Model.extend({
     }
   }, 
 
+  jumpTo: function() {
+    $body.scrollTop($('#video').position().top)
+  },
+
   // TODO replace filters as front-end rather than modifying potential search results
   filters: function(str) {
     var filters = ''
-    if (!str.match(/instrumental/i)) filters += ' -instrumental'
-    if (!str.match(/chipmunk/i)) filters += ' -chipmunk'
-    if (!str.match(/karaoke/i)) filters += ' -karaoke'
+    //if (!str.match(/instrumental/i)) filters += ' -instrumental'
+    //if (!str.match(/chipmunk/i)) filters += ' -chipmunk'
+    //if (!str.match(/karaoke/i)) filters += ' -karaoke'
     //if (!str.match(/cover/i)) filters += ' -cover'
-    if (!str.match(/remix/i)) filters += ' -remix'
-    if (!str.match(/live/i)) filters += ' -live'
+    //if (!str.match(/remix/i)) filters += ' -remix'
+    //if (!str.match(/live/i)) filters += ' -live'
     return filters
   }
 
@@ -307,6 +311,9 @@ View.Controls = Backbone.View.extend({
       this.$el.find('#timer .fill').width(0)
       this.$el.find('#timer .track').width(0)
     }
+    if (Video.fullscreen) {
+      $body.scrollTop(0)
+    }
   },
   
   next: function() {
@@ -359,14 +366,20 @@ View.Controls = Backbone.View.extend({
   fullscreenDisable: function() {
     Video.fullscreen = false
     this.$el.find('#fullscreen div').removeClass('icon-resize-small')
-    $('body').removeClass('fullscreen')
+    $body.removeClass('fullscreen').width('').height('')
     $('#video').width('').height('')
+    _.defer(function() {
+      Video.jumpTo()
+    })
   },
   
   fullscreenEnable: function() {
     Video.fullscreen = true
     this.$el.find('#fullscreen div').addClass('icon-resize-small')
-    $('body').addClass('fullscreen')
+    $body.addClass('fullscreen')
+    _.defer(function() {
+      $body.scrollTop(0)
+    })
   },
   
   toggleRadio: function() {
@@ -401,7 +414,7 @@ View.Controls = Backbone.View.extend({
     this.dragger(e)
     $(document).on('mouseup', this.dragVolumeStop)
     $(document).on('mousemove', this.dragger)
-    $('body').addClass('dragging')
+    $body.addClass('dragging')
   },
   
   dragVolumeFill: function($target, callback) {
@@ -416,7 +429,7 @@ View.Controls = Backbone.View.extend({
   },
   
   dragVolumeStop: function(e) {
-    $('body').removeClass('dragging')
+    $body.removeClass('dragging')
     if (e) {
       this.dragger(e, function(lastVolume) {
         if (lastVolume) {
@@ -442,7 +455,7 @@ View.Controls = Backbone.View.extend({
     this.dragger(e)
     $(document).on('mouseup', this.dragTimerStop)
     $(document).on('mousemove', _.debounce(this.dragger, 300))
-    $('body').addClass('dragging')
+    $body.addClass('dragging')
   },
   
   dragTimerFill: function($target, timerWidth, maxTime, callback) {
@@ -454,7 +467,7 @@ View.Controls = Backbone.View.extend({
   },
   
   dragTimerStop: function(e) {
-    $('body').removeClass('dragging')
+    $body.removeClass('dragging')
     $(document).off('mousemove')
     $(document).off('mouseup')
     this.dragger = null

@@ -29,13 +29,15 @@ function onYouTubePlayerReady(id) {
 // Redraws on resize
 var windowResized = function() {
   if (window.Controls) {
-    Controls.updateTimer()
+    //Controls.updateTimer()
   }
   
   if (window.Video && Video.fullscreen) {
     var $video = $('#video')
-    $video.height($(window).height() - parseInt($video.css('bottom')))
+    $video.height($(window).height() - parseInt($('#controls').height()))
     $video.width($(window).width())
+    $body.width($video.width())
+    $body.height($video.height())
     Video.player.setSize($video.width(), $video.height())
   }
 }

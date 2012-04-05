@@ -142,7 +142,10 @@ KeyMapper = {
     if (Video.fullscreen) {
       Controls.toggleFullscreen()
     }
-    $('#query').focus()
+    _.defer(function() {
+      $body.scrollTop(0)
+      $('#query').focus()
+    })
     return false
   }
       

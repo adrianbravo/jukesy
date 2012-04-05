@@ -146,7 +146,7 @@ View.Main = Backbone.View.extend({
       this.$el.html(template.render().$el)
       template.delegateEvents()
     }
-    $('body').scrollTop(0)
+    $body.scrollTop(0)
   }
 })
 
@@ -176,6 +176,7 @@ $(function() {
   $(window).resize(_.debounce(windowResized))
   windowResized()
   
+  window.$body = $('body')
   window.CurrentSearch = {}
   window.KeyboardShortcutsView = new View.KeyboardShortcuts
   window.MainView = new View.Main
@@ -212,7 +213,7 @@ $(function() {
   })
   */
 
-  $('body').addClass('in') // fade in
+  $body.addClass('in') // fade in
 
   window.Router = new AppRouter
 })

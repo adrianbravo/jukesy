@@ -17,8 +17,12 @@ body {
   }
   
   &.fullscreen {
-    #video {
+    position: absolute;
+    overflow: hidden;
+    #video-wrapper {
+      position: absolute;
       left: 0;
+      top: 0;
       z-index: 100000;
     }
   }
@@ -108,7 +112,7 @@ a:hover {
 }
 
 footer {
-  padding-bottom: 200px;
+  padding-bottom: 99px;
   a {
     margin: 0 5px;
     &:first-child {
@@ -117,13 +121,12 @@ footer {
   }
 }
 
-#video {
-  .no-select();
-  background: #000;
-  position: fixed;
-  bottom: 45px;
-  left: 0;
-  box-shadow: 0 0 2px 1px @blue;
+#video-wrapper {
+  padding-bottom: 40px;
+  #video {
+    .no-select();
+    background: #000;
+  }
 }
 
 #keyboard-shortcuts-modal {
