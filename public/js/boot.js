@@ -21,9 +21,9 @@ window.Mixins = {}
 function onYouTubePlayerReady(id) {
   // Set the video player elements and bind its change and error events.
   Video.player = $('#' + id)[0]
-  Video.volume(50)
   Video.player.addEventListener('onStateChange', 'Video.onStateChange')
   Video.player.addEventListener('onError', 'Video.onError')
+  Video.volume(50)
 }
 
 // Redraws on resize

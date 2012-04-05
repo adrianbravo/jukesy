@@ -115,6 +115,16 @@ KeyMapper = {
     return false
   },
     
+  // J
+  k74: function(e) {
+    if (this.keypressHasModifier(e)) return
+    if (Video.fullscreen) {
+      Controls.toggleFullscreen()
+    }
+    Video.jumpTo()
+    return false
+  },
+    
   // M
   k77: function(e) {
     if (this.keypressHasModifier(e)) return
@@ -152,5 +162,5 @@ KeyMapper = {
 }
 
 $(function() {
-  _.bindAll(KeyMapper, 'keypressHasModifier', 'k27', 'k32', 'k37', 'k38', 'k39', 'k40', 'k68', 'k70', 'k77', 'k82', 'k83', 'k191')
+  _.bindAll(KeyMapper, 'keypressHasModifier', 'k27', 'k32', 'k37', 'k38', 'k39', 'k40', 'k68', 'k70', 'k74', 'k77', 'k82', 'k83', 'k191')
 })
