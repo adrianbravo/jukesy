@@ -69,20 +69,30 @@
   #now-playing {
     .error {
       td {
-        background: #666;
-        opacity: 0.8;
         &.artist a, &.name a {
-          color: #fff;
+          color: @red;
         }
       }
       td.play {
         a {
-          display: none;
+          color: @red;
+          cursor: default;
+          &:hover {
+            background: transparent;
+          }
         }
       }
       td.dd {
         .dropdown {
-          display: none;
+          li a:hover {
+            background: @red;
+          }
+          .dropdown-toggle {
+            color: @red;
+          }
+          .play-now, .divider {
+            display: none;
+          }
         }
       }
     }

@@ -3,10 +3,10 @@ td.dd
     a.dropdown-toggle('data-toggle'= 'dropdown')
       i.icon-chevron-down
     ul.dropdown-menu
-      li
-        a.play-now Play Now
-      
-      li.divider
+      - if (!track.error)
+        li
+          a.play-now Play Now
+        li.divider
       
       li
         a.remove Remove Track
@@ -19,8 +19,12 @@ td.dd
       //  a.ban Ban
 
 td.play
-  a.play-now
-    .icon-play
+  - if (!track.error)
+    a.play-now
+      .icon-play
+  - else
+    a
+      .icon-exclamation-sign('data-content'= 'No videos could be found for this track.', 'data-original-title'= 'oops...')
 
 td.name
   a(href= urlTrack(track.get('artist'), track.get('name')))= track.get('name')

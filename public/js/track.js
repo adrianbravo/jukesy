@@ -53,8 +53,10 @@ Model.Track = Backbone.Model.extend({
       }
     }
   },
+
   noVideos: function() {
-    this.view.$el.addClass('error')
+    this.error = true
+    this.view.render().$el.addClass('error').find('.icon-exclamation-sign').popover()
     Video.next()
   },
   
@@ -77,7 +79,6 @@ Model.Track = Backbone.Model.extend({
     
     window.setTrackVideoIds = null
     Video.loading = false
-    //$('#controls #play').removeClass('loading')
     this.play()
   },
   
