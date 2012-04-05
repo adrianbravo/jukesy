@@ -218,12 +218,13 @@ Model.Video = Backbone.Model.extend({
     }
   }, 
 
+  // TODO replace filters as front-end rather than modifying potential search results
   filters: function(str) {
     var filters = ''
     if (!str.match(/instrumental/i)) filters += ' -instrumental'
     if (!str.match(/chipmunk/i)) filters += ' -chipmunk'
     if (!str.match(/karaoke/i)) filters += ' -karaoke'
-    if (!str.match(/cover/i)) filters += ' -cover'
+    //if (!str.match(/cover/i)) filters += ' -cover'
     if (!str.match(/remix/i)) filters += ' -remix'
     if (!str.match(/live/i)) filters += ' -live'
     return filters
