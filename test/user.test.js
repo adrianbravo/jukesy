@@ -199,7 +199,7 @@ describe('User Model', function() {
 
 
     describe('successfully', function() {
-      var user;
+      var user
 
       beforeEach(function(done) {
         User.create({

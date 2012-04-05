@@ -3,6 +3,7 @@ module.exports = function(app) {
   var ApplicationController = app.controller('Application')
     , HomeController = app.controller('Home')
     , UserController = app.controller('User')
+    , PlaylistController = app.controller('Playlist')
     , SessionController = app.controller('Session')
     , User = app.model('User')
   
@@ -29,6 +30,17 @@ module.exports = function(app) {
   app.get('/user/:username/edit', app.auth.authenticate, app.auth.authorize, UserController.edit)
   app.put('/user/:username', app.auth.authenticate, app.auth.authorize, UserController.update)
   app.del('/user/:username', app.auth.authenticate, app.auth.authorize, UserController.delete)
+
+  app.get('/user/:username/playlist', PlaylistController.index)//, UserController.index)
+    // should show so long as the user exists
+    // should list any playlists belonging to the user
+    // if logged in, show all
+    // else, show private
+  // should 
+  //app.post('/user/:username/playlist')//, UserController.create)
+  //app.get('/user/:username/playlist/:playlistId')//, app.auth.authenticate, UserController.read)
+  //app.put('/user/:username/playlist/:playlistId')//, app.auth.authenticate, app.auth.authorize, UserController.update)
+  //app.del('/user/:username/playlist/:playlistId')//, app.auth.authenticate, app.auth.authorize, UserController.delete)
 
   app.get('/session/refresh', app.auth.authenticate, SessionController.refresh)
   app.post('/session', SessionController.create)
