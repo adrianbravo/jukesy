@@ -3,30 +3,18 @@ ul.nav.nav-list
     a(href= '/now-playing')
       i.icon-music
       |  Now Playing
-  li
-    a(href= '/radio')
-      i.icon-signal
-      |  Radio
-  - if (typeof currentUser != 'undefined')
-    li
-      a(href= '/favorites')
-        i.icon-star
-        |  Favorites
-    hr
-    li
-      a(href= '#')
-        i.icon-plus-sign
-        |  Create a playlist
-    li
-      a(href= '/user/#{currentUser.username}/playlists/1')
-        i.icon-empty
-        |  Gorillaz
-    li
-      a(href= '/user/#{currentUser.username}/playlists/2')
-        i.icon-empty
-        |  Hello World
-    li
-      a(href= '/user/#{currentUser.username}/playlists/3')
-        i.icon-empty
-        |  Funk
 
+  li
+    a(href= '/favorites')
+      i.icon-star
+      |  Favorites
+
+  li
+    a(href= '#')
+      i.icon-plus-sign
+      |  Create a playlist
+
+  - if (typeof currentUser != 'undefined')
+
+    // if no playlists, do not show hr
+    // else, show hr and list of playlists

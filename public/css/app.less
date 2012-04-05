@@ -35,15 +35,13 @@ a:hover {
   background: #222;
   padding: 20px;
 }
-.navbar-inner {
-  background: @blue;
-  border: 0;
-}
 
 #header .navbar-inner {  
+  background: @blue;
+  border-bottom: 0;
+
   #query {
-    margin-top: 6px;
-    margin-bottom: 0;
+    margin: 6px 0 0;
     background: #fff;
     border-color: rgba(51, 181, 229, 0.7);
     &::-webkit-input-placeholder, &::-moz-placeholder {
@@ -51,22 +49,20 @@ a:hover {
     }
     &:focus {
       background: #fff;
+      color: #333;
     }
   }
   
-  #brand {
-    color: #fff;
-    border-color: #fff;
-    &:hover {
-      color: #fff;
-    }
-  }
   a {
     color: #fff;
-    border-left-color: rgba(255, 255, 255, 0.3);
+    border-left: 0;
     &:hover {
       border-bottom-color: #fff;
     }
+  }
+
+  .dropdown-menu a {
+    border-color: transparent;
   }
   
   #session-button {
@@ -74,6 +70,7 @@ a:hover {
       margin-right: 0;
       .caret {
         margin-top: 8px;
+        opacity: 1;
       }
     }
   }
@@ -85,7 +82,6 @@ a:hover {
 
 #sidebar {
   position: absolute;
-  width: 140px;
   
   hr {
     margin: 4px 0;
@@ -95,13 +91,19 @@ a:hover {
     margin: 0 -8px 0 0;
     padding: 0;
     font-size: 14px;
-        
-    li a {
-      margin: 0;
-      padding: 4px 4px;
-      font-size: 14px;
-      line-height: 20px;
-    }
+
+    li {
+      a {
+        margin: 0;
+        padding: 4px 0;
+        font-size: 14px;
+        line-height: 20px;
+        &:hover {
+          color: #fff;
+          background: transparent;
+        }
+      }
+    }  
   }
 }
 
@@ -156,6 +158,7 @@ footer {
   bottom: 45px;
   right: 20px;
   .alert {
+    box-shadow: 0 0 0 2px #fff;
     opacity: 0;
     .fade(.5s);
   }
