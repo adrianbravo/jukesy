@@ -11,7 +11,6 @@ html {
   background: #252a30;
 }
 body {
-  padding-top: 60px;
 
   &.dragging {
     .no-select();
@@ -36,23 +35,37 @@ a:hover {
   background: #222;
   padding: 20px;
 }
+.navbar-inner {
+  background: @blue;
+  border: 0;
+}
 
 #header .navbar-inner {  
   #query {
     margin-top: 6px;
     margin-bottom: 0;
+    background: #fff;
+    border-color: rgba(51, 181, 229, 0.7);
     &::-webkit-input-placeholder, &::-moz-placeholder {
       color: #666;
     }
     &:focus {
-      background: #eee;
+      background: #fff;
     }
   }
   
   #brand {
-    color: @blue;
+    color: #fff;
+    border-color: #fff;
     &:hover {
       color: #fff;
+    }
+  }
+  a {
+    color: #fff;
+    border-left-color: rgba(255, 255, 255, 0.3);
+    &:hover {
+      border-bottom-color: #fff;
     }
   }
   
