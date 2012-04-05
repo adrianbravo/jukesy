@@ -81,7 +81,12 @@ Model.Video = Backbone.Model.extend({
     var self = this
       , next = null
     
-    if (this.loading || this.state == 3 || this.isInitialLoad() || this.tryRepeat()) {
+    if (this.skipToPrev) {
+      this.prev()
+      return
+    }
+
+    if (this.loading || this.state == 3 || this.tryRepeat()) {
       return
     }
     
@@ -184,19 +189,9 @@ Model.Video = Backbone.Model.extend({
   },
   
   onError: function(error) {
-    console.log('Video.onError', error)
-    if (error == '150') {
-      //this.track.playNextVideo()
-      this.track.videos = _.rest(this.track.videos)
-      this.track.play()
-    }
+    this.track.youtubeError(parseInt(error))
   },
   
-  error: function() {
-    $(this.track.view.el).addClass('error')
-    this.skipToPrev ? this.prev() : this.next()
-  },
-
   search: function(track) {
     var query = '"' + track.artist + '" "' + track.name + '"'
     if (!this.loading) {

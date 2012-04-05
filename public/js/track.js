@@ -9,6 +9,7 @@ Model.Track = Backbone.Model.extend({
   play: function() {
     var self = this
     
+    // this.playing poses an issue
     if (!Video.player || Video.loading || this.playing) {
       return false
     }
@@ -25,24 +26,36 @@ Model.Track = Backbone.Model.extend({
     if (_.isUndefined(this.videos)) {
       this.getVideoIds()
     } else if (_.isEmpty(this.videos)) {
-      Video.error()
+      this.noVideos()
     } else {
-      //_.defer(function() {
-      //  Controls.updateTrackInfo()
-      //})
-      
       this.setPlaying()
       
       Video.skipToPrev = false
-      if (!this.video) {
-        //this.video = this.bestVideo()
-        this.video = this.videos[0].id
-      }
+      this.setVideo()
       
       Meow.render('Now playing ' + this.get('name') + ' by ' + this.get('artist') + '.')
       Video.load(this.video)
       Video.play()
     }
+  },
+
+  // TODO clean this up, this.playing is a hack
+  youtubeError: function(error) {
+    if (error == 150) {
+      this.video = null
+      this.videos = _.rest(this.videos)
+      if (this.videos.length) {
+        this.setVideo()
+        this.playing = false
+        this.play()
+      } else {
+        this.noVideos()
+      }
+    }
+  },
+  noVideos: function() {
+    this.view.$el.addClass('error')
+    Video.next()
   },
   
   getVideoIds: function() {
@@ -68,6 +81,13 @@ Model.Track = Backbone.Model.extend({
     this.play()
   },
   
+  setVideo: function() {
+    if (!this.video) {
+      //this.video = this.bestVideo()
+      this.video = this.videos[0].id
+    }
+  },
+
   unsetPlaying: function() {
     this.playing = false
     this.view.$el.removeClass('playing').find('.icon-music').addClass('icon-play').removeClass('icon-music')
