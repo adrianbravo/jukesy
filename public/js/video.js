@@ -164,10 +164,6 @@ Model.Video = Backbone.Model.extend({
     }
   },
   
-  clearVolumeIcon: function() {
-    var $volume = $('#volume')
-  },
-
   seek: function(time) {
     this.player.seekTo(time, false)
   },
@@ -247,6 +243,7 @@ View.Controls = Backbone.View.extend({
   
   render: function() {
     this.$el.html(this.template())
+    this.volumeRefresh()
   },
   
   events: {
@@ -260,6 +257,12 @@ View.Controls = Backbone.View.extend({
     'click #volume'     : 'toggleMute',
     'mousedown #volume-bar'  : 'dragVolume',
     'mousedown #timer' : 'dragTimer'
+  },
+
+  volumeRefresh: function() {
+    if (Video.player) {
+      Video.volume(Video.player.getVolume())
+    }
   },
   
   playPause: function(e) {
