@@ -61,38 +61,38 @@ describe('Playlist Model', function() {
     })
   })
 
-/*
 
+    /*
   describe('#exposeJSON', function() {
-    var user, admin
+    var owner, viewer, playlist
 
     beforeEach(function(done) {
       User.create({
-        username: 'tester',
-        email: 'test@test.test',
-        password: 'test',
-        fullname: 'test bravo',
-        location: 'sf',
-        website: 'http://jukesy.com'
+        username: 'owner',
+        email: 'owner@test.test',
+        password: 'pw',
       }, function(err, u) {
-        user = u
+        owner = u
         expect(user).to.exist
         User.create({
-          username: 'admin',
-          email: 'admin@test.test',
-          password: 'admin',
-          fullname: 'admian bravo',
-          admin: true
-        }, function(err, a) {
-          admin = a
-          expect(admin).to.exist
-          done()
+          username: 'viewer',
+          email: 'viewer@test.test',
+          password: 'pw',
+        }, function(err, u) {
+          viewer = u
+          expect(viewer).to.exist
+          Playlist.create({ user: owner.username }, function(err, p) {
+            playlist = p
+            expect(playlist).to.exist
+            done()
+          })
         })
       })
     })
     
+    // should not return
     it('does not return sensitive data when passed a null viewer', function(done) {
-      var json = user.exposeJSON()
+      var json = playlist.exposeJSON()
       expect(json).to.exist
       expect(json).to.have.keys('username', 'fullname', 'location', 'website', 'bio')
       expect(json).to.not.have.keys('email', 'password')
@@ -125,6 +125,10 @@ describe('Playlist Model', function() {
 
   })
 
+    */
+
+
+/*
   describe('#updateAttributes (accessible plugin)', function() {
     var user
 
@@ -249,40 +253,6 @@ describe('Playlist Model', function() {
 
   })
 
-  describe('#time (timestamps plugin)', function() {
-    var user
-
-    beforeEach(function(done) {
-      User.create({
-        username: 'tester',
-        email: 'test@test.test',
-        password: 'test'
-      }, function(err, u) {
-        user = u
-        expect(user).to.exist
-        setTimeout(done, 1000)
-      })
-    })
-
-    it('sets time.created only on create', function(done) {
-      var created = user.time.created
-      user.save(function(err, user) {
-        expect(user).to.exist
-        expect(user.time.created).to.equal(created)
-        done()
-      })
-    })
-
-    it('sets time.updated on update', function(done) {
-      var updated = user.time.updated
-      user.save(function(err, user) {
-        expect(user).to.exist
-        expect(user.time.updated).to.not.equal(updated)
-        done()
-      })
-    })
-
-  })
   */
 
 })

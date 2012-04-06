@@ -31,12 +31,9 @@ module.exports = function(app) {
   app.put('/user/:username', app.auth.authenticate, app.auth.authorize, UserController.update)
   app.del('/user/:username', app.auth.authenticate, app.auth.authorize, UserController.delete)
 
-  app.get('/user/:username/playlist', PlaylistController.index)//, UserController.index)
-    // should show so long as the user exists
-    // should list any playlists belonging to the user
-    // if logged in, show all
-    // else, show private
-  // should 
+  app.get('/user/:username/playlist', app.auth.authenticate, PlaylistController.index)//, UserController.index)
+  // create, update, and delete should all use authorize
+
   //app.post('/user/:username/playlist')//, UserController.create)
   //app.get('/user/:username/playlist/:playlistId')//, app.auth.authenticate, UserController.read)
   //app.put('/user/:username/playlist/:playlistId')//, app.auth.authenticate, app.auth.authorize, UserController.update)

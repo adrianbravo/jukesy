@@ -5,20 +5,104 @@ describe('Playlist Controller', function() {
 
   beforeEach(function(done) {
     User.find().remove()
-    //Playlist.find().remove()
+    Playlist.find().remove()
     done()
   })
 
-/*
-  describe('GET /user (#index)', function() {
+  describe('GET /user/:username/playlist (#index)', function() {
+    var user
 
-    it('returns a 501 error', function(done) {
-      request.get('/user', function(res) {
-        expect(res).status(501)
+    beforeEach(function(done) {
+      User.create({ username: 'adrian', password: 'pw', email: 'own@test.test' }, function(err, u) {
+        user = u
+        expect(user).to.exist
         done()
       })
     })
 
+    it('returns a 200 if user exists', function(done) {
+      request.get('/user/adrian/playlist', function(res) {
+        expect(res).status(200)
+        done()
+      })
+    })
+
+    it('returns a 404 if user does not exist', function(done) {
+      request.get('/user/osfjaofjsf/playlist', function(res) {
+        expect(res).status(404)
+        done()
+      })
+    })
+
+    it('returns all playlists for the user', function(done) {
+      Playlist.create({ user: user.username, name: 'Durr' }, function(err, playlist) {
+        expect(playlist).to.exist
+        Playlist.create({ user: user.username }, function(err, playlist) {
+          expect(playlist).to.exist
+
+          request.get('/user/adrian/playlist', function(res) {
+            expect(res).status(200)
+            expect(res.body).to.have.length(2)
+            done()
+          })
+        })
+      })
+    })
+
+/*
+
+    it('returns 401 if not logged in', function(done) {
+      request.put('/user/adrian', {}, function(res) {
+        expect(res).status(401)
+        done()
+      })
+    })
+    
+    it('returns 404 if user does not exist', function(done) {
+      request
+        .put('/user/notadrian', {})
+        .set('cookie', cookie)
+        .end(function(res) {
+          expect(res).status(404)
+          done()
+        })
+    })
+
+    it('returns 401 if logged in as different user', function(done) {
+      User.create({
+        username: 'notadrian',
+        password: 'test',
+        email: 'test2@test.test'
+      }, function(err, u) {
+        request
+          .put('/user/notadrian', {})
+          .set('cookie', cookie)
+          .end(function(res) {
+            expect(res).status(401)
+            done()
+          })
+      })
+    })
+    
+    it('returns 200 if logged in as right user', function(done) {
+      request
+        .put('/user/adrian', {})
+        .set('cookie', cookie)
+        .end(function(res) {
+          expect(res).status(200)
+          expect(res.body.username).to.equal('adrian')
+          done()
+        })
+    })
+  */  
+
+
+
+
+  })
+
+/*
+  describe('GET /user (#index)', function() {
   })
   
   describe('GET /user/:username (#read)', function() {

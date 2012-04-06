@@ -6,7 +6,7 @@ var mongoose = require('mongoose')
   , validators = app.mongooseValidators
     
 var Playlist = module.exports = new Schema({
-  user    : { type: String, set: app.mongooseSetters.toLower },
+  user    : { type: String, set: app.mongooseSetters.toLower, index: true },
   name    : { type: String, default: 'Untitled Playlist' },
   tracks  : { type: Array, default: [] },
   share   : { type: Boolean, default: true },
