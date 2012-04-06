@@ -17,22 +17,6 @@ Playlist.plugin(app.mongoosePlugins.timestamps, { index: true })
 Playlist.plugin(app.mongoosePlugins.accessible, [ 'name', 'tracks', 'share', 'sidebar' ])
 
 Playlist.method({
-  /*
-  exposeJSON: function(user) {
-    var json = {
-      username : this.username,
-      fullname : this.fullname,
-      bio      : this.bio,
-      location : this.location,
-      website  : this.website
-    }
-    
-    if (user && (user.id == this.id || user.admin)) {
-      json.email = this.email
-    }
-    return json
-  },
-  */
 })
 
 Playlist.static({

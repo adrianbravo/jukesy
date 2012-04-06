@@ -39,7 +39,6 @@ describe('Playlist Controller', function() {
         expect(playlist).to.exist
         Playlist.create({ user: user.username }, function(err, playlist) {
           expect(playlist).to.exist
-
           request.get('/user/adrian/playlist', function(res) {
             expect(res).status(200)
             expect(res.body).to.have.length(2)
@@ -48,57 +47,48 @@ describe('Playlist Controller', function() {
         })
       })
     })
+  })
 
-/*
 
-    it('returns 401 if not logged in', function(done) {
-      request.put('/user/adrian', {}, function(res) {
-        expect(res).status(401)
+  describe('GET /user/:username/playlist/:playlist (#read)', function() {
+    var user, playlist
+
+    beforeEach(function(done) {
+      User.create({ username: 'adrian', password: 'pw', email: 'own@test.test' }, function(err, u) {
+        user = u
+        expect(user).to.exist
+        Playlist.create({ user: user.username, name: 'Durr' }, function(err, p) {
+          playlist = p
+          expect(playlist).to.exist
+          done()
+        })
+      })
+    })
+
+    it('returns a 200 if playlist exists', function(done) {
+      request
+        .get('/user/adrian/playlist/' + playlist.id)
+        .set('X-Requested-With', 'XMLHttpRequest')
+        .end(function(res) {
+          expect(res).status(200)
+          expect(res.body.user).to.equal(user.username)
+          done()
+        })
+    })
+
+    it('returns a 404 if playlist does not exist', function(done) {
+      request.get('/user/adrian/playlist/4f7e536db5e0942238000010', function(res) {
+        expect(res).status(404)
         done()
       })
     })
-    
-    it('returns 404 if user does not exist', function(done) {
-      request
-        .put('/user/notadrian', {})
-        .set('cookie', cookie)
-        .end(function(res) {
-          expect(res).status(404)
-          done()
-        })
-    })
 
-    it('returns 401 if logged in as different user', function(done) {
-      User.create({
-        username: 'notadrian',
-        password: 'test',
-        email: 'test2@test.test'
-      }, function(err, u) {
-        request
-          .put('/user/notadrian', {})
-          .set('cookie', cookie)
-          .end(function(res) {
-            expect(res).status(401)
-            done()
-          })
+    it('returns a 500 if playlist does not exist and id is malformed', function(done) {
+      request.get('/user/adrian/playlist/invalid', function(res) {
+        expect(res).status(500)
+        done()
       })
     })
-    
-    it('returns 200 if logged in as right user', function(done) {
-      request
-        .put('/user/adrian', {})
-        .set('cookie', cookie)
-        .end(function(res) {
-          expect(res).status(200)
-          expect(res.body.username).to.equal('adrian')
-          done()
-        })
-    })
-  */  
-
-
-
-
   })
 
 /*

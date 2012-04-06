@@ -9,11 +9,18 @@ module.exports = function(app) {
         if (err || !playlists) {
           return next(new app.Error(err || 500))
         }
-        //res.json(app._.invoke(playlists, 'toJSON'))
         res.json(playlists)
       })
     },
 
+    read: function(req, res, next) {
+      if (req.xhr) {
+        res.json(req.paramPlaylist)
+      } else {
+        res.render('playlist/show', { playlist: req.paramPlaylist })
+      }
+    },
+    
     /*
     create: function(req, res, next) {
       User.create(req.body, function(err, user) {
@@ -26,15 +33,6 @@ module.exports = function(app) {
       })
     },
 
-    read: function(req, res, next) {
-      var userJSON = req.paramUser.exposeJSON(req.currentUser)
-      if (req.xhr) {
-        res.json(userJSON) 
-      } else {
-        res.render('user/show', { user: userJSON })
-      }
-    },
-    
     edit: function(req, res, next) {
       var userJSON = req.paramUser.exposeJSON(req.currentUser)
       if (req.xhr) {

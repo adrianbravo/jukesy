@@ -6,6 +6,7 @@ module.exports = function(app) {
     , PlaylistController = app.controller('Playlist')
     , SessionController = app.controller('Session')
     , User = app.model('User')
+    , Playlist = app.model('Playlist')
   
   app.param('username', function(req, res, next, username) {
     User.findOne({ username: (username || '').toLowerCase() }, function(err, user) {
@@ -13,6 +14,17 @@ module.exports = function(app) {
         return next(new app.Error(err || 404))
       }
       req.paramUser = user
+      next()
+    })
+  })
+
+  app.param('playlist', function(req, res, next, _id) {
+    // user in this query is superfluous as id is unique
+    Playlist.findOne({ _id: (_id || ''), user: req.paramUser.username }, function(err, playlist) {
+      if (err || !playlist) {
+        return next(new app.Error(err || 404))
+      }
+      req.paramPlaylist = playlist
       next()
     })
   })
@@ -31,7 +43,8 @@ module.exports = function(app) {
   app.put('/user/:username', app.auth.authenticate, app.auth.authorize, UserController.update)
   app.del('/user/:username', app.auth.authenticate, app.auth.authorize, UserController.delete)
 
-  app.get('/user/:username/playlist', app.auth.authenticate, PlaylistController.index)//, UserController.index)
+  app.get('/user/:username/playlist', PlaylistController.index)
+  app.get('/user/:username/playlist/:playlist', PlaylistController.read)
   // create, update, and delete should all use authorize
 
   //app.post('/user/:username/playlist')//, UserController.create)
