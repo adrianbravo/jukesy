@@ -67,7 +67,7 @@ View.Playlist = Backbone.View.extend({
   events: {
     'click .playlist-save'    : 'save',
     'click .playlist-save-as' : 'saveAs',
-    'click .playlist-delete'  : 'delete'
+    //'click .playlist-delete'  : 'delete'
   },
 
   render: function() {
@@ -87,39 +87,41 @@ View.Playlist = Backbone.View.extend({
   },
 
   save: function() {
-    console.log('save')
-    // require user to be logged in
     if (!Session.user) {
-      loginModal.render().addAlert('not_logged_in_save')
-      // login modal w/ callback this.save
-      return false
+      loginModal
+        .render()
+        .addAlert('not_logged_in_save')
+      ModalView.setCallback(this.save)
+      return
     }
-    return false
+    console.log('save')
+    // save, should have success / error callbacks
   },
 
   saveAs: function() {
-    console.log('save as')
-    // require user to be logged in
     if (!Session.user) {
-      loginModal.render().addAlert('not_logged_in_save')
-      // login modal w/ callback this.saveAs
-      return false
+      loginModal
+        .render()
+        .addAlert('not_logged_in_save')
+      ModalView.setCallback(this.saveAs)
+      return
     }
+    console.log('save as')
     // clone playlist model
     // save new playlist model
     // do not change current playlist
-    return false
   },
 
+  /*
   delete: function() {
     console.log('delete')
-    // require user to be logged in
+
     if (!Session.user) {
       // login modal w/ callback this.delete
-      return false
+      return
     }
-    return false
   }
+  */
   
 })
 

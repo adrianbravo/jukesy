@@ -2,8 +2,8 @@ View.Modal = Backbone.View.extend({
   el: '#modal',
 
   initialize: function() {
-    _.bindAll(this, 'hide', 'focusFirstInput')
-    this.$el = $(this.el)
+    _.bindAll(this, 'hide', 'focusFirstInput', 'hidden')
+    this.$el.on('hidden', this.hidden)
   },
 
   render: function(el) {
@@ -16,6 +16,21 @@ View.Modal = Backbone.View.extend({
   },
 
   hide: function() {
+    if (this.callback) {
+      this.callback()
+    }
     this.$el.modal('hide')
+  },
+  
+  hidden: function() {
+    this.unsetCallback()
+  },
+
+  setCallback: function(callback) {
+    this.callback = callback
+  },
+
+  unsetCallback: function() {
+    this.callback = null
   }
 })

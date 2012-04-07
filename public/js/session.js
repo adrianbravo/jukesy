@@ -112,8 +112,8 @@ View.SessionCreate = Backbone.View.extend(_.extend({
   },
 
   submitSuccess: function(user) {
+    Session.login()
     ModalView.hide()
-    this.model.login()
   }
         
 }, Mixins.ViewFormErrors))
