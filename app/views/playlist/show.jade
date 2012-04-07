@@ -1,7 +1,19 @@
+.btn-group.pull-right
+  button.btn.btn-primary.btn-large.save-playlist Save
+  button.btn.btn-primary.btn-large.dropdown-toggle('data-toggle'= 'dropdown')
+    span.caret
+  ul.dropdown-menu
+    li
+      a.playlist-save Save
+    li
+      a.playlist-save-as Save as...
+    li
+      a.playlist-delete Delete
+
 - if (nowPlaying)
   h1 Now Playing
 
-h2 #{playlist.name}
+h3 #{playlist.name}
 
 - if (playlist.user && playlist.time)
   strong Created by #{playlist.user} on #{playlist.time.created}

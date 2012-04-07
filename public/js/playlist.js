@@ -59,7 +59,13 @@ Model.Playlist = Backbone.Model.extend({
 
 View.Playlist = Backbone.View.extend({
   template: jade.compile($('#playlist-template').text()),
-  
+
+  events: {
+    'click .playlist-save'    : 'save',
+    'click .playlist-save-as' : 'saveAs',
+    'click .playlist-delete'  : 'delete'
+  },
+
   render: function() {
     var self = this
     
@@ -74,7 +80,26 @@ View.Playlist = Backbone.View.extend({
       track.view.delegateEvents()
     })
     return this
+  },
+
+  save: function() {
+    // require user to be logged in
+    console.log('save')
+    return false
+  },
+
+  saveAs: function() {
+    // require user to be logged in
+    console.log('save as')
+    return false
+  },
+
+  delete: function() {
+    // require user to be logged in
+    console.log('delete')
+    return false
   }
+  
 })
 
 /*
