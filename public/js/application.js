@@ -48,7 +48,7 @@ AppRouter = Backbone.Router.extend({
   },
   
   nowPlaying: function() {
-    MainView.render(NowPlaying.nowPlayingView)
+    MainView.render(NowPlaying.view)
   },
   
   // TODO waitstate ???

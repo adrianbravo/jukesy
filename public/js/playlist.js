@@ -1,4 +1,13 @@
 Model.Playlist = Backbone.Model.extend({
+
+  url: function() {
+    var url = '/user/' + Session.username + '/playlist'
+    if (!this.isNew()) {
+      url += '/' + this.get('_id')
+    }
+    return url
+  },
+
   defaults: {
     name: 'Untitled Playlist'
   },
@@ -7,7 +16,7 @@ Model.Playlist = Backbone.Model.extend({
     console.log('Playlist.initialize')
     _.bindAll(this, 'nowPlaying')
     
-    this.nowPlayingView = new View.NowPlaying({ model: this })
+    this.view = new View.Playlist({ model: this })
     this.tracks = []
   },
   
@@ -36,7 +45,11 @@ Model.Playlist = Backbone.Model.extend({
   },
   
   nowPlaying: function() {
+    if (window.NowPlaying) {
+      NowPlaying.nowPlaying = false
+    }
     window.NowPlaying = this
+    this.nowPlaying = true
     if (Video.player) {
       Video.stop()
     }
@@ -44,13 +57,18 @@ Model.Playlist = Backbone.Model.extend({
   
 })
 
-View.NowPlaying = Backbone.View.extend({
-  template: jade.compile($('#now-playing-template').text()),
+View.Playlist = Backbone.View.extend({
+  template: jade.compile($('#playlist-template').text()),
   
   render: function() {
     var self = this
     
-    this.$el.html(this.template({ tracks: this.model.tracks }))
+    this.$el.html(this.template({
+      playlist: this.model.toJSON(),
+      tracks: this.model.tracks,
+      nowPlaying: this.model.nowPlaying
+    }))
+
     _.each(this.model.tracks, function(track) {
       self.$el.find('tbody').append(track.view.$el)
       track.view.delegateEvents()
@@ -59,6 +77,7 @@ View.NowPlaying = Backbone.View.extend({
   }
 })
 
+/*
 function discover() {
   console.log('now playing', window.NowPlaying)
   // select random track/tag from playlist
@@ -73,4 +92,4 @@ function discover() {
   // this process should occur as an interval
   // should only add up to 3 tracks ahead
 }
-
+*/
