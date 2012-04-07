@@ -186,6 +186,9 @@ $(function() {
   window.Video = new Model.Video
   window.Meow = new View.Meow
 
+  window.loginModal = new View.SessionCreate({ model: Session })
+  window.signupModal = new View.UserCreate()
+
   var playlist = new Model.Playlist()
   playlist.nowPlaying()
 

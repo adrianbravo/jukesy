@@ -1,7 +1,11 @@
 Model.Playlist = Backbone.Model.extend({
 
+  urlRoot: function() {
+    return Session.user ? '/user/' + Session.user.get('username') + '/playlist' : false
+  },
+
   url: function() {
-    var url = '/user/' + Session.username + '/playlist'
+    var url = this.urlRoot()
     if (!this.isNew()) {
       url += '/' + this.get('_id')
     }
@@ -83,20 +87,37 @@ View.Playlist = Backbone.View.extend({
   },
 
   save: function() {
-    // require user to be logged in
     console.log('save')
+    // require user to be logged in
+    if (!Session.user) {
+      loginModal.render().addAlert('not_logged_in_save')
+      // login modal w/ callback this.save
+      return false
+    }
     return false
   },
 
   saveAs: function() {
-    // require user to be logged in
     console.log('save as')
+    // require user to be logged in
+    if (!Session.user) {
+      loginModal.render().addAlert('not_logged_in_save')
+      // login modal w/ callback this.saveAs
+      return false
+    }
+    // clone playlist model
+    // save new playlist model
+    // do not change current playlist
     return false
   },
 
   delete: function() {
-    // require user to be logged in
     console.log('delete')
+    // require user to be logged in
+    if (!Session.user) {
+      // login modal w/ callback this.delete
+      return false
+    }
     return false
   }
   

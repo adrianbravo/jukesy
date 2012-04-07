@@ -91,19 +91,19 @@ View.UserCreate = Backbone.View.extend(_.extend({
     
   initialize: function() {
     _.bindAll(this, 'submit', 'keyDown', 'submitSuccess', 'submitError', 'newSession')
-    this.$el = $(this.el) // TODO this may be unnecessary
     this.model = new Model.User
-    this.render()
   },
     
   newSession: function() {
-    new View.SessionCreate({ model: Session })
+    window.loginModal.render()
     return false
   },
     
   render: function() {
     this.$el.html(this.template())
     ModalView.render(this.$el)
+    this.delegateEvents()
+    return this
   },
 
   keyDown: function(event) {

@@ -56,14 +56,13 @@ View.SessionButton = Backbone.View.extend({
     
   template: jade.compile($('#session-button-template').text()),
 
-  // TODO DRY up use of newSession, newUser
   newSession: function() {
-    new View.SessionCreate({ model: Session })
+    loginModal.render()
     return false
   },
   
   newUser: function() {
-    new View.UserCreate()
+    signupModal.render()
     return false
   },
 
@@ -91,17 +90,17 @@ View.SessionCreate = Backbone.View.extend(_.extend({
 
   initialize: function() {
     _.bindAll(this, 'submit', 'keyDown', 'submitSuccess', 'submitError')
-    this.$el = $(this.el)
-    this.render()
   },
 
   render: function() {
     this.$el.html(this.template())
     ModalView.render(this.$el)
+    this.delegateEvents()
+    return this
   },
   
   newUser: function() {
-    new View.UserCreate()
+    signupModal.render()
     return false
   },
 
