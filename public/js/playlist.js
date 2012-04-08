@@ -1,5 +1,4 @@
 Model.Playlist = Backbone.Model.extend({
-
   urlRoot: function() {
     return Session.user ? '/user/' + Session.user.get('username') + '/playlist' : false
   },
@@ -77,13 +76,17 @@ View.Playlist = Backbone.View.extend({
   render: function() {
     var self = this
     
+    this.model.set({
+      tracks: this.model.tracks,
+      tracks_count: this.model.tracks.length
+    })
+    
     this.$el.html(this.template({
       playlist: this.model.toJSON(),
-      tracks: this.model.tracks,
       nowPlaying: this.model.nowPlaying
     }))
 
-    _.each(this.model.tracks, function(track) {
+    _.each(this.model.get('tracks'), function(track) {
       self.$el.find('tbody').append(track.view.$el)
       track.view.delegateEvents()
     })
@@ -91,7 +94,7 @@ View.Playlist = Backbone.View.extend({
   },
   
   saveSuccess: function(playlist, response) {
-    console.log('save success', playlist, response)
+    console.log('save success', playlist, this.model.get('_id'), response)
   },
   
   saveError: function(model, error) {
@@ -103,15 +106,8 @@ View.Playlist = Backbone.View.extend({
       loginModal.render().addAlert('not_logged_in_save')
       ModalView.setCallback(this.save)
       return
-    }
-
-    var sendJSON = {}
-    //_.each(this.$el.find('[name]'), function(inputEl) {
-    //  var $input = $(inputEl)
-    //  sendJSON[$input.attr('name')] = $input.val()
-    //})
-    
-    this.model.save(sendJSON, {
+    }    
+    this.model.save({}, {
       success: this.saveSuccess,
       error: this.saveError
     })

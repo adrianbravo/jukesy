@@ -285,7 +285,7 @@ describe('User Model', function() {
     it('returns sensitive data when viewer is user', function(done) {
       var json = user.exposeJSON(user)
       expect(json).to.exist
-      expect(json).to.have.keys('email', 'username', 'fullname', 'location', 'website', 'bio')
+      expect(json).to.have.keys('_id', 'email', 'username', 'fullname', 'location', 'website', 'bio')
       expect(json).to.not.have.keys('password')
       done()
     })
@@ -293,7 +293,7 @@ describe('User Model', function() {
     it('returns sensitive data when viewer is admin', function(done) {
       var json = user.exposeJSON(admin)
       expect(json).to.exist
-      expect(json).to.have.keys('email', 'username', 'fullname', 'location', 'website', 'bio')
+      expect(json).to.have.keys('_id', 'email', 'username', 'fullname', 'location', 'website', 'bio')
       expect(json).to.not.have.keys('password')
       done()
     })

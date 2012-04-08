@@ -12,8 +12,6 @@ var User = module.exports = new Schema({
   email       : { type: String, unique: true, set: app.mongooseSetters.toLower },
   password    : { type: String },
   salt        : { type: String },
-
-  // TODO add validators for these fields
   bio         : { type: String },
   fullname    : { type: String },
   location    : { type: String },
@@ -36,6 +34,7 @@ User.method({
     
     if (user && (user.id == this.id || user.admin)) {
       json.email = this.email
+      json._id = this._id
     }
     return json
   },

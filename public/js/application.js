@@ -22,7 +22,6 @@ AppRouter = Backbone.Router.extend({
 
   initialize: function() {
     _.bindAll(this, 'error')
-    
     Backbone.history.refresh = function() {
       var fragment = this.fragment
       this.navigate('', { trigger: false, replace: true })
@@ -31,7 +30,6 @@ AppRouter = Backbone.Router.extend({
   },
     
   welcome: function() {
-    //MainView.render('welcome')
     MainView.render(new View.Welcome)
   },
 
@@ -53,8 +51,7 @@ AppRouter = Backbone.Router.extend({
   
   // TODO waitstate ???
   userView: function(username) {
-    var user = new Model.User({ id: username, username: username })
-    user.fetch({
+    Session.user.fetch({
       success: function(model, response) {
         MainView.render(new View.User({ model: model }))
       },
@@ -64,8 +61,7 @@ AppRouter = Backbone.Router.extend({
   
   // TODO waitstate ???
   userEdit: function(username) {
-    var user = new Model.User({ id: username, username: username })
-    user.fetch({
+    Session.user.fetch({
       success: function(model, response) {
         MainView.render(new View.UserEdit({ model: model }))
       },
@@ -126,7 +122,6 @@ View.Main = Backbone.View.extend({
   el: $('#main'),
 
   templates: {
-    //welcome        : jade.compile($('#welcome-template').text()),
     about          : jade.compile($('#about-template').text()),
     termsOfService : jade.compile($('#terms-of-service-template').text()),
     privacyPolicy  : jade.compile($('#privacy-policy-template').text()),

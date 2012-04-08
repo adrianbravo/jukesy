@@ -18,7 +18,7 @@ h3 #{playlist.name}
 - if (playlist.user && playlist.time)
   strong Created by #{playlist.user} on #{playlist.time.created}
 
-- if (tracks && tracks.length)
+- if (playlist.tracks_count)
   .tracks
     table.playlist.table.table-striped
       thead
