@@ -14,11 +14,9 @@
   h1 Now Playing
 
 h3 #{playlist.name}
+p Created by #{playlist.user}, #{playlist.tracks_count} tracks
 
-- if (playlist.user && playlist.time)
-  strong Created by #{playlist.user} on #{playlist.time.created}
-
-- if (playlist.tracks_count)
+- if (playlist.tracks_count)  
   .tracks
     table.playlist.table.table-striped
       thead
@@ -28,5 +26,3 @@ h3 #{playlist.name}
           th Track
           th Artist
       tbody
-- else
-  p There are no tracks in this playlist. Try searching for something.

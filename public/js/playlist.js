@@ -12,7 +12,8 @@ Model.Playlist = Backbone.Model.extend({
   },
 
   defaults: {
-    name: 'Untitled Playlist'
+    name: 'Untitled Playlist',
+    user: 'anonymous'
   },
   
   initialize: function() {
@@ -94,11 +95,34 @@ View.Playlist = Backbone.View.extend({
   },
   
   saveSuccess: function(playlist, response) {
-    console.log('save success', playlist, this.model.get('_id'), response)
+    var $alert = new View.Alert({
+      className: 'alert-success alert',
+      message: 'Your playlist has been saved.'
+    })
+    this.render().$el.prepend($alert.render())
   },
   
   saveError: function(model, error) {
-    console.log('save error', model, error)
+    // TODO dry (reused from view form mixins)
+    var errorJSON = {}
+    try {
+      errorJSON = JSON.parse(error.responseText)
+    } catch(e) {}
+    
+    console.log(errorJSON)
+    if (error.status == 401 && !errorJSON.errors) {
+      this.addAlert('unauthorized')
+    } else if (error.status) {
+      //this.addErrors(errorJSON.errors)
+    } else {
+      this.addAlert()
+    }
+    
+    var $alert = new View.Alert({
+      className: 'alert-error alert',
+      message: 'Error!' || parseError(null, 'Error!' || 'no_connection')
+    })
+    this.render().$el.prepend($alert.render())
   },
 
   save: function() {
