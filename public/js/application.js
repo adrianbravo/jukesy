@@ -62,7 +62,9 @@ AppRouter = Backbone.Router.extend({
         success: function(model, response) {
           playlist.tracks = _(playlist.get('tracks')).chain()
             .map(function(track) {
-              return new Model.Track(track)
+              var model = new Model.Track(track)
+              model.playlist = playlist
+              return model
             })
             .value()
           MainView.render(playlist.view)

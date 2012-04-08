@@ -25,6 +25,19 @@
 
 p Created by #{playlist.user}, #{playlist.tracks_count} tracks
 
+- if (!nowPlaying)
+  .btn-group
+    button.btn.btn-large.play-all Play All
+    button.btn.btn-large.dropdown-toggle('data-toggle'= 'dropdown')
+      span.caret
+    ul.dropdown-menu
+      li
+        a.play-all Play All
+      li
+        a.queue-all-next Queue Next
+      li
+        a.queue-all-last Queue Last
+
 - if (playlist.tracks_count)  
   .tracks
     table.playlist.table.table-striped

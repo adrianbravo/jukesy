@@ -63,6 +63,14 @@ Model.Playlist = Backbone.Model.extend({
     if (Video.player) {
       Video.stop()
     }
+  },
+  
+  cloneResults: function() {
+    return _(this.tracks).chain()
+      .map(function(track) {
+        return new Model.Track(track.toJSON())
+      })
+      .value()
   }
   
 })
@@ -78,11 +86,14 @@ View.Playlist = Backbone.View.extend({
     //'click .playlist-save-as'  : 'saveAs',
     'blur .playlist-name-edit' : 'validateName',
     'keypress .playlist-name-edit' : 'keyDown',
-    //'click .playlist-delete'  : 'delete'
+    //'click .playlist-delete'  : 'delete',
+    'click .play-all'       : 'playAll',
+    'click .queue-all-next' : 'queueNext',
+    'click .queue-all-last' : 'queueLast'
   },
-  
+    
   initialize: function() {
-    _.bindAll(this, 'keyDown', 'saveSuccess', 'saveError', 'save', 'focusNameEdit')
+    _.bindAll(this, 'keyDown', 'saveSuccess', 'saveError', 'save', 'focusNameEdit', 'playAll')
   },
 
   render: function(options) {
@@ -113,6 +124,19 @@ View.Playlist = Backbone.View.extend({
     })
     
     return this
+  },
+  
+  playAll: function() {
+    this.model.tracks[0].play()
+    this.render()
+  },
+  
+  queueNext: function() {
+    NowPlaying.addTracks(this.model.cloneResults(), Video.track ? _.indexOf(NowPlaying.tracks, Video.track) + 1 : 0)
+  },
+  
+  queueLast: function() {
+    NowPlaying.addTracks(this.model.cloneResults())
   },
   
   saveSuccess: function(playlist, response) {
