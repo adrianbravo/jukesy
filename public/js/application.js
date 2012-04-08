@@ -7,7 +7,7 @@ AppRouter = Backbone.Router.extend({
     'now-playing'         : 'nowPlaying',
     'user/:username'      : 'userView',
     'user/:username/edit' : 'userEdit',
-    'user/:username/playlist/:playlist' : 'playlist',
+    'user/:username/playlist/:id' : 'playlist',
     'artist/*artist/album/*album' : 'searchAlbum',
     'artist/*artist/track/*track' : 'searchTrack',
     'artist/*artist/top-tracks'   : 'searchArtistTopTracks',
@@ -50,10 +50,10 @@ AppRouter = Backbone.Router.extend({
     MainView.render(NowPlaying.view)
   },
   
-  playlist: function(username, playlist) {
-    var playlist = Playlists.get(playlist)
+  playlist: function(username, id) {
+    var playlist = Playlists.get(id)
     if (!playlist) {
-      playlist = new Model.Playlist({ user: username, _id: playlist })
+      playlist = new Model.Playlist({ user: username, _id: id })
       Playlists.add(playlist)
     }
 

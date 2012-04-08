@@ -113,8 +113,8 @@ View.UserCreate = Backbone.View.extend(_.extend({
     }
   },
   
-  submitSuccess: function(model, response) {
-    Session.login()
+  submitSuccess: function(user) {
+    Session.login(user)
     ModalView.hide()
   }
   

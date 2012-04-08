@@ -17,7 +17,11 @@ module.exports = function(app) {
       if (req.xhr) {
         res.json(req.paramPlaylist)
       } else {
-        res.render('playlist/show', { playlist: req.paramPlaylist })
+        res.render('playlist/show', {
+          playlist: req.paramPlaylist,
+          nowPlaying: false,
+          edit: false
+        })
       }
     },
     

@@ -34,7 +34,7 @@ Model.Session = Backbone.Model.extend({
     _.defer(this.refresh)
   },
 
-  login: function (model, response) {
+  login: function (model) {
     cookieParser()
     var user = Cookies.user
     if (user) {
@@ -115,7 +115,7 @@ View.SessionCreate = Backbone.View.extend(_.extend({
   },
 
   submitSuccess: function(user) {
-    Session.login()
+    Session.login(user)
     ModalView.hide()
   }
         
