@@ -54,7 +54,9 @@ AppRouter = Backbone.Router.extend({
     var playlist = Playlists.get(id)
     if (!playlist) {
       playlist = new Model.Playlist({ user: username, _id: id })
-      Playlists.add(playlist)
+      if (Session.user && Session.user.username == username) {
+        Playlists.add(playlist)
+      }
     }
 
     if (!playlist.tracks) {
