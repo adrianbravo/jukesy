@@ -22,7 +22,7 @@ module.exports = function(app) {
   app._       = _
   app.assets  = require('./assets')[app.set('env')]
   app.mongodb = require('./mongodb')[app.set('env')]
-  app.pepper  = 'herp derp'
+  app.pepper  = require('./pepper')
 
   app.mongooseSetters = require('../lib/mongoose_setters')
   app.mongoosePlugins = require('../lib/mongoose_plugins')
