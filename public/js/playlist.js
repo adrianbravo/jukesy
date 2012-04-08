@@ -69,6 +69,10 @@ View.Playlist = Backbone.View.extend({
     'click .playlist-save-as' : 'saveAs',
     //'click .playlist-delete'  : 'delete'
   },
+  
+  initialize: function() {
+    _.bindAll(this, 'saveSuccess', 'saveError', 'save', 'saveAs')
+  },
 
   render: function() {
     var self = this
@@ -85,24 +89,37 @@ View.Playlist = Backbone.View.extend({
     })
     return this
   },
+  
+  saveSuccess: function(playlist, response) {
+    console.log('save success', playlist, response)
+  },
+  
+  saveError: function(model, error) {
+    console.log('save error', model, error)
+  },
 
   save: function() {
     if (!Session.user) {
-      loginModal
-        .render()
-        .addAlert('not_logged_in_save')
+      loginModal.render().addAlert('not_logged_in_save')
       ModalView.setCallback(this.save)
       return
     }
-    console.log('save')
-    // save, should have success / error callbacks
+
+    var sendJSON = {}
+    //_.each(this.$el.find('[name]'), function(inputEl) {
+    //  var $input = $(inputEl)
+    //  sendJSON[$input.attr('name')] = $input.val()
+    //})
+    
+    this.model.save(sendJSON, {
+      success: this.saveSuccess,
+      error: this.saveError
+    })
   },
 
   saveAs: function() {
     if (!Session.user) {
-      loginModal
-        .render()
-        .addAlert('not_logged_in_save')
+      loginModal.render().addAlert('not_logged_in_save')
       ModalView.setCallback(this.saveAs)
       return
     }
