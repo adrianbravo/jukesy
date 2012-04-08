@@ -15,7 +15,7 @@ Model.Track = Backbone.Model.extend({
     }
     
     if (NowPlaying != this.playlist) {
-      this.playlist.nowPlaying()
+      this.playlist.setNowPlaying()
     }
     
     if (Video.track) {

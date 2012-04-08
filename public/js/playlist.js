@@ -1,12 +1,16 @@
 Model.Playlist = Backbone.Model.extend({
   urlRoot: function() {
-    return Session.user ? '/user/' + Session.user.get('username') + '/playlist' : false
+    var user = this.get('user')
+    if (user == 'anonymous') {
+      user = Session.user && Session.user.get('username')
+    }
+    return user ? '/user/' + user + '/playlist' : false
   },
 
   url: function() {
     var url = this.urlRoot()
     if (!this.isNew()) {
-      url += '/' + this.get('_id')
+      url += '/' + this.id
     }
     return url
   },
@@ -17,11 +21,13 @@ Model.Playlist = Backbone.Model.extend({
   },
   
   initialize: function() {
-    console.log('Playlist.initialize')
-    _.bindAll(this, 'nowPlaying')
+    console.log('Playlist.initialize', this.isNew())
+    _.bindAll(this, 'setNowPlaying')
     
     this.view = new View.Playlist({ model: this })
-    this.tracks = []
+    if (this.isNew()) {
+      this.tracks = []
+    }
   },
   
   addTracks: function(tracks, position) {
@@ -48,7 +54,7 @@ Model.Playlist = Backbone.Model.extend({
     Meow.render(message)
   },
   
-  nowPlaying: function() {
+  setNowPlaying: function() {
     if (window.NowPlaying) {
       NowPlaying.nowPlaying = false
     }
@@ -80,6 +86,13 @@ View.Playlist = Backbone.View.extend({
   },
 
   render: function(options) {
+    if (!this.model.isNew() && !this.model.tracks) {
+      this.$el.html('Loading...')
+      return this
+    }
+    // alter to fetch if tracks is not present when isNew() == false
+    // on success re-render w/ tracks filled in (do not if the view is not visible)
+    // on fail, show error?
     var self = this
     options = options || {}
     

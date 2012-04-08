@@ -7,6 +7,7 @@ AppRouter = Backbone.Router.extend({
     'now-playing'         : 'nowPlaying',
     'user/:username'      : 'userView',
     'user/:username/edit' : 'userEdit',
+    'user/:username/playlist/:playlist' : 'playlist',
     'artist/*artist/album/*album' : 'searchAlbum',
     'artist/*artist/track/*track' : 'searchTrack',
     'artist/*artist/top-tracks'   : 'searchArtistTopTracks',
@@ -47,6 +48,30 @@ AppRouter = Backbone.Router.extend({
   
   nowPlaying: function() {
     MainView.render(NowPlaying.view)
+  },
+  
+  playlist: function(username, playlist) {
+    var playlist = Playlists.get(playlist)
+    if (!playlist) {
+      playlist = new Model.Playlist({ user: username, _id: playlist })
+      Playlists.add(playlist)
+    }
+
+    if (!playlist.tracks) {
+      playlist.fetch({
+        success: function(model, response) {
+          playlist.tracks = _(playlist.get('tracks')).chain()
+            .map(function(track) {
+              return new Model.Track(track)
+            })
+            .value()
+          MainView.render(playlist.view)
+        },
+        error: this.error
+      })
+    } else {
+      MainView.render(playlist.view)
+    }
   },
   
   // TODO waitstate ???
@@ -187,7 +212,7 @@ $(function() {
 
   var playlist = new Model.Playlist()
   Playlists.add([ playlist ])
-  playlist.nowPlaying()
+  playlist.setNowPlaying()
 
   // hijack links
   // https://github.com/documentcloud/backbone/issues/456#issuecomment-2557835

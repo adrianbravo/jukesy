@@ -34,12 +34,15 @@ Model.Session = Backbone.Model.extend({
     _.defer(this.refresh)
   },
 
-  login: function () {
+  login: function (model, response) {
     cookieParser()
     var user = Cookies.user
     if (user) {
       user.id = user.username
       user = new Model.User(user)
+    }
+    if (model.playlists) {
+      Playlists.add(model.playlists)
     }
     this.user = user
     _.defer(this.refresh)
