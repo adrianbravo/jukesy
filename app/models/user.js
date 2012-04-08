@@ -36,7 +36,17 @@ User.method({
       json.email = this.email
       json._id = this._id
     }
+    if (this.playlists) {
+      json.playlists = this.playlists
+    }
     return json
+  },
+  
+  findPlaylists: function(next) {
+    app.model('Playlist')
+      .find({ user: this.username })
+      .select('user', 'name', 'sidebar', 'tracks_count', 'time')
+      .run(next)
   },
   
   checkPassword: function(password, next) {

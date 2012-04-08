@@ -15,7 +15,10 @@ module.exports = function(app) {
           }
           
           app.auth.setUser(user, req, res)
-          res.json(user.exposeJSON(req.currentUser))
+          user.findPlaylists(function(err, playlists) {
+            user.playlists = playlists
+            res.json(user.exposeJSON(req.currentUser))
+          })
         })
       })
     },
@@ -28,9 +31,14 @@ module.exports = function(app) {
     // primary session check, used once on front-end loading to set the session up.
     // allows untying of session logic from "/" route for better caching of front page.
     refresh: function(req, res, next) {
+      // grab playlists
       if (req.currentUser) {
         app.auth.setUser(req.currentUser, req, res)
-        res.json(req.currentUser.exposeJSON(req.currentUser))
+        req.currentUser.findPlaylists(function(err, playlists) {
+          req.currentUser.playlists = playlists
+          res.json(req.currentUser.exposeJSON(req.currentUser))
+        })
+
       } else {
         app.auth.unsetUser(req, res)
         res.json(0, 401) // not logged in

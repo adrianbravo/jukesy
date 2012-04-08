@@ -5,18 +5,12 @@ module.exports = function(app) {
   return {
 
     index: function(req, res, next) {
-      // TODO send different data based on logged in or not
-      // if logged in w/permissions, send tracks
-      // otherwise, just send counts
-      Playlist
-        .find({ user: req.paramUser.username })
-        .select('user', 'name', 'sidebar', 'tracks_count', 'time')
-        .run(function(err, playlists) {
-          if (err || !playlists) {
-            return next(new app.Error(err || 500))
-          }
-          res.json(playlists)
-        })
+      req.paramUser.findPlaylists(function(err, playlists) {
+        if (err || !playlists) {
+          return next(new app.Error(err || 500))
+        }
+        res.json(playlists)
+      })
     },
 
     read: function(req, res, next) {
