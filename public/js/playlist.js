@@ -67,17 +67,21 @@ View.Playlist = Backbone.View.extend({
   template: jade.compile($('#playlist-template').text()),
 
   events: {
-    'click .playlist-save'    : 'save',
-    'click .playlist-save-as' : 'saveAs',
+    'click .playlist-name'     : 'toggleNameEdit',
+    'click .playlist-save'     : 'save',
+    //'click .playlist-save-as'  : 'saveAs',
+    'blur .playlist-name-edit' : 'validateName',
+    'keypress .playlist-name-edit' : 'keyDown',
     //'click .playlist-delete'  : 'delete'
   },
   
   initialize: function() {
-    _.bindAll(this, 'saveSuccess', 'saveError', 'save', 'saveAs')
+    _.bindAll(this, 'keyDown', 'saveSuccess', 'saveError', 'save', 'saveAs', 'focusNameEdit')
   },
 
-  render: function() {
+  render: function(options) {
     var self = this
+    options = options || {}
     
     this.model.set({
       tracks: this.model.tracks,
@@ -85,13 +89,16 @@ View.Playlist = Backbone.View.extend({
     })
     
     this.$el.html(this.template({
+      currentUser: Session.userJSON(),
       playlist: this.model.toJSON(),
-      nowPlaying: this.model.nowPlaying
+      nowPlaying: this.model.nowPlaying,
+      edit: options.edit
     }))
 
     _.each(this.model.get('tracks'), function(track) {
       self.$el.find('tbody').append(track.view.render().$el)
     })
+    
     return this
   },
   
@@ -138,6 +145,7 @@ View.Playlist = Backbone.View.extend({
     })
   },
 
+  /*
   saveAs: function() {
     if (!Session.user) {
       loginModal.render().addAlert('not_logged_in_save')
@@ -150,7 +158,6 @@ View.Playlist = Backbone.View.extend({
     // do not change current playlist
   },
 
-  /*
   delete: function() {
     console.log('delete')
 
@@ -160,6 +167,28 @@ View.Playlist = Backbone.View.extend({
     }
   }
   */
+  
+  keyDown: function(event) {
+    if (event.keyCode == 13) {
+      this.$el.find('.playlist-name-edit').blur()
+    }   
+  },
+  
+  toggleNameEdit: function() {
+    this.render({ edit: true })
+    _.defer(this.focusNameEdit)
+  },
+  
+  focusNameEdit: function() {
+    this.$el.find('.playlist-name-edit').focus()
+  },
+  
+  validateName: function() {
+    var val = this.$el.find('.playlist-name-edit').val()
+    // TODO if (val ...)
+    this.model.set({ name: val })
+    this.render()
+  }
   
 })
 

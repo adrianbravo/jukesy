@@ -211,15 +211,28 @@ footer {
 }
 
 .playlist {
+  .playlist-name-edit {
+    margin: 7px 0 6px 0;
+  }
+  
   .playlist-name {
-    margin-top: 10px;
+    margin: 10px 0;
     font-weight: bold;
     font-size: 18px;
     color: #ccc;
-    .playlist-edit-name {
+    cursor: pointer;
+    
+    button {
+      .icon-pencil { margin-right: 4px; }
+      visibility: hidden;
+      color: #eee;
       margin-left: 10px;
-      font-size: 18px;
-      padding: 4px;
+      font-size: 12px;
+      padding: 4px 6px;
+    }
+    
+    &:hover button {
+      visibility: visible;
     }
   }
 }

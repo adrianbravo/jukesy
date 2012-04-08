@@ -1,21 +1,27 @@
-.btn-group.pull-right
-  button.btn.btn-primary.btn-large.playlist-save Save
-  button.btn.btn-primary.btn-large.dropdown-toggle('data-toggle'= 'dropdown')
-    span.caret
-  ul.dropdown-menu
-    li
-      a.playlist-save Save
-    li
-      a.playlist-save-as Save as...
-    li
-      a.playlist-delete Delete
+- if (!playlist.id || (currentUser && currentUser.username == playlist.user))
+  .btn-group.pull-right
+    button.btn.btn-primary.btn-large.playlist-save Save
+    button.btn.btn-primary.btn-large.dropdown-toggle('data-toggle'= 'dropdown')
+      span.caret
+    ul.dropdown-menu
+      li
+        a.playlist-save Save
+      //li
+      //  a.playlist-save-as Save as...
+      li
+        a.playlist-delete Delete
 
 - if (nowPlaying)
   h1 Now Playing
 
-p.playlist-name #{playlist.name}
-  button.btn.btn-mini.playlist-edit-name
-    i.icon-edit
+- if (edit)
+  input.playlist-name-edit(maxlength= '50', name= 'playlist-name', value= playlist.name)
+- else
+  .playlist-name #{playlist.name}
+    - if (!playlist.id || (currentUser && currentUser.username == playlist.user))
+      button.btn.btn-mini
+        i.icon-pencil
+        |  Edit Playlist Name
 
 p Created by #{playlist.user}, #{playlist.tracks_count} tracks
 
