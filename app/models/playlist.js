@@ -13,7 +13,7 @@ var Playlist = module.exports = new Schema({
   tracks  : { type: Array, default: [] }
 })
 
-Playlist.plugin(app.mongoosePlugins.timestamps, { index: true })
+Playlist.plugin(app.mongoosePlugins.timestamps)
 Playlist.plugin(app.mongoosePlugins.accessible, [ 'name', 'tracks', 'sidebar' ])
 
 Playlist.method({
