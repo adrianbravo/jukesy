@@ -10,7 +10,7 @@ module.exports = function(app) {
       // otherwise, just send counts
       Playlist
         .find({ user: req.paramUser.username })
-        //.select('user', 'name', 'sidebar', 'tracks_count', 'time')
+        .select('user', 'name', 'sidebar', 'tracks_count', 'time')
         .run(function(err, playlists) {
           if (err || !playlists) {
             return next(new app.Error(err || 500))
