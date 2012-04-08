@@ -63,6 +63,7 @@ Model.Playlist = Backbone.Model.extend({
     if (Video.player) {
       Video.stop()
     }
+    this.view.render()
   },
   
   cloneResults: function() {
@@ -84,12 +85,12 @@ View.Playlist = Backbone.View.extend({
     'click .playlist-name'     : 'toggleNameEdit',
     'click .playlist-save'     : 'save',
     //'click .playlist-save-as'  : 'saveAs',
-    'blur .playlist-name-edit' : 'validateName',
-    'keypress .playlist-name-edit' : 'keyDown',
-    //'click .playlist-delete'  : 'delete',
+    //'click .playlist-delete'   : 'delete',
     'click .play-all'       : 'playAll',
     'click .queue-all-next' : 'queueNext',
-    'click .queue-all-last' : 'queueLast'
+    'click .queue-all-last' : 'queueLast',
+    'blur .playlist-name-edit'     : 'validateName',
+    'keypress .playlist-name-edit' : 'keyDown'
   },
     
   initialize: function() {
@@ -128,7 +129,6 @@ View.Playlist = Backbone.View.extend({
   
   playAll: function() {
     this.model.tracks[0].play()
-    this.render()
   },
   
   queueNext: function() {
