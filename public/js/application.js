@@ -180,11 +180,13 @@ $(function() {
   window.SidebarView = new View.Sidebar
   window.Video = new Model.Video
   window.Meow = new View.Meow
+  window.Playlists = new Collection.Playlists
 
   window.loginModal = new View.SessionCreate({ model: Session })
   window.signupModal = new View.UserCreate()
 
   var playlist = new Model.Playlist()
+  Playlists.add([ playlist ])
   playlist.nowPlaying()
 
   // hijack links

@@ -208,3 +208,7 @@ function discover() {
   // should only add up to 3 tracks ahead
 }
 */
+
+Collection.Playlists = Backbone.Collection.extend({
+  model: Model.Playlist
+})
