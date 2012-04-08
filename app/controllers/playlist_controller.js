@@ -5,12 +5,15 @@ module.exports = function(app) {
   return {
 
     index: function(req, res, next) {
-      Playlist.find({ user: req.paramUser.username }, function(err, playlists) {
-        if (err || !playlists) {
-          return next(new app.Error(err || 500))
-        }
-        res.json(playlists)
-      })
+      Playlist
+        .find({ user: req.paramUser.username })
+        .select('user', 'name', 'sidebar', 'tracks_count')
+        .run(function(err, playlists) {
+          if (err || !playlists) {
+            return next(new app.Error(err || 500))
+          }
+          res.json(playlists)
+        })
     },
 
     read: function(req, res, next) {

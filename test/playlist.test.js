@@ -37,11 +37,14 @@ describe('Playlist Model', function() {
         }, function(err, u) {
           user = u
           expect(user).to.exist
-          Playlist.create({ user: u.username }, function(err, p) {
-            playlist = p
-            expect(playlist).to.exist
-            done()
-          })
+          Playlist.create({
+            user: u.username,
+            tracks: [ 0, 1, 2, 3 ]
+          }, function(err, p) {
+              playlist = p
+              expect(playlist).to.exist
+              done()
+            })
         })
       })
 
@@ -55,12 +58,17 @@ describe('Playlist Model', function() {
       it('adds default name and tracks', function(done) {
         expect(playlist.name).to.equal('Untitled Playlist')
         expect(playlist.tracks).to.be.an.instanceof(Array)
-        expect(playlist.tracks).to.have.length(0)
+        expect(playlist.tracks).to.have.length(4)
         done()
       })
+      
+      it('sets tracks_count based on tracks size', function(done) {
+        expect(parseInt(playlist.tracks_count)).to.eql(4)
+        done()
+      })
+
     })
   })
-
 
     /*
   describe('#exposeJSON', function() {
