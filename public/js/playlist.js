@@ -76,7 +76,7 @@ View.Playlist = Backbone.View.extend({
   },
   
   initialize: function() {
-    _.bindAll(this, 'keyDown', 'saveSuccess', 'saveError', 'save', 'saveAs', 'focusNameEdit')
+    _.bindAll(this, 'keyDown', 'saveSuccess', 'saveError', 'save', 'focusNameEdit')
   },
 
   render: function(options) {

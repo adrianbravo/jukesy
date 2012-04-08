@@ -46,10 +46,8 @@ module.exports = function(app) {
   app.get('/user/:username/playlist', PlaylistController.index)
   app.get('/user/:username/playlist/:playlist', PlaylistController.read)
   app.post('/user/:username/playlist', app.auth.authenticate, app.auth.authorize, PlaylistController.create)
-
-  // update, and delete should all use authorize
-  //app.put('/user/:username/playlist/:playlistId')//, app.auth.authenticate, app.auth.authorize, UserController.update)
-  //app.del('/user/:username/playlist/:playlistId')//, app.auth.authenticate, app.auth.authorize, UserController.delete)
+  app.put('/user/:username/playlist/:playlist', app.auth.authenticate, app.auth.authorize, PlaylistController.update)
+  //app.del('/user/:username/playlist/:playlist', app.auth.authenticate, app.auth.authorize, PlaylistController.delete)
 
   app.get('/session/refresh', app.auth.authenticate, SessionController.refresh)
   app.post('/session', SessionController.create)

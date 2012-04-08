@@ -37,18 +37,17 @@ module.exports = function(app) {
       })
     },
 
-    /*
     update: function(req, res, next) {
-      req.paramUser.updateAttributes(req.body)
-      req.paramUser.save(function(err, user) {
-        if (err || !user) {
+      req.paramPlaylist.updateAttributes(req.body)
+      req.paramPlaylist.save(function(err, playlist) {
+        if (err || !playlist) {
           return next(new app.Error(err || 500))
         }
-
-        res.json(user.exposeJSON(req.currentUser))
+        res.json(playlist)
       })
     },
 
+    /*
     delete: function(req, res, next) {
       next(new app.Error(501))
     }

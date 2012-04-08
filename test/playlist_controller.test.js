@@ -188,11 +188,8 @@ describe('Playlist Controller', function() {
     */
   })
   
-
-/*  
-
-  describe('PUT /user/:username (#update)', function() {
-    var user, cookie
+  describe('PUT /user/:username/playlist/:playlist (#update)', function() {
+    var user, playlist, cookie
     
     beforeEach(function(done) {
       User.create({
@@ -202,19 +199,25 @@ describe('Playlist Controller', function() {
       }, function(err, u) {
         user = u
         expect(user).to.exist
-        request.post('/session', {
-          login: 'adrian',
-          password: 'test'
-        }, function(res) {
-          expect(res).status(200)
-          cookie = res.headers['set-cookie'][1]
-          done()
+        Playlist.create({
+          user: user.username
+        }, function(err, p) {
+          playlist = p
+          expect(playlist).to.exist
+          request.post('/session', {
+            login: 'adrian',
+            password: 'test'
+          }, function(res) {
+            expect(res).status(200)
+            cookie = res.headers['set-cookie'][1]
+            done()
+          })
         })
       })
     })
     
     it('returns 401 if not logged in', function(done) {
-      request.put('/user/adrian', {}, function(res) {
+      request.put('/user/adrian/playlist/' + playlist.id, {}, function(res) {
         expect(res).status(401)
         done()
       })
@@ -222,7 +225,7 @@ describe('Playlist Controller', function() {
     
     it('returns 404 if user does not exist', function(done) {
       request
-        .put('/user/notadrian', {})
+        .put('/user/notadrian/playlist/' + playlist.id, {})
         .set('cookie', cookie)
         .end(function(res) {
           expect(res).status(404)
@@ -237,57 +240,54 @@ describe('Playlist Controller', function() {
         email: 'test2@test.test'
       }, function(err, u) {
         request
-          .put('/user/notadrian', {})
+          .put('/user/notadrian/playlist/' + playlist.id, {})
           .set('cookie', cookie)
           .end(function(res) {
-            expect(res).status(401)
+            expect(res).status(404)
             done()
           })
       })
     })
     
-    
     it('returns 200 if logged in as right user', function(done) {
       request
-        .put('/user/adrian', {})
+        .put('/user/adrian/playlist/' + playlist.id, {})
         .set('cookie', cookie)
         .end(function(res) {
           expect(res).status(200)
-          expect(res.body.username).to.equal('adrian')
+          expect(res.body.user).to.equal('adrian')
           done()
         })
     })
     
     it('does not accept username field', function(done) {
       request
-        .put('/user/adrian', { username: 'test' })
+        .put('/user/adrian/playlist/' + playlist.id, { user: 'test' })
         .set('cookie', cookie)
         .end(function(res) {
           expect(res).status(200)
-          expect(res.body.username).to.equal('adrian')
+          expect(res.body.user).to.equal('adrian')
           done()
         })
     })
     
-    it('accepts fullname, location, and website fields', function(done) {
+    it('accepts name, tracks, and sidebar fields', function(done) {
       request
-        .put('/user/adrian', {
-          fullname: 'Adrian Bravo',
-          location: 'sf',
-          website: 'http://jukesy.com/'
+        .put('/user/adrian/playlist/' + playlist.id, {
+          name: 'funk',
+          tracks: [ { artist: 'alanis morissette', name: 'ironic' }],
+          sidebar: true
         })
         .set('cookie', cookie)
         .end(function(res) {
           expect(res).status(200)
-          expect(res.body.fullname).to.equal('Adrian Bravo')
-          expect(res.body.location).to.equal('sf')
-          expect(res.body.website).to.equal('http://jukesy.com/')
+          expect(res.body.name).to.eql('funk')
+          expect(res.body.tracks).to.have.length(1)
+          expect(res.body.sidebar).to.be.true
           done()
         })
     })
     
   })
-
-  */
 
 })
