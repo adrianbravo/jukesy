@@ -24,7 +24,7 @@ td.play
       .icon-play
   - else
     a
-      .icon-exclamation-sign('data-content'= 'No videos could be found for this track.', 'data-original-title'= 'oops...')
+      .icon-exclamation-sign('data-content'= 'No working YouTube videos could be found for this track.', 'data-original-title'= 'Error')
 
 td.name
   a(href= urlTrack(track.get('artist'), track.get('name')))= track.get('name')

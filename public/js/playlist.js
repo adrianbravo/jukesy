@@ -62,6 +62,8 @@ Model.Playlist = Backbone.Model.extend({
 })
 
 View.Playlist = Backbone.View.extend({
+  className: 'playlist',
+  
   template: jade.compile($('#playlist-template').text()),
 
   events: {
@@ -88,8 +90,7 @@ View.Playlist = Backbone.View.extend({
     }))
 
     _.each(this.model.get('tracks'), function(track) {
-      self.$el.find('tbody').append(track.view.$el)
-      track.view.delegateEvents()
+      self.$el.find('tbody').append(track.view.render().$el)
     })
     return this
   },

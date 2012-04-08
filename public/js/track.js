@@ -56,7 +56,7 @@ Model.Track = Backbone.Model.extend({
 
   noVideos: function() {
     this.error = true
-    this.view.render().$el.addClass('error').find('.icon-exclamation-sign').popover()
+    this.view.render().$el.addClass('error')
     Video.next()
   },
   
@@ -128,6 +128,7 @@ View.Track = Backbone.View.extend(_.extend(Mixins.TrackViewEvents, {
   
   render: function() {
     this.$el.html(this.template({ track: this.model }))
+    this.$el.find('.icon-exclamation-sign').popover()
     this.delegateEvents()
     return this
   },

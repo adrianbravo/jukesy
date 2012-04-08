@@ -13,7 +13,10 @@
 - if (nowPlaying)
   h1 Now Playing
 
-h3 #{playlist.name}
+p.playlist-name #{playlist.name}
+  button.btn.btn-mini.playlist-edit-name
+    i.icon-edit
+
 p Created by #{playlist.user}, #{playlist.tracks_count} tracks
 
 - if (playlist.tracks_count)  
