@@ -25,7 +25,6 @@ describe('Playlist Model', function() {
     // json parse errors?
     // non-existant user errors?
 
-
     describe('successfully', function() {
       var user, playlist
 
@@ -174,89 +173,6 @@ describe('Playlist Model', function() {
       expect(user.location).to.equal('sf')
       expect(user.website).to.equal('jukesy')
       done()
-    })
-
-  })
-
-
-  describe('#checkPassword', function() {
-    var user
-
-    beforeEach(function(done) {
-      User.create({
-        username: 'test',
-        password: 'test',
-        email: 'test@test.test'
-      }, function(err, u) {
-        user = u
-        expect(user).to.exist
-        done()
-      })
-    })
-    
-    it('returns null, true if password is valid', function(done) {
-      user.checkPassword('test', function(error, valid) {
-        expect(error).to.not.exist
-        expect(valid).to.be.true
-        done()
-      })
-    })
-
-    it('returns null, false if password is invalid', function(done) {
-      user.checkPassword('TEST', function(error, valid) {
-        expect(error).to.not.exist
-        expect(valid).to.be.false
-        done()
-      })
-    })
-
-  })
-  
-  describe('#findByLogin', function() {
-    var user
-
-    beforeEach(function(done) {
-      User.create({
-        username: 'test',
-        password: 'test',
-        email: 'test@test.test'
-      }, function(err, u) {
-        user = u
-        expect(user).to.exist
-        done()
-      })
-    })
-
-    it('finds a user with a username', function(done) {
-      User.findByLogin('test', function(err, user) {
-        expect(err).to.not.exist
-        expect(user).to.exist
-        done()
-      })
-    })
-
-    it('finds a user without case sensitivity for login', function(done) {
-      User.findByLogin('TEST', function(err, user) {
-        expect(err).to.not.exist
-        expect(user).to.exist
-        done()
-      })
-    })
-
-    it('finds a user with an email', function(done) {
-      User.findByLogin('test@test.test', function(err, user) {
-        expect(err).to.not.exist
-        expect(user).to.exist
-        done()
-      })
-    })
-
-    it('errors with invalid login', function(done) {
-      User.findByLogin('invalid', function(err, user) {
-        expect(user).to.not.exist
-        expect(err).to.not.exist
-        done()
-      })
     })
 
   })

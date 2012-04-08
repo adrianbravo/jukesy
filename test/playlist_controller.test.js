@@ -90,14 +90,11 @@ describe('Playlist Controller', function() {
       })
     })
   })
-
-/*
-  describe('GET /user (#index)', function() {
-  })
   
-  describe('GET /user/:username (#read)', function() {
-    var user
-
+  describe('POST /user/:username/playlist (#create)', function() {
+    var user, cookie, user2, cookie2
+    
+    // TODO dry this up wtf
     beforeEach(function(done) {
       User.create({
         username: 'adrian',
@@ -106,29 +103,93 @@ describe('Playlist Controller', function() {
       }, function(err, u) {
         user = u
         expect(user).to.exist
-        done()
+        request.post('/session', {
+          login: 'adrian',
+          password: 'test'
+        }, function(res) {
+          expect(res).status(200)
+          cookie = res.headers['set-cookie'][1]
+          User.create({
+            username: 'adrian2',
+            password: 'test2',
+            email: 'test2@test.test'
+          }, function(err, u) {
+            user2 = u
+            expect(user2).to.exist
+            request.post('/session', {
+              login: 'adrian2',
+              password: 'test2'
+            }, function(res) {
+              expect(res).status(200)
+              cookie2 = res.headers['set-cookie'][1]
+              done()
+            })
+          })
+        })
       })
     })
-    
-    it('shows the info for an existing user', function(done) {
+
+    it('returns 200 and json when logged in and passed valid data', function(done) {
       request
-        .get('/user/adrian')
-        .set('X-Requested-With', 'XMLHttpRequest')
+        .post('/user/adrian/playlist', {
+          name: 'Funk',
+          sidebar: true,
+          tracks: [
+            { artist: 'Sly & the Family Stone', name: 'Spaced Cowboy' },
+            { artist: 'Sly & the Family Stone', name: 'Family Affair' }
+          ]
+        })
+        .set('cookie', cookie)
         .end(function(res) {
           expect(res).status(200)
-          expect(res.body.username).to.equal('adrian')
+          expect(res.body.user).to.equal('adrian')
+          expect(res.body.name).to.equal('Funk')
+          expect(res.body.sidebar).to.be.true
+          expect(res.body.tracks).to.have.length(2)
+          expect(res.body._id).to.exist
           done()
         })
     })
     
-    it('returns a 404 for non-existant users', function(done) {
-      request.get('/user/nope', function(res) {
-        expect(res).status(404)
-        done()
-      })
+    it('fails when logged in as a different user', function(done) {
+      request
+        .post('/user/adrian/playlist', {})
+        .set('cookie', cookie2)
+        .end(function(res) {
+          expect(res).status(401)
+          done()
+        })
     })
     
+    it('fails when not logged in', function(done) {
+      request
+        .post('/user/adrian/playlist', {})
+        .end(function(res) {
+          expect(res).status(401)
+          done()
+        })
+    })
+    
+    /*
+    it('fails when sent invalid json is passed for tracks', function(done) {
+      request
+        .post('/user/adrian/playlist', {
+          name: 'Funk',
+          tracks: 'invalid',
+          sidebar: true
+        })
+        .set('cookie', cookie)
+        .end(function(res) {
+          console.log(res)
+          expect(res).status(400)
+          done()
+        })
+    })
+    */
   })
+  
+
+/*  
 
   describe('PUT /user/:username (#update)', function() {
     var user, cookie
@@ -227,44 +288,6 @@ describe('Playlist Controller', function() {
     
   })
 
-  describe('POST /user (#create)', function() {
-
-    it('succeeds when passed username, email, and password', function(done) {
-      request.post('/user', {
-        username: 'adrian',
-        password: 'test',
-        email: 'test@test.test'
-      }, function(res) {
-        expect(res).status(200)
-        expect(res.body.username).to.equal('adrian')
-        done()
-      })
-    })
-
-    it('fails when passed no username, email, or password', function(done) {
-      request.post('/user', {}, function(res) {
-        expect(res).status(400)
-        expect(res.body.errors.password[0]).to.equal('required')
-        expect(res.body.errors.username[0]).to.equal('required')
-        expect(res.body.errors.email[0]).to.equal('required')
-        done()
-      })
-    })
-
-    it('fails when passed invalid username, email', function(done) {
-      request.post('/user', {
-        username: 'usernameisclearlywaytoolong',
-        password: 'blerg',
-        email: 'test'
-      }, function(res) {
-        expect(res).status(400)
-        expect(res.body.errors.username[0]).to.equal('too_long')
-        expect(res.body.errors.email[0]).to.equal('bad_format')
-        done()
-      })
-    })
-
-  })
   */
 
 })

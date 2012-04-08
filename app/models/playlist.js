@@ -4,7 +4,7 @@ var mongoose = require('mongoose')
   , Mixed = Schema.Types.Mixed
   , app = require('../../')
   , validators = app.mongooseValidators
-    
+
 var Playlist = module.exports = new Schema({
   user    : { type: String, set: app.mongooseSetters.toLower, index: true },
   name    : { type: String, default: 'Untitled Playlist' },
@@ -40,13 +40,5 @@ Playlist.pre('save', function(next) {
 
 // User
 Playlist.path('user').validate(validators.required, [ 'required' ])
-//Playlist.path('user').validate(validators.isUser, [ '' ])
-// similar to alreadyTaken???
-
-// Name
-//Playlist.path('name').validate(validators.required, [ 'required' ])
-
-// Tracks
-//Playlist.path('tracks').validate(validators.properJSON, [ 'bad_json' ])
 
 mongoose.model('Playlist', Playlist)

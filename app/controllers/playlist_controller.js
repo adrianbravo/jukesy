@@ -5,9 +5,12 @@ module.exports = function(app) {
   return {
 
     index: function(req, res, next) {
+      // TODO send different data based on logged in or not
+      // if logged in w/permissions, send tracks
+      // otherwise, just send counts
       Playlist
         .find({ user: req.paramUser.username })
-        .select('user', 'name', 'sidebar', 'tracks_count')
+        //.select('user', 'name', 'sidebar', 'tracks_count', 'time')
         .run(function(err, playlists) {
           if (err || !playlists) {
             return next(new app.Error(err || 500))
@@ -24,27 +27,17 @@ module.exports = function(app) {
       }
     },
     
-    /*
     create: function(req, res, next) {
-      User.create(req.body, function(err, user) {
-        if (err || !user) {
+      req.body.user = req.currentUser.username
+      Playlist.create(req.body, function(err, playlist) {
+        if (err || !playlist) {
           return next(new app.Error(err || 500))
         }
-        
-        app.auth.setUser(user, req, res)
-        res.json(user.exposeJSON(user))
+        res.json(playlist)
       })
     },
 
-    edit: function(req, res, next) {
-      var userJSON = req.paramUser.exposeJSON(req.currentUser)
-      if (req.xhr) {
-        res.json(userJSON) 
-      } else {
-        res.render('user/edit', { user: userJSON })
-      }
-    },
-
+    /*
     update: function(req, res, next) {
       req.paramUser.updateAttributes(req.body)
       req.paramUser.save(function(err, user) {
