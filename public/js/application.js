@@ -77,6 +77,7 @@ AppRouter = Backbone.Router.extend({
 
     if (!playlist.tracks) {
       playlist.fetch({
+        silent: true,
         success: function(model, response) {
           playlist.tracks = _(playlist.get('tracks')).chain()
             .map(function(track) {

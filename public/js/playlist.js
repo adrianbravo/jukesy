@@ -33,6 +33,7 @@ Model.Playlist = Backbone.Model.extend({
   },
   
   changeCallback: function() {
+    console.log('change callback')
   },
   
   addTracks: function(tracks, position) {
@@ -138,7 +139,10 @@ View.Playlist = Backbone.View.extend({
   },
   
   playAll: function() {
-    this.model.tracks[0].play()
+    this.model.setNowPlaying()
+    if (this.model.tracks[0]) {
+      this.model.tracks[0].play()
+    }
   },
   
   queueNext: function() {
@@ -266,13 +270,6 @@ function discover() {
 
 View.Playlists = Backbone.View.extend({
   template: jade.compile($('#playlist-index-template').text()),
-  events: {
-    //'click .playlist-name'     : 'toggleNameEdit',
-  },
-    
-  initialize: function() {
-    //_.bindAll(this, 'keyDown', 'saveSuccess', 'saveError', 'save', 'focusNameEdit', 'playAll')
-  },
 
   render: function(options) {
     if (!this.collection.models) {
@@ -284,8 +281,7 @@ View.Playlists = Backbone.View.extend({
       user: this.collection.user
     }))
     return this
-  },
-
+  }
 })
 
 Collection.Playlists = Backbone.Collection.extend({
