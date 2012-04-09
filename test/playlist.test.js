@@ -86,4 +86,45 @@ describe('Playlist Model', function() {
     })
   })
 
+  describe('#updateAttributes (accessible plugin)', function() {
+    var user, playlist
+
+    beforeEach(function(done) {
+      User.create({
+        username: 'tester',
+        email: 'test@test.test',
+        password: 'test'
+      }, function(err, u) {
+        user = u
+        expect(user).to.exist
+        Playlist.create({ user: user.username }, function(err, p) {
+          playlist = p
+          expect(playlist).to.exist
+          done()
+        })
+      })
+    })
+
+    it('removes attributes that are not in Playlist.accessible', function(done) {
+      playlist.updateAttributes({
+        nowPlaying: 'blerg'
+      })
+      expect(playlist.nowPlaying).to.not.exist
+      done()
+    })
+
+    it('allows attributes that are in Playlist.accessible', function(done) {
+      playlist.updateAttributes({
+        name: 'hello',
+        tracks: [1, 2, 3],
+        sidebar: true
+      })
+      expect(playlist.name).to.equal('hello')
+      expect(playlist.tracks).to.have.length(3)
+      expect(playlist.sidebar).to.be.true
+      done()
+    })
+
+  })
+
 })

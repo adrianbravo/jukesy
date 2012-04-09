@@ -17,7 +17,7 @@ var User = module.exports = new Schema({
   location    : { type: String },
   website     : { type: String },
   admin       : { type: Boolean }
-})
+}, { strict: true })
 
 User.plugin(app.mongoosePlugins.timestamps, { index: true })
 User.plugin(app.mongoosePlugins.accessible, [ 'email', 'password', 'fullname', 'location', 'website', 'bio' ])

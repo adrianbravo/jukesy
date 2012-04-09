@@ -19,6 +19,7 @@ ul.nav.nav-list
       hr
     
     each playlist in playlists
+      - console.log('playlist', playlist)
       li
         a.playlist(href= '/user/' + playlist.user + '/playlist/' + playlist._id)
           - if (playlist.nowPlaying)

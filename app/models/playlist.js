@@ -11,7 +11,7 @@ var Playlist = module.exports = new Schema({
   sidebar : { type: Boolean, default: false },
   tracks_count : { type: Number },
   tracks  : { type: Array, default: [] }
-})
+}, { strict: true })
 
 Playlist.plugin(app.mongoosePlugins.timestamps)
 Playlist.plugin(app.mongoosePlugins.accessible, [ 'name', 'tracks', 'sidebar' ])
