@@ -5,9 +5,10 @@ Make sure to install all npm packages.
 
     npm install
 
-Copy config/mongodb.example.js to config/mongodb.js and fill in options particular to your database.
+Files with protected keys, passwords and other sensitive data are only saved as examples. To finish installation, copy them over and replace any necessary data:
 
-In config/index.js, app.pepper can be changed. It is used for hashing via bcrypt.
+  * cp config/mongodb.example.js config/mongodb.js
+  * cp config/pepper.example.js config/pepper.js
 
 ## Starting the server
 
