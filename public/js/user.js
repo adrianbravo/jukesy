@@ -1,5 +1,6 @@
 Model.User = Backbone.Model.extend({
   urlRoot: '/user',
+  
   url: function() {
     var url = this.urlRoot
     if (!this.isNew()) {
@@ -10,6 +11,11 @@ Model.User = Backbone.Model.extend({
   
   isCurrentUser: function() {
     return Session.user && Session.user.id == this.id
+  },
+  
+  initialize: function() {
+    this.view = new View.User({ model: this })
+    this.viewEdit = new View.UserEdit({ model: this })
   }
 })
 

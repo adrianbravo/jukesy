@@ -95,21 +95,32 @@ AppRouter = Backbone.Router.extend({
     }
   },
   
-  // TODO waitstate ???
   userView: function(username) {
-    Session.user.fetch({
+    var user
+    if (Session.user && Session.user.get('username') == username) {
+      user = Session.user
+    } else {
+      // TODO fix usage of id, this is a hack to force isNew() to return false
+      user = new Model.User({ username: username, _id: 1 })
+    }
+    
+    user.fetch({
       success: function(model, response) {
-        MainView.render(new View.User({ model: model }))
+        MainView.render(user.view)
       },
       error: this.error
     })
   },
   
-  // TODO waitstate ???
   userEdit: function(username) {
+    if (!Session.user || Session.user.get('username') != username) {
+      MainView.render('404')
+      return
+    }
+    
     Session.user.fetch({
       success: function(model, response) {
-        MainView.render(new View.UserEdit({ model: model }))
+        MainView.render(model.viewEdit)
       },
       error: this.error
     })
