@@ -194,9 +194,15 @@ View.Sidebar = Backbone.View.extend({
   el: $('#sidebar'),
   
   template: jade.compile($('#sidebar-template').text()),
-  
+
   render: function() {
-    this.$el.html(this.template({ currentUser: Session.userJSON() }))
+    this.$el.html(this.template({
+      currentUser: Session.userJSON(),
+      playlists: _.chain(Playlists.models)
+                    .filter(function(playlist) { return playlist.get('sidebar') })
+                    .map(function(playlist) { return playlist.toJSON() })
+                    .value()
+    }))
   }
 })
 
@@ -217,6 +223,7 @@ $(function() {
   windowResized()
   
   window.$body = $('body')
+  window.Playlists = new Collection.Playlists
   window.CurrentSearch = {}
   window.KeyboardShortcutsView = new View.KeyboardShortcuts
   window.MainView = new View.Main
@@ -225,7 +232,6 @@ $(function() {
   window.SidebarView = new View.Sidebar
   window.Video = new Model.Video
   window.Meow = new View.Meow
-  window.Playlists = new Collection.Playlists
 
   window.loginModal = new View.SessionCreate({ model: Session })
   window.signupModal = new View.UserCreate()

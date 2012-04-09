@@ -28,6 +28,8 @@ Model.Playlist = Backbone.Model.extend({
     if (this.isNew()) {
       this.tracks = []
     }
+    this.on('change:name change:sidebar', SidebarView.render, SidebarView)
+    
   },
   
   addTracks: function(tracks, position) {

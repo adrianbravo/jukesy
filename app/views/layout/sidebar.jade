@@ -19,6 +19,11 @@ ul.nav.nav-list
       i.icon-th-list
       |  Playlists
 
+  - if (typeof playlists != 'undefined')
+    each playlist in playlists
+      li
+        a(href= '/user/' + playlist.user + '/playlist/' + playlist._id) #{playlist.name}
+  
   - if (typeof currentUser != 'undefined')
 
 
