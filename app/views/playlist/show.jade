@@ -6,6 +6,13 @@
     ul.dropdown-menu
       li
         a.playlist-save Save
+      - if (playlist.sidebar)
+        li
+          a.playlist-sidebar Remove from Sidebar
+      - else
+        li
+          a.playlist-sidebar Add to Sidebar
+      
       //li
       //  a.playlist-save-as Save as...
       //li

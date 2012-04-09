@@ -84,7 +84,7 @@ View.Playlist = Backbone.View.extend({
   events: {
     'click .playlist-name.edit' : 'toggleNameEdit',
     'click .playlist-save'      : 'save',
-    //'click .playlist-sidebar'   : 'toggleSidebar',
+    'click .playlist-sidebar'   : 'toggleSidebar',
     //'click .playlist-save-as'   : 'saveAs',
     //'click .playlist-delete'    : 'delete',
     'click .play-all'       : 'playAll',
@@ -138,6 +138,11 @@ View.Playlist = Backbone.View.extend({
   
   queueLast: function() {
     NowPlaying.addTracks(this.model.cloneResults())
+  },
+  
+  toggleSidebar: function() {
+    this.model.set({ sidebar: !this.model.get('sidebar') })
+    this.render()
   },
   
   saveSuccess: function(playlist, response) {
