@@ -27,7 +27,7 @@ module.exports = function(app) {
         res.render('playlist/show', {
           playlist: req.paramPlaylist,
           nowPlaying: false,
-          edit: false
+          editName: false
         })
       }
     },

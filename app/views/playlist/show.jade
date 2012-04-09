@@ -8,20 +8,22 @@
         a.playlist-save Save
       //li
       //  a.playlist-save-as Save as...
-      li
-        a.playlist-delete Delete
+      //li
+      //  a.playlist-delete Delete
 
 - if (nowPlaying)
   h1 Now Playing
 
-- if (edit)
+- if (editName)
   input.playlist-name-edit(maxlength= '50', name= 'playlist-name', value= playlist.name)
 - else
-  .playlist-name #{playlist.name}
-    - if (!playlist._id || (currentUser && currentUser.username == playlist.user))
+  - if (!playlist._id || (currentUser && currentUser.username == playlist.user))
+    .playlist-name.edit #{playlist.name}
       button.btn.btn-mini
         i.icon-pencil
         |  Edit Playlist Name
+  - else
+    .playlist-name #{playlist.name}
 
 p Created by #{playlist.user}, #{playlist.tracks_count} tracks
 

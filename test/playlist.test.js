@@ -11,6 +11,23 @@ describe('Playlist Model', function() {
 
   describe('#create', function() {
 
+    describe('too_long error', function() {
+      var createString = function(length) {
+        var string = ''
+        for (i = 0; i < length; i++) {
+          string += 'a'
+        }
+        return string
+      }
+      it('occurs when playlist.name is greater than 50', function(done) {
+        Playlist.create({ user: 'test', name: createString(51) }, function(err, playlist) {
+          expect(err.errors.name.type[0]).to.equal('too_long')
+          expect(err.errors.name.type[1].maxlength).to.equal(50)
+          done()
+        })
+      })
+    })
+    
     describe('required error', function() {
       it('occurs when user is blank', function(done) {
         Playlist.create({}, function(err, playlist) {

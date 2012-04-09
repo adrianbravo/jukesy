@@ -729,11 +729,11 @@ input,textarea,select,.uneditable-input{color:#282828;}
 .btn .caret{border-top:4px solid black;opacity:0.3;}
 .dropdown-menu>li>a:hover{border-bottom:0;}
 .btn.disabled,.btn[disabled]{background-color:#adafae;}
-input,textarea,select{background-color:#ccc;border-color:#bbb;border-width:2px;}input :-moz-placeholder,textarea :-moz-placeholder,select :-moz-placeholder{color:#999999;}
+input,textarea,select{background-color:#fff;border-color:#bbb;border-width:2px;}input :-moz-placeholder,textarea :-moz-placeholder,select :-moz-placeholder{color:#999999;}
 input::-webkit-input-placeholder,textarea::-webkit-input-placeholder,select::-webkit-input-placeholder{color:#999999;}
 legend,label{color:#999999;border-bottom:0px solid #222;}
 input[disabled],select[disabled],textarea[disabled],input[readonly],select[readonly],textarea[readonly],.uneditable-input{background-color:#555;border-color:#444;}
-input:focus,textarea:focus,input.focused,textarea.focused{border-color:#52a8ec;outline:0;outline:thin dotted \9;}
+input:focus,textarea:focus,input.focused,textarea.focused{border-color:#666;outline:0;outline:thin dotted \9;}
 input[type="file"]:focus,input[type="radio"]:focus,input[type="checkbox"]:focus,select:focus{-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;outline:thin dotted #333;outline:5px auto -webkit-focus-ring-color;outline-offset:-2px;}
 .form-actions{background:transparent;}
 .form-actions,footer.footer{border-top:1px solid #222;}

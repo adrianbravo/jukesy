@@ -82,10 +82,11 @@ View.Playlist = Backbone.View.extend({
   template: jade.compile($('#playlist-show-template').text()),
 
   events: {
-    'click .playlist-name'     : 'toggleNameEdit',
-    'click .playlist-save'     : 'save',
-    //'click .playlist-save-as'  : 'saveAs',
-    //'click .playlist-delete'   : 'delete',
+    'click .playlist-name.edit' : 'toggleNameEdit',
+    'click .playlist-save'      : 'save',
+    //'click .playlist-sidebar'   : 'toggleSidebar',
+    //'click .playlist-save-as'   : 'saveAs',
+    //'click .playlist-delete'    : 'delete',
     'click .play-all'       : 'playAll',
     'click .queue-all-next' : 'queueNext',
     'click .queue-all-last' : 'queueLast',
@@ -117,7 +118,7 @@ View.Playlist = Backbone.View.extend({
       currentUser: Session.userJSON(),
       playlist: this.model.toJSON(),
       nowPlaying: this.model.nowPlaying,
-      edit: options.edit
+      editName: options.editName
     }))
 
     _.each(this.model.get('tracks'), function(track) {
@@ -215,7 +216,7 @@ View.Playlist = Backbone.View.extend({
   },
   
   toggleNameEdit: function() {
-    this.render({ edit: true })
+    this.render({ editName: true })
     _.defer(this.focusNameEdit)
   },
   
