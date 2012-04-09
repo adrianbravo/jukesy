@@ -4,15 +4,10 @@ ul.nav.nav-list
       i.icon-music
       |  Now Playing
 
-  li
-    a(href= '/favorites')
-      i.icon-star
-      |  Favorites
-
-  li
-    a
-      i.icon-plus-sign
-      |  Create a playlist
+  //li
+  //  a(href= '/favorites')
+  //    i.icon-star
+  //    |  Favorites
 
   li
     a(href= '/user/' + ((currentUser && currentUser.username) || 'anonymous') + '/playlist')
@@ -20,12 +15,14 @@ ul.nav.nav-list
       |  Playlists
 
   - if (typeof playlists != 'undefined')
+    - if (playlists.length)
+      hr
+    
     each playlist in playlists
       li
-        a(href= '/user/' + playlist.user + '/playlist/' + playlist._id) #{playlist.name}
-  
-  - if (typeof currentUser != 'undefined')
-
-
-    // if no playlists, do not show hr
-    // else, show hr and list of playlists
+        a.playlist(href= '/user/' + playlist.user + '/playlist/' + playlist._id)
+          - if (playlist.nowPlaying)
+            i.icon-music
+          - else
+            i.icon-bookmark
+          |  #{playlist.name}

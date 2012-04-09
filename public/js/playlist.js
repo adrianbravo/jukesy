@@ -22,14 +22,17 @@ Model.Playlist = Backbone.Model.extend({
   
   initialize: function() {
     console.log('Playlist.initialize', this.isNew())
-    _.bindAll(this, 'setNowPlaying')
+    _.bindAll(this, 'setNowPlaying', 'changeCallback')
     
     this.view = new View.Playlist({ model: this })
     if (this.isNew()) {
       this.tracks = []
     }
     this.on('change:name change:sidebar', SidebarView.render, SidebarView)
-    
+    this.on('change', this.changeCallback, this)
+  },
+  
+  changeCallback: function() {
   },
   
   addTracks: function(tracks, position) {
@@ -58,14 +61,18 @@ Model.Playlist = Backbone.Model.extend({
   
   setNowPlaying: function() {
     if (window.NowPlaying) {
+      NowPlaying.set({ nowPlaying: false }, { silent: true })
       NowPlaying.nowPlaying = false
     }
     window.NowPlaying = this
+    NowPlaying.set({ nowPlaying: true }, { silent: true })
     this.nowPlaying = true
+    
     if (Video.player) {
       Video.stop()
     }
     this.view.render()
+    SidebarView.render()
   },
   
   cloneResults: function() {
@@ -114,7 +121,7 @@ View.Playlist = Backbone.View.extend({
     this.model.set({
       tracks: this.model.tracks,
       tracks_count: this.model.tracks.length
-    })
+    }, { silent: true })
     
     this.$el.html(this.template({
       currentUser: Session.userJSON(),
