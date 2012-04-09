@@ -33,7 +33,7 @@ Model.Playlist = Backbone.Model.extend({
   },
   
   changeCallback: function() {
-    console.log('change callback')
+    this.set({ changed: true }, { silent: true })
   },
   
   addTracks: function(tracks, position) {
@@ -47,6 +47,7 @@ Model.Playlist = Backbone.Model.extend({
       self.tracks.splice(position++, 0, track)
       track.playlist = self
     })
+    this.setTracks()
     Meow.render(message)
   },
   
@@ -57,6 +58,7 @@ Model.Playlist = Backbone.Model.extend({
     _.each(tracks, function(track) {
       self.tracks.splice(_.indexOf(self.tracks, track), 1)
     })
+    this.setTracks()
     Meow.render(message)
   },
   
@@ -82,6 +84,13 @@ Model.Playlist = Backbone.Model.extend({
         return new Model.Track(track.toJSON())
       })
       .value()
+  },
+  
+  setTracks: function(options) {
+    this.set({
+      tracks: this.tracks,
+      tracks_count: this.tracks.length
+    }, options)
   }
   
 })
@@ -119,10 +128,7 @@ View.Playlist = Backbone.View.extend({
     var self = this
     options = options || {}
     
-    this.model.set({
-      tracks: this.model.tracks,
-      tracks_count: this.model.tracks.length
-    }, { silent: true })
+    this.model.setTracks({ silent: true })
     
     this.$el.html(this.template({
       currentUser: Session.userJSON(),
@@ -159,6 +165,7 @@ View.Playlist = Backbone.View.extend({
   },
   
   saveSuccess: function(playlist, response) {
+    this.model.set({ changed: false }, { silent: true })
     if (!Playlists.get(this.model.id)) {
       Playlists.add([ this.model ])
     }
@@ -244,8 +251,9 @@ View.Playlist = Backbone.View.extend({
   
   validateName: function() {
     var val = this.$el.find('.playlist-name-edit').val()
-    // TODO if (val ...)
-    this.model.set({ name: val })
+    if (this.model.get('name') != val) {
+      this.model.set({ name: val })
+    }
     this.render()
   }
   
@@ -270,7 +278,9 @@ function discover() {
 
 View.Playlists = Backbone.View.extend({
   template: jade.compile($('#playlist-index-template').text()),
-
+  
+  className: 'playlists',
+  
   render: function(options) {
     if (!this.collection.models) {
       this.$el.html('Loading...')

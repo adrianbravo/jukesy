@@ -1,8 +1,13 @@
 h1 Playlists - #{user}
 
-ul
+br
+ul.unstyled
   each playlist in playlists
     li
       a(href= '/user/' + user + '/playlist/' + playlist._id) #{playlist.name}
-      - if (playlist.time)
-        |  #{playlist.time.created}
+      - if (playlist.changed)
+        |  
+        span.label.label-important Unsaved changes
+      p #{playlist.tracks_count} #{_.plural(playlist.tracks_count, 'track', 'tracks')}
+        - if (playlist.time)
+          |  #{playlist.time.created}
