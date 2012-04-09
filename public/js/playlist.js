@@ -122,9 +122,7 @@ View.Playlist = Backbone.View.extend({
       this.$el.html('Loading...')
       return this
     }
-    // alter to fetch if tracks is not present when isNew() == false
-    // on success re-render w/ tracks filled in (do not if the view is not visible)
-    // on fail, show error?
+    
     var self = this
     options = options || {}
     
