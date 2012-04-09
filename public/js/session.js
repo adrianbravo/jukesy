@@ -44,7 +44,7 @@ Model.Session = Backbone.Model.extend({
     if (model.playlists) {
       Playlists.add(model.playlists)
     }
-    Playlists.user = user
+    Playlists.user = user.get('username')
     this.user = user
     _.defer(this.refresh)
   }
@@ -115,8 +115,8 @@ View.SessionCreate = Backbone.View.extend(_.extend({
     }
   },
 
-  submitSuccess: function(user) {
-    Session.login(user)
+  submitSuccess: function(user, response) {
+    Session.login(response)
     ModalView.hide()
   }
         

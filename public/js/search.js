@@ -165,7 +165,6 @@ View.SearchResultsTracks = Backbone.View.extend(_.extend({
     var clones = this.model.cloneResults()
       , playlist = new Model.Playlist // start with a fresh playlist
     
-    Playlists.add([ playlist ])
     playlist.setNowPlaying()
     NowPlaying.addTracks(clones, Video.track ? _.indexOf(NowPlaying.tracks, Video.track) + 1 : 0)
     clones[0].play()

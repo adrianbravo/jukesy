@@ -52,7 +52,7 @@ AppRouter = Backbone.Router.extend({
   },
   
   playlists: function(username) {
-    if (username == 'anonymous' || (Session.user && Session.user.username == username)) {
+    if (username == 'anonymous' || (Session.user && Session.user.get('username') == username)) {
       MainView.render(Playlists.view)
     } else {
       var playlists = new Collection.Playlists()
@@ -70,7 +70,7 @@ AppRouter = Backbone.Router.extend({
     var playlist = Playlists.get(id)
     if (!playlist) {
       playlist = new Model.Playlist({ user: username, _id: id })
-      if (Session.user && Session.user.username == username) {
+      if (Session.user && Session.user.get('username') == username) {
         Playlists.add(playlist)
       }
     }
@@ -231,7 +231,6 @@ $(function() {
   window.signupModal = new View.UserCreate()
 
   var playlist = new Model.Playlist()
-  Playlists.add([ playlist ])
   Playlists.user = 'anonymous'
   playlist.setNowPlaying()
 

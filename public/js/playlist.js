@@ -140,6 +140,9 @@ View.Playlist = Backbone.View.extend({
   },
   
   saveSuccess: function(playlist, response) {
+    if (!Playlists.get(this.model.id)) {
+      Playlists.add([ this.model ])
+    }
     var $alert = new View.Alert({
       className: 'alert-success alert',
       message: 'Your playlist has been saved.'
