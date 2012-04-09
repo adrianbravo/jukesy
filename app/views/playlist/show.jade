@@ -32,7 +32,9 @@
   - else
     .playlist-name #{playlist.name}
 
-p Created by #{playlist.user}, #{playlist.tracks_count} tracks
+p Created by 
+  a(href= '/user/' + playlist.user) #{playlist.user}
+  | , #{playlist.tracks_count} #{_.plural(playlist.tracks_count, 'track', 'tracks')}
 
 - if (!nowPlaying)
   .btn-group
