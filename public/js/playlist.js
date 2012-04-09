@@ -79,7 +79,7 @@ Model.Playlist = Backbone.Model.extend({
 View.Playlist = Backbone.View.extend({
   className: 'playlist',
   
-  template: jade.compile($('#playlist-template').text()),
+  template: jade.compile($('#playlist-show-template').text()),
 
   events: {
     'click .playlist-name'     : 'toggleNameEdit',
@@ -246,6 +246,36 @@ function discover() {
 }
 */
 
+View.Playlists = Backbone.View.extend({
+  template: jade.compile($('#playlist-index-template').text()),
+  events: {
+    //'click .playlist-name'     : 'toggleNameEdit',
+  },
+    
+  initialize: function() {
+    //_.bindAll(this, 'keyDown', 'saveSuccess', 'saveError', 'save', 'focusNameEdit', 'playAll')
+  },
+
+  render: function(options) {
+    if (!this.collection.models) {
+      this.$el.html('Loading...')
+      return this
+    }
+    this.$el.html(this.template({
+      playlists: _.map(this.collection.models, function(playlist) { return playlist.toJSON() }),
+      user: this.collection.user
+    }))
+    return this
+  },
+
+})
+
 Collection.Playlists = Backbone.Collection.extend({
-  model: Model.Playlist
+  model: Model.Playlist,
+  url: function() {
+    return '/user/' + this.user + '/playlist'
+  },
+  initialize: function() {
+    this.view = new View.Playlists({ collection: this })
+  }
 })

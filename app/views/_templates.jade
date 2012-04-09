@@ -22,7 +22,10 @@ script#privacy-policy-template(type= 'text/jade-template')
 script#now-playing-template(type= 'text/jade-template')
   != jadeLiteral('home/now_playing')
 
-script#playlist-template(type= 'text/jade-template')
+script#playlist-index-template(type= 'text/jade-template')
+  != jadeLiteral('playlist/index')
+
+script#playlist-show-template(type= 'text/jade-template')
   != jadeLiteral('playlist/show')
 
 script#user-new-template(type= 'text/jade-template')

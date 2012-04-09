@@ -44,6 +44,7 @@ Model.Session = Backbone.Model.extend({
     if (model.playlists) {
       Playlists.add(model.playlists)
     }
+    Playlists.user = user
     this.user = user
     _.defer(this.refresh)
   }

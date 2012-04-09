@@ -10,11 +10,17 @@ ul.nav.nav-list
       |  Favorites
 
   li
-    a(href= '#')
+    a
       i.icon-plus-sign
       |  Create a playlist
 
+  li
+    a(href= '/user/' + ((currentUser && currentUser.username) || 'anonymous') + '/playlist')
+      i.icon-th-list
+      |  Playlists
+
   - if (typeof currentUser != 'undefined')
+
 
     // if no playlists, do not show hr
     // else, show hr and list of playlists

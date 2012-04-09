@@ -39,11 +39,14 @@ describe('Playlist Controller', function() {
         expect(playlist).to.exist
         Playlist.create({ user: user.username }, function(err, playlist) {
           expect(playlist).to.exist
-          request.get('/user/adrian/playlist', function(res) {
-            expect(res).status(200)
-            expect(res.body).to.have.length(2)
-            done()
-          })
+          request
+            .get('/user/adrian/playlist')
+            .set('X-Requested-With', 'XMLHttpRequest')
+            .end(function(res) {
+              expect(res).status(200)
+              expect(res.body).to.have.length(2)
+              done()
+            })
         })
       })
     })

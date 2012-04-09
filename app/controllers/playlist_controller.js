@@ -9,7 +9,14 @@ module.exports = function(app) {
         if (err || !playlists) {
           return next(new app.Error(err || 500))
         }
-        res.json(playlists)
+        if (req.xhr) {
+          res.json(playlists)
+        } else {
+          res.render('playlist/index', {
+            user: req.paramUser.username,
+            playlists: playlists
+          })
+        }
       })
     },
 

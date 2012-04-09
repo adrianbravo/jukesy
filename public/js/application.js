@@ -7,6 +7,7 @@ AppRouter = Backbone.Router.extend({
     'now-playing'         : 'nowPlaying',
     'user/:username'      : 'userView',
     'user/:username/edit' : 'userEdit',
+    'user/:username/playlist'     : 'playlists',
     'user/:username/playlist/:id' : 'playlist',
     'artist/*artist/album/*album' : 'searchAlbum',
     'artist/*artist/track/*track' : 'searchTrack',
@@ -48,6 +49,21 @@ AppRouter = Backbone.Router.extend({
   
   nowPlaying: function() {
     MainView.render(NowPlaying.view)
+  },
+  
+  playlists: function(username) {
+    if (username == 'anonymous' || (Session.user && Session.user.username == username)) {
+      MainView.render(Playlists.view)
+    } else {
+      var playlists = new Collection.Playlists()
+      playlists.user = username
+      playlists.fetch({
+        success: function(collection, response) {
+          MainView.render(playlists.view)
+        },
+        error: this.error
+      })
+    }
   },
   
   playlist: function(username, id) {
@@ -216,6 +232,7 @@ $(function() {
 
   var playlist = new Model.Playlist()
   Playlists.add([ playlist ])
+  Playlists.user = 'anonymous'
   playlist.setNowPlaying()
 
   // hijack links

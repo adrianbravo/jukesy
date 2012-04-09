@@ -1,0 +1,8 @@
+h1 #{user} - Playlists
+
+ul
+  each playlist in playlists
+    li
+      a(href= '/user/' + user + '/playlist/' + playlist._id) #{playlist.name}
+      - if (playlist.time)
+        |  #{playlist.time.created}
