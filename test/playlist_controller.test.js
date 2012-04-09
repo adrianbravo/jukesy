@@ -293,4 +293,79 @@ describe('Playlist Controller', function() {
     
   })
 
+  describe('DELETE /user/:username/playlist/:playlist (#delete)', function() {
+    var user, playlist, cookie
+    
+    beforeEach(function(done) {
+      User.create({
+        username: 'adrian',
+        password: 'test',
+        email: 'test@test.test'
+      }, function(err, u) {
+        user = u
+        expect(user).to.exist
+        Playlist.create({
+          user: user.username
+        }, function(err, p) {
+          playlist = p
+          expect(playlist).to.exist
+          request.post('/session', {
+            login: 'adrian',
+            password: 'test'
+          }, function(res) {
+            expect(res).status(200)
+            cookie = res.headers['set-cookie'][1]
+            done()
+          })
+        })
+      })
+    })
+    
+    it('returns 401 if not logged in', function(done) {
+      request
+        .del('/user/adrian/playlist/' + playlist.id, function(res) {
+        expect(res).status(401)
+        done()
+      })
+    })
+    
+    it('returns 404 if user does not exist', function(done) {
+      request
+        .del('/user/notadrian/playlist/' + playlist.id)
+        .set('cookie', cookie)
+        .end(function(res) {
+          expect(res).status(404)
+          done()
+        })
+    })
+    
+    it('returns 401 if logged in as different user', function(done) {
+      User.create({
+        username: 'notadrian',
+        password: 'test',
+        email: 'test2@test.test'
+      }, function(err, u) {
+        request
+          .del('/user/notadrian/playlist/' + playlist.id)
+          .set('cookie', cookie)
+          .end(function(res) {
+            expect(res).status(404)
+            done()
+          })
+      })
+    })
+    
+    it('returns 200 if logged in as right user', function(done) {
+      request
+        .del('/user/adrian/playlist/' + playlist.id)
+        .set('cookie', cookie)
+        .end(function(res) {
+          expect(res).status(200)
+          expect(res.body).to.equal(1)
+          done()
+        })
+    })
+        
+  })
+
 })

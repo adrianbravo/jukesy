@@ -47,7 +47,7 @@ module.exports = function(app) {
   app.get('/user/:username/playlist/:playlist', PlaylistController.read)
   app.post('/user/:username/playlist', app.auth.authenticate, app.auth.authorize, PlaylistController.create)
   app.put('/user/:username/playlist/:playlist', app.auth.authenticate, app.auth.authorize, PlaylistController.update)
-  //app.del('/user/:username/playlist/:playlist', app.auth.authenticate, app.auth.authorize, PlaylistController.delete)
+  app.del('/user/:username/playlist/:playlist', app.auth.authenticate, app.auth.authorize, PlaylistController.delete)
 
   app.get('/session/refresh', app.auth.authenticate, SessionController.refresh)
   app.post('/session', SessionController.create)

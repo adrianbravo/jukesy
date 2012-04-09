@@ -52,11 +52,14 @@ module.exports = function(app) {
       })
     },
 
-    /*
     delete: function(req, res, next) {
-      next(new app.Error(501))
+      req.paramPlaylist.remove(function(err) {
+        if (err) {
+          return next(new app.Error(err || 500))
+        }
+        res.json(1)
+      })
     }
-    */
 
   }
 
