@@ -9,16 +9,16 @@ AppRouter = Backbone.Router.extend({
     'user/:username/edit' : 'userEdit',
     'user/:username/playlist'     : 'playlists',
     'user/:username/playlist/:id' : 'playlist',
-    'artist/*artist/album/*album' : 'searchAlbum',
-    'artist/*artist/track/*track' : 'searchTrack',
-    'artist/*artist/top-tracks'   : 'searchArtistTopTracks',
-    'artist/*artist/top-albums'   : 'searchArtistTopAlbums',
-    'artist/*artist/similar'      : 'searchArtistSimilar',
-    'artist/*artist'              : 'searchArtist',
-    'search/*query/track'         : 'searchQueryTrack',
-    'search/*query/album'         : 'searchQueryAlbum',
-    'search/*query/artist'        : 'searchQueryArtist',
-    'search/*query'               : 'searchQuery',
+    'artist/:artist/album/:album' : 'searchAlbum',
+    'artist/:artist/track/:track' : 'searchTrack',
+    'artist/:artist/top-tracks'   : 'searchArtistTopTracks',
+    'artist/:artist/top-albums'   : 'searchArtistTopAlbums',
+    'artist/:artist/similar'      : 'searchArtistSimilar',
+    'artist/:artist'              : 'searchArtist',
+    'search/:query/track'         : 'searchQueryTrack',
+    'search/:query/album'         : 'searchQueryAlbum',
+    'search/:query/artist'        : 'searchQueryArtist',
+    'search/:query'               : 'searchQuery',
     '*derp'         : '404'
   },
 
@@ -115,43 +115,43 @@ AppRouter = Backbone.Router.extend({
   },
   
   searchArtist: function(artist) {
-    MainView.render(new View.SearchArtist({ artist: artist }))
+    MainView.render(new View.SearchArtist({ artist: decodeURIComponent(artist) }))
   },
   
   searchArtistTopTracks: function(artist) {
-    MainView.render(new View.SearchArtistTopTracks({ artist: artist }))
+    MainView.render(new View.SearchArtistTopTracks({ artist: decodeURIComponent(artist) }))
   },
   
   searchArtistTopAlbums: function(artist) {
-    MainView.render(new View.SearchArtistTopAlbums({ artist: artist }))
+    MainView.render(new View.SearchArtistTopAlbums({ artist: decodeURIComponent(artist) }))
   },
   
   searchArtistSimilar: function(artist) {
-    MainView.render(new View.SearchArtistSimilar({ artist: artist }))
+    MainView.render(new View.SearchArtistSimilar({ artist: decodeURIComponent(artist) }))
   },
   
   searchAlbum: function(artist, album) {
-    MainView.render(new View.SearchAlbum({ artist: artist, album: album }))
+    MainView.render(new View.SearchAlbum({ artist: decodeURIComponent(artist), album: decodeURIComponent(album) }))
   },
   
   searchTrack: function(artist, track) {
-    MainView.render(new View.SearchTrack({ artist: artist, track: track }))
+    MainView.render(new View.SearchTrack({ artist: decodeURIComponent(artist), track: decodeURIComponent(track) }))
   },
   
   searchQuery: function(query) {
-    MainView.render(new View.SearchQuery({ query: query }))
+    MainView.render(new View.SearchQuery({ query: decodeURIComponent(query) }))
   },
   
   searchQueryTrack: function(query) {
-    MainView.render(new View.SearchQueryTrack({ query: query }))
+    MainView.render(new View.SearchQueryTrack({ query: decodeURIComponent(query) }))
   },
   
   searchQueryAlbum: function(query) {
-    MainView.render(new View.SearchQueryAlbum({ query: query }))
+    MainView.render(new View.SearchQueryAlbum({ query: decodeURIComponent(query) }))
   },
   
   searchQueryArtist: function(query) {
-    MainView.render(new View.SearchQueryArtist({ query: query }))
+    MainView.render(new View.SearchQueryArtist({ query: decodeURIComponent(query) }))
   },
 
   error: function(model, response) {
