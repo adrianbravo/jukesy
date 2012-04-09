@@ -11,6 +11,9 @@ module.exports = function(app) {
         string = ''
       }
       return string.charAt(0).toUpperCase() + string.substring(1).toLowerCase()
+    },
+    plural: function(count, singular, plural) {
+      return count == 1 ? singular : plural
     }
   })
 
@@ -68,7 +71,8 @@ module.exports = function(app) {
       },
       currentUser: function(req, res) {
         return req.currentUser
-      }
+      },
+      _ : app._
     })
 
     app

@@ -248,9 +248,7 @@ $(function() {
   window.loginModal = new View.SessionCreate({ model: Session })
   window.signupModal = new View.UserCreate()
 
-  var playlist = new Model.Playlist()
-  Playlists.user = 'anonymous'
-  playlist.setNowPlaying()
+  clearNowPlaying()
 
   // hijack links
   // https://github.com/documentcloud/backbone/issues/456#issuecomment-2557835

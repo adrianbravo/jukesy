@@ -6,7 +6,6 @@ _.mixin({
     }
     return string.charAt(0).toUpperCase() + string.substring(1).toLowerCase()
   },
-  
   plural: function(count, singular, plural) {
     return count == 1 ? singular : plural
   }
@@ -77,3 +76,8 @@ function urlArtist(artist) {
   return '/artist/' + encodeURIComponent(artist)
 }
 
+function clearNowPlaying() {
+  var playlist = new Model.Playlist()
+  Playlists.user = 'anonymous'
+  playlist.setNowPlaying()
+}

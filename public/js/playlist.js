@@ -104,8 +104,7 @@ View.Playlist = Backbone.View.extend({
     'click .playlist-name.edit' : 'toggleNameEdit',
     'click .playlist-save'      : 'save',
     'click .playlist-sidebar'   : 'toggleSidebar',
-    //'click .playlist-save-as'   : 'saveAs',
-    //'click .playlist-delete'    : 'delete',
+    'click .playlist-delete'    : 'delete',
     'click .play-all'       : 'playAll',
     'click .queue-all-next' : 'queueNext',
     'click .queue-all-last' : 'queueLast',
@@ -114,7 +113,7 @@ View.Playlist = Backbone.View.extend({
   },
     
   initialize: function() {
-    _.bindAll(this, 'keyDown', 'saveSuccess', 'saveError', 'save', 'focusNameEdit', 'playAll')
+    _.bindAll(this, 'keyDown', 'saveSuccess', 'saveError', 'save', 'deleteSuccess', 'deleteError', 'delete', 'focusNameEdit', 'playAll')
   },
 
   render: function(options) {
@@ -174,26 +173,26 @@ View.Playlist = Backbone.View.extend({
     this.render().$el.prepend($alert.render())
   },
   
+  // TODO dry (reused from view form mixins)
   saveError: function(model, error) {
-    // TODO dry (reused from view form mixins)
-    var errorJSON = {}
+    var $alert, errorJSON
     try {
       errorJSON = JSON.parse(error.responseText)
-    } catch(e) {}
-    
-    console.log(errorJSON)
-    if (error.status == 401 && !errorJSON.errors) {
-      this.addAlert('unauthorized')
-    } else if (error.status) {
-      //this.addErrors(errorJSON.errors)
-    } else {
-      this.addAlert()
+    } catch(e) {
+      errorJSON = {}
     }
     
-    var $alert = new View.Alert({
-      className: 'alert-error alert',
-      message: 'Error!' || parseError(null, 'Error!' || 'no_connection')
-    })
+    if (error.status == 401 && !errorJSON.errors) {
+      $alert = new View.Alert({
+        className: 'alert-error alert',
+        message: parseError('unauthorized')
+      })
+    } else {
+      $alert = new View.Alert({
+        className: 'alert-error alert',
+        message: 'Something went wrong while trying to save this playlist.'
+      })
+    }
     this.render().$el.prepend($alert.render())
   },
 
@@ -209,28 +208,55 @@ View.Playlist = Backbone.View.extend({
     })
   },
 
-  /*
-  saveAs: function() {
-    if (!Session.user) {
-      loginModal.render().addAlert('not_logged_in_save')
-      ModalView.setCallback(this.saveAs)
-      return
+  deleteSuccess: function(playlist, response) {
+    if (playlist.view.$el.is(':visible')) {
+      Router.navigate('/', { trigger: true, replace: true })
     }
-    console.log('save as')
-    // clone playlist model
-    // save new playlist model
-    // do not change current playlist
+    if (playlist.nowPlaying) {
+      clearNowPlaying() 
+    }
+    
+    var $alert = new View.Alert({
+      className: 'alert-success alert',
+      message: 'Your playlist has been deleted.'
+    })
+    MainView.$el.prepend($alert.render())
   },
-
+  
+  deleteError: function(model, error) {
+    var $alert, errorJSON
+    try {
+      errorJSON = JSON.parse(error.responseText)
+    } catch(e) {
+      errorJSON = {}
+    }
+    
+    if (error.status == 401 && !errorJSON.errors) {
+      $alert = new View.Alert({
+        className: 'alert-error alert',
+        message: parseError('unauthorized')
+      })
+    } else {
+      $alert = new View.Alert({
+        className: 'alert-error alert',
+        message: 'Something went wrong while trying to delete this playlist.'
+      })
+    }
+    this.render().$el.prepend($alert.render())
+  },
+  
   delete: function() {
-    console.log('delete')
-
     if (!Session.user) {
-      // login modal w/ callback this.delete
+      loginModal.render().addAlert('not_logged_in_destroy')
+      ModalView.setCallback(this.delete)
       return
     }
-  }
-  */
+    
+    this.model.destroy({
+      success: this.deleteSuccess,
+      error: this.deleteError
+    })
+  },
   
   keyDown: function(event) {
     if (event.keyCode == 13) {
@@ -297,7 +323,20 @@ Collection.Playlists = Backbone.Collection.extend({
   url: function() {
     return '/user/' + this.user + '/playlist'
   },
+  
   initialize: function() {
     this.view = new View.Playlists({ collection: this })
+    
+    this.on('add', this.view.render, this.view)
+    this.on('remove', this.view.render, this.view)
+    
+    this.on('add', this.sidebarRender, this)
+    this.on('remove', this.sidebarRender, this)
+  },
+  
+  sidebarRender: function() {
+    if (window.SidebarView) {
+      SidebarView.render()
+    }
   }
 })

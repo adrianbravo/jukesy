@@ -8,6 +8,8 @@ window.parseError = function(field, error) {
   switch (error) {
     case 'not_logged_in_save':
       return 'You must log in to save a playlist.'
+    case 'not_logged_in_delete':
+      return 'You must log in to delete a playlist.'
     case 'unauthorized':
       return 'You\'re not authorized to access that.'
     case 'no_connection':
