@@ -1,7 +1,3 @@
-a.image(href= urlAlbum(album.get('artist'), album.get('name')))
-  img(src= album.get('image'))
-.info
-  .artist
-    a(href= urlArtist(album.get('artist')))= album.get('artist')
-  .name
-    a(href= urlAlbum(album.get('artist'), album.get('name')))= album.get('name')
+a.thumbnail(href= urlAlbum(album.get('artist'), album.get('name')))
+  .img-wrap
+    img(src= album.get('image'))

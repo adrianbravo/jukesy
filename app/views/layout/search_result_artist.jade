@@ -1,5 +1,3 @@
-a.image(href= urlArtist(artist.get('name')))
-  img(src= artist.get('image'))
-.info
-  .name
-    a(href= urlArtist(artist.get('name')))= artist.get('name')
+a.thumbnail(href= urlArtist(artist.get('name')))
+  .img-wrap
+    img(src= artist.get('image'))

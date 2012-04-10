@@ -222,12 +222,14 @@ View.SearchResultTrack = View.SearchResult.extend(_.extend(Mixins.TrackViewEvent
 
 View.SearchResultAlbum = View.SearchResult.extend({
   tagName: 'li',
+  className: 'span2',
   template: jade.compile($('#search-result-album-template').text()),
   type: 'album'
 })
 
 View.SearchResultArtist = View.SearchResult.extend({
   tagName: 'li',
+  className: 'span2',
   template: jade.compile($('#search-result-artist-template').text()),
   type: 'artist'
 })
