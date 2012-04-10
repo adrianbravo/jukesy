@@ -38,7 +38,7 @@ View.UserEdit = Backbone.View.extend(_.extend({
   elAlert: 'form',
   
   events: {
-    'click a.btn-primary' : 'submit',
+    'click button.btn-primary' : 'submit',
     'keypress input'      : 'keyDown'
   },
     
@@ -90,7 +90,7 @@ View.UserCreate = Backbone.View.extend(_.extend({
   elAlert: '.modal-body',
 
   events: {
-    'click a.btn-primary' : 'submit',
+    'click button.btn-primary' : 'submit',
     'keypress input'      : 'keyDown',
     'click a.sign-in'     : 'newSession'
   },

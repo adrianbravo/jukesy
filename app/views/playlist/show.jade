@@ -22,26 +22,8 @@
           i.icon-trash
           |  Delete
 
-- if (nowPlaying)
-  h1 Now Playing
-
-- if (editName)
-  input.playlist-name-edit(maxlength= '50', name= 'playlist-name', value= playlist.name)
-- else
-  - if (!playlist._id || (currentUser && currentUser.username == playlist.user))
-    .playlist-name.edit #{playlist.name}
-      button.btn.btn-mini
-        i.icon-pencil
-        |  Edit Playlist Name
-  - else
-    .playlist-name #{playlist.name}
-
-p Created by 
-  a(href= '/user/' + playlist.user) #{playlist.user}
-  | , #{playlist.tracks_count} #{_.plural(playlist.tracks_count, 'track', 'tracks')}
-
 - if (!nowPlaying)
-  .btn-group
+  .btn-group.pull-right
     button.btn.btn-large.play-all Play All
     button.btn.btn-large.dropdown-toggle('data-toggle'= 'dropdown')
       span.caret
@@ -49,9 +31,22 @@ p Created by
       li
         a.play-all Play All
       li
-        a.queue-all-next Queue Next
+        a.queue-all-next Queue All Next
       li
-        a.queue-all-last Queue Last
+        a.queue-all-last Queue All Last
+
+
+- if (editName)
+  input.playlist-name-edit(maxlength= '50', name= 'playlist-name', value= playlist.name)
+- else
+  div.playlist-name #{playlist.name}
+- if (nowPlaying)
+  span.label.label-info listening
+
+
+p Created by 
+  a(href= '/user/' + playlist.user) #{playlist.user}
+  | , #{playlist.tracks_count} #{_.plural(playlist.tracks_count, 'track', 'tracks')}
 
 - if (playlist.tracks_count)  
   .tracks

@@ -14,6 +14,9 @@
     src: local('Baumans'), local('Baumans-Regular'), url('../../font/baumans.woff') format('woff');
 }
 
+hr {
+  border-color: @blueDark;
+}
 h1, h2, h3, h4, h5, .navbar .brand, .navbar .nav-collapse.collapse .nav li > a {
 	color: @grayLighter;
 	font-weight: normal;
@@ -51,7 +54,7 @@ blockquote {
 
 body {
 	background-color: #060606;
-	#gradient > .vertical (#060606, #252A30);
+	#gradient > .vertical (@grayDarker, @grayDark);
 }
 
 .page-header {
@@ -99,13 +102,13 @@ body {
 }
 
 .dropdown-menu {
-	background-color: #191A1A;
+	background-color: @grayDark;
 	border-left: solid 1px rgba(256,256,256,.1);
 	.box-shadow(0 2px 4px rgba(0,0,0,.8));
 }
 
 .dropdown-menu li > a:hover {
-	background-color: @blue;
+	background-color: @blueDark;
 	border-bottom: 3px solid transparent;
 }
 
@@ -416,9 +419,9 @@ input, textarea, select, .uneditable-input {
 // -----------------------------------------------------
 
 input, textarea, select {
-	background-color: #fff;
-	border-color: #bbb;
-	border-width: 2px;
+	background-color: @gray;
+	//border-color: #bbb;
+	border-width: 0;
 	.placeholder(@gray);
 } 
 
@@ -436,8 +439,10 @@ input:focus,
 textarea:focus,
 input.focused,
 textarea.focused {
-  //border-color: rgba(82,168,236,1);
-  border-color: #666;
+  //border-color: @gray;
+  background-color: @grayLighter;
+  //border-color: red;
+  color: @grayDark;
   outline: 0;
   outline: thin dotted \9; /* IE6-9 */
 }

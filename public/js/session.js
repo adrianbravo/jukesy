@@ -87,7 +87,7 @@ View.SessionCreate = Backbone.View.extend(_.extend({
   elFocus: '#session-new-password',
 
   events: {
-    'click a.btn-primary' : 'submit',
+    'click button.btn-primary' : 'submit',
     'keypress input'      : 'keyDown',
     'click a.sign-up'     : 'newUser'
   },

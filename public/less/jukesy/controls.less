@@ -1,11 +1,8 @@
 #controls {
-
   .no-select();
-
-  background: #222;
-  box-shadow: 0 0 15px #111;
+  z-index: @zindexControls;
   position: fixed;
-  z-index: 1000000;
+  background: #222;
   height: 45px;
   top: auto;
   bottom: 0;
@@ -14,95 +11,74 @@
   margin: 0;
   font-size: 12px;
 
-  #volume-bar, #timer {
+  .control {
     display: inline-block;
-    background: #333;
+    padding: 3px 8px;
+    width: 10px;
+    margin: 3px 0;
+    cursor: pointer;
+    color: @blueDark;
+    
+    .icon-resize-full,
+    &.off {
+      opacity: 0.33;
+    }
+    .icon-resize-small {
+      opacity: 1;
+    }
+    &.disabled {
+      opacity: 0.1;
+    }
+    &:hover {
+      color: @blue;
+    }
+  }
+
+  #volume-bar, #timer {
+    padding: 0;
+    margin: 0;
+    cursor: default;
+    background: #1c1c1c;
     height: 10px;
+    .bar {
+      background-color: @blueDark;
+    }
+    .fill,
+    .track {
+      height: 10px;
+      radius:(0px);
+    }
   }
   
   #timer {
-    margin-top: 10px;
-    width: 100%;
-    overflow: visible;
-    .radius(0px);
-    
+    width: 575px;
     .fill, .track {
-      .radius(0px);
       position: absolute;
-      height: 10px;
-      cursor: pointer;
     }
     .fill {
-      background: #444;
+      background: @grayDark;
     }    
     .track {
-      z-index: 1000001;
+      z-index: @zindexControls + 1;
     }
   }
   
   #volume-bar {
     width: 100px;
-    cursor: pointer;
-    
     .fill {
-      height: 10px;
-    }
-  }
-  
-  .control {
-    padding: 3px 8px;
-    width: 10px;
-    display: inline-block;
-    margin: 3px 0;
-    cursor: pointer;
-  }
-  
-  #volume-bar, #timer {
-    &#volume-bar .fill, &#timer .track {
-      background-color: @blueDark;
-      opacity: 1;
-    }
-  }
-  
-  .control {
-    color: @blueDark;
-    opacity: 0.5;
-  }
-  #prev, #play-pause, #next, #volume {
-    opacity: 1;
-  }
-  
-  #repeat, #shuffle, #radio {
-    opacity: 1;
-    &.off {
-      opacity: 0.33;
-    }
-  }
-  
-  #fullscreen {
-    opacity: 1;
-    &:hover {
-      color: @blueDark
-    }
-  }
-  
-  .control {
-    &.disabled {
-      opacity: 0.1;
+      width: 50px;
     }
   }
   
   .span12 {
     position: absolute;
-  }
-  
-  .span12.controls {
-    top: 15px;
-  }
-
-  .span12.track-info {
-    top: 3px;
-    text-align: center;
+    &.controls {
+      bottom: 30px;
+    }
+    &.track-info {
+      top: 3px;
+      text-align: center;
+    }
   }
   
   .controls-left, .controls-right, .controls-middle {
@@ -112,7 +88,7 @@
   
   .controls-middle {
     left: 240px;
-    width: 575px;
+    top: 6px;
   }
   
   .controls-right {

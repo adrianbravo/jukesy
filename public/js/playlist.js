@@ -91,6 +91,10 @@ Model.Playlist = Backbone.Model.extend({
       tracks: this.tracks,
       tracks_count: this.tracks.length
     }, options)
+  },
+  
+  isEditable: function() {
+    return (this.isNew() || (Session.user && Session.user.get('username') == this.get('user')))
   }
   
 })
@@ -137,6 +141,9 @@ View.Playlist = Backbone.View.extend({
     _.each(this.model.get('tracks'), function(track) {
       self.$el.find('tbody').append(track.view.render().$el)
     })
+    if (this.model.isEditable()) {
+      this.$el.find('.playlist-name').addClass('edit')
+    }
     
     return this
   },
