@@ -4,7 +4,7 @@ AppRouter = Backbone.Router.extend({
     'about'               : 'about',
     'terms-of-service'    : 'termsOfService',
     'privacy-policy'      : 'privacyPolicy',
-    'now-playing'         : 'nowPlaying',
+    'unsaved-playlist'    : 'nowPlaying',
     'user/:username'      : 'userView',
     'user/:username/edit' : 'userEdit',
     'user/:username/playlist'     : 'playlists',
@@ -210,6 +210,7 @@ View.Sidebar = Backbone.View.extend({
   render: function() {
     this.$el.html(this.template({
       currentUser: Session.userJSON(),
+      unsavedPlaylist: window.NowPlaying && window.NowPlaying.isNew() ? window.NowPlaying.toJSON() : undefined,
       playlists: _.chain(Playlists.models)
                     .filter(function(playlist) { return playlist.get('sidebar') })
                     .map(function(playlist) { return playlist.toJSON() })
@@ -237,6 +238,7 @@ $(function() {
   window.$body = $('body')
   window.Playlists = new Collection.Playlists
   window.CurrentSearch = {}
+  
   window.KeyboardShortcutsView = new View.KeyboardShortcuts
   window.MainView = new View.Main
   window.Session = new Model.Session
@@ -245,10 +247,9 @@ $(function() {
   window.Video = new Model.Video
   window.Meow = new View.Meow
 
+  newNowPlaying()
   window.loginModal = new View.SessionCreate({ model: Session })
   window.signupModal = new View.UserCreate()
-
-  clearNowPlaying()
 
   // hijack links
   // https://github.com/documentcloud/backbone/issues/456#issuecomment-2557835

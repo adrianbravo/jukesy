@@ -220,7 +220,7 @@ View.Playlist = Backbone.View.extend({
       Router.navigate('/', { trigger: true, replace: true })
     }
     if (playlist.nowPlaying) {
-      clearNowPlaying() 
+      newNowPlaying() 
     }
     
     var $alert = new View.Alert({

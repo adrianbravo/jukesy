@@ -1,8 +1,4 @@
 ul.nav.nav-list
-  li
-    a(href= '/now-playing')
-      i.icon-music
-      |  Now Playing
 
   //li
   //  a(href= '/favorites')
@@ -14,10 +10,9 @@ ul.nav.nav-list
       i.icon-th-list
       |  Playlists
 
+  hr
+
   - if (typeof playlists != 'undefined')
-    - if (playlists.length)
-      hr
-    
     each playlist in playlists
       li
         a.playlist(href= '/user/' + playlist.user + '/playlist/' + playlist._id)
@@ -26,3 +21,9 @@ ul.nav.nav-list
           - else
             i.icon-bookmark
           |  #{playlist.name}
+        
+  - if (typeof unsavedPlaylist != 'undefined')
+    li
+      a.playlist(href= '/unsaved-playlist')
+        i.icon-music
+        |  #{unsavedPlaylist.name}

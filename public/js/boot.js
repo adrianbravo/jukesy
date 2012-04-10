@@ -76,8 +76,7 @@ function urlArtist(artist) {
   return '/artist/' + encodeURIComponent(artist)
 }
 
-function clearNowPlaying() {
+function newNowPlaying() {
   var playlist = new Model.Playlist()
-  Playlists.user = 'anonymous'
   playlist.setNowPlaying()
 }
