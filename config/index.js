@@ -1,4 +1,5 @@
 var _ = require('underscore')
+  , moment = require('moment')
   , fs = require('fs')
   , express = require('express')
   , MongoStore = require('connect-mongo')
@@ -72,7 +73,12 @@ module.exports = function(app) {
       currentUser: function(req, res) {
         return req.currentUser
       },
-      _ : app._
+      moment: function(req, res) {
+        return moment
+      },
+      _: function(req, res) {
+        return app._
+      }
     })
 
     app

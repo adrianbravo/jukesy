@@ -4,10 +4,11 @@ br
 ul.unstyled
   each playlist in playlists
     li
-      a(href= '/user/' + user + '/playlist/' + playlist._id) #{playlist.name}
+      a(href= '/user/' + user + '/playlist/' + playlist._id) #{playlist.name} 
+      |  - #{playlist.tracks_count} #{_.plural(playlist.tracks_count, 'track', 'tracks')}
       - if (playlist.changed)
         |  
-        span.label.label-important Unsaved changes
-      p #{playlist.tracks_count} #{_.plural(playlist.tracks_count, 'track', 'tracks')}
+        span.label.label-important unsaved
+      p
         - if (playlist.time)
-          |  #{playlist.time.created}
+          | Created on #{moment(playlist.time.created).format('dddd, MMMM Do YYYY, h:mm:ss a')}

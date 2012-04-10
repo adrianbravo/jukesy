@@ -42,6 +42,8 @@
   div.playlist-name #{playlist.name}
 - if (nowPlaying)
   span.label.label-info listening
+- if (!playlist._id || playlist.changed)
+  span.label.label-important unsaved
 
 
 p Created by 

@@ -5,6 +5,7 @@ var assets = {
     'js/lib/underscore-min.js',
     'js/lib/backbone.js',
     'js/lib/swfobject.js',
+    'js/lib/moment-1.5.0.js',
     'js/lib/less-1.3.0.min.js',
     'js/lib/jade.min.js',
     'js/lib/bootstrap.js',
