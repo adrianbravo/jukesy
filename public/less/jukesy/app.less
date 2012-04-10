@@ -1,9 +1,4 @@
-@blue: rgba(51, 181, 229, 1);
-@red: rgba(230, 50, 98, 1);
-@green: rgba(50, 230, 98, 1);
-
 @import "include.less";
-@import "layout.less";
 @import "results.less";
 @import "controls.less";
 
@@ -28,7 +23,7 @@ body {
   }
   
   hr {
-    border-color: @blue;
+    border-color: @blueDark;
   }
 }
 
@@ -41,13 +36,13 @@ a:hover {
 }
 
 #header .navbar-inner {  
-  background: @blue;
+  background: @blueDark;
   border-bottom: 0;
 
   #query {
     margin: 6px 0 0;
     background: #fff;
-    border-color: rgba(51, 181, 229, 0.7);
+    border-color: @blueDark; //rgba(51, 181, 229, 0.7);
     &::-webkit-input-placeholder, &::-moz-placeholder {
       color: #666;
     }
@@ -184,7 +179,7 @@ footer {
   div {
     width: 12%;
     height: 26%;
-    background: @blue;
+    background: @blueDark;
     position: absolute;
     left: 44.5%;
     top: 37%;

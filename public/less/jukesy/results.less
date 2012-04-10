@@ -1,14 +1,14 @@
-#search {
-  hr {
+
+#main {
+
+  #search hr {
     border-top: 1px solid #111;
     border-bottom: 1px solid #333;
   }
+
   .load-more {
     text-align: center;
   }
-}
-
-#main {
   
   .tracks {
     
@@ -41,7 +41,7 @@
 
         &.open .dropdown-toggle {
           background: transparent;
-          color: @blue;
+          color: @blueDark;
         }
       }
     }
@@ -53,12 +53,12 @@
       a {
         .radius(2px);
         padding: 5px 8px;
-        color: @blue;
+        color: @blueDark;
         opacity: 1;
       
         &:hover {
           text-decoration: none;
-          background: @blue;
+          background: @blueDark;
           color: #fff;
           opacity: 1;
         }
@@ -99,7 +99,7 @@
   
     .playing {      
       td {
-        //background: @blue;
+        //background: @blueDark;
         &.artist a, &.name a {
           color: #fff;
         }
@@ -118,46 +118,42 @@
   }
 
   .artists {
-    ul {
-      list-style: none;
-        
-      li {
-        display: block;
-        float: left;
-        width: 33%;
-        margin-bottom: 15px;
+    ul li {
+      display: block;
+      float: left;
+      width: 33%;
+      margin-bottom: 15px;
+    
+      .image {
+        display: inline-block;
+        margin-right: 10px;
+        width: 48px;
+        height: 48px;
+        padding: 2px;
+        .radius(2px);
+        background: @blueDark;
       
-        .image {
-          display: inline-block;
-          margin-right: 10px;
+        &:hover {
+          background: #fff;
+        }
+      
+        img {
+          background: #fff;
           width: 48px;
           height: 48px;
-          padding: 2px;
-          .radius(2px);
-          background: @blue;
-        
-          &:hover {
-            background: #fff;
-          }
-        
-          img {
-            background: #fff;
-            width: 48px;
-            height: 48px;
-          }
         }
-      
-        .info {
-          display: inline-block;
-          width: 185px;
-          vertical-align: top;
-        }
-      
-        .name a {
-          display: block;
-          max-height: 36px;
-          overflow: hidden;
-        }
+      }
+    
+      .info {
+        display: inline-block;
+        width: 185px;
+        vertical-align: top;
+      }
+    
+      .name a {
+        display: block;
+        max-height: 36px;
+        overflow: hidden;
       }
     }
   }
@@ -172,7 +168,7 @@
         height: 128px;
         padding: 2px;
         .radius(2px);
-        background: @blue;
+        background: @blueDark;
         
         &:hover {
           background: #fff;
@@ -195,50 +191,47 @@
   
   
   .albums {
-    ul {
-      list-style: none;
+    ul li {
+      display: block;
+      float: left;
+      width: 33%;
+      margin-bottom: 15px;
     
-      li {
-        display: block;
-        float: left;
-        width: 33%;
-        margin-bottom: 15px;
+      .image {
+        display: inline-block;
+        margin-right: 10px;
+        width: 48px;
+        height: 48px;
+        padding: 2px;
+        .radius(2px);
+        background: @blueDark;
+        &:hover {
+          background: #fff;
+        }
       
-        .image {
-          display: inline-block;
-          margin-right: 10px;
+        img {
+          background: #fff;
           width: 48px;
           height: 48px;
-          padding: 2px;
-          .radius(2px);
-          background: @blue;
-          &:hover {
-            background: #fff;
-          }
-        
-          img {
-            background: #fff;
-            width: 48px;
-            height: 48px;
-          }
         }
-      
-        .info {
-          display: inline-block;
-          width: 185px;
-          vertical-align: top;
-        }
-        .artist a {
-          display: block;
-          max-height: 18px;
-          overflow: hidden;
-        }
-        .name a {
-          display: block;
-          max-height: 36px;
-          overflow: hidden;
-        }
+      }
+    
+      .info {
+        display: inline-block;
+        width: 185px;
+        vertical-align: top;
+      }
+      .artist a {
+        display: block;
+        max-height: 18px;
+        overflow: hidden;
+      }
+      .name a {
+        display: block;
+        max-height: 36px;
+        overflow: hidden;
       }
     }
   }
 }
+
