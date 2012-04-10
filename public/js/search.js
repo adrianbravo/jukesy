@@ -211,7 +211,8 @@ View.SearchResultTrack = View.SearchResult.extend(_.extend(Mixins.TrackViewEvent
     'click .play-now'   : 'playNow',
     'click .dropdown'   : 'dropdown',
     'click .queue-next' : 'queueNext',
-    'click .queue-last' : 'queueLast'
+    'click .queue-last' : 'queueLast',
+    'dblclick'          : 'playNow'
   },
   
   initialize: function() {

@@ -118,7 +118,8 @@ View.Track = Backbone.View.extend(_.extend(Mixins.TrackViewEvents, {
   events: {
     'click .play-now' : 'playNow',
     'click .remove'   : 'removeTrack',
-    'click .dropdown' : 'dropdown'
+    'click .dropdown' : 'dropdown',
+    'dblclick'        : 'playNow'
   },
   
   initialize: function() {
