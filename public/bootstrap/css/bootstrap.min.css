@@ -1,4 +1,3 @@
-@import url('http://fonts.googleapis.com/css?family=Baumans');
 article,aside,details,figcaption,figure,footer,header,hgroup,nav,section{display:block;}
 audio,canvas,video{display:inline-block;*display:inline;*zoom:1;}
 audio:not([controls]){display:none;}
@@ -221,7 +220,7 @@ table .span9{float:none;width:684px;margin-left:0;}
 table .span10{float:none;width:764px;margin-left:0;}
 table .span11{float:none;width:844px;margin-left:0;}
 table .span12{float:none;width:924px;margin-left:0;}
-@font-face{font-family:'FontAwesome';src:url('../font/fontawesome-webfont.eot');src:url('../font/fontawesome-webfont.eot?#iefix') format('embedded-opentype'),url('../font/fontawesome-webfont.woff') format('woff'),url('../font/fontawesome-webfont.ttf') format('truetype'),url('../font/fontawesome-webfont.svgz#FontAwesomeRegular') format('svg'),url('../font/fontawesome-webfont.svg#FontAwesomeRegular') format('svg');font-weight:normal;font-style:normal;}[class^="icon-"],[class*=" icon-"]{display:inline;width:auto;height:auto;line-height:inherit;vertical-align:baseline;background-image:none;background-position:0% 0%;background-repeat:repeat;}
+@font-face{font-family:'FontAwesome';src:url('../../font/fontawesome-webfont.eot');src:url('../../font/fontawesome-webfont.eot?#iefix') format('embedded-opentype'),url('../../font/fontawesome-webfont.woff') format('woff'),url('../../font/fontawesome-webfont.ttf') format('truetype'),url('../../font/fontawesome-webfont.svgz#FontAwesomeRegular') format('svg'),url('../../font/fontawesome-webfont.svg#FontAwesomeRegular') format('svg');font-weight:normal;font-style:normal;}[class^="icon-"],[class*=" icon-"]{display:inline;width:auto;height:auto;line-height:inherit;vertical-align:baseline;background-image:none;background-position:0% 0%;background-repeat:repeat;}
 li[class^="icon-"],li[class*=" icon-"]{display:block;}
 [class^="icon-"]:before,[class*=" icon-"]:before{font-family:FontAwesome;font-weight:normal;font-style:normal;display:inline-block;text-decoration:inherit;}
 a [class^="icon-"],a [class*=" icon-"]{display:inline-block;text-decoration:inherit;}
@@ -659,7 +658,7 @@ a.thumbnail:hover{border-color:#33b5e5;-webkit-box-shadow:0 1px 4px rgba(0, 105,
 .hide{display:none;}
 .show{display:block;}
 .invisible{visibility:hidden;}
-h1,h2,h3,h4,h5,.navbar .brand,.navbar .nav-collapse.collapse .nav li>a{color:#eeeeee;font-weight:normal;text-shadow:none;}
+@font-face{font-family:'Baumans';font-style:normal;font-weight:400;src:local('Baumans'),local('Baumans-Regular'),url('../../font/baumans.woff') format('woff');}h1,h2,h3,h4,h5,.navbar .brand,.navbar .nav-collapse.collapse .nav li>a{color:#eeeeee;font-weight:normal;text-shadow:none;}
 .navbar{font-size:16px;}
 label,input,button,select,textarea{font-family:'Baumans',sans-serif;color:#999999;}
 .navbar .search-query:-moz-placeholder{font-family:'Baumans',sans-serif;color:#999999;}
