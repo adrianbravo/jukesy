@@ -17,8 +17,8 @@ View.Welcome = View.BaseSearch.extend({
   template: jade.compile($('#welcome-template').text()),
   initialize: function(options) {
     this.options = options
-    new Model.LastFM({ method: 'chart.getTopArtists', limit: 15, imageSize: 'extralarge' })
-    new Model.LastFM({ method: 'chart.getTopTracks', limit: 15 })
+    new Model.LastFM({ method: 'chart.getTopArtists', limit: 20, imageSize: 'extralarge' })
+    new Model.LastFM({ method: 'chart.getTopTracks', limit: 30 })
   }
 })
 
@@ -26,9 +26,9 @@ View.SearchQuery = View.BaseSearch.extend({
   template: jade.compile($('#search-query-template').text()),
   initialize: function(options) {
     this.options = options
-    new Model.LastFM({ artist: options.query, method: 'artist.search', limit: 3, showMore: ('/search/' + options.query + '/artist') })
-    new Model.LastFM({ album: options.query, method: 'album.search', limit: 6, showMore: ('/search/' + options.query + '/album') })
-    new Model.LastFM({ track: options.query, method: 'track.search', limit: 15, showMore: ('/search/' + options.query + '/track') })
+    new Model.LastFM({ artist: options.query, method: 'artist.search', limit: 5, showMore: ('/search/' + options.query + '/artist') })
+    new Model.LastFM({ album: options.query, method: 'album.search', limit: 10, showMore: ('/search/' + options.query + '/album') })
+    new Model.LastFM({ track: options.query, method: 'track.search', limit: 30, showMore: ('/search/' + options.query + '/track') })
   }
 })
 
@@ -77,9 +77,9 @@ View.SearchArtist = View.BaseSearch.extend({
   template: jade.compile($('#search-artist-template').text()),
   initialize: function(options) {
     this.options = options
-    new Model.LastFM({ artist: options.artist, method: 'artist.getSimilar', limit: 3, showMore: urlArtist(options.artist) + '/similar' })
-    new Model.LastFM({ artist: options.artist, method: 'artist.getTopAlbums', limit: 6, showMore: urlArtist(options.artist) + '/top-albums' })
-    new Model.LastFM({ artist: options.artist, method: 'artist.getTopTracks', limit: 15, showMore: urlArtist(options.artist) + '/top-tracks' })
+    new Model.LastFM({ artist: options.artist, method: 'artist.getSimilar', limit: 5, showMore: urlArtist(options.artist) + '/similar' })
+    new Model.LastFM({ artist: options.artist, method: 'artist.getTopAlbums', limit: 10, showMore: urlArtist(options.artist) + '/top-albums' })
+    new Model.LastFM({ artist: options.artist, method: 'artist.getTopTracks', limit: 30, showMore: urlArtist(options.artist) + '/top-tracks' })
   }
 })
 
