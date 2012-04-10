@@ -5,9 +5,9 @@ var assets = {
     'js/lib/underscore-min.js',
     'js/lib/backbone.js',
     'js/lib/swfobject.js',
-    'js/lib/less-1.1.3.min.js',
+    'js/lib/less-1.3.0.min.js',
     'js/lib/jade.min.js',
-    'bootstrap/js/bootstrap.js',
+    'js/lib/bootstrap.js',
     'js/boot.js',
     'js/mixins.js',
     'js/error.js',
@@ -29,12 +29,8 @@ var assets = {
     'js/application.js'
   ],
 
-  css: [
-    'bootstrap/css/bootstrap.min.css',
-  ],
-
   less: [
-    'css/app.less'
+    'less/bootstrap.less'
   ]
 
 }
