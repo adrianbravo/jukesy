@@ -145,8 +145,8 @@
       }
       .overlay {
         height: 100px;
-        width: 120px;
-        padding: 0 5px;
+        width: 130px;
+        padding: 0;
         opacity: 0.85;
         overflow: hidden;
         background: @grayDark;
@@ -155,13 +155,17 @@
         text-align: center;
         line-height: 100px;
         top: 4px;
-        div {
+        .artist {
+          color: @blueDark;
+        }
+        .overlay-inner {
           display: inline-block;
           vertical-align: middle;
           font-size: 18px;
           line-height: 22px;
           text-shadow: 0 0 0 1px @white;
         }
+        
         &:hover {
           opacity: 0.0;
         }
