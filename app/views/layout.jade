@@ -21,6 +21,6 @@ html
     #meow.span4
     #controls
 
-    != partial('_templates')
+    include _templates
     - each script in assets.js
       script(src= '/' + script)
