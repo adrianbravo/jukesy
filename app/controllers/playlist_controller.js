@@ -10,11 +10,17 @@ module.exports = function(app) {
           return next(new app.Error(err || 500))
         }
         if (req.xhr) {
-          res.json(playlists)
+          res.json(
+            app._.map(playlists, function(playlist) {
+              return playlist.exposeJSON()
+            })
+          )
         } else {
           res.render('playlist/index', {
             user: req.paramUser.username,
-            playlists: playlists
+            playlists: app._.map(playlists, function(playlist) {
+              return playlist.exposeJSON()
+            })
           })
         }
       })
@@ -25,7 +31,7 @@ module.exports = function(app) {
         res.json(req.paramPlaylist)
       } else {
         res.render('playlist/show', {
-          playlist: req.paramPlaylist,
+          playlist: req.paramPlaylist.exposeJSON(),
           nowPlaying: false,
           editName: false
         })
@@ -38,7 +44,7 @@ module.exports = function(app) {
         if (err || !playlist) {
           return next(new app.Error(err || 500))
         }
-        res.json(playlist)
+        res.json(playlist.exposeJSON())
       })
     },
 
@@ -48,7 +54,7 @@ module.exports = function(app) {
         if (err || !playlist) {
           return next(new app.Error(err || 500))
         }
-        res.json(playlist)
+        res.json(playlist.exposeJSON())
       })
     },
 

@@ -37,7 +37,9 @@ User.method({
       json._id = this._id
     }
     if (this.playlists) {
-      json.playlists = this.playlists
+      json.playlists = app._.map(this.playlists, function(playlist) {
+        return playlist.exposeJSON()
+      })
     }
     return json
   },

@@ -21,6 +21,12 @@ Model.Playlist = Backbone.Model.extend({
     sidebar: true
   },
   
+  toJSON: function() {
+    var json = _.clone(this.attributes)
+    json.url = '/user/' + this.get('user') + '/playlist/' + (this.id || this.cid)
+    return json
+  },
+  
   initialize: function() {
     console.log('Playlist.initialize', this.isNew())
     _.bindAll(this, 'setNowPlaying', 'changeCallback', 'syncMeow')
@@ -95,11 +101,11 @@ Model.Playlist = Backbone.Model.extend({
   
   setNowPlaying: function() {
     if (window.NowPlaying) {
-      if (!NowPlaying._id && NowPlaying.tracksModifiedCount > 1) {
-        NowPlaying.destroyView.render()
+      //if (!NowPlaying._id && NowPlaying.tracksModifiedCount > 1) {
+        //NowPlaying.destroyView.render()
         // modal warn
         // modal acts as a confirmation, with a separate callback for each option
-      }
+      //}
       NowPlaying.set({ nowPlaying: false }, { silent: true })
       NowPlaying.nowPlaying = false
     }
@@ -112,6 +118,7 @@ Model.Playlist = Backbone.Model.extend({
     }
     this.view.render()
     SidebarView.render()
+    return this
   },
   
   cloneResults: function() {
@@ -390,8 +397,8 @@ View.Playlists = Backbone.View.extend({
     
     this.$el.html(this.template({
       playlists: _.chain(Playlists.models)
+                    .sortBy(function(playlist) { return (playlist.isNew() ? '1' : '0') + playlist.get('name').toLowerCase() })
                     .map(function(playlist) { return playlist.toJSON() })
-                    .sortBy(function(playlist) { return playlist.name.toLowerCase() })
                     .value(),
       user: this.collection.user
     }))

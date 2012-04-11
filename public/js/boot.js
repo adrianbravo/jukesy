@@ -77,6 +77,14 @@ function urlArtist(artist) {
 }
 
 function newNowPlaying() {
+  /*
+  var playlists = _.chain(Playlists.models)
+                      .filter(function(playlist) { return playlist.get('sidebar') })
+                      .sortBy(function(playlist) { return (playlist.isNew() ? '1' : '0') + playlist.get('name').toLowerCase() })
+                      .map(function(playlist) { return playlist.toJSON() })
+                      .value()
+                      */
   var playlist = new Model.Playlist()
+  Playlists.add([ playlist ])
   playlist.setNowPlaying()
 }

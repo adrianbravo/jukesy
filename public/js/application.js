@@ -67,7 +67,7 @@ AppRouter = Backbone.Router.extend({
   },
   
   playlist: function(username, id) {
-    var playlist = Playlists.get(id)
+    var playlist = (username == 'anonymous') ? Playlists.getByCid(id) : Playlists.get(id)
     if (!playlist) {
       playlist = new Model.Playlist({ user: username, _id: id })
       if (Session.user && Session.user.get('username') == username) {
@@ -213,8 +213,8 @@ View.Sidebar = Backbone.View.extend({
       unsavedPlaylist: window.NowPlaying && NowPlaying.isNew() && NowPlaying.get('sidebar') ? NowPlaying.toJSON() : undefined,
       playlists: _.chain(Playlists.models)
                     .filter(function(playlist) { return playlist.get('sidebar') })
+                    .sortBy(function(playlist) { return (playlist.isNew() ? '1' : '0') + playlist.get('name').toLowerCase() })
                     .map(function(playlist) { return playlist.toJSON() })
-                    .sortBy(function(playlist) { return playlist.name.toLowerCase() })
                     .value()
     }))
   }

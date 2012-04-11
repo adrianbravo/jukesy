@@ -1,14 +1,19 @@
-h1 Playlists - #{user}
+h1 Playlists - #{user || 'anonymous'}
 
 br
 ul.unstyled
   each playlist in playlists
     li
-      a(href= '/user/' + user + '/playlist/' + playlist._id) #{playlist.name} 
+      a(href= playlist.url) #{playlist.name} 
       |  - #{playlist.tracks_count} #{_.plural(playlist.tracks_count, 'track', 'tracks')}
+      - if (playlist.nowPlaying)
+        span.label.label-info listening
       - if (playlist.changed)
-        |  
-        span.label.label-important unsaved
+        span.label.label-important changed
+      - if (!playlist._id)
+        span.label.label-warning new
+
+
       p
         - if (playlist.time)
           | Created on #{moment(playlist.time.created).format('dddd, MMMM Do YYYY, h:mm:ss a')}

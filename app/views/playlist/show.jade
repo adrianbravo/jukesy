@@ -1,4 +1,4 @@
-- if (currentUser && currentUser.username == playlist.user)
+- if (!playlist._id || (currentUser && currentUser.username == playlist.user))
   .btn-group.pull-right
     button.btn.btn-primary.btn-large.playlist-save
       i.icon-arrow-up
@@ -22,10 +22,6 @@
         a.playlist-delete
           i.icon-trash
           |  Delete
-- else if (!playlist._id)
-  button.btn.btn-primary.btn-large.playlist-save.pull-right
-    i.icon-arrow-up
-    |  Save
 
 - if (!nowPlaying)
   .btn-group.pull-right
@@ -45,7 +41,7 @@
   input.playlist-name-edit(maxlength= '50', name= 'playlist-name', value= playlist.name)
 - else
   div.playlist-name #{playlist.name}
-- if (nowPlaying)
+- if (playlist.nowPlaying)
   span.label.label-info listening
 - if (playlist.changed)
   span.label.label-important changed
@@ -53,9 +49,12 @@
   span.label.label-warning new
 
 
-p Created by 
-  a(href= '/user/' + playlist.user) #{playlist.user}
-  | , #{playlist.tracks_count} #{_.plural(playlist.tracks_count, 'track', 'tracks')}
+- if (playlist._id)
+  p Created by 
+    a(href= '/user/' + playlist.user) #{playlist.user}
+    | , #{playlist.tracks_count} #{_.plural(playlist.tracks_count, 'track', 'tracks')}
+
+.clear
 
 - if (playlist.tracks_count)  
   .tracks
@@ -67,3 +66,7 @@ p Created by
           th Track
           th Artist
       tbody
+- else
+  br
+  .hero-unit
+    h2 This playlist is empty.

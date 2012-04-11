@@ -17,6 +17,18 @@ Playlist.plugin(app.mongoosePlugins.timestamps)
 Playlist.plugin(app.mongoosePlugins.accessible, [ 'name', 'tracks', 'sidebar' ])
 
 Playlist.method({
+  exposeJSON: function() {
+    var json = {
+      _id          : this._id,
+      user         : this.user,
+      name         : this.name,
+      sidebar      : this.sidebar,
+      tracks       : this.tracks,
+      tracks_count : this.tracks_count,
+      url: '/user/' + this.user + '/playlist/' + this.id
+    }
+    return json
+  }
 })
 
 Playlist.static({
