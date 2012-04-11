@@ -305,9 +305,11 @@ View.Controls = Backbone.View.extend({
     if (!Video.stopped && load > 0 && load != Infinity) {
       this.$el.find('#timer .fill').width(load * 100 + '%')
       this.$el.find('#timer .track').width(play * 100 + '%')
+      //this.$el.find('#time-read').html(this.humanizeSeconds(Video.currentTime()) + ' ' + this.humanizeSeconds(Video.duration()))
     } else {
       this.$el.find('#timer .fill').width(0)
       this.$el.find('#timer .track').width(0)
+      //this.$el.find('#time-read').html('')
     }
     if (Video.fullscreen) {
       $body.scrollTop(0)
@@ -469,6 +471,15 @@ View.Controls = Backbone.View.extend({
     $(document).off('mousemove')
     $(document).off('mouseup')
     this.dragger = null
+  },
+
+  humanizeSeconds: function(s) {
+    var minutes = Math.floor(s / 60),
+        seconds = Math.floor(s % 60)
+    if (seconds < 10) {
+      seconds = "0" + seconds
+    }
+    return minutes + ":" + seconds
   }
   
 })
@@ -483,16 +494,5 @@ timers: function() {
     this.humanizeSeconds(remaining)
    ]
 },
-
-humanizeSeconds: function(s) {
-  var minutes = Math.floor(s / 60),
-      seconds = Math.floor(s % 60)
-  if (seconds < 10) {
-    seconds = "0" + seconds
-  }
-  return minutes + ":" + seconds
-},
+,
 */
-
-
-;
