@@ -66,9 +66,14 @@ AppRouter = Backbone.Router.extend({
     }
   },
   
+  // TODO clean this up good god
   playlist: function(username, id) {
     var playlist = (username == 'anonymous') ? Playlists.getByCid(id) : Playlists.get(id)
     if (!playlist) {
+      if (username == 'anonymous') {
+        Router.navigate('/', { trigger: true, replace: true })
+        return
+      }
       playlist = new Model.Playlist({ user: username, _id: id })
       if (Session.user && Session.user.get('username') == username) {
         Playlists.add(playlist)
