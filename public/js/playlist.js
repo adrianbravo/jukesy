@@ -82,7 +82,7 @@ Model.Playlist = Backbone.Model.extend({
       newNowPlaying()
     }
     if (this.view.$el.is(':visible')) {
-      Router.navigate('/', { trigger: true })
+      Router.navigate('/', { trigger: true, replace: true })
     }
   },
   
@@ -191,6 +191,7 @@ Model.Playlist = Backbone.Model.extend({
       if (_.indexOf(names, name) == -1) {
         this.set({ name: name }, { silent: true })
         this.view.render()
+        SidebarView.render()
         return
       }
       count++   
@@ -345,12 +346,6 @@ View.Playlist = Backbone.View.extend({
 
   deleteSuccess: function(playlist, response) {
     this.model.trigger('sync', 'delete')
-    if (playlist.view.$el.is(':visible')) {
-      Router.navigate('/', { trigger: true, replace: true })
-    }
-    if (playlist.nowPlaying) {
-      newNowPlaying() 
-    }
   },
   
   deleteError: function(model, error) {
