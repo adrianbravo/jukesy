@@ -7,8 +7,8 @@ head
   meta(content= 'width=device-width, initial-scale=1', name= 'viewport')
 
   - each stylesheet in assets.css
-    link(rel='stylesheet', href='/' + stylesheet, type='text/css')
+    link(rel='stylesheet', href= stylesheet, type='text/css')
 
   - each stylesheet in assets.less
-    link(rel='stylesheet/less', href='/' + stylesheet, type='text/css')
+    link(rel='stylesheet/less', href= stylesheet, type='text/css')
 
