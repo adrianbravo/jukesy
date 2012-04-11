@@ -25,6 +25,7 @@ View.KeyboardShortcuts = Backbone.View.extend({
     if ($(e.target).is('input, textarea')) {
       return
     }
+    console.log('keyCode', e.keyCode)
       
     var fn = KeyMapper['k' + e.keyCode]
     if (fn) {
@@ -114,24 +115,21 @@ KeyMapper = {
     Controls.toggleFullscreen()
     return false
   },
-    
-  // J
-  k74: function(e) {
-    if (this.keypressHasModifier(e)) return
-    if (Video.fullscreen) {
-      Controls.toggleFullscreen()
-    }
-    Video.jumpTo()
-    return false
-  },
-    
+      
   // M
   k77: function(e) {
     if (this.keypressHasModifier(e)) return
     Controls.toggleMute()
     return false
   },
-    
+  
+  // P
+  k80: function(e) {
+    if (this.keypressHasModifier(e)) return
+    NowPlaying.navigateTo()
+    return false
+  },
+  
   // R
   k82: function(e) {
     if (this.keypressHasModifier(e)) return
@@ -145,7 +143,26 @@ KeyMapper = {
     Controls.toggleShuffle()
     return false
   },
-    
+  
+  // V
+  k86: function(e) {
+    if (this.keypressHasModifier(e)) return
+    if (Video.fullscreen) {
+      Controls.toggleFullscreen()
+    }
+    Video.jumpTo()
+    return false
+  },
+  
+  // X
+  k88: function(e) {
+    if (this.keypressHasModifier(e)) return
+    if (window.Video && Video.track) {
+      NowPlaying.removeTracks([ Video.track ])
+    }
+    return false
+  },
+  
   // /
   k191: function(e) {
     if (this.keypressHasModifier(e)) return
@@ -162,7 +179,7 @@ KeyMapper = {
 }
 
 $(function() {
-  _.bindAll(KeyMapper, 'keypressHasModifier', 'k27', 'k32', 'k37', 'k38', 'k39', 'k40', 'k68', 'k70', 'k74', 'k77', 'k82', 'k83', 'k191')
+  _.bindAll(KeyMapper, 'keypressHasModifier', 'k27', 'k32', 'k37', 'k38', 'k39', 'k40', 'k68', 'k70', 'k77', 'k80', 'k82', 'k83', 'k86', 'k88', 'k191')
 })
 
 

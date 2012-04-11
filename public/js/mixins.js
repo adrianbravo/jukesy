@@ -1,9 +1,6 @@
 Mixins.TrackViewEvents = {
 
   removeTrack: function() {
-    if (this.model.playing) {
-      Video.next()
-    }
     this.model.playlist.removeTracks([ this.model ])
     this.model.playlist.view.render()
   },

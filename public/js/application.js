@@ -220,7 +220,7 @@ View.Sidebar = Backbone.View.extend({
   createPlaylist: function() {
     var playlist = new Model.Playlist()
     Playlists.add([ playlist ])
-    Router.navigate(playlist.toJSON().url, { trigger: true })
+    playlist.navigateTo()
     return false
   },
   

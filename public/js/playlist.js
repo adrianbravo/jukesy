@@ -22,7 +22,7 @@ Model.Playlist = Backbone.Model.extend({
       _.defer(this.incrementUntitled)
     }
   },
-    
+  
   urlRoot: function() {
     var user = this.get('user')
     if (user == 'anonymous') {
@@ -38,7 +38,11 @@ Model.Playlist = Backbone.Model.extend({
     }
     return url
   },
-
+  
+  navigateTo: function() {
+    Router.navigate(this.toJSON().url, { trigger: true })
+  },
+  
   defaults: {
     name: 'Untitled Playlist',
     user: 'anonymous',
@@ -103,9 +107,17 @@ Model.Playlist = Backbone.Model.extend({
   
   removeTracks: function(tracks) {
     var self = this
+      , position
       , message = 'Removed ' + tracks.length + ' ' + _.plural(tracks.length, 'track', 'tracks') + ' from ' + this.get('name') + '.'
     
     _.each(tracks, function(track) {
+      if (track == Video.track) {
+        if (self.tracks.length == 1) {
+          Video.stop()
+        } else {
+          Video.next()
+        }
+      }
       self.tracks.splice(_.indexOf(self.tracks, track), 1)
     })
     this.setTracks()
@@ -114,6 +126,7 @@ Model.Playlist = Backbone.Model.extend({
       message: message,
       type: 'primary'
     })
+    self.view.render()
   },
   
   moveTracks: function(tracks, position) {
