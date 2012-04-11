@@ -160,7 +160,7 @@ Model.Playlist = Backbone.Model.extend({
       , name = base = 'Untitled Playlist'
       , count = 0
       , names = _.chain(Playlists.models)
-                    .filter(function(playlist) { console.log(self.cid, playlist.cid); return playlist.get('user') == 'anonymous' && self.cid != playlist.cid })
+                    .filter(function(playlist) { return playlist.get('user') == 'anonymous' && self.cid != playlist.cid })
                     .map(function(playlist) { return playlist.get('name') })
                     .value()
     
