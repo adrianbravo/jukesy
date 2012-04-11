@@ -1,9 +1,9 @@
 ul.nav.nav-list
 
   li
-    a(href= '#').create-new-playlist
+    a(href= '/#').create-new-playlist
       i.icon-plus-sign
-      |  Create new playlist
+      |  Create New Playlist
 
   //li
   //  a(href= '/favorites')
@@ -20,9 +20,10 @@ ul.nav.nav-list
   - if (typeof playlists != 'undefined')
     each playlist in playlists
       li
-        a.playlist(href= playlist.url, class= playlist._id ? '' : 'unsaved')
-          - if (playlist.nowPlaying)
-            i.icon-music
-          - else
-            i.icon-bookmark
-          |  #{playlist.name}
+        a.playlist(href= playlist.url
+          class= (playlist._id ? '' : ' unsaved ') + (playlist.active ? ' active ' : ''))
+            - if (playlist.nowPlaying)
+              i.icon-music
+            - else
+              i.icon-empty
+            |  #{playlist.name}

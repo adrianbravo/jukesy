@@ -199,6 +199,7 @@ View.Main = Backbone.View.extend({
       template.delegateEvents()
     }
     $body.scrollTop(0)
+    SidebarView.render()
   }
 })
 
@@ -206,7 +207,16 @@ View.Sidebar = Backbone.View.extend({
   el: $('#sidebar'),
   
   template: jade.compile($('#sidebar-template').text()),
-
+  
+  events: {
+    'click .create-new-playlist': 'createPlaylist'
+  },
+  
+  createPlaylist: function() {
+    newNowPlaying()
+    return false
+  },
+  
   render: function() {
     this.$el.html(this.template({
       currentUser: Session.userJSON(),

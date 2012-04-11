@@ -22,9 +22,10 @@ Model.Playlist = Backbone.Model.extend({
   },
   
   toJSON: function() {
-    var json = _.clone(this.attributes)
-    json.url = '/user/' + this.get('user') + '/playlist/' + (this.id || this.cid)
-    return json
+    return _.extend(_.clone(this.attributes), {
+      url    : '/user/' + this.get('user') + '/playlist/' + (this.id || this.cid),
+      active : this.view.$el.is(':visible')
+    })
   },
   
   initialize: function() {
@@ -116,7 +117,11 @@ Model.Playlist = Backbone.Model.extend({
     if (Video.player) {
       Video.stop()
     }
-    this.view.render()
+    
+    if (window.Router) {
+      console.log('navigate to', NowPlaying.toJSON().url)
+      Router.navigate(NowPlaying.toJSON().url, { trigger: true })
+    }
     SidebarView.render()
     return this
   },
