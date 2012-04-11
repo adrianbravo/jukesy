@@ -1,15 +1,21 @@
 View.Meow = Backbone.View.extend({
   el: $('#meow'),
     
-  render: function(message) {
+  render: function(options) {
     var self = this
-    this.$el.html(new View.Alert({ message: message, className: 'alert alert-info' }).render()).addClass('on')
+    if (_.isString(options)) {
+      options = {
+        message: options,
+        className: 'alert alert-info'
+      }
+    }
+    this.$el.html(new View.Alert(options).render()).addClass('on')
     
     if (this.fade) {
       clearTimeout(this.fade)
     }
     this.fade = setTimeout(function() {
-      self.$el.removeClass('on')
+      self.$el.removeClass('on').remove()
     }, 2400)
   }
 })

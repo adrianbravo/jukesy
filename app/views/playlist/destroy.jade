@@ -1,0 +1,14 @@
+.modal-header
+  h3 Delete #{playlist.name}?
+  
+.modal-body
+
+  p
+    | Are you sure you want to delete #{playlist.name}? Think of all the good times.
+  p
+    button.btn.btn-large.go-back
+      i.icon-arrow-left
+      |  Go back
+    button.btn.btn-large.btn-danger.destroy-confirm.pull-right
+      i.icon-trash
+      |  Delete it

@@ -25,11 +25,15 @@ Model.Playlist = Backbone.Model.extend({
     _.bindAll(this, 'setNowPlaying', 'changeCallback')
     
     this.view = new View.Playlist({ model: this })
+    this.destroyView = new View.PlaylistDestroy({ model: this })
+
     if (this.isNew()) {
       this.tracks = []
     }
     this.on('change:name change:sidebar', SidebarView.render, SidebarView)
     this.on('change', this.changeCallback, this)
+    this.on('destroy', this.destroyMeow, this)
+    this.tracksModifiedCount = 0 // counter for internal modifications to tracks
   },
   
   changeCallback: function() {
@@ -48,6 +52,7 @@ Model.Playlist = Backbone.Model.extend({
       track.playlist = self
     })
     this.setTracks()
+    this.tracksModifiedCount++
     Meow.render(message)
   },
   
@@ -59,11 +64,30 @@ Model.Playlist = Backbone.Model.extend({
       self.tracks.splice(_.indexOf(self.tracks, track), 1)
     })
     this.setTracks()
+    this.tracksModifiedCount++
     Meow.render(message)
+  },
+  
+  moveTracks: function(tracks, position) {
+    // will move tracks in tracks from their current positions to the new position, in their order
+    // ( tracks = [0, 1, 2, 3, 4, 5], moveTracks([1, 3, 4], 0) => tracks = [1, 3, 4, 0, 2, 5])
+    // this.tracksModifiedCount++
+  },
+  
+  destroyMeow: function() {
+    Meow.render({
+      message: 'Deleted playlist ' + this.get('name') + '.',
+      className: 'alert alert-danger'
+    })
   },
   
   setNowPlaying: function() {
     if (window.NowPlaying) {
+      if (!NowPlaying._id && NowPlaying.tracksModifiedCount > 1) {
+        NowPlaying.destroyView.render()
+        // modal warn
+        // modal acts as a confirmation, with a separate callback for each option
+      }
       NowPlaying.set({ nowPlaying: false }, { silent: true })
       NowPlaying.nowPlaying = false
     }
@@ -99,6 +123,44 @@ Model.Playlist = Backbone.Model.extend({
   
 })
 
+View.PlaylistDestroy = Backbone.View.extend({
+  className: 'playlist-destroy modal',
+  
+  template: jade.compile($('#playlist-destroy-template').text()),
+  
+  events: {
+    'click .destroy-confirm' : 'destroy',
+    'click .go-back'         : 'close'
+  },
+  
+  initialize: function() {
+    _.bindAll(this, 'close', 'destroy')
+  },
+  
+  close: function() {
+    this.$el.modal('hide')
+  },
+  
+  destroy: function() {
+    if (this.renderOptions.confirm) {
+      this.renderOptions.confirm()
+    }
+    this.close()
+  },
+
+  render: function(options) {
+    this.renderOptions = options || {}
+    
+    this.$el.modal({
+      backdrop: 'static',
+      keyboard: false
+    })
+    this.$el.html(this.template({ playlist: this.model.toJSON() }))
+    this.delegateEvents()
+    return this
+  }
+})
+
 View.Playlist = Backbone.View.extend({
   className: 'playlist',
   
@@ -117,7 +179,7 @@ View.Playlist = Backbone.View.extend({
   },
     
   initialize: function() {
-    _.bindAll(this, 'keyDown', 'saveSuccess', 'saveError', 'save', 'deleteSuccess', 'deleteError', 'delete', 'focusNameEdit', 'playAll')
+    _.bindAll(this, 'keyDown', 'saveSuccess', 'saveError', 'save', 'deleteConfirm', 'deleteSuccess', 'deleteError', 'delete', 'focusNameEdit', 'playAll')
   },
 
   render: function(options) {
@@ -222,12 +284,6 @@ View.Playlist = Backbone.View.extend({
     if (playlist.nowPlaying) {
       newNowPlaying() 
     }
-    
-    var $alert = new View.Alert({
-      className: 'alert-success alert',
-      message: 'Your playlist has been deleted.'
-    })
-    MainView.$el.prepend($alert.render())
   },
   
   deleteError: function(model, error) {
@@ -252,10 +308,21 @@ View.Playlist = Backbone.View.extend({
     this.render().$el.prepend($alert.render())
   },
   
-  delete: function() {
+  deleteConfirm: function() {
+    this.delete(null, true)
+  },
+  
+  delete: function(e, confirmed) {
     if (!Session.user) {
       loginModal.render().addAlert('not_logged_in_destroy')
       ModalView.setCallback(this.delete)
+      return
+    }
+    
+    if (!this.model.isNew() && !confirmed) {
+      this.model.destroyView.render({
+        confirm: this.deleteConfirm
+      })
       return
     }
     
