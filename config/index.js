@@ -51,9 +51,6 @@ module.exports = function(app) {
   app.configure(function() {
     var port = 3000
     switch(app.set('env')) {
-      case 'production':
-        port = 80
-        break
       case 'test':
         port = 7357
         break
