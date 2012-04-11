@@ -4,7 +4,9 @@ br
 ul.unstyled
   each playlist in playlists
     li
-      a(href= playlist.url) #{playlist.name} 
+      a.playlist(href= playlist.url
+        class= (playlist._id ? '' : ' unsaved ') + (playlist.active ? ' active ' : '')) #{playlist.name}
+      
       |  - #{playlist.tracks_count} #{_.plural(playlist.tracks_count, 'track', 'tracks')}
       - if (playlist.nowPlaying)
         span.label.label-info listening
@@ -12,7 +14,6 @@ ul.unstyled
         span.label.label-important changed
       - if (!playlist._id)
         span.label.label-warning new
-
 
       p
         - if (playlist.time)
