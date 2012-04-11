@@ -10,12 +10,38 @@ Model.Playlist = Backbone.Model.extend({
       this.tracks = []
       this.setTracks({ silent: true })
     }
+    
+    if (this.get('user') == 'anonymous') {
+      this.incrementUntitled()
+    }
+    
     this.on('change:name change:sidebar', SidebarView.render, SidebarView)
     this.on('change', this.changeCallback, this)
     this.on('sync', this.syncMeow, this)
     this.on('destroy', this.destroyCallback, this)
     
     this.tracksModifiedCount = 0 // counter for internal modifications to tracks
+  },
+  
+  incrementUntitled: function() {
+    var name = base = 'Untitled Playlist'
+      , count = 0
+      , names = _.chain(Playlists.models)
+                    .filter(function(playlist) { return playlist.get('user') == 'anonymous' && self.cid != playlist.cid })
+                    .map(function(playlist) { return playlist.get('name') })
+                    .value()
+    
+    while (count <= names.length) {
+      if (count) {
+        name = base + ' ' + count
+      }
+    
+      if (_.indexOf(names, name) == -1) {
+        this.set({ name: name }, { silent: true })
+        return
+      }
+      count++   
+    }
   },
   
   urlRoot: function() {
