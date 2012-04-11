@@ -6,10 +6,10 @@
 - else if (tracks.length)
   
   - if (showMore)
-    a.btn.btn-primary.btn-large.show-more.pull-right(href= showMore) Show more &raquo;
+    a.btn.btn-large.show-more.pull-right(href= showMore) Show more &raquo;
   .btn-group.pull-right
-    button.btn.btn-large.play-all Play All
-    button.btn.btn-large.dropdown-toggle('data-toggle'= 'dropdown')
+    button.btn.btn-primary.btn-large.play-all Play All
+    button.btn.btn-primary.btn-large.dropdown-toggle('data-toggle'= 'dropdown')
       span.caret
     ul.dropdown-menu
       li
@@ -34,7 +34,7 @@
     
   - if (loadMore)
     .load-more
-      a.btn.btn-primary.btn-large('data-loading-text'= 'Loading...') Load more
+      a.btn.btn-large('data-loading-text'= 'Loading...') Load more
 
 - else
 

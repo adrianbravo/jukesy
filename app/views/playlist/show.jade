@@ -1,9 +1,9 @@
 - if (!playlist._id || (currentUser && currentUser.username == playlist.user))
   .btn-group.pull-right
-    button.btn.btn-primary.btn-large.playlist-save
+    button.btn.btn-large.playlist-save
       i.icon-share
       |  Save
-    button.btn.btn-primary.btn-large.dropdown-toggle('data-toggle'= 'dropdown')
+    button.btn.btn-large.dropdown-toggle('data-toggle'= 'dropdown')
       span.caret
     ul.dropdown-menu
       li
@@ -25,8 +25,8 @@
 
 - if (!playlist.nowPlaying)
   .btn-group.pull-right
-    button.btn.btn-large.play-all Play All
-    button.btn.btn-large.dropdown-toggle('data-toggle'= 'dropdown')
+    button.btn.btn-primary.btn-large.play-all Play All
+    button.btn.btn-primary.btn-large.dropdown-toggle('data-toggle'= 'dropdown')
       span.caret
     ul.dropdown-menu
       li
