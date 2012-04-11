@@ -129,13 +129,40 @@
   .artists,
   .albums {
     padding-top: 15px;
-    .img-wrap {
-      height: 100px;
-      line-height: 100px;
+    
+    .thumbnail {
+      position: relative;
       overflow: hidden;
-      img {
-        width: 100%;
-        vertical-align: middle;
+      
+      .img-wrap {
+        height: 100px;
+        line-height: 100px;
+        overflow: hidden;
+        img {
+          width: 100%;
+          vertical-align: middle;
+        }
+      }
+      .overlay {
+        height: 100px;
+        width: 95%;
+        opacity: 0.85;
+        background: @grayDarker;
+        color: @grayLighter;
+        position: absolute;
+        text-align: center;
+        line-height: 100px;
+        top: 4px;
+        div {
+          display: inline-block;
+          vertical-align: middle;
+          font-size: 18px;
+          line-height: 22px;
+          text-shadow: 0 0 0 1px @white;
+        }
+        &:hover {
+          opacity: 0.25;
+        }
       }
     }
   }

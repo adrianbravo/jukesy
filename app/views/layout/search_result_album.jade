@@ -1,3 +1,5 @@
 a.thumbnail(href= urlAlbum(album.get('artist'), album.get('name')))
   .img-wrap
     img(src= album.get('image'))
+  .overlay.fade
+    div #{album.get('name')} by #{album.get('artist')}
