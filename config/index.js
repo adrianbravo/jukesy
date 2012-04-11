@@ -89,6 +89,7 @@ module.exports = function(app) {
         secret: 'jukesy', // TODO obfuscate this
         maxAge: new Date(Date.now() + 3600000),
         store: new MongoStore({
+          auto_reconnect: true,
           host: app.mongodb.host,
           db: 'jukesy-sessions'
         })

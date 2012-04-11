@@ -24,7 +24,7 @@ module.exports = function(app, bootCallback) {
     // Connect to mongoose
     function(next) {
       var mongodbURL = 'mongodb://' + app.mongodb.host + '/' + app.mongodb.database
-      app.db = mongoose.connect(mongodbURL, { autoReconnect: true })
+      app.db = mongoose.connect(mongodbURL)
       next()
     },
 
