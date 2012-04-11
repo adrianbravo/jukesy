@@ -8,9 +8,7 @@ module.exports = function(app) {
 
   _.mixin({
     capitalize: function(string) {
-      if (!_.isString(string)) {
-        string = ''
-      }
+      string = '' + string
       return string.charAt(0).toUpperCase() + string.substring(1).toLowerCase()
     },
     plural: function(count, singular, plural) {

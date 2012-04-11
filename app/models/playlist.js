@@ -55,6 +55,7 @@ Playlist.pre('save', function(next) {
 Playlist.path('user').validate(validators.required, [ 'required' ])
 
 // Name
+Playlist.path('name').validate(validators.required, [ 'required' ])
 Playlist.path('name').validate(validators.tooLong(50), [ 'too_long', { maxlength: 50 } ])
 
 mongoose.model('Playlist', Playlist)

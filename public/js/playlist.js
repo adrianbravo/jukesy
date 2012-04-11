@@ -368,8 +368,8 @@ View.Playlist = Backbone.View.extend({
   },
   
   validateName: function() {
-    var val = this.$el.find('.playlist-name-edit').val()
-    if (this.model.get('name') != val) {
+    var val = this.$el.find('.playlist-name-edit').val().trim()
+    if (val && this.model.get('name') != val) {
       this.model.set({ name: val })
     }
     this.render()

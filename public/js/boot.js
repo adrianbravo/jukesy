@@ -1,14 +1,15 @@
 // Underscore mixins
 _.mixin({
   capitalize: function(string) {
-    if (!_.isString(string)) {
-      string = ''
-    }
+    string = '' + string
     return string.charAt(0).toUpperCase() + string.substring(1).toLowerCase()
   },
   plural: function(count, singular, plural) {
     return count == 1 ? singular : plural
-  }
+  },
+  clean: function(str){
+    return _s.strip((''+str).replace(/\s+/g, ' '));
+  },
 })
 
 window.Collection = {}
