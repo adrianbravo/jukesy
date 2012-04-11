@@ -14,8 +14,9 @@ View.Meow = Backbone.View.extend({
     if (this.fade) {
       clearTimeout(this.fade)
     }
+    
     this.fade = setTimeout(function() {
-      self.$el.removeClass('on').remove()
+      self.$el.html('').removeClass('on')
     }, 2400)
   }
 })

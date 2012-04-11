@@ -214,7 +214,7 @@ View.Sidebar = Backbone.View.extend({
       playlists: _.chain(Playlists.models)
                     .filter(function(playlist) { return playlist.get('sidebar') })
                     .map(function(playlist) { return playlist.toJSON() })
-                    .sortBy(function(playlist) { return playlist.name })
+                    .sortBy(function(playlist) { return playlist.name.toLowerCase() })
                     .value()
     }))
   }

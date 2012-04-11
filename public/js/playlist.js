@@ -23,7 +23,7 @@ Model.Playlist = Backbone.Model.extend({
   
   initialize: function() {
     console.log('Playlist.initialize', this.isNew())
-    _.bindAll(this, 'setNowPlaying', 'changeCallback')
+    _.bindAll(this, 'setNowPlaying', 'changeCallback', 'syncMeow')
     
     this.view = new View.Playlist({ model: this })
     this.destroyView = new View.PlaylistDestroy({ model: this })
@@ -33,8 +33,26 @@ Model.Playlist = Backbone.Model.extend({
     }
     this.on('change:name change:sidebar', SidebarView.render, SidebarView)
     this.on('change', this.changeCallback, this)
-    this.on('destroy', this.destroyMeow, this)
+    this.on('sync', this.syncMeow, this)
     this.tracksModifiedCount = 0 // counter for internal modifications to tracks
+  },
+  
+  syncMeow: function(method) {
+    console.log('method', method)
+    switch(method) {
+      case 'save':
+        Meow.render({
+          message: 'Saved playlist: ' + this.get('name'),
+          className: 'alert alert-success'
+        })
+        return
+      case 'delete':
+        Meow.render({
+          message: 'Deleted playlist:' + this.get('name'),
+          className: 'alert alert-danger'
+        })
+        return
+    }
   },
   
   changeCallback: function() {
@@ -73,13 +91,6 @@ Model.Playlist = Backbone.Model.extend({
     // will move tracks in tracks from their current positions to the new position, in their order
     // ( tracks = [0, 1, 2, 3, 4, 5], moveTracks([1, 3, 4], 0) => tracks = [1, 3, 4, 0, 2, 5])
     // this.tracksModifiedCount++
-  },
-  
-  destroyMeow: function() {
-    Meow.render({
-      message: 'Deleted playlist ' + this.get('name') + '.',
-      className: 'alert alert-danger'
-    })
   },
   
   setNowPlaying: function() {
@@ -232,15 +243,12 @@ View.Playlist = Backbone.View.extend({
   },
   
   saveSuccess: function(playlist, response) {
+    this.model.trigger('sync', 'save')
     this.model.set({ changed: false }, { silent: true })
     if (!Playlists.get(this.model.id)) {
       Playlists.add([ this.model ])
     }
-    var $alert = new View.Alert({
-      className: 'alert-success alert',
-      message: 'Your playlist has been saved.'
-    })
-    this.render().$el.prepend($alert.render())
+    this.render()
   },
   
   // TODO dry (reused from view form mixins)
@@ -252,17 +260,10 @@ View.Playlist = Backbone.View.extend({
       errorJSON = {}
     }
     
-    if (error.status == 401 && !errorJSON.errors) {
-      $alert = new View.Alert({
-        className: 'alert-error alert',
-        message: parseError('unauthorized')
-      })
-    } else {
-      $alert = new View.Alert({
-        className: 'alert-error alert',
-        message: 'Something went wrong while trying to save this playlist.'
-      })
-    }
+    $alert = new View.Alert({
+      className: 'alert-error alert',
+      message: (error.status == 401 && !errorJSON.errors) ? parseError('unauthorized') : 'Something went wrong while trying to save this playlist.'
+    })
     this.render().$el.prepend($alert.render())
   },
 
@@ -271,7 +272,7 @@ View.Playlist = Backbone.View.extend({
       loginModal.render().addAlert('not_logged_in_save')
       ModalView.setCallback(this.save)
       return
-    }    
+    }
     this.model.save({}, {
       success: this.saveSuccess,
       error: this.saveError
@@ -279,6 +280,7 @@ View.Playlist = Backbone.View.extend({
   },
 
   deleteSuccess: function(playlist, response) {
+    this.model.trigger('sync', 'delete')
     if (playlist.view.$el.is(':visible')) {
       Router.navigate('/', { trigger: true, replace: true })
     }
@@ -389,7 +391,7 @@ View.Playlists = Backbone.View.extend({
     this.$el.html(this.template({
       playlists: _.chain(Playlists.models)
                     .map(function(playlist) { return playlist.toJSON() })
-                    .sortBy(function(playlist) { return playlist.name })
+                    .sortBy(function(playlist) { return playlist.name.toLowerCase() })
                     .value(),
       user: this.collection.user
     }))

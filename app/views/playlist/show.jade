@@ -1,26 +1,31 @@
-- if (!playlist._id || (currentUser && currentUser.username == playlist.user))
+- if (currentUser && currentUser.username == playlist.user)
   .btn-group.pull-right
     button.btn.btn-primary.btn-large.playlist-save
-      i.icon-upload
+      i.icon-arrow-up
       |  Save
     button.btn.btn-primary.btn-large.dropdown-toggle('data-toggle'= 'dropdown')
       span.caret
     ul.dropdown-menu
       li
         a.playlist-save
-          i.icon-upload
+          i.icon-arrow-up
           |  Save
       li
         a.playlist-sidebar
-          i.icon-bookmark
           - if (playlist.sidebar)
+            i.icon-star-empty
             |  Remove from Sidebar
           - else
+            i.icon-star
             |  Add to Sidebar
       li
         a.playlist-delete
           i.icon-trash
           |  Delete
+- else if (!playlist._id)
+  button.btn.btn-primary.btn-large.playlist-save.pull-right
+    i.icon-arrow-up
+    |  Save
 
 - if (!nowPlaying)
   .btn-group.pull-right
