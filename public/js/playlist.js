@@ -57,13 +57,13 @@ Model.Playlist = Backbone.Model.extend({
       case 'save':
         Meow.render({
           message: 'Saved playlist: ' + this.get('name'),
-          className: 'alert alert-success'
+          type: 'success'
         })
         return
       case 'delete':
         Meow.render({
           message: 'Deleted playlist: ' + this.get('name'),
-          className: 'alert alert-danger'
+          type: 'danger'
         })
         return
     }
@@ -95,7 +95,10 @@ Model.Playlist = Backbone.Model.extend({
     })
     this.setTracks()
     this.tracksModifiedCount++
-    Meow.render(message)
+    Meow.render({
+      message: message,
+      type: 'primary'
+    })
   },
   
   removeTracks: function(tracks) {
@@ -107,7 +110,10 @@ Model.Playlist = Backbone.Model.extend({
     })
     this.setTracks()
     this.tracksModifiedCount++
-    Meow.render(message)
+    Meow.render({
+      message: message,
+      type: 'primary'
+    })
   },
   
   moveTracks: function(tracks, position) {

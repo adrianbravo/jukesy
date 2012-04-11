@@ -244,7 +244,7 @@ View.Sidebar = Backbone.View.extend({
 })
 
 View.Alert = Backbone.View.extend({
-  className: 'alert',
+  className: 'alert fade',
 
   template: jade.compile($('#alert-template').text()),
 
