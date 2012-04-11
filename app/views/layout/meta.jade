@@ -6,11 +6,6 @@ head
   meta(content= 'jukesy, music, music videos, youtube music', name= 'keywords')
   meta(content= 'width=device-width, initial-scale=1', name= 'viewport')
 
-  style(type= 'text/css')
-    body { opacity: 0.0; }
-  
-  //- each stylesheet in assets.css
-  //  link(rel='stylesheet', href='/' + stylesheet, type='text/css')
   - each stylesheet in assets.less
     link(rel='stylesheet/less', href='/' + stylesheet, type='text/css')
 
