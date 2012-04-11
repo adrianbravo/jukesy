@@ -31,13 +31,12 @@ Model.Track = Backbone.Model.extend({
       this.setPlaying()
       
       Video.skipToPrev = false
-      this.setVideo()
-      
       Meow.render({
         message: 'Now playing ' + this.get('name') + ' by ' + this.get('artist') + '.',
         type: 'info'
       })
-      Video.load(this.video)
+      
+      this.setVideo(0)
       Video.play()
     }
   },
@@ -85,10 +84,10 @@ Model.Track = Backbone.Model.extend({
     this.play()
   },
   
-  setVideo: function() {
-    if (!this.video) {
-      //this.video = this.bestVideo()
-      this.video = this.videos[0].id
+  setVideo: function(i) {
+    if (this.videos && this.videos[i]) {
+      this.video = this.videos[i].id
+      Video.load(this.video)
     }
   },
 

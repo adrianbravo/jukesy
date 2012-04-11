@@ -25,8 +25,7 @@ View.KeyboardShortcuts = Backbone.View.extend({
     if ($(e.target).is('input, textarea')) {
       return
     }
-    console.log('keyCode', e.keyCode)
-      
+    
     var fn = KeyMapper['k' + e.keyCode]
     if (fn) {
       return fn(e)
@@ -99,6 +98,71 @@ KeyMapper = {
     if (this.keypressHasModifier(e)) return
     var value = Video.player.getVolume()
     Video.volume(value - 2)
+    return false
+  },
+  
+  // could make this a loop
+  
+  // 1
+  k49: function(e) {
+    if (this.keypressHasModifier(e)) return
+    Video.track.setVideo(1)
+    return false
+  },
+  
+  // 2
+  k50: function(e) {
+    if (this.keypressHasModifier(e)) return
+    Video.track.setVideo(2)
+    return false
+  },
+  
+  // 3
+  k51: function(e) {
+    if (this.keypressHasModifier(e)) return
+    Video.track.setVideo(3)
+    return false
+  },
+  
+  // 4
+  k52: function(e) {
+    if (this.keypressHasModifier(e)) return
+    Video.track.setVideo(4)
+    return false
+  },
+  
+  // 5
+  k53: function(e) {
+    if (this.keypressHasModifier(e)) return
+    Video.track.setVideo(5)
+    return false
+  },
+  
+  // 6
+  k54: function(e) {
+    if (this.keypressHasModifier(e)) return
+    Video.track.setVideo(6)
+    return false
+  },
+  
+  // 7
+  k55: function(e) {
+    if (this.keypressHasModifier(e)) return
+    Video.track.setVideo(7)
+    return false
+  },
+  
+  // 8
+  k56: function(e) {
+    if (this.keypressHasModifier(e)) return
+    Video.track.setVideo(8)
+    return false
+  },
+  
+  // 9
+  k57: function(e) {
+    if (this.keypressHasModifier(e)) return
+    Video.track.setVideo(9)
     return false
   },
   
@@ -179,7 +243,10 @@ KeyMapper = {
 }
 
 $(function() {
-  _.bindAll(KeyMapper, 'keypressHasModifier', 'k27', 'k32', 'k37', 'k38', 'k39', 'k40', 'k68', 'k70', 'k77', 'k80', 'k82', 'k83', 'k86', 'k88', 'k191')
+  _.bindAll(KeyMapper, 'keypressHasModifier',
+            'k27', 'k32', 'k37', 'k38', 'k39', 'k40',
+            'k49', 'k50', 'k51', 'k52', 'k53', 'k54', 'k55', 'k56', 'k57', 
+            'k68', 'k70', 'k77', 'k80', 'k82', 'k83', 'k86', 'k88', 'k191')
 })
 
 
