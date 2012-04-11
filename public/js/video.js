@@ -473,23 +473,26 @@ View.Controls = Backbone.View.extend({
   
 })
 
-  /*
-  timers: function() {
-    var current   = Math.floor(this.player.getCurrentTime()),
-        remaining = Math.ceil(this.player.getDuration() - current)
+/*
+timers: function() {
+  var current   = Math.floor(this.player.getCurrentTime()),
+      remaining = Math.ceil(this.player.getDuration() - current)
 
-    return [
-      this.humanizeSeconds(current),
-      this.humanizeSeconds(remaining)
-     ]
-  },
+  return [
+    this.humanizeSeconds(current),
+    this.humanizeSeconds(remaining)
+   ]
+},
 
-  humanizeSeconds: function(s) {
-    var minutes = Math.floor(s / 60),
-        seconds = Math.floor(s % 60)
-    if (seconds < 10) {
-      seconds = "0" + seconds
-    }
-    return minutes + ":" + seconds
-  },
-  */
+humanizeSeconds: function(s) {
+  var minutes = Math.floor(s / 60),
+      seconds = Math.floor(s % 60)
+  if (seconds < 10) {
+    seconds = "0" + seconds
+  }
+  return minutes + ":" + seconds
+},
+*/
+
+
+;

@@ -125,3 +125,6 @@ View.UserCreate = Backbone.View.extend(_.extend({
   }
   
 }, Mixins.ViewFormErrors))
+
+
+;

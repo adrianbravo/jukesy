@@ -2,6 +2,7 @@ var assets = {
 
   js: [
     'js/lib/json2.js',
+    'js/lib/jquery-1.7.2.min.js',
     'js/lib/underscore-min.js',
     'js/lib/backbone.js',
     'js/lib/swfobject.js',
@@ -29,14 +30,19 @@ var assets = {
     'js/keys.js',
     'js/application.js'
   ],
-
   less: [
     'less/bootstrap.less'
-  ]
+  ],
+  css: []
 
 }
 
 exports.development = assets
-exports.production = assets
 exports.staging = assets
 exports.test = assets
+
+exports.production = {
+  js: [ 'jukesy.min.js' ],
+  css: [ 'jukesy.css' ],
+  less: []
+}

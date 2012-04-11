@@ -308,3 +308,6 @@ Model.LastFM = Backbone.Model.extend({
     _.defer(this.view.render)
   }
 })
+
+
+;

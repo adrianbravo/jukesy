@@ -13,7 +13,7 @@ boot(app, function(err, results) {
   require('./routes')(app)
 
   app.listen(app.set('port'), function() {
-    console.log('jukesy is up:', 'http://' + app.set('host') + ':' + app.set('port') + '/')
+    console.log('[' + app.set('env') + '] jukesy is up:', 'http://' + app.set('host') + ':' + app.set('port') + '/')
   })
 
 })

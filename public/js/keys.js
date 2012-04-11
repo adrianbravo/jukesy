@@ -164,3 +164,6 @@ KeyMapper = {
 $(function() {
   _.bindAll(KeyMapper, 'keypressHasModifier', 'k27', 'k32', 'k37', 'k38', 'k39', 'k40', 'k68', 'k70', 'k74', 'k77', 'k82', 'k83', 'k191')
 })
+
+
+;
