@@ -1,5 +1,6 @@
 var assets = {
 
+  favicon: '/favicon.ico',
   js: [
     '/js/lib/json2.js',
     '/js/lib/jquery-1.7.2.min.js',
@@ -42,6 +43,7 @@ exports.staging = assets
 exports.test = assets
 
 exports.production = {
+  favicon: '/favicon.ico',
   js: [ '/jukesy.min.js' ],
   css: [ '/jukesy.css' ],
   less: []
