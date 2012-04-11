@@ -20,10 +20,9 @@ ul.nav.nav-list
   - if (typeof playlists != 'undefined')
     each playlist in playlists
       li
-        a.playlist(href= playlist.url
-          class= (playlist._id ? '' : ' unsaved ') + (playlist.active ? ' active ' : ''))
-            - if (playlist.nowPlaying)
-              i.icon-music
-            - else
-              i.icon-empty
-            |  #{playlist.name}
+        a.playlist(href= playlist.url, class= (playlist.active ? ' active ' : ''))
+          - if (playlist.nowPlaying)
+            i.icon-music
+          - else
+            i.icon-empty
+          span(class= (playlist._id ? '' : ' unsaved ')) #{playlist.name}
