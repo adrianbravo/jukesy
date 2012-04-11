@@ -1,4 +1,23 @@
 Model.Playlist = Backbone.Model.extend({
+  
+  initialize: function() {
+    _.bindAll(this, 'setNowPlaying', 'changeCallback', 'syncMeow')
+    
+    this.view = new View.Playlist({ model: this })
+    this.destroyView = new View.PlaylistDestroy({ model: this })
+
+    if (this.isNew()) {
+      this.tracks = []
+      this.setTracks({ silent: true })
+    }
+    this.on('change:name change:sidebar', SidebarView.render, SidebarView)
+    this.on('change', this.changeCallback, this)
+    this.on('sync', this.syncMeow, this)
+    this.on('destroy', this.destroyCallback, this)
+    
+    this.tracksModifiedCount = 0 // counter for internal modifications to tracks
+  },
+  
   urlRoot: function() {
     var user = this.get('user')
     if (user == 'anonymous') {
@@ -28,24 +47,7 @@ Model.Playlist = Backbone.Model.extend({
     })
   },
   
-  initialize: function() {
-    console.log('Playlist.initialize', this.isNew())
-    _.bindAll(this, 'setNowPlaying', 'changeCallback', 'syncMeow')
-    
-    this.view = new View.Playlist({ model: this })
-    this.destroyView = new View.PlaylistDestroy({ model: this })
-
-    if (this.isNew()) {
-      this.tracks = []
-    }
-    this.on('change:name change:sidebar', SidebarView.render, SidebarView)
-    this.on('change', this.changeCallback, this)
-    this.on('sync', this.syncMeow, this)
-    this.tracksModifiedCount = 0 // counter for internal modifications to tracks
-  },
-  
   syncMeow: function(method) {
-    console.log('method', method)
     switch(method) {
       case 'save':
         Meow.render({
@@ -55,7 +57,7 @@ Model.Playlist = Backbone.Model.extend({
         return
       case 'delete':
         Meow.render({
-          message: 'Deleted playlist:' + this.get('name'),
+          message: 'Deleted playlist: ' + this.get('name'),
           className: 'alert alert-danger'
         })
         return
@@ -64,6 +66,15 @@ Model.Playlist = Backbone.Model.extend({
   
   changeCallback: function() {
     this.set({ changed: true }, { silent: true })
+  },
+  
+  destroyCallback: function() {
+    if (this.nowPlaying) {
+      newNowPlaying()
+    }
+    if (this.view.$el.is(':visible')) {
+      Router.navigate('/', { trigger: true })
+    }
   },
   
   addTracks: function(tracks, position) {
@@ -102,13 +113,11 @@ Model.Playlist = Backbone.Model.extend({
   
   setNowPlaying: function() {
     if (window.NowPlaying) {
-      //if (!NowPlaying._id && NowPlaying.tracksModifiedCount > 1) {
-        //NowPlaying.destroyView.render()
-        // modal warn
-        // modal acts as a confirmation, with a separate callback for each option
-      //}
       NowPlaying.set({ nowPlaying: false }, { silent: true })
       NowPlaying.nowPlaying = false
+      if (NowPlaying.isNew() && NowPlaying.tracksModifiedCount <= 1) {
+        NowPlaying.destroy()
+      }
     }
     window.NowPlaying = this
     NowPlaying.set({ nowPlaying: true }, { silent: true })
@@ -118,10 +127,6 @@ Model.Playlist = Backbone.Model.extend({
       Video.stop()
     }
     
-    if (window.Router) {
-      console.log('navigate to', NowPlaying.toJSON().url)
-      Router.navigate(NowPlaying.toJSON().url, { trigger: true })
-    }
     SidebarView.render()
     return this
   },
@@ -328,7 +333,7 @@ View.Playlist = Backbone.View.extend({
   },
   
   delete: function(e, confirmed) {
-    if (!Session.user) {
+    if (!Session.user && !this.model.isNew()) {
       loginModal.render().addAlert('not_logged_in_destroy')
       ModalView.setCallback(this.delete)
       return
@@ -402,7 +407,13 @@ View.Playlists = Backbone.View.extend({
     
     this.$el.html(this.template({
       playlists: _.chain(Playlists.models)
-                    .sortBy(function(playlist) { return (playlist.isNew() ? '1' : '0') + playlist.get('name').toLowerCase() })
+                    .sortBy(function(playlist) {
+                      return [
+                        playlist.isNew(),
+                        playlist.get('name').toLowerCase(),
+                        playlist.get('time') && playlist.get('time').created
+                      ]
+                    })
                     .map(function(playlist) { return playlist.toJSON() })
                     .value(),
       user: this.collection.user
@@ -422,7 +433,6 @@ Collection.Playlists = Backbone.Collection.extend({
     
     this.on('add', this.view.render, this.view)
     this.on('remove', this.view.render, this.view)
-    
     this.on('add', this.sidebarRender, this)
     this.on('remove', this.sidebarRender, this)
   },

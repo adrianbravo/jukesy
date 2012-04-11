@@ -23,7 +23,7 @@
           i.icon-trash
           |  Delete
 
-- if (!nowPlaying)
+- if (!playlist.nowPlaying)
   .btn-group.pull-right
     button.btn.btn-large.play-all Play All
     button.btn.btn-large.dropdown-toggle('data-toggle'= 'dropdown')
@@ -36,18 +36,17 @@
       li
         a.queue-all-last Queue All Last
 
-
 - if (editName)
   input.playlist-name-edit(maxlength= '50', name= 'playlist-name', value= playlist.name)
 - else
   div.playlist-name #{playlist.name}
+
 - if (playlist.nowPlaying)
   span.label.label-info listening
 - if (playlist.changed)
   span.label.label-important changed
 - if (!playlist._id)
   span.label.label-warning new
-
 
 - if (playlist._id)
   p Created by 

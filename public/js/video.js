@@ -302,7 +302,7 @@ View.Controls = Backbone.View.extend({
     var load = Video.loadRatio()
       , play = Video.playRatio()
     
-    if (load > 0 && load != Infinity) {
+    if (!Video.stopped && load > 0 && load != Infinity) {
       this.$el.find('#timer .fill').width(load * 100 + '%')
       this.$el.find('#timer .track').width(play * 100 + '%')
     } else {

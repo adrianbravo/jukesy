@@ -213,7 +213,9 @@ View.Sidebar = Backbone.View.extend({
   },
   
   createPlaylist: function() {
-    newNowPlaying()
+    var playlist = new Model.Playlist()
+    Playlists.add([ playlist ])
+    Router.navigate(playlist.toJSON().url, { trigger: true })
     return false
   },
   
@@ -223,7 +225,13 @@ View.Sidebar = Backbone.View.extend({
       unsavedPlaylist: window.NowPlaying && NowPlaying.isNew() && NowPlaying.get('sidebar') ? NowPlaying.toJSON() : undefined,
       playlists: _.chain(Playlists.models)
                     .filter(function(playlist) { return playlist.get('sidebar') })
-                    .sortBy(function(playlist) { return (playlist.isNew() ? '1' : '0') + playlist.get('name').toLowerCase() })
+                    .sortBy(function(playlist) {
+                      return [
+                        playlist.isNew(),
+                        playlist.get('name').toLowerCase(),
+                        playlist.get('time') && playlist.get('time').created
+                      ]
+                    })
                     .map(function(playlist) { return playlist.toJSON() })
                     .value()
     }))
