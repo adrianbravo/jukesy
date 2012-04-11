@@ -210,10 +210,11 @@ View.Sidebar = Backbone.View.extend({
   render: function() {
     this.$el.html(this.template({
       currentUser: Session.userJSON(),
-      unsavedPlaylist: window.NowPlaying && window.NowPlaying.isNew() ? window.NowPlaying.toJSON() : undefined,
+      unsavedPlaylist: window.NowPlaying && NowPlaying.isNew() && NowPlaying.get('sidebar') ? NowPlaying.toJSON() : undefined,
       playlists: _.chain(Playlists.models)
                     .filter(function(playlist) { return playlist.get('sidebar') })
                     .map(function(playlist) { return playlist.toJSON() })
+                    .sortBy(function(playlist) { return playlist.name })
                     .value()
     }))
   }

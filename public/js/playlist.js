@@ -17,7 +17,8 @@ Model.Playlist = Backbone.Model.extend({
 
   defaults: {
     name: 'Untitled Playlist',
-    user: 'anonymous'
+    user: 'anonymous',
+    sidebar: true
   },
   
   initialize: function() {
@@ -384,8 +385,12 @@ View.Playlists = Backbone.View.extend({
       this.$el.html('Loading...')
       return this
     }
+    
     this.$el.html(this.template({
-      playlists: _.map(this.collection.models, function(playlist) { return playlist.toJSON() }),
+      playlists: _.chain(Playlists.models)
+                    .map(function(playlist) { return playlist.toJSON() })
+                    .sortBy(function(playlist) { return playlist.name })
+                    .value(),
       user: this.collection.user
     }))
     return this
