@@ -1,5 +1,11 @@
 Model.Playlist = Backbone.Model.extend({
   
+  defaults: {
+    name: 'Untitled Playlist',
+    user: 'anonymous',
+    sidebar: true
+  },
+  
   initialize: function() {
     _.bindAll(this, 'setNowPlaying', 'changeCallback', 'syncMeow', 'incrementUntitled')
     
@@ -41,12 +47,6 @@ Model.Playlist = Backbone.Model.extend({
   
   navigateTo: function() {
     Router.navigate(this.toJSON().url, { trigger: true })
-  },
-  
-  defaults: {
-    name: 'Untitled Playlist',
-    user: 'anonymous',
-    sidebar: true
   },
   
   toJSON: function() {
@@ -418,23 +418,6 @@ View.Playlist = Backbone.View.extend({
   }
   
 })
-
-/*
-function discover() {
-  console.log('now playing', window.NowPlaying)
-  // select random track/tag from playlist
-  // if track/tag has no associated associated tracks:
-  //   query lastfm for toptracks / similartracks
-  //   should be able to use a separate callback to check results
-  //   callback
-  //     sets track's or tag's .tracks to the results
-  //     selects a random track from the list
-  //     if track is not in NowPlaying (or banned tracks eventually), add it
-  //     else, try next track in list (... may need to restrict this)
-  // this process should occur as an interval
-  // should only add up to 3 tracks ahead
-}
-*/
 
 View.Playlists = Backbone.View.extend({
   template: jade.compile($('#playlist-index-template').text()),
