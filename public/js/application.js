@@ -68,6 +68,7 @@ AppRouter = Backbone.Router.extend({
   
   // TODO clean this up good god
   playlist: function(username, id) {
+    console.log('playlist route', username, id)
     var playlist = (username == 'anonymous') ? Playlists.getByCid(id) : Playlists.get(id)
     if (!playlist) {
       if (username == 'anonymous') {
@@ -80,17 +81,13 @@ AppRouter = Backbone.Router.extend({
       }
     }
 
-    if (!playlist.tracks) {
+    //console.log('playlist models, if length is 0 do fetch', playlist.tracks.models)
+    if (!playlist.isNew()) {
       playlist.fetch({
-        silent: true,
+        //silent: true,
         success: function(model, response) {
-          playlist.tracks = _(playlist.get('tracks')).chain()
-            .map(function(track) {
-              var model = new Model.Track(track)
-              model.playlist = playlist
-              return model
-            })
-            .value()
+          console.log('fetch success', playlist.get('name'), model, response)
+          playlist.tracks.add(playlist.get('tracks'))
           MainView.render(playlist.view)
         },
         error: this.error

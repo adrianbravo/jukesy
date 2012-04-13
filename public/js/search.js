@@ -162,18 +162,18 @@ View.SearchResultsTracks = Backbone.View.extend(_.extend({
   },
   
   playAll: function() {
-    var clones = this.model.cloneResults()
+    var clones = this.model.cloneTracks()
     newNowPlaying()
-    NowPlaying.addTracks(clones, Video.track ? _.indexOf(NowPlaying.tracks, Video.track) + 1 : 0)
+    NowPlaying.tracks.add(clones, _.indexOf(NowPlaying.tracks.models, Video.track) + 1)
     clones[0].play()
   },
   
   queueNext: function() {
-    NowPlaying.addTracks(this.model.cloneResults(), Video.track ? _.indexOf(NowPlaying.tracks, Video.track) + 1 : 0)
+    NowPlaying.tracks.add(this.model.cloneTracks(), _.indexOf(NowPlaying.tracks.models, Video.track) + 1)
   },
   
   queueLast: function() {
-    NowPlaying.addTracks(this.model.cloneResults())
+    NowPlaying.tracks.add(this.model.cloneTracks())
   }
 }, View.SearchResults))
 

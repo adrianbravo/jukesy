@@ -3,30 +3,43 @@ Model.Playlist = Backbone.Model.extend({
   defaults: {
     name: 'Untitled Playlist',
     user: 'anonymous',
-    sidebar: true
+    sidebar: true,
+    tracks_count: 0
   },
   
   initialize: function() {
-    _.bindAll(this, 'setNowPlaying', 'changeCallback', 'syncMeow', 'incrementUntitled')
+    _.bindAll(this, 'setNowPlaying', 'syncCallback', 'changeCallback', 'destroyCallback', 'incrementUntitled')
     
     this.view = new View.Playlist({ model: this })
     this.destroyView = new View.PlaylistDestroy({ model: this })
 
-    if (this.isNew()) {
-      this.tracks = []
-      this.setTracks({ silent: true })
-    }
+    this.initializeTracks()
     
     this.on('change:name change:sidebar', SidebarView.render, SidebarView)
-    this.on('change', this.changeCallback, this)
-    this.on('sync', this.syncMeow, this)
-    this.on('destroy', this.destroyCallback, this)
-    
-    this.tracksModifiedCount = 0 // counter for internal modifications to tracks
+    this.on('sync', this.syncCallback)
+    this.on('destroy', this.destroyCallback)
+    //this.on('change', this.changeCallback, this)
     
     if (this.get('user') == 'anonymous') {
       _.defer(this.incrementUntitled)
     }
+  },
+  
+  initializeTracks: function() {
+    this.tracks = new Collection.Tracks
+    this.tracks.playlist = this
+    
+    
+    this.tracks.on('remove', function(model, collection, options) {
+      model.view.remove()
+    }, this)
+
+    this.tracks.on('add remove', _.debounce(function() {
+      var change = this.tracks.models.length - this.get('tracks_count')
+      console.log('track count changed by', change)
+      this.set({ tracks_count: this.tracks.models.length })
+      this.view.render()
+    }, 100), this)
   },
   
   urlRoot: function() {
@@ -56,7 +69,8 @@ Model.Playlist = Backbone.Model.extend({
     })
   },
   
-  syncMeow: function(method) {
+  syncCallback: function(method) {
+    console.log('sync meow')
     switch(method) {
       case 'save':
         Meow.render({
@@ -72,11 +86,7 @@ Model.Playlist = Backbone.Model.extend({
         return
     }
   },
-  
-  changeCallback: function() {
-    this.set({ changed: true }, { silent: true })
-  },
-  
+    
   destroyCallback: function() {
     if (this.nowPlaying) {
       newNowPlaying()
@@ -86,60 +96,15 @@ Model.Playlist = Backbone.Model.extend({
     }
   },
   
-  addTracks: function(tracks, position) {
-    var self = this
-      , message = 'Added ' + tracks.length + ' ' + _.plural(tracks.length, 'track', 'tracks') + ' to ' + this.get('name') + '.'
-      
-    if (_.isUndefined(position)) {
-      position = this.tracks.length
-    }
-    _.each(tracks, function(track) {
-      self.tracks.splice(position++, 0, track)
-      track.playlist = self
-    })
-    this.setTracks()
-    this.tracksModifiedCount++
-    Meow.render({
-      message: message,
-      type: 'primary'
-    })
-  },
-  
-  removeTracks: function(tracks) {
-    var self = this
-      , position
-      , message = 'Removed ' + tracks.length + ' ' + _.plural(tracks.length, 'track', 'tracks') + ' from ' + this.get('name') + '.'
-    
-    _.each(tracks, function(track) {
-      if (track == Video.track) {
-        if (self.tracks.length == 1) {
-          Video.stop()
-        } else {
-          Video.next()
-        }
-      }
-      self.tracks.splice(_.indexOf(self.tracks, track), 1)
-    })
-    this.setTracks()
-    this.tracksModifiedCount++
-    Meow.render({
-      message: message,
-      type: 'primary'
-    })
-    self.view.render()
-  },
-  
-  moveTracks: function(tracks, position) {
-    // will move tracks in tracks from their current positions to the new position, in their order
-    // ( tracks = [0, 1, 2, 3, 4, 5], moveTracks([1, 3, 4], 0) => tracks = [1, 3, 4, 0, 2, 5])
-    // this.tracksModifiedCount++
+  changeCallback: function() {
+    this.set({ changed: true }, { silent: true })
   },
   
   setNowPlaying: function() {
     if (window.NowPlaying) {
       NowPlaying.set({ nowPlaying: false }, { silent: true })
       NowPlaying.nowPlaying = false
-      if (NowPlaying.isNew() && NowPlaying.tracksModifiedCount <= 1) {
+      if (NowPlaying.isNew() && !NowPlaying.tracks.models.length) {
         NowPlaying.destroy()
       }
     }
@@ -155,21 +120,10 @@ Model.Playlist = Backbone.Model.extend({
     return this
   },
   
-  cloneResults: function() {
-    return _(this.tracks).chain()
-      .map(function(track) {
-        return new Model.Track(track.toJSON())
-      })
-      .value()
+  cloneTracks: function() {
+    return _.map(this.tracks.models, function(trackModel) { return trackModel.clone().toJSON() })
   },
-  
-  setTracks: function(options) {
-    this.set({
-      tracks: this.tracks,
-      tracks_count: this.tracks.length
-    }, options)
-  },
-  
+    
   isEditable: function() {
     return (this.isNew() || (Session.user && Session.user.get('username') == this.get('user')))
   },
@@ -260,26 +214,20 @@ View.Playlist = Backbone.View.extend({
   },
 
   render: function(options) {
-    if (!this.model.isNew() && !this.model.tracks) {
-      this.$el.html('Loading...')
-      return this
-    }
-    
+    console.log('render')
     var self = this
     options = options || {}
-    
-    this.model.setTracks({ silent: true })
     
     this.$el.html(this.template({
       currentUser: Session.userJSON(),
       playlist: this.model.toJSON(),
-      nowPlaying: this.model.nowPlaying,
       editName: options.editName
     }))
 
-    _.each(this.model.get('tracks'), function(track) {
+    _.each(this.model.tracks.models, function(track) {
       self.$el.find('tbody').append(track.view.render().$el)
     })
+    
     if (this.model.isEditable()) {
       this.$el.find('.playlist-name').addClass('edit')
     }
@@ -289,17 +237,17 @@ View.Playlist = Backbone.View.extend({
   
   playAll: function() {
     this.model.setNowPlaying()
-    if (this.model.tracks[0]) {
-      this.model.tracks[0].play()
+    if (this.model.tracks.models[0]) {
+      this.model.tracks.models[0].play()
     }
   },
   
   queueNext: function() {
-    NowPlaying.addTracks(this.model.cloneResults(), Video.track ? _.indexOf(NowPlaying.tracks, Video.track) + 1 : 0)
+    NowPlaying.tracks.add(this.model.cloneTracks(), _.indexOf(NowPlaying.tracks.models, Video.track) + 1)
   },
   
   queueLast: function() {
-    NowPlaying.addTracks(this.model.cloneResults())
+    NowPlaying.tracks.add(this.model.cloneTracks())
   },
   
   toggleSidebar: function() {

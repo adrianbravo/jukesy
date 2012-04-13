@@ -57,7 +57,7 @@ Model.Video = Backbone.Model.extend({
   },
   
   play: function() {
-    if (!NowPlaying.tracks.length) {
+    if (!NowPlaying.tracks.models.length) {
       return false
     }
     this.stopped = false
@@ -90,10 +90,10 @@ Model.Video = Backbone.Model.extend({
       return
     }
     
-    if (this.track === _.last(NowPlaying.tracks) || _.isUndefined(this.track)) {
-      next = _.first(NowPlaying.tracks)
+    if (this.track === _.last(NowPlaying.tracks.models) || _.isUndefined(this.track)) {
+      next = _.first(NowPlaying.tracks.models)
     } else {
-      next = NowPlaying.tracks[_.indexOf(NowPlaying.tracks, this.track) + 1]
+      next = NowPlaying.tracks.models[_.indexOf(NowPlaying.tracks.models, this.track) + 1]
     }
 
     if (next === this.track) {
@@ -112,10 +112,10 @@ Model.Video = Backbone.Model.extend({
     }
     
     this.skipToPrev = true
-    if (this.track === _.first(NowPlaying.tracks) || _.isUndefined(this.track)) {
-      prev = _.last(NowPlaying.tracks)
+    if (this.track === _.first(NowPlaying.tracks.models) || _.isUndefined(this.track)) {
+      prev = _.last(NowPlaying.tracks.models)
     } else {
-      prev = NowPlaying.tracks[_.indexOf(NowPlaying.tracks, this.track) - 1]
+      prev = NowPlaying.tracks.models[_.indexOf(NowPlaying.tracks.models, this.track) - 1]
     }
     prev.play()
   },

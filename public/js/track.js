@@ -15,7 +15,7 @@ Model.Track = Backbone.Model.extend({
     }
     
     if (NowPlaying != this.playlist) {
-      this.playlist.setNowPlaying()
+      this.collection.playlist.setNowPlaying()
     }
     
     if (Video.track) {
@@ -131,7 +131,7 @@ View.Track = Backbone.View.extend(_.extend(Mixins.TrackViewEvents, {
   
   render: function() {
     this.$el.html(this.template({ track: this.model }))
-    this.$el.find('.icon-exclamation-sign').popover()
+    //this.$el.find('.icon-exclamation-sign').popover()
     this.delegateEvents()
     return this
   },
@@ -143,6 +143,11 @@ View.Track = Backbone.View.extend(_.extend(Mixins.TrackViewEvents, {
   }
   
 }))
+
+
+Collection.Tracks = Backbone.Collection.extend({
+  model: Model.Track
+})
 
 
 ;
