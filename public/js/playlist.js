@@ -23,27 +23,9 @@ Model.Playlist = Backbone.Model.extend({
   initializeTracks: function() {
     this.tracks = new Collection.Tracks
     this.tracks.playlist = this
-    
-    this.tracks.on('remove', function(model, collection, options) {
-      model.view.remove()
-    }, this)
+    this.tracks.on('remove', function(model, collection, options) { model.view.remove() }, this)
     this.tracks.on('add remove', this.changeCallback)
-    this.tracks.on('add remove', _.debounce(function() {
-      var change = this.tracks.models.length - this.get('tracks_count')
-      if (change > 0) {
-        Meow.render({
-          message: 'Added ' + change + ' ' + _.plural(change, 'track', 'tracks') + ' to ' + this.get('name'),
-          type: 'default'
-        })
-      } else {
-        Meow.render({
-          message: 'Removed ' + Math.abs(change) + ' ' + _.plural(change, 'track', 'tracks') + ' from ' + this.get('name'),
-          type: 'default'
-        })
-      }
-      this.set({ tracks_count: this.tracks.models.length })
-      this.view.render()
-    }, 100), this)
+    this.tracks.on('add remove', _.debounce(this.tracksCallback, 100), this)
   },
   
   urlRoot: function() {
@@ -77,19 +59,36 @@ Model.Playlist = Backbone.Model.extend({
     Router.navigate(this.localUrl(), { trigger: true })
   },
   
-  syncCallback: function(playlist, response, options) {
-    this.set({ changed: false }, { silent: true })
-    if (!Playlists.get(this.id)) {
-      Playlists.add([ this ])
-    }
+  tracksCallback: function() {
+    var change = this.tracks.models.length - this.get('tracks_count')
+      , message
+    
+    this.set({ tracks_count: this.tracks.models.length })
     this.view.render()
     
+    if (change > 0) {
+      message = 'Added ' + change + ' ' + _.plural(change, 'track', 'tracks') + ' to ' + this.get('name')
+    } else {
+      message = 'Removed ' + Math.abs(change) + ' ' + _.plural(change, 'track', 'tracks') + ' from ' + this.get('name')
+    }
     Meow.render({
-      message: 'Saved playlist - ' + this.get('name'),
-      type: 'success'
+      message: message,
+      type: 'default'
     })
   },
+  
+  syncCallback: function(playlist, response, options) {
+    this.set({ changed: false }, { silent: true })
+    this.view.render()
     
+    if (_.isObject(response)) {
+      Meow.render({
+        message: 'Saved playlist - ' + this.get('name'),
+        type: 'success'
+      })
+    }
+  },
+  
   destroyCallback: function(playlist, playlists, options) {
     if (this.nowPlaying) {
       newNowPlaying()
@@ -97,6 +96,7 @@ Model.Playlist = Backbone.Model.extend({
     if (this.view.$el.is(':visible')) {
       Router.navigate('/', { trigger: true, replace: true })
     }
+    
     if (!this.isNew()) {
       Meow.render({
         message: 'Deleted playlist - ' + this.get('name'),
