@@ -13,15 +13,6 @@ View.BaseSearch = Backbone.View.extend({
   }  
 })
 
-View.Welcome = View.BaseSearch.extend({
-  template: jade.compile($('#welcome-template').text()),
-  initialize: function(options) {
-    this.options = options
-    new Model.LastFM({ method: 'chart.getTopArtists', limit: 20, imageSize: 'extralarge' })
-    new Model.LastFM({ method: 'chart.getTopTracks', limit: 30 })
-  }
-})
-
 View.SearchQuery = View.BaseSearch.extend({
   template: jade.compile($('#search-query-template').text()),
   initialize: function(options) {

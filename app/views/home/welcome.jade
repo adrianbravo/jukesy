@@ -5,7 +5,40 @@
     p Get started above by searching Last.fm for an artist or track to enjoy. Or browse from lists of popular artists and tracks below.
   
   #search-artists
+    - if (typeof artists != 'undefined' && artists.length)
+      h3 Top Artists on Last.fm
+      .clear
+  
+      .artists
+        ul.thumbnails
+      .clear
+  
   .clear
   hr
   
   #search-tracks
+    - if (typeof tracks != 'undefined' && tracks.length)
+      .btn-group.pull-right
+        button.btn.btn-primary.btn-large.play-all Play All
+        button.btn.btn-primary.btn-large.dropdown-toggle('data-toggle'= 'dropdown')
+          span.caret
+        ul.dropdown-menu
+          li
+            a.play-all Play All
+          li
+            a.queue-all-next Queue All Next
+          li
+            a.queue-all-last Queue All Last
+
+      h3 Top Tracks on Last.fm
+      .clear
+
+      .tracks
+        table.table.table-striped
+          thead
+            tr
+              th.dropdown
+              th.play
+              th Track
+              th Artist
+          tbody

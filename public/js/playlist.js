@@ -234,6 +234,8 @@ View.Playlist = Backbone.View.extend({
 
   render: function(options) {
     var self = this
+      , $tracks
+    
     options = options || {}
     
     this.$el.html(this.template({
@@ -241,9 +243,10 @@ View.Playlist = Backbone.View.extend({
       playlist: this.model.toJSON(),
       editName: options.editName
     }))
+    $tracks = this.$el.find('table tbody')
     
     this.model.tracks.each(function(track) {
-      self.$el.find('tbody').append(track.view.$el)
+      $tracks.append(track.view.$el)
       track.view.delegateEvents()
     })
     

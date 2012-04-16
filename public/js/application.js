@@ -32,7 +32,7 @@ AppRouter = Backbone.Router.extend({
   },
     
   welcome: function() {
-    MainView.render(new View.Welcome)
+    MainView.render(WelcomeView)
   },
 
   about: function() {
@@ -254,6 +254,51 @@ View.Alert = Backbone.View.extend({
   }
 })
 
+View.Welcome = Backbone.View.extend({
+  template: jade.compile($('#welcome-template').text()),
+  
+  // events
+  // play all, queue next, queue last
+  
+  initialize: function(options) {
+    var tracks = [
+          { artist: 'Blur', name: 'Song 2'},
+          { artist: '2Pac', name: '2 Of Amerikaz Most Wanted' }
+        ]
+      , artists = [
+          { name: 'Blur' }, { name: 'Gorillaz' }
+        ]
+    
+    this.tracks = _.map(tracks, function(track) {
+      return new Model.SearchResultTrack(track)
+    })
+    this.artists = _.map(artists, function(artist) {
+      return new Model.SearchResultArtist(artist)
+    })
+  },
+  
+  render: function() {
+    var $tracks, $artists
+      
+    this.$el.html(this.template({ tracks: this.tracks, artists: this.artists }))
+    $tracks = this.$el.find('#search-tracks table tbody')
+    $artists = this.$el.find('#search-artists ul.thumbnails')
+    
+    _.each(this.tracks, function(track) {
+      track.view.render()
+      $tracks.append(track.view.$el)
+    })
+    
+    _.each(this.artists, function(artist) {
+      artist.view.render()
+      $artists.append(artist.view.$el)
+    })
+    
+    return this
+  }
+})
+
+
 $(function() {
   // Bind resize and call it once.
   $(window).resize(_.debounce(windowResized))
@@ -268,6 +313,7 @@ $(function() {
   window.Session = new Model.Session
   window.ModalView = new View.Modal
   window.SidebarView = new View.Sidebar
+  window.WelcomeView = new View.Welcome
   window.Video = new Model.Video
   window.Meow = new View.Meow
 
