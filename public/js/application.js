@@ -271,6 +271,7 @@ $(function() {
   window.Meow = new View.Meow
 
   newNowPlaying()
+  window.Radio = new Model.Radio
   window.loginModal = new View.SessionCreate({ model: Session })
   window.signupModal = new View.UserCreate()
 

@@ -387,13 +387,13 @@ View.Controls = Backbone.View.extend({
     if ($radio.hasClass('disabled')) {
       return
     }
-    if (Video.radio) {
-      Video.radio = false
+    if (Radio.get('active')) {
+      Radio.disable()
       $radio.addClass('off')
       this.$el.find('#shuffle').removeClass('disabled')
       this.$el.find('#repeat').removeClass('disabled')
     } else {
-      Video.radio = true
+      Radio.enable()
       $radio.removeClass('off')
       this.$el.find('#shuffle').addClass('disabled').addClass('off')
       this.$el.find('#repeat').addClass('disabled').addClass('off')

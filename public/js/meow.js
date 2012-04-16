@@ -1,6 +1,6 @@
 View.Meow = Backbone.View.extend({
   el: $('#meow'),
-    
+  
   render: function(options) {
     var self = this
       , $alert
@@ -16,8 +16,8 @@ View.Meow = Backbone.View.extend({
         $alert.$el.remove()
       }, 500)
     }, 2700)
-    
   }
+  
 })
 
 

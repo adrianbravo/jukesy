@@ -21,6 +21,7 @@ var assets = {
     '/js/lastfm.js',
     '/js/search.js',
     '/js/playlist.js',
+    '/js/radio.js',
     '/js/artist.js',
     '/js/album.js',
     '/js/track.js',
