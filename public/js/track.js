@@ -130,10 +130,7 @@ View.Track = Backbone.View.extend(_.extend(Mixins.TrackViewEvents, {
   },
   
   render: function() {
-    console.log('render track')
     this.$el.html(this.template({ track: this.model.toJSON() }))
-    //this.$el.find('.icon-exclamation-sign').popover()
-    //this.delegateEvents()
     return this
   },
   
