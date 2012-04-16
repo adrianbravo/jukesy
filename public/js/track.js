@@ -17,11 +17,6 @@ Model.Track = Backbone.Model.extend({
     if (NowPlaying != this.playlist) {
       this.collection.playlist.setNowPlaying()
     }
-    
-    if (Video.track) {
-      Video.track.unsetPlaying()
-    }
-    Video.track = this
 
     if (_.isUndefined(this.videos)) {
       this.getVideoIds()
@@ -98,6 +93,10 @@ Model.Track = Backbone.Model.extend({
   },
   
   setPlaying: function() {
+    if (Video.track && Video.track != this) {
+      Video.track.unsetPlaying()
+    }
+    Video.track = this    
     this.playing = true
     this.view.$el.addClass('playing').find('.icon-play').addClass('icon-music').removeClass('icon-play')
     this.viewTrackInfo.render()
