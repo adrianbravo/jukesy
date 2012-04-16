@@ -78,6 +78,10 @@ Model.Playlist = Backbone.Model.extend({
   },
   
   syncCallback: function(playlist, response, options) {
+    if (options.changes && options.changes._id) {
+      Router.navigate(this.localUrl(), { trigger: true, replace: true })
+    }
+    
     this.set({ changed: false }, { silent: true })
     this.view.render()
     
