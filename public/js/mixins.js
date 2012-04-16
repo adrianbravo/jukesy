@@ -6,12 +6,12 @@ Mixins.TrackViewEvents = {
       
   playNow: function() {
     var clone = new Model.Track(this.model.toJSON())
-    NowPlaying.tracks.add([ clone ], _.indexOf(NowPlaying.tracks.models, Video.track) + 1)
+    NowPlaying.tracks.add([ clone ], { at: _.indexOf(NowPlaying.tracks.models, Video.track) + 1 })
     clone.play()
   },
   
   queueNext: function() {
-    NowPlaying.tracks.add([ new Model.Track(this.model.toJSON()) ], _.indexOf(NowPlaying.tracks.models, Video.track) + 1)
+    NowPlaying.tracks.add([ new Model.Track(this.model.toJSON()) ], { at: _.indexOf(NowPlaying.tracks.models, Video.track) + 1 })
   },
   
   queueLast: function() {
@@ -22,7 +22,6 @@ Mixins.TrackViewEvents = {
     this.$el.find('.dropdown-toggle').dropdown('toggle')
     return false
   }
-  
 }
 
 Mixins.ViewFormErrors = {

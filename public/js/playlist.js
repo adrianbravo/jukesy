@@ -8,42 +8,41 @@ Model.Playlist = Backbone.Model.extend({
   },
   
   initialize: function() {
-    _.bindAll(this, 'setNowPlaying', 'syncCallback', 'changeCallback', 'destroyCallback', 'incrementUntitled')
+    _.bindAll(this, 'setNowPlaying', 'syncCallback', 'destroyCallback', 'changeCallback', 'incrementUntitled')
     
     this.view = new View.Playlist({ model: this })
     this.destroyView = new View.PlaylistDestroy({ model: this })
 
     this.initializeTracks()
-    
-    this.on('change:name change:sidebar', SidebarView.render, SidebarView)
     this.on('sync', this.syncCallback)
     this.on('destroy', this.destroyCallback)
-    //this.on('change', this.changeCallback, this)
-    
-    if (this.get('user') == 'anonymous') {
-      _.defer(this.incrementUntitled)
-    }
+    this.on('change:name change:sidebar', this.changeCallback)
+    _.defer(this.incrementUntitled)
   },
   
   initializeTracks: function() {
     this.tracks = new Collection.Tracks
     this.tracks.playlist = this
     
-    
     this.tracks.on('remove', function(model, collection, options) {
       model.view.remove()
     }, this)
-
-    this.tracks.on('add', function(model, collection, options) {
-      //console.log('adding track', model, 'to collection', collection, 'with options', options)
-      //model.view.add()
-    }, this)
-    
+    this.tracks.on('add remove', this.changeCallback)
     this.tracks.on('add remove', _.debounce(function() {
       var change = this.tracks.models.length - this.get('tracks_count')
-      console.log('track count changed by', change)
+      if (change > 0) {
+        Meow.render({
+          message: 'Added ' + change + ' ' + _.plural(change, 'track', 'tracks') + ' to ' + this.get('name'),
+          type: 'default'
+        })
+      } else {
+        Meow.render({
+          message: 'Removed ' + Math.abs(change) + ' ' + _.plural(change, 'track', 'tracks') + ' from ' + this.get('name'),
+          type: 'default'
+        })
+      }
       this.set({ tracks_count: this.tracks.models.length })
-      //this.view.render()
+      this.view.render()
     }, 100), this)
   },
   
@@ -63,41 +62,46 @@ Model.Playlist = Backbone.Model.extend({
     return url
   },
   
-  navigateTo: function() {
-    Router.navigate(this.toJSON().url, { trigger: true })
+  localUrl: function() {
+    return '/user/' + this.get('user') + '/playlist/' + (this.id || this.cid)
   },
   
   toJSON: function() {
     return _.extend(_.clone(this.attributes), {
-      url    : '/user/' + this.get('user') + '/playlist/' + (this.id || this.cid),
+      url    : this.localUrl(),
       active : this.view.$el.is(':visible')
     })
   },
   
-  syncCallback: function(method) {
-    console.log('sync meow')
-    switch(method) {
-      case 'save':
-        Meow.render({
-          message: 'Saved playlist: ' + this.get('name'),
-          type: 'success'
-        })
-        return
-      case 'delete':
-        Meow.render({
-          message: 'Deleted playlist: ' + this.get('name'),
-          type: 'danger'
-        })
-        return
+  navigateTo: function() {
+    Router.navigate(this.localUrl(), { trigger: true })
+  },
+  
+  syncCallback: function(playlist, response, options) {
+    this.set({ changed: false }, { silent: true })
+    if (!Playlists.get(this.id)) {
+      Playlists.add([ this ])
     }
+    this.view.render()
+    
+    Meow.render({
+      message: 'Saved playlist - ' + this.get('name'),
+      type: 'success'
+    })
   },
     
-  destroyCallback: function() {
+  destroyCallback: function(playlist, playlists, options) {
     if (this.nowPlaying) {
       newNowPlaying()
     }
     if (this.view.$el.is(':visible')) {
       Router.navigate('/', { trigger: true, replace: true })
+    }
+    if (!this.isNew()) {
+      Meow.render({
+        message: 'Deleted playlist - ' + this.get('name'),
+        type: 'danger'
+      })
     }
   },
   
@@ -121,7 +125,7 @@ Model.Playlist = Backbone.Model.extend({
       Video.stop()
     }
     
-    SidebarView.render()
+    this.view.render()
     return this
   },
   
@@ -137,10 +141,16 @@ Model.Playlist = Backbone.Model.extend({
     var self = this
       , name = base = 'Untitled Playlist'
       , count = 0
-      , names = _.chain(Playlists.models)
-                    .filter(function(playlist) { return playlist.get('user') == 'anonymous' && self.cid != playlist.cid })
-                    .map(function(playlist) { return playlist.get('name') })
-                    .value()
+      , names
+      
+      if (this.get('user') != 'anonymous') {
+        return
+      }
+      
+      names = _.chain(Playlists.models)
+                .filter(function(playlist) { return playlist.get('user') == 'anonymous' && self.cid != playlist.cid })
+                .map(function(playlist) { return playlist.get('name') })
+                .value()
     
     while (count <= names.length) {
       if (count) {
@@ -150,7 +160,6 @@ Model.Playlist = Backbone.Model.extend({
       if (_.indexOf(names, name) == -1) {
         this.set({ name: name }, { silent: true })
         this.view.render()
-        SidebarView.render()
         return
       }
       count++   
@@ -215,11 +224,10 @@ View.Playlist = Backbone.View.extend({
   },
     
   initialize: function() {
-    _.bindAll(this, 'keyDown', 'saveSuccess', 'saveError', 'save', 'deleteConfirm', 'deleteSuccess', 'deleteError', 'delete', 'focusNameEdit', 'playAll')
+    _.bindAll(this, 'keyDown', 'saveError', 'save', 'deleteConfirm', 'deleteError', 'delete', 'focusNameEdit', 'playAll')
   },
 
   render: function(options) {
-    console.log('render')
     var self = this
     options = options || {}
     
@@ -228,7 +236,7 @@ View.Playlist = Backbone.View.extend({
       playlist: this.model.toJSON(),
       editName: options.editName
     }))
-
+    
     _.each(this.model.tracks.models, function(track) {
       self.$el.find('tbody').append(track.view.$el)
       track.view.delegateEvents()
@@ -238,6 +246,7 @@ View.Playlist = Backbone.View.extend({
       this.$el.find('.playlist-name').addClass('edit')
     }
     
+    SidebarView.render()
     return this
   },
   
@@ -249,7 +258,7 @@ View.Playlist = Backbone.View.extend({
   },
   
   queueNext: function() {
-    NowPlaying.tracks.add(this.model.cloneTracks(), _.indexOf(NowPlaying.tracks.models, Video.track) + 1)
+    NowPlaying.tracks.add(this.model.cloneTracks(), { at: _.indexOf(NowPlaying.tracks.models, Video.track) + 1 })
   },
   
   queueLast: function() {
@@ -260,16 +269,7 @@ View.Playlist = Backbone.View.extend({
     this.model.set({ sidebar: !this.model.get('sidebar') })
     this.render()
   },
-  
-  saveSuccess: function(playlist, response) {
-    this.model.trigger('sync', 'save')
-    this.model.set({ changed: false }, { silent: true })
-    if (!Playlists.get(this.model.id)) {
-      Playlists.add([ this.model ])
-    }
-    this.render()
-  },
-  
+    
   // TODO dry (reused from view form mixins)
   saveError: function(model, error) {
     var $alert, errorJSON
@@ -293,15 +293,10 @@ View.Playlist = Backbone.View.extend({
       return
     }
     this.model.save({ tracks : this.model.tracks.toJSON() }, {
-      success: this.saveSuccess,
       error: this.saveError
     })
   },
-
-  deleteSuccess: function(playlist, response) {
-    this.model.trigger('sync', 'delete')
-  },
-  
+    
   deleteError: function(model, error) {
     var $alert, errorJSON
     try {
@@ -343,7 +338,6 @@ View.Playlist = Backbone.View.extend({
     }
     
     this.model.destroy({
-      success: this.deleteSuccess,
       error: this.deleteError
     })
   },
@@ -403,23 +397,15 @@ View.Playlists = Backbone.View.extend({
 
 Collection.Playlists = Backbone.Collection.extend({
   model: Model.Playlist,
+  
   url: function() {
     return '/user/' + this.user + '/playlist'
   },
   
   initialize: function() {
     this.view = new View.Playlists({ collection: this })
-    
     this.on('add', this.view.render, this.view)
     this.on('remove', this.view.render, this.view)
-    this.on('add', this.sidebarRender, this)
-    this.on('remove', this.sidebarRender, this)
-  },
-  
-  sidebarRender: function() {
-    if (window.SidebarView) {
-      SidebarView.render()
-    }
   }
 })
 

@@ -5,7 +5,7 @@ _.mixin({
     return string.charAt(0).toUpperCase() + string.substring(1).toLowerCase()
   },
   plural: function(count, singular, plural) {
-    return count == 1 ? singular : plural
+    return Math.abs(count) == 1 ? singular : plural
   },
   clean: function(str){
     return _s.strip((''+str).replace(/\s+/g, ' '));
@@ -78,13 +78,6 @@ function urlArtist(artist) {
 }
 
 function newNowPlaying() {
-  /*
-  var playlists = _.chain(Playlists.models)
-                      .filter(function(playlist) { return playlist.get('sidebar') })
-                      .sortBy(function(playlist) { return (playlist.isNew() ? '1' : '0') + playlist.get('name').toLowerCase() })
-                      .map(function(playlist) { return playlist.toJSON() })
-                      .value()
-                      */
   var playlist = new Model.Playlist()
   Playlists.add([ playlist ])
   playlist.setNowPlaying()

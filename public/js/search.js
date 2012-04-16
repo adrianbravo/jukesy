@@ -164,12 +164,12 @@ View.SearchResultsTracks = Backbone.View.extend(_.extend({
   playAll: function() {
     var clones = this.model.cloneTracks()
     newNowPlaying()
-    NowPlaying.tracks.add(clones, _.indexOf(NowPlaying.tracks.models, Video.track) + 1)
+    NowPlaying.tracks.add(clones, { at: _.indexOf(NowPlaying.tracks.models, Video.track) + 1 })
     clones[0].play()
   },
   
   queueNext: function() {
-    NowPlaying.tracks.add(this.model.cloneTracks(), _.indexOf(NowPlaying.tracks.models, Video.track) + 1)
+    NowPlaying.tracks.add(this.model.cloneTracks(), { at: _.indexOf(NowPlaying.tracks.models, Video.track) + 1 })
   },
   
   queueLast: function() {

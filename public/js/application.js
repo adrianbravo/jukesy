@@ -68,7 +68,6 @@ AppRouter = Backbone.Router.extend({
   
   // TODO clean this up good god
   playlist: function(username, id) {
-    console.log('playlist route', username, id)
     var playlist = (username == 'anonymous') ? Playlists.getByCid(id) : Playlists.get(id)
     if (!playlist) {
       if (username == 'anonymous') {
@@ -84,10 +83,8 @@ AppRouter = Backbone.Router.extend({
     //console.log('playlist models, if length is 0 do fetch', playlist.tracks.models)
     if (!playlist.isNew() && !playlist.tracks.models.length) {
       playlist.fetch({
-        //silent: true,
         success: function(model, response) {
-          console.log('fetch success', playlist.get('name'), model, response)
-          playlist.tracks.add(playlist.get('tracks'))
+          playlist.tracks.reset(response.tracks)
           MainView.render(playlist.view)
         },
         error: this.error
@@ -212,6 +209,11 @@ View.Sidebar = Backbone.View.extend({
   
   events: {
     'click .create-new-playlist': 'createPlaylist'
+  },
+  
+  initialize: function() {
+    Playlists.on('add', this.render, this)
+    Playlists.on('remove', this.render, this)
   },
   
   createPlaylist: function() {
