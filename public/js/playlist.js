@@ -8,7 +8,7 @@ Model.Playlist = Backbone.Model.extend({
   },
   
   initialize: function() {
-    _.bindAll(this, 'setNowPlaying', 'syncCallback', 'destroyCallback', 'changeCallback', 'incrementUntitled')
+    _.bindAll(this, 'setNowPlaying', 'unsetNowPlaying', 'syncCallback', 'destroyCallback', 'changeCallback', 'incrementUntitled')
     
     this.view = new View.Playlist({ model: this })
     this.destroyView = new View.PlaylistDestroy({ model: this })
@@ -90,8 +90,8 @@ Model.Playlist = Backbone.Model.extend({
   },
   
   destroyCallback: function(playlist, playlists, options) {
-    if (this.nowPlaying) {
-      newNowPlaying()
+    if (this.get('nowPlaying')) {
+      this.unsetNowPlaying()
     }
     if (this.view.$el.is(':visible')) {
       Router.navigate('/', { trigger: true, replace: true })
@@ -111,21 +111,22 @@ Model.Playlist = Backbone.Model.extend({
   
   setNowPlaying: function() {
     if (window.NowPlaying) {
-      NowPlaying.set({ nowPlaying: false }, { silent: true })
-      NowPlaying.nowPlaying = false
-      if (NowPlaying.isNew() && !NowPlaying.tracks.models.length) {
-        NowPlaying.destroy()
-      }
+      NowPlaying.unsetNowPlaying()
     }
     window.NowPlaying = this
     NowPlaying.set({ nowPlaying: true }, { silent: true })
-    this.nowPlaying = true
-    
+    this.view.render()
+    return this
+  },
+  
+  unsetNowPlaying: function() {
+    this.set({ nowPlaying: false }, { silent: true })
+    if (NowPlaying.isNew() && !NowPlaying.tracks.models.length) {
+      NowPlaying.destroy()
+    }
     if (Video.player) {
       Video.stop()
     }
-    
-    this.view.render()
     return this
   },
   
