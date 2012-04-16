@@ -238,7 +238,7 @@ View.Playlist = Backbone.View.extend({
       editName: options.editName
     }))
     
-    _.each(this.model.tracks.models, function(track) {
+    this.model.tracks.each(function(track) {
       self.$el.find('tbody').append(track.view.$el)
       track.view.delegateEvents()
     })
