@@ -34,11 +34,16 @@ Model.Playlist = Backbone.Model.extend({
       model.view.remove()
     }, this)
 
+    this.tracks.on('add', function(model, collection, options) {
+      //console.log('adding track', model, 'to collection', collection, 'with options', options)
+      //model.view.add()
+    }, this)
+    
     this.tracks.on('add remove', _.debounce(function() {
       var change = this.tracks.models.length - this.get('tracks_count')
       console.log('track count changed by', change)
       this.set({ tracks_count: this.tracks.models.length })
-      this.view.render()
+      //this.view.render()
     }, 100), this)
   },
   
@@ -225,7 +230,8 @@ View.Playlist = Backbone.View.extend({
     }))
 
     _.each(this.model.tracks.models, function(track) {
-      self.$el.find('tbody').append(track.view.render().$el)
+      self.$el.find('tbody').append(track.view.$el)
+      track.view.delegateEvents()
     })
     
     if (this.model.isEditable()) {
@@ -286,7 +292,7 @@ View.Playlist = Backbone.View.extend({
       ModalView.setCallback(this.save)
       return
     }
-    this.model.save({}, {
+    this.model.save({ tracks : this.model.tracks.toJSON() }, {
       success: this.saveSuccess,
       error: this.saveError
     })

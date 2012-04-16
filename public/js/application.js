@@ -82,7 +82,7 @@ AppRouter = Backbone.Router.extend({
     }
 
     //console.log('playlist models, if length is 0 do fetch', playlist.tracks.models)
-    if (!playlist.isNew()) {
+    if (!playlist.isNew() && !playlist.tracks.models.length) {
       playlist.fetch({
         //silent: true,
         success: function(model, response) {

@@ -3,33 +3,22 @@ td.dd
     a.dropdown-toggle('data-toggle'= 'dropdown')
       i.icon-chevron-down
     ul.dropdown-menu
-      - if (!track.error)
-        li
-          a.play-now Play Now
-        li.divider
+      li
+        a.play-now Play Now
+      
+      li.divider
       
       li
         a.remove Remove Track
-      
-      //li
-      //  a.add-to-playlist Add To Playlist&hellip;
-      //li
-      //  a.add-to-favorites Add To Favorites
-      //li
-      //  a.ban Ban
 
 td.play
-  - if (!track.error)
-    a.play-now
-      .icon-play
-  - else
-    a
-      .icon-exclamation-sign('data-content'= 'No working YouTube videos could be found for this track.', 'data-original-title'= 'Error')
+  a.play-now
+    .icon-play
 
 td.name
-  a(href= urlTrack(track.get('artist'), track.get('name')))= track.get('name')
+  a(href= urlTrack(track.artist, track.name)) #{track.name}
   
 td.artist
-  a(href= urlArtist(track.get('artist')))= track.get('artist')
+  a(href= urlArtist(track.artist)) #{track.artist}
   .pull-right.remove
     i.icon-remove
