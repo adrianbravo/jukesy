@@ -85,6 +85,7 @@ AppRouter = Backbone.Router.extend({
       playlist.fetch({
         success: function(model, response) {
           playlist.tracks.reset(response.tracks)
+          playlist.set({ changed: false }, { silent: true })
           MainView.render(playlist.view)
         },
         error: this.error

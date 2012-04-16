@@ -80,10 +80,20 @@
     
     #time-read {
       position: absolute;
-      right: 0;
+      right: 120px;
       top: 0;
       line-height: 24px;
-      color: @blueDark;
+      color: @grayLight;
+      font-weight: bold;
+      
+      .time-current {
+        text-align: right;
+      }
+      .time-current,
+      .time-duration {
+        display: inline-block;
+        width: 40px;
+      }
     }
     .track-info {
       line-height: 24px;

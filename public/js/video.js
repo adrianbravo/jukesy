@@ -237,26 +237,30 @@ View.Controls = Backbone.View.extend({
     this.render()
     
     _.defer(function() {
-      setInterval(Controls.updateTimer, 1000 / 8)
+      setInterval(Controls.updateTimer, 333)
     })
   },
   
   render: function() {
     this.$el.html(this.template())
     this.volumeRefresh()
+    this.renderRepeat()
+    this.renderShuffle()
+    this.renderRadio()
+    this.renderFullscreen()
   },
   
   events: {
     'click #play-pause' : 'playPause',
     'click #next'       : 'next',
     'click #prev'       : 'prev',
-    'click #radio'      : 'toggleRadio',
-    'click #fullscreen' : 'toggleFullscreen',
     'click #repeat'     : 'toggleRepeat',
     'click #shuffle'    : 'toggleShuffle',
+    'click #radio'      : 'toggleRadio',
+    'click #fullscreen' : 'toggleFullscreen',
     'click #volume'     : 'toggleMute',
     'mousedown #volume-bar'  : 'dragVolume',
-    'mousedown #timer' : 'dragTimer'
+    'mousedown #timer'       : 'dragTimer'
   },
 
   volumeRefresh: function() {
@@ -305,11 +309,12 @@ View.Controls = Backbone.View.extend({
     if (!Video.stopped && load > 0 && load != Infinity) {
       this.$el.find('#timer .fill').width(load * 100 + '%')
       this.$el.find('#timer .track').width(play * 100 + '%')
-      //this.$el.find('#time-read').html(this.humanizeSeconds(Video.currentTime()) + ' ' + this.humanizeSeconds(Video.duration()))
+      this.$el.find('#time-read .time-current').html(this.humanizeSeconds(Video.currentTime()))
+      this.$el.find('#time-read .time-duration').html(' / ' + this.humanizeSeconds(Video.duration()))
     } else {
       this.$el.find('#timer .fill').width(0)
       this.$el.find('#timer .track').width(0)
-      //this.$el.find('#time-read').html('')
+      this.$el.find('#time-read .time-current, #time-read .time-duration').html('')
     }
     if (Video.fullscreen) {
       $body.scrollTop(0)
@@ -324,33 +329,28 @@ View.Controls = Backbone.View.extend({
     Video.prev()
   },
   
-  // TODO DRY
   toggleRepeat: function() {
-    var $repeat = this.$el.find('#repeat')
-    if ($repeat.hasClass('disabled')) {
+    if (this.$el.find('#repeat').hasClass('disabled')) {
       return
     }
-    if (Video.repeat) {
-      Video.repeat = false
-      $repeat.addClass('off')
-    } else {
-      Video.repeat = true
-      $repeat.removeClass('off')
-    }    
+    Video.repeat = !Video.repeat
+    this.renderRepeat()
+  },
+  
+  renderRepeat: function() {
+    Video.repeat ? this.$el.find('#repeat').removeClass('off') : this.$el.find('#repeat').addClass('off')
   },
   
   toggleShuffle: function() {
-    var $shuffle = this.$el.find('#shuffle')
-    if ($shuffle.hasClass('disabled')) {
+    if (this.$el.find('#shuffle').hasClass('disabled')) {
       return
     }
-    if (Video.shuffle) {
-      Video.shuffle = false
-      $shuffle.addClass('off')
-    } else {
-      Video.shuffle = true
-      $shuffle.removeClass('off')
-    }
+    Video.shuffle = !Video.shuffle
+    this.renderShuffle()
+  },
+  
+  renderShuffle: function() {
+    Video.shuffle ? this.$el.find('#shuffle').removeClass('off') : this.$el.find('#shuffle').addClass('off')
   },
   
   toggleFullscreen: function() {
@@ -365,7 +365,7 @@ View.Controls = Backbone.View.extend({
   
   fullscreenDisable: function() {
     Video.fullscreen = false
-    this.$el.find('#fullscreen div').removeClass('icon-resize-small')
+    this.renderFullscreen()
     $body.removeClass('fullscreen').width('').height('')
     $('#video').width('').height('')
     _.defer(function() {
@@ -375,28 +375,39 @@ View.Controls = Backbone.View.extend({
   
   fullscreenEnable: function() {
     Video.fullscreen = true
-    this.$el.find('#fullscreen div').addClass('icon-resize-small')
+    this.renderFullscreen()
     $body.addClass('fullscreen')
     _.defer(function() {
       $body.scrollTop(0)
     })
   },
   
+  renderFullscreen: function() {
+    var $fullscreen = this.$el.find('#fullscreen div')
+    Video.fullscreen ? $fullscreen.addClass('icon-resize-small') : $fullscreen.removeClass('icon-resize-small')
+  },
+  
   toggleRadio: function() {
-    var $radio = this.$el.find('#radio')
-    if ($radio.hasClass('disabled')) {
+    if (this.$el.find('#radio').hasClass('disabled')) {
       return
     }
     if (Radio.get('active')) {
       Radio.disable()
-      $radio.addClass('off')
-      this.$el.find('#shuffle').removeClass('disabled')
-      this.$el.find('#repeat').removeClass('disabled')
     } else {
       Radio.enable()
-      $radio.removeClass('off')
+    }
+    this.renderRadio()
+  },
+  
+  renderRadio: function() {
+    if (Radio.get('active')) {
+      this.$el.find('#radio').removeClass('off')
       this.$el.find('#shuffle').addClass('disabled').addClass('off')
       this.$el.find('#repeat').addClass('disabled').addClass('off')
+    } else {
+      this.$el.find('#radio').addClass('off')
+      this.$el.find('#shuffle').removeClass('disabled')
+      this.$el.find('#repeat').removeClass('disabled')
     }
   },
   
@@ -483,19 +494,6 @@ View.Controls = Backbone.View.extend({
   }
   
 })
-
-/*
-timers: function() {
-  var current   = Math.floor(this.player.getCurrentTime()),
-      remaining = Math.ceil(this.player.getDuration() - current)
-
-  return [
-    this.humanizeSeconds(current),
-    this.humanizeSeconds(remaining)
-   ]
-},
-,
-*/
 
 
 ;

@@ -11,6 +11,8 @@ Model.Radio = Backbone.Model.extend({
   enable: function() {
     this.set({ active: true })
     this.interval = setInterval(this.discover, 2000)
+    Video.repeat = false
+    Video.shuffle = false
   },
   
   discover: function() {
