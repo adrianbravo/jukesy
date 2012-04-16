@@ -16,8 +16,7 @@ Model.LastFM = Backbone.Model.extend({
     }
     this.methodParser[this.method].apply(this)
     
-    this.on('query', this.updateView)
-    this.on('queryCallback', this.updateView)
+    this.on('queryCallback query', this.updateView)
     this.on('queryCallback', this.updateLoadMore)
     
     // TODO should only happen if this result set needs a view

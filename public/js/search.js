@@ -107,7 +107,7 @@ View.SearchArtistSimilar = View.BaseSearch.extend({
   }
 })
 
-View.SearchResults = {  
+View.SearchResults = Backbone.View.extend({  
   initialize: function() {
     _.bindAll(this, 'render')
     this.render()
@@ -147,9 +147,9 @@ View.SearchResults = {
       this.$el.find('.load-more a').button('reset')
     }
   }
-}
+})
 
-View.SearchResultsTracks = Backbone.View.extend(_.extend({
+View.SearchResultsTracks = View.SearchResults.extend({
   template: jade.compile($('#search-results-tracks-template').text()),
   innerElSelector: '#search #search-tracks .tracks tbody',
   elSelector: '#search #search-tracks',
@@ -175,21 +175,21 @@ View.SearchResultsTracks = Backbone.View.extend(_.extend({
   queueLast: function() {
     NowPlaying.tracks.add(this.model.cloneTracks())
   }
-}, View.SearchResults))
+})
 
-View.SearchResultsAlbums = Backbone.View.extend(_.extend({
+View.SearchResultsAlbums = View.SearchResults.extend({
   template: jade.compile($('#search-results-albums-template').text()),
   innerElSelector: '#search #search-albums .albums ul',
   elSelector: '#search #search-albums',
   type: 'albums'
-}, View.SearchResults))
+})
 
-View.SearchResultsArtists = Backbone.View.extend(_.extend({
+View.SearchResultsArtists = View.SearchResults.extend({
   template: jade.compile($('#search-results-artists-template').text()),
   innerElSelector: '#search #search-artists .artists ul',
   elSelector: '#search #search-artists',
   type: 'artists'
-}, View.SearchResults))
+})
 
 View.SearchResult = Backbone.View.extend({  
   render: function() {
