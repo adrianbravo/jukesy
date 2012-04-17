@@ -21,6 +21,7 @@ Model.Track = Backbone.Model.extend({
     if (_.isUndefined(this.videos)) {
       this.getVideoIds()
     } else if (_.isEmpty(this.videos)) {
+      this.setPlaying()
       this.noVideos()
     } else {
       this.setPlaying()
