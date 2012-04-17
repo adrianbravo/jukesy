@@ -276,6 +276,7 @@ $(function() {
 
   newNowPlaying()
   window.Radio = new Model.Radio
+  window.Shuffle = new Model.Shuffle
   window.loginModal = new View.SessionCreate({ model: Session })
   window.signupModal = new View.UserCreate()
 

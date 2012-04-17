@@ -90,6 +90,11 @@ Model.Video = Backbone.Model.extend({
       return
     }
     
+    if (Shuffle.get('active')) {
+      Shuffle.next()
+      return
+    }
+    
     if (this.track === _.last(NowPlaying.tracks.models) || _.isUndefined(this.track)) {
       next = _.first(NowPlaying.tracks.models)
     } else {
@@ -108,6 +113,11 @@ Model.Video = Backbone.Model.extend({
       , prev = null
     
     if (this.loading || this.state == 3 || this.tryRepeat() || this.trySeek()) {
+      return
+    }
+    
+    if (Shuffle.get('active')) {
+      Shuffle.prev()
       return
     }
     
@@ -345,12 +355,16 @@ View.Controls = Backbone.View.extend({
     if (this.$el.find('#shuffle').hasClass('disabled')) {
       return
     }
-    Video.shuffle = !Video.shuffle
+    if (Shuffle.get('active')) {
+      Shuffle.disable()
+    } else {
+      Shuffle.enable()
+    }
     this.renderShuffle()
   },
   
   renderShuffle: function() {
-    Video.shuffle ? this.$el.find('#shuffle').removeClass('off') : this.$el.find('#shuffle').addClass('off')
+    Shuffle.get('active') ? this.$el.find('#shuffle').removeClass('off') : this.$el.find('#shuffle').addClass('off')
   },
   
   toggleFullscreen: function() {

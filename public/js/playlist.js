@@ -44,6 +44,13 @@ Model.Playlist = Backbone.Model.extend({
     return url
   },
   
+  random: function(options) {
+    var tracks
+    options = options || { without: Video.track }
+    tracks = _.without(this.tracks.models, options.without || [])
+    return tracks[Math.floor(Math.random() * tracks.length)]
+  },
+  
   localUrl: function() {
     return '/user/' + this.get('user') + '/playlist/' + (this.id || this.cid)
   },

@@ -22,6 +22,7 @@ var assets = {
     '/js/search.js',
     '/js/playlist.js',
     '/js/radio.js',
+    '/js/shuffle.js',
     '/js/artist.js',
     '/js/album.js',
     '/js/track.js',
