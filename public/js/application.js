@@ -198,7 +198,9 @@ View.Main = Backbone.View.extend({
       this.$el.html(template.render().$el)
       template.delegateEvents()
     }
-    $body.scrollTop(0)
+    _.defer(function() {
+      $body.scrollTop(0)
+    })
     SidebarView.render()
   }
 })
@@ -253,43 +255,6 @@ View.Alert = Backbone.View.extend({
     return this.$el
   }
 })
-
-View.Welcome = Backbone.View.extend({
-  template: jade.compile($('#welcome-template').text()),
-  
-  // events
-  // play all, queue next, queue last
-  
-  initialize: function(options) {
-    this.tracks = _.map(Charts.tracks, function(track) {
-      return new Model.SearchResultTrack(track)
-    })
-    this.artists = _.map(Charts.artists, function(artist) {
-      return new Model.SearchResultArtist(artist)
-    })
-  },
-  
-  render: function() {
-    var $tracks, $artists
-      
-    this.$el.html(this.template({ tracks: this.tracks, artists: this.artists }))
-    $tracks = this.$el.find('#search-tracks table tbody')
-    $artists = this.$el.find('#search-artists ul.thumbnails')
-    
-    _.each(this.tracks, function(track) {
-      track.view.render()
-      $tracks.append(track.view.$el)
-    })
-    
-    _.each(this.artists, function(artist) {
-      artist.view.render()
-      $artists.append(artist.view.$el)
-    })
-    
-    return this
-  }
-})
-
 
 $(function() {
   // Bind resize and call it once.

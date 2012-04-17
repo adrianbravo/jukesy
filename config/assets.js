@@ -27,6 +27,7 @@ var assets = {
     '/js/track.js',
     '/js/tag.js',
     '/js/meow.js',
+    '/js/welcome.js',
 
     '/js/video.js',
     '/js/keys.js',
