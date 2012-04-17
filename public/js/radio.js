@@ -3,6 +3,10 @@ Model.Radio = Backbone.Model.extend({
     active: false
   },
   
+  initialize: function() {
+    _.bindAll(this, 'discover')
+  },
+  
   disable: function() {
     this.set({ active: false })
     clearInterval(this.interval)
@@ -17,16 +21,32 @@ Model.Radio = Backbone.Model.extend({
   
   discover: function() {
     var track
-    if (!window.NowPlaying || !NowPlaying.tracks.length) {
+    if (!window.NowPlaying || !NowPlaying.tracks.length || this.tracks) {
       return
     }
     
-    // check if less than 3 tracks are ahead of Video.track, if so, continue
+    // radio only pre-fills up to three tracks
+    if (Video.track && _.indexOf(NowPlaying.tracks.models, Video.track) + 3 < NowPlaying.tracks.length) {
+      return
+    }
+    
     track = NowPlaying.tracks.at(Math.floor(Math.random() * NowPlaying.tracks.length))
-    // query for 50 similar tracks if !similarTracks
-    // callback (or if similarTracks already exists)
-      // select random index from similarTracks, attempt to add it (w/ "parent" track reference)
-        // unless it already exists in the playlist (may want to code restriction at playlist level)
+    
+    if (track.similarTracks) {
+      track.addSimilarTrack()
+    } else {
+      this.tracks = new Model.LastFM({ artist: track.get('artist'), track: track.get('name'), method: 'track.getSimilar', limit: 50, hide: true })
+      this.tracks.on('queryCallback', function() {
+        track.similarTracks = _.chain(this.results)
+                                .rest()
+                                .map(function(track) {
+                                  return new Model.Track(track.toJSON())
+                                })
+                                .value()
+        track.addSimilarTrack()
+        Radio.tracks = null
+      }, this.tracks)
+    }
   }
   
 })

@@ -15,9 +15,12 @@ Model.LastFM = Backbone.Model.extend({
       format      : 'json'
     }
     this.methodParser[this.method].apply(this)
-    
-    this.on('queryCallback query', this.updateView)
-    this.on('queryCallback', this.updateLoadMore)
+
+    if (!this.hide) {
+      this.on('query', this.updateView)    
+      this.on('queryCallback', this.updateView)
+      this.on('queryCallback', this.updateLoadMore)
+    }
     
     // TODO should only happen if this result set needs a view
     this.setCurrentSearch()

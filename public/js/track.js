@@ -101,6 +101,14 @@ Model.Track = Backbone.Model.extend({
     this.playing = true
     this.view.$el.addClass('playing').find('.icon-play').addClass('icon-music').removeClass('icon-play')
     this.viewTrackInfo.render()
+  },
+  
+  addSimilarTrack: function() {
+    if (!this.similarTracks || !this.similarTracks.length || this.collection.playlist != window.NowPlaying) {
+      return
+    }
+    // check if track is already in now playing before adding (filter by artist, name)
+    NowPlaying.tracks.add(this.similarTracks[Math.floor(this.similarTracks.length * Math.random())].clone())
   }
 
 })
