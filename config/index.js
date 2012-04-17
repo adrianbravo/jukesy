@@ -73,6 +73,9 @@ module.exports = function(app) {
       },
       _: function(req, res) {
         return app._
+      },
+      Charts: function(req, res) {
+        return app.charts
       }
     })
 

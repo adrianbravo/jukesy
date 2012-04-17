@@ -56,7 +56,7 @@ module.exports = function(app, bootCallback) {
       } catch (e) {
         console.error('Error: Could not bootstrap top charts JSON.')
       }
-      app.charts = { artists: artists, tracks: tracks }
+      app.charts = JSON.stringify({ artists: artists, tracks: tracks })
       next()
     }
 

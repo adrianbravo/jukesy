@@ -261,18 +261,10 @@ View.Welcome = Backbone.View.extend({
   // play all, queue next, queue last
   
   initialize: function(options) {
-    var tracks = [
-          { artist: 'Blur', name: 'Song 2'},
-          { artist: '2Pac', name: '2 Of Amerikaz Most Wanted' }
-        ]
-      , artists = [
-          { name: 'Blur' }, { name: 'Gorillaz' }
-        ]
-    
-    this.tracks = _.map(tracks, function(track) {
+    this.tracks = _.map(Charts.tracks, function(track) {
       return new Model.SearchResultTrack(track)
     })
-    this.artists = _.map(artists, function(artist) {
+    this.artists = _.map(Charts.artists, function(artist) {
       return new Model.SearchResultArtist(artist)
     })
   },

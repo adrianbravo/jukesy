@@ -22,5 +22,8 @@ html
     #controls
 
     include _templates
+    script
+      window.Charts = !{Charts};
+
     - each script in assets.js
       script(src= script)
