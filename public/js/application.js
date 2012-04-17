@@ -24,13 +24,20 @@ AppRouter = Backbone.Router.extend({
 
   initialize: function() {
     _.bindAll(this, 'error')
+    this.bind('all', this._trackPageview)
     Backbone.history.refresh = function() {
       var fragment = this.fragment
       this.navigate('', { trigger: false, replace: true })
       this.navigate(fragment, { trigger: true, replace: true })
     }
   },
-    
+
+  _trackPageview: function() {
+    if (_gaq) {
+      _gaq.push(['_trackPageview', "/" + Backbone.history.getFragment() ])
+    }
+  },
+  
   welcome: function() {
     MainView.render(WelcomeView)
   },

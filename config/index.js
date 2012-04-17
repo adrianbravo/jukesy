@@ -62,6 +62,9 @@ module.exports = function(app) {
           return fs.readFileSync(__dirname + '/../app/views/' + filename + '.jade', 'utf8')
         }
       },
+      env: function(req, res) {
+        return app.set('env')
+      },
       assets: function(req, res) {
         return app.assets
       },
