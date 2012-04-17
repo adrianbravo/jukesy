@@ -222,7 +222,7 @@ KeyMapper = {
   k88: function(e) {
     if (this.keypressHasModifier(e)) return
     if (window.Video && Video.track) {
-      NowPlaying.removeTracks([ Video.track ])
+      NowPlaying.tracks.remove([ Video.track ])
     }
     return false
   },

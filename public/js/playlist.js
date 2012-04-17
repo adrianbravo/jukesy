@@ -23,7 +23,7 @@ Model.Playlist = Backbone.Model.extend({
   initializeTracks: function() {
     this.tracks = new Collection.Tracks
     this.tracks.playlist = this
-    this.tracks.on('remove', function(model, collection, options) { model.view.remove() }, this)
+    this.tracks.on('remove', this.trackRemoveCallback)
     this.tracks.on('add remove', this.changeCallback)
     this.tracks.on('add remove', _.debounce(this.tracksCallback, 100), this)
   },
@@ -75,6 +75,19 @@ Model.Playlist = Backbone.Model.extend({
       message: message,
       type: 'default'
     })
+  },
+  
+  trackRemoveCallback: function(track, playlist, options) {
+    var index = options.index || 0
+    track.view.remove()
+    
+    if (Video.track == track) {
+      if (NowPlaying.tracks.length) {
+        NowPlaying.tracks.at(index).play()
+      } else {
+        Video.stop()
+      }
+    }
   },
   
   syncCallback: function(playlist, response, options) {
