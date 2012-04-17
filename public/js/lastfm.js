@@ -257,7 +257,7 @@ Model.LastFM = Backbone.Model.extend({
     }
   },
   
-  resultImage: function(result){
+  resultImage: function(result) {
     var src = '',
         size = this.get('imageSize') || 'extralarge'
     if (_.isArray(result.image)) {

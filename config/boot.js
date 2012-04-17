@@ -45,6 +45,19 @@ module.exports = function(app, bootCallback) {
         app.controllers[controllerName] = controller
       })
       next()
+    },
+
+    // Bootstrap charts JSON
+    function(next) {
+      var artists, tracks
+      try {
+        artists = JSON.parse(fs.readFileSync(__dirname + '/../public/chart/topartists.json'))
+        tracks = JSON.parse(fs.readFileSync(__dirname + '/../public/chart/toptracks.json'))
+      } catch (e) {
+        console.error('Error: Could not bootstrap top charts JSON.')
+      }
+      app.charts = { artists: artists, tracks: tracks }
+      next()
     }
 
   ], bootCallback)
