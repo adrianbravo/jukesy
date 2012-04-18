@@ -8,12 +8,12 @@ ul.unstyled
         class= (playlist._id ? '' : ' unsaved ') + (playlist.active ? ' active ' : '')) #{playlist.name}
       
       |  - #{playlist.tracks_count} #{_.plural(playlist.tracks_count, 'track', 'tracks')}
-      - if (!playlist._id)
-        span.label.label-warning new
+      - if (playlist.nowPlaying)
+        span.label.label-success listening
       - if (playlist.changed)
         span.label.label-important changed
-      - if (playlist.nowPlaying)
-        span.label.label-info listening
+      - if (!playlist._id)
+        span.label.label-warning new
 
 
       p
