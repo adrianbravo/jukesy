@@ -24,6 +24,7 @@ AppRouter = Backbone.Router.extend({
 
   initialize: function() {
     _.bindAll(this, 'error')
+    this.first = true
     this.bind('all', this._trackPageview)
     Backbone.history.refresh = function() {
       var fragment = this.fragment
@@ -33,8 +34,10 @@ AppRouter = Backbone.Router.extend({
   },
 
   _trackPageview: function() {
-    if (_gaq) {
+    if (_gaq && !this.first) {
       _gaq.push(['_trackPageview', "/" + Backbone.history.getFragment() ])
+    } else {
+      delete this.first
     }
   },
   

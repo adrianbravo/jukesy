@@ -16,7 +16,8 @@ head
   script(type= 'text/javascript')
     var _gaq = _gaq || [];
     _gaq.push(['_setAccount', 'UA-2224441-5']);
-  - if (env == 'production')
+    _gaq.push(['_trackPageview']);
+  - if (true || env == 'production')
     script(type= 'text/javascript')
       (function() {
         var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
