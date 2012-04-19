@@ -3,8 +3,8 @@ Model.Video = Backbone.Model.extend({
   initialize: function() {
     swfobject.embedSWF('http://www.youtube.com/apiplayer?version=3&enablejsapi=1&playerapiid=video&wmode=transparent', // swfUrlStr
                        'video', // replaceElemIdStr
-                       '640',   // width
-                       '360',   // height
+                       '480',   // width
+                       '270',   // height
                        '8',     // swfVersionStr
                        null,    // xiSwfUrlStr
                        null,    // flashVarsObj
@@ -220,7 +220,7 @@ Model.Video = Backbone.Model.extend({
   }, 
 
   jumpTo: function() {
-    $body.scrollTop($('#video').position().top)
+    $body.scrollTop(0)
   },
 
   // TODO replace filters as front-end rather than modifying potential search results
