@@ -1,4 +1,18 @@
 
+View.Video = Backbone.View.extend({
+  el: '#video-wrapper',
+  
+  events: {
+    'click #video-quality': 'toggleQuality'
+  },
+  
+  toggleQuality: function() {
+    console.log('toggle quality')
+    Video.toggleQuality()
+    this.$el.find('#video-quality').html(this.model.quality == 'hd720' ? 'HD' : 'MED')
+  }
+})
+
 Model.Video = Backbone.Model.extend({
   initialize: function() {
     swfobject.embedSWF('http://www.youtube.com/apiplayer?version=3&enablejsapi=1&playerapiid=video&wmode=transparent', // swfUrlStr
@@ -13,9 +27,18 @@ Model.Video = Backbone.Model.extend({
     )
     _.bindAll(this, 'volume', 'seek', 'stop')
     
+    this.view = new View.Video({ model: this })
+    this.quality = 'hd720'
+    
     _.defer(function() {
       window.Controls = new View.Controls
     })
+  },
+  
+  toggleQuality: function() {
+    this.quality = (this.quality == 'hd720') ? 'medium' : 'hd720'
+    //this.seek(0)
+    this.player.setPlaybackQuality(this.quality)
   },
   
   stop: function() {
@@ -43,7 +66,7 @@ Model.Video = Backbone.Model.extend({
       this.pause()
     }
     
-    this.player.setPlaybackQuality('hd720')
+    this.player.setPlaybackQuality(this.quality)
     Controls.renderPlay()
     Controls.renderTimer()
   },
