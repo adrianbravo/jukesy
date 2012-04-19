@@ -411,7 +411,7 @@ View.Playlists = Backbone.View.extend({
     }
     
     this.$el.html(this.template({
-      playlists: _.chain(Playlists.models)
+      playlists: _.chain(this.collection.models)
                     .sortBy(function(playlist) {
                       return [
                         playlist.isNew(),
