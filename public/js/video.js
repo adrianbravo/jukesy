@@ -7,7 +7,6 @@ View.Video = Backbone.View.extend({
   },
   
   toggleQuality: function() {
-    console.log('toggle quality')
     Video.toggleQuality()
     this.$el.find('#video-quality').html(this.model.quality == 'hd720' ? 'HD' : 'MED')
   }
