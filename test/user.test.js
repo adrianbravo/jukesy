@@ -458,6 +458,33 @@ describe('User Model', function() {
     })
 
   })
+  
+  describe('#generateResetToken', function() {
+    var user
+    
+    beforeEach(function(done) {
+      User.create({
+        username: 'tester',
+        email: 'test@test.test',
+        password: 'test'
+      }, function(err, u) {
+        user = u
+        expect(user).to.exist
+        setTimeout(done, 1000)
+      })
+    })
+
+    it('sets user.reset.token and user.reset.expire', function(done) {
+      user.generateResetToken(function(err, user) {
+        expect(err).to.not.exist
+        expect(user).to.exist
+        expect(user.reset.token).to.match(/[a-f0-9]/i)
+        expect(user.reset.expire).to.be.an.instanceof(Date)
+        done()
+      })
+    })
+    
+  })
 
 })
 

@@ -24,8 +24,14 @@ module.exports = function(app) {
           return next(err || new app.Error(400, { $: 'no_user_or_email' }))
         }
         
-        // send an email
-        res.json(1)
+        user.generateResetToken(function(err, user) {
+          if (err || !user) {
+            return next(err || 500)
+          }
+
+          // send an email
+          res.json(1)
+        })
       })
     },
 

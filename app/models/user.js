@@ -16,7 +16,11 @@ var User = module.exports = new Schema({
   fullname    : { type: String },
   location    : { type: String },
   website     : { type: String },
-  admin       : { type: Boolean }
+  admin       : { type: Boolean },
+  reset : {
+    token: { type: String },
+    expire: { type: Date }
+  }
 }, { strict: true })
 
 User.plugin(app.mongoosePlugins.timestamps, { index: true })
@@ -59,6 +63,14 @@ User.method({
       }
       next(null, true)
     })
+  },
+  
+  generateResetToken: function(next) {
+    this.reset = {
+      token: crypto.createHash('md5').update(new Date + Math.random()).digest('hex'),
+      expire: app.moment().add('days', 7).utc().toDate()
+    }
+    this.save(next)
   }
 })
 

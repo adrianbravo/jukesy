@@ -22,6 +22,7 @@ module.exports = function(app) {
   }
 
   app._       = _
+  app.moment  = moment
   app.assets  = require('./assets')[app.set('env')]
   app.mongodb = require('./mongodb')[app.set('env')]
   app.pepper  = require('./pepper')
@@ -72,7 +73,7 @@ module.exports = function(app) {
         return req.currentUser
       },
       moment: function(req, res) {
-        return moment
+        return app.moment
       },
       _: function(req, res) {
         return app._
