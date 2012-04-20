@@ -144,6 +144,9 @@ Model.Playlist = Backbone.Model.extend({
     window.NowPlaying = this
     NowPlaying.set({ nowPlaying: true }, { silent: true })
     this.view.render()
+    if (window.Shuffle && Shuffle.get('active')) {
+      Shuffle.enable()
+    }
     return this
   },
   

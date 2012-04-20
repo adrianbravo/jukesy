@@ -14,7 +14,7 @@ Model.Track = Backbone.Model.extend({
       return false
     }
     
-    if (NowPlaying != this.playlist) {
+    if (NowPlaying != this.collection.playlist) {
       this.collection.playlist.setNowPlaying()
     }
 

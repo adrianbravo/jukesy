@@ -41,6 +41,9 @@ Model.Shuffle = Backbone.Model.extend({
     this.historyIndex++
     if (this.historyIndex > this.history.length - 1) {
       this.historyIndex = this.history.length - 1
+      if (this.historyIndex < 0) {
+        this.historyIndex = 0
+      }
       return
     } else {
       this.history.at(this.historyIndex).play()
