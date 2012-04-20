@@ -17,7 +17,11 @@ window.parseError = function(field, error) {
     case 'bad_credentials':
       return 'Sorry, those credentials do not match any accounts on jukesy.'
     case 'no_user_or_email':
-      return 'That user does not exist on jukesy!'
+      return 'That user does not exist on jukesy.'
+    case 'reset_token_expired':
+      return 'Your reset token has expired.'
+    case 'reset_password_required':
+      return 'You cannot reset your password without a password.'
     case 'required':
       return _.capitalize(field) + ' is required.'
     case 'too_long':

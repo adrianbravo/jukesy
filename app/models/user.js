@@ -70,6 +70,21 @@ User.method({
       token: crypto.createHash('md5').update(new Date + Math.random()).digest('hex'),
       expire: app.moment().add('days', 7).utc().toDate()
     }
+    console.log("\n\n\n", 'curl -d "password=2&token=' + this.reset.token + '" "http://127.0.0.1:3000/user/' + this.username + '/reset"')
+    console.log("\n", 'http://127.0.0.1:3000/user/' + this.username + '/reset?token=' + this.reset.token)
+    this.save(next)
+  },
+  
+  resetPassword: function(attrs, next) {
+    if (!attrs.password) {
+      return next(new app.Error(400, { $: 'reset_password_required' }))
+    } else if (!this.reset || this.reset.expire < app.moment().utc().toDate()) {
+      return next(new app.Error(401, { $: 'reset_token_expired' }))
+    } else if (attrs.token != this.reset.token) {
+      return next(new app.Error(401, { $: 'reset_token_expired'}))
+    }
+    this.password = attrs.password
+    this.reset = null
     this.save(next)
   }
 })
