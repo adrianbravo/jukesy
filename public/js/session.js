@@ -47,6 +47,7 @@ Model.Session = Backbone.Model.extend({
     Playlists.user = user.get('username')
     this.user = user
     _.defer(this.refresh)
+    this.trigger('login')
   }
 })
 
@@ -89,7 +90,8 @@ View.SessionCreate = Backbone.View.extend(_.extend({
   events: {
     'click button.btn-primary' : 'submit',
     'keypress input'      : 'keyDown',
-    'click a.sign-up'     : 'newUser'
+    'click a.sign-up'     : 'newUser',
+    'click a.forgot'      : 'forgot'
   },
 
   initialize: function() {
@@ -105,6 +107,11 @@ View.SessionCreate = Backbone.View.extend(_.extend({
   
   newUser: function() {
     signupModal.render()
+    return false
+  },
+  
+  forgot: function() {
+    forgotModal.render()
     return false
   },
 

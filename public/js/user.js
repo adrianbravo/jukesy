@@ -16,6 +16,7 @@ Model.User = Backbone.Model.extend({
   initialize: function() {
     this.view = new View.User({ model: this })
     this.viewEdit = new View.UserEdit({ model: this })
+    this.viewReset = new View.UserReset({ model: this })
   }
 })
 
@@ -80,9 +81,79 @@ View.UserEdit = Backbone.View.extend(_.extend({
       $alert.addClass('in')
     })
   }
-      
 }, Mixins.ViewFormErrors))
 
+View.UserReset = Backbone.View.extend(_.extend({
+  className: 'reset modal',
+  template: jade.compile($('#user-reset-template').text()),
+  
+  elAlert: 'form',
+  
+  events: {
+    'click button.btn-primary' : 'submit',
+    'keypress input'      : 'keyDown'
+  },
+    
+  initialize: function() {
+    _.bindAll(this, 'submit', 'keyDown')
+  },
+  
+  render: function() {
+    //ModalView.render(this.$el)
+    this.$el.modal({
+      backdrop: 'static',
+      keyboard: false
+    })
+    console.log(this.$el)
+    this.$el.html(this.template())
+    this.delegateEvents()
+    return this
+  },
+  
+  keyDown: function(event) {
+    if (event.keyCode == 13) {
+      this.submit()
+      $(event.target).blur()
+    }
+  },
+  
+  submit: function() {
+    console.log('submit')
+  }
+}, Mixins.ViewFormErrors))
+
+View.UserForgot = Backbone.View.extend(_.extend({
+  template: jade.compile($('#user-forgot-template').text()),
+  
+  elAlert: 'form',
+  
+  events: {
+    'click button.btn-primary' : 'submit',
+    'keypress input'      : 'keyDown'
+  },
+    
+  initialize: function() {
+    _.bindAll(this, 'submit', 'keyDown')
+  },
+  
+  render: function() {
+    this.$el.html(this.template())
+    ModalView.render(this.$el)
+    this.delegateEvents()
+    return this
+  },
+  
+  keyDown: function(event) {
+    if (event.keyCode == 13) {
+      this.submit()
+      $(event.target).blur()
+    }
+  },
+  
+  submit: function() {
+    console.log('submit')
+  }
+}, Mixins.ViewFormErrors))
 
 View.UserCreate = Backbone.View.extend(_.extend({
   template: jade.compile($('#user-new-template').text()),

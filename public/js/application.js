@@ -5,6 +5,7 @@ AppRouter = Backbone.Router.extend({
     'terms-of-service'    : 'termsOfService',
     'privacy-policy'      : 'privacyPolicy',
     'unsaved-playlist'    : 'nowPlaying',
+    'user/reset'          : 'userReset',
     'user/:username'      : 'userView',
     'user/:username/edit' : 'userEdit',
     'user/:username/playlist'     : 'playlists',
@@ -103,6 +104,15 @@ AppRouter = Backbone.Router.extend({
     } else {
       MainView.render(playlist.view)
     }
+  },
+    
+  userReset: function() {
+    // /reset route should set user cookie so when Session.refresh occurs user is logged in
+    //Session.on('login', function() {
+      // will likely need to pass ?token=xxxx
+      //MainView.render(Session.user.viewReset)
+      (new Model.User()).viewReset.render()
+    //})
   },
   
   userView: function(username) {
@@ -289,6 +299,7 @@ $(function() {
   window.Shuffle = new Model.Shuffle
   window.loginModal = new View.SessionCreate({ model: Session })
   window.signupModal = new View.UserCreate()
+  window.forgotModal = new View.UserForgot()
 
   // hijack links
   // https://github.com/documentcloud/backbone/issues/456#issuecomment-2557835

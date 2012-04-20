@@ -1,0 +1,23 @@
+.modal-header
+  a.close('data-dismiss'= 'modal') &times;
+  h3 Forgot your password?
+.modal-body
+  p.pull-right
+    // a haiku dedicated to the forgotten password
+    em Relax. Breath deeply.
+    br
+    em Bathe in serene thoughts, user.
+    br
+    em Now fill out this form.
+  form
+    fieldset
+    
+      .control-group
+        label.control-label(for= 'forgot-login') Username / Email
+        .controls
+          input#forgot-login(type= 'text', name= 'login')
+          span.help-inline
+    
+.modal-footer
+  button.btn.btn-primary Email me a reset token
+  button.btn('data-dismiss'= 'modal') Cancel
