@@ -22,6 +22,8 @@ window.parseError = function(field, error) {
       return 'Your reset token has expired.'
     case 'reset_password_required':
       return 'You cannot reset your password without a password.'
+    case 'reset_password_unconfirmed':
+      return 'The confirmed password does not match.'
     case 'required':
       return _.capitalize(field) + ' is required.'
     case 'too_long':

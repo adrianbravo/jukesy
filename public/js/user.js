@@ -16,7 +16,6 @@ Model.User = Backbone.Model.extend({
   initialize: function() {
     this.view = new View.User({ model: this })
     this.viewEdit = new View.UserEdit({ model: this })
-    this.viewReset = new View.UserReset({ model: this })
   }
 })
 
@@ -81,27 +80,103 @@ View.UserReset = View.Form.extend({
   template: jade.compile($('#user-reset-template').text()),
   
   elAlert: 'form',
+  elFocus: '#reset-password',
   
   events: {
     'click button.btn-primary' : 'submit',
-    'keypress input'      : 'keyDown'
+    'keypress input'           : 'keyDown'
   },
     
   initialize: function() {
-    _.bindAll(this, 'submit', 'keyDown')
+    _.bindAll(this, 'submit', 'keyDown', 'checkError', 'submitError', 'submitSuccess')
   },
   
   render: function() {
+    var self = this
     this.$el.modal({
       backdrop: 'static',
       keyboard: false
     })
     this.$el.html(this.template())
     this.delegateEvents()
+    _.delay(function() {
+      self.focusInput()
+    }, 500)
     return this
   },
   
+  validate: function() {
+    if (this.$el.find('input[name="password"]').val() != this.$el.find('input[name="password-confirm"]').val()) {
+      this.removeErrors()
+      var $alert = new View.Alert({
+            className: 'alert-danger alert fade',
+            message: parseError(null, 'reset_password_unconfirmed')
+          }).render()
+      this.$el.find('form').prepend($alert)
+      _.defer(function() {
+        $alert.addClass('in')
+      })
+      this.focusInput()
+      return false
+    }
+    return true
+  },
+  
   submit: function() {
+    var self = this
+    if (!this.validate()) {
+      return false
+    }
+    $.ajax({
+      type: 'POST',
+      url: '/user/' + this.model.get('username') + '/reset',
+      data: { token: this.model.get('token'), password: this.$el.find('input[name="password"]').val() },
+      success: this.submitSuccess,
+      error: function(error, model) { self.submitError(model, error) }
+    })
+    return false
+  },
+  
+  submitSuccess: function(model, response) {
+    //Session.attemptLogin()
+    this.removeErrors()
+    this.$el.modal('hide')
+    var $alert = new View.Alert({
+          className: 'alert-success alert fade',
+          message: 'Your password has been reset!'
+        }).render()
+    MainView.$el.prepend($alert)
+    _.defer(function() {
+      $alert.addClass('in')
+    })
+  },
+  
+  check: function() {
+    $.ajax({
+      type: 'GET',
+      url: '/user/' + this.model.get('username') + '/reset?token=' + this.model.get('token'),
+      error: this.checkError
+    })
+  },
+  
+  checkError: function(model, error) {
+    var errorJSON = {}
+      , $alert
+      
+    try {
+      errorJSON = JSON.parse(model.responseText)
+    } catch(e) {}
+
+    this.$el.modal('hide')
+    $alert = new View.Alert({
+        className: 'alert-danger alert fade',
+        message: parseError(null, (errorJSON.errors && errorJSON.errors.$) || 'no_connection')
+      }).render()
+    MainView.$el.prepend($alert)
+        
+    _.defer(function() {
+      $alert.addClass('in')
+    })
   }
 })
 

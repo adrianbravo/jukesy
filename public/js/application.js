@@ -1,15 +1,15 @@
 AppRouter = Backbone.Router.extend({
   routes: {
-    ''                    : 'welcome',
-    'about'               : 'about',
-    'terms-of-service'    : 'termsOfService',
-    'privacy-policy'      : 'privacyPolicy',
-    'unsaved-playlist'    : 'nowPlaying',
-    'user/reset'          : 'userReset',
-    'user/:username'      : 'userView',
-    'user/:username/edit' : 'userEdit',
+    ''                     : 'welcome',
+    'about'                : 'about',
+    'terms-of-service'     : 'termsOfService',
+    'privacy-policy'       : 'privacyPolicy',
+    'unsaved-playlist'     : 'nowPlaying',
+    'user/:username'       : 'userView',
+    'user/:username/edit'  : 'userEdit',
     'user/:username/playlist'     : 'playlists',
     'user/:username/playlist/:id' : 'playlist',
+    'user/:username/reset/:token' : 'userReset',
     'artist/:artist/album/:album' : 'searchAlbum',
     'artist/:artist/track/:track' : 'searchTrack',
     'artist/:artist/top-tracks'   : 'searchArtistTopTracks',
@@ -106,13 +106,11 @@ AppRouter = Backbone.Router.extend({
     }
   },
     
-  userReset: function() {
-    // /reset route should set user cookie so when Session.refresh occurs user is logged in
-    //Session.on('login', function() {
-      // will likely need to pass ?token=xxxx
-      //MainView.render(Session.user.viewReset)
-      (new Model.User()).viewReset.render()
-    //})
+  userReset: function(username, token) {
+    var user = new Model.User({ username: username, token: token })
+    user.viewReset = new View.UserReset({ model: user })
+    user.viewReset.render()
+    user.viewReset.check()
   },
   
   userView: function(username) {

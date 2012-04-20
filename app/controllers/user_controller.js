@@ -44,6 +44,17 @@ module.exports = function(app) {
         res.json(1)
       })
     },
+    
+    resetCheck: function(req, res, next) {
+      if (!req.xhr) {
+        res.render('home/welcome')
+      } else {
+        if (!req.paramUser.validResetToken(req.param('token'))) {
+          return next(new app.Error(401, { $: 'reset_token_expired' }))
+        }
+        res.json(1)
+      }
+    },
 
     read: function(req, res, next) {
       var userJSON = req.paramUser.exposeJSON(req.currentUser)
