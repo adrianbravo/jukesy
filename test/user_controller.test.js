@@ -17,6 +17,108 @@ describe('User Controller', function() {
     })
 
   })
+
+  describe('GET /user/forgot (#forgot)', function() {
+    var user
+
+    beforeEach(function(done) {
+      User.create({
+        username: 'adrian',
+        password: 'test',
+        email: 'test@test.test'
+      }, function(err, u) {
+        user = u
+        expect(user).to.exist
+        done()
+      })
+    })
+    
+    it('succeeds if the user exists', function(done) {
+      request
+        .post('/user/forgot')
+        .send({ login: 'adrian' })
+        .end(function(res) {
+          expect(res).status(200)
+          done()
+        })
+    })
+    
+    it('fails if the user does not exist', function(done) {
+      request
+        .post('/user/forgot')
+        .send({ login: 'invalid' })
+        .end(function(res) {
+          expect(res).status(400)
+          done()
+        })
+    })
+  })
+  
+  describe('GET /user/:username/reset (#reset)', function() {
+    var user
+
+    beforeEach(function(done) {
+      User.create({
+        username: 'adrian',
+        password: 'test',
+        email: 'test@test.test',
+        reset: {
+          token: 'abc', expire: app.moment().add('days', 7).utc().toDate()
+        }
+      }, function(err, u) {
+        user = u
+        expect(user).to.exist
+        done()
+      })
+    })
+    
+    it('succeeds if the user sends a password and valid token', function(done) {
+      request
+        .post('/user/adrian/reset')
+        .send({ password: 'a', token: 'abc' })
+        .end(function(res) {
+          expect(res).status(200)
+          done()
+        })
+    })
+    
+    it('fails if the user does not send a password', function(done) {
+      request
+        .post('/user/adrian/reset')
+        .send({ password: '', token: 'abc' })
+        .end(function(res) {
+          expect(res).status(400)
+          done()
+          // check user token still exists
+        })
+    })
+    
+    it('fails if the reset token is not a match', function(done) {
+      request
+        .post('/user/adrian/reset')
+        .send({ password: 'password', token: 'def' })
+        .end(function(res) {
+          expect(res).status(401)
+          done()
+        })
+    })
+    
+    it('fails if the reset token is expired', function(done) {
+      user.reset.expire = app.moment().subtract('days', 7).utc().toDate()
+      user.save(function(err, user) {
+        expect(err).to.not.exist
+        request
+          .post('/user/adrian/reset')
+          .send({ password: 'invalid', token: 'abc' })
+          .end(function(res) {
+            expect(res).status(401)
+            done()
+          })
+      })
+    })
+    
+
+  })
   
   describe('GET /user/:username (#read)', function() {
     var user
@@ -50,7 +152,6 @@ describe('User Controller', function() {
         done()
       })
     })
-    
   })
 
   describe('PUT /user/:username (#update)', function() {
