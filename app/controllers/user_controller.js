@@ -18,6 +18,17 @@ module.exports = function(app) {
       })
     },
 
+    forgot: function(req, res, next) {
+      User.findByLogin(req.body.login || '', function(err, user) {
+        if (err || !user) {
+          return next(err || new app.Error(400, { $: 'no_user_or_email' }))
+        }
+        
+        // send an email
+        res.json(1)
+      })
+    },
+
     read: function(req, res, next) {
       var userJSON = req.paramUser.exposeJSON(req.currentUser)
       if (req.xhr) {

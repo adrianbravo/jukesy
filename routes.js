@@ -37,6 +37,7 @@ module.exports = function(app) {
   app.get('/now-playing', HomeController.nowPlaying)
 
   app.get('/user', UserController.index)
+  app.post('/user/forgot', UserController.forgot)
   app.post('/user', UserController.create)
   app.get('/user/:username', app.auth.authenticate, UserController.read)
   app.get('/user/:username/edit', app.auth.authenticate, app.auth.authorize, UserController.edit)

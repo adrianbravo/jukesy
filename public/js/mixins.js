@@ -30,6 +30,7 @@ View.Form = Backbone.View.extend({
     if (event.keyCode == 13) {
       this.submit()
       $(event.target).blur()
+      return false
     }
   },
   

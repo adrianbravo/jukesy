@@ -16,6 +16,8 @@ window.parseError = function(field, error) {
       return 'There was an error connecting to the server. Please try again in a few minutes.'
     case 'bad_credentials':
       return 'Sorry, those credentials do not match any accounts on jukesy.'
+    case 'no_user_or_email':
+      return 'That user does not exist on jukesy!'
     case 'required':
       return _.capitalize(field) + ' is required.'
     case 'too_long':

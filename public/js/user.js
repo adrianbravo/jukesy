@@ -109,14 +109,15 @@ View.UserForgot = View.Form.extend({
   template: jade.compile($('#user-forgot-template').text()),
   
   elAlert: 'form',
+  elFocus: '#forgot-login',
   
   events: {
     'click button.btn-primary' : 'submit',
-    'keypress input'      : 'keyDown'
+    'keypress input'           : 'keyDown'
   },
     
   initialize: function() {
-    _.bindAll(this, 'submit', 'keyDown')
+    _.bindAll(this, 'submit', 'keyDown', 'submitError', 'submitSuccess')
   },
   
   render: function() {
@@ -127,6 +128,28 @@ View.UserForgot = View.Form.extend({
   },
     
   submit: function() {
+    var self = this
+    $.ajax({
+      type: 'POST',
+      url: '/user/forgot',
+      data: { login: this.$el.find('input[name="login"]').val() },
+      success: this.submitSuccess,
+      error: function(error, model) { self.submitError(model, error) }
+    })
+    return false
+  },
+  
+  submitSuccess: function(model, response) {
+    this.removeErrors()
+    var $alert = new View.Alert({
+          className: 'alert-success alert fade',
+          message: 'You should receive an email with a link to log in and reset your password shortly.'
+        }).render()
+      
+    this.$el.find('form').prepend($alert)
+    _.defer(function() {
+      $alert.addClass('in')
+    })
   }
 })
 
