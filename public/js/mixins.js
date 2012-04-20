@@ -24,7 +24,14 @@ Mixins.TrackViewEvents = {
   }
 }
 
-Mixins.ViewFormErrors = {
+View.Form = Backbone.View.extend({
+  
+  keyDown: function(event) {
+    if (event.keyCode == 13) {
+      this.submit()
+      $(event.target).blur()
+    }
+  },
   
   submit: function() {
     var sendJSON = {}
@@ -111,4 +118,4 @@ Mixins.ViewFormErrors = {
     return $input
   }  
 
-}
+})

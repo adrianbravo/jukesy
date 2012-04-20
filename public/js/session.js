@@ -81,7 +81,7 @@ View.SessionButton = Backbone.View.extend({
   }
 })
 
-View.SessionCreate = Backbone.View.extend(_.extend({
+View.SessionCreate = View.Form.extend({
   template: jade.compile($('#session-new-template').text()),
   
   elAlert: '.modal-body',
@@ -115,16 +115,8 @@ View.SessionCreate = Backbone.View.extend(_.extend({
     return false
   },
 
-  keyDown: function(event) {
-    if (event.keyCode == 13) {
-      this.submit()
-      $(event.target).blur()
-    }
-  },
-
   submitSuccess: function(user, response) {
     Session.login(response)
     ModalView.hide()
-  }
-        
-}, Mixins.ViewFormErrors))
+  }       
+})

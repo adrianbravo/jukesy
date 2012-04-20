@@ -33,7 +33,7 @@ View.User = Backbone.View.extend({
   }
 })
 
-View.UserEdit = Backbone.View.extend(_.extend({
+View.UserEdit = View.Form.extend({
   template: jade.compile($('#user-edit-template').text()),
   
   elAlert: 'form',
@@ -62,13 +62,6 @@ View.UserEdit = Backbone.View.extend(_.extend({
     return this
   },
     
-  keyDown: function(event) {
-    if (event.keyCode == 13) {
-      this.submit()
-      $(event.target).blur()
-    }
-  },
-    
   submitSuccess: function(model, response) {
     this.removeErrors()
     var $alert = new View.Alert({
@@ -81,9 +74,9 @@ View.UserEdit = Backbone.View.extend(_.extend({
       $alert.addClass('in')
     })
   }
-}, Mixins.ViewFormErrors))
+})
 
-View.UserReset = Backbone.View.extend(_.extend({
+View.UserReset = View.Form.extend({
   className: 'reset modal',
   template: jade.compile($('#user-reset-template').text()),
   
@@ -99,30 +92,20 @@ View.UserReset = Backbone.View.extend(_.extend({
   },
   
   render: function() {
-    //ModalView.render(this.$el)
     this.$el.modal({
       backdrop: 'static',
       keyboard: false
     })
-    console.log(this.$el)
     this.$el.html(this.template())
     this.delegateEvents()
     return this
   },
   
-  keyDown: function(event) {
-    if (event.keyCode == 13) {
-      this.submit()
-      $(event.target).blur()
-    }
-  },
-  
   submit: function() {
-    console.log('submit')
   }
-}, Mixins.ViewFormErrors))
+})
 
-View.UserForgot = Backbone.View.extend(_.extend({
+View.UserForgot = View.Form.extend({
   template: jade.compile($('#user-forgot-template').text()),
   
   elAlert: 'form',
@@ -142,20 +125,12 @@ View.UserForgot = Backbone.View.extend(_.extend({
     this.delegateEvents()
     return this
   },
-  
-  keyDown: function(event) {
-    if (event.keyCode == 13) {
-      this.submit()
-      $(event.target).blur()
-    }
-  },
-  
+    
   submit: function() {
-    console.log('submit')
   }
-}, Mixins.ViewFormErrors))
+})
 
-View.UserCreate = Backbone.View.extend(_.extend({
+View.UserCreate = View.Form.extend({
   template: jade.compile($('#user-new-template').text()),
   
   elAlert: '.modal-body',
@@ -182,20 +157,12 @@ View.UserCreate = Backbone.View.extend(_.extend({
     this.delegateEvents()
     return this
   },
-
-  keyDown: function(event) {
-    if (event.keyCode == 13) {
-      this.submit()
-      $(event.target).blur()
-    }
-  },
   
   submitSuccess: function(user, response) {
     Session.login(response)
     ModalView.hide()
   }
-  
-}, Mixins.ViewFormErrors))
+})
 
 
 ;
