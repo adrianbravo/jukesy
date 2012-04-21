@@ -20,11 +20,19 @@ module.exports = function(app) {
   if (['development', 'test', 'staging', 'production'].indexOf(app.set('env')) == -1) {
     app.set('env', 'development')
   }
+
   app.set('base_url', {
     development : 'http://127.0.0.1:3000',
     test        : 'http://127.0.0.1:7357',
     staging     : 'http://staging.jukesy.com',
     production  : 'http://jukesy.com'
+  }[app.set('env')])
+
+  app.set('port', {
+    development : '3000',
+    test        : '7357',
+    staging     : '4000',
+    production  : '3000'
   }[app.set('env')])
 
   app._       = _
@@ -56,13 +64,6 @@ module.exports = function(app) {
   })
 
   app.configure(function() {
-    var port = 3000
-    switch(app.set('env')) {
-      case 'test':
-        port = 7357
-        break
-    }
-
     app.dynamicHelpers({
       jadeLiteral: function(req, res) {
         return function(filename) {
@@ -90,7 +91,6 @@ module.exports = function(app) {
     })
 
     app
-      .set('port', port)
       .set('host', 'localhost')
       .set('views', __dirname + '/../app/views')
       .set('view engine', 'jade')
