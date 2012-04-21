@@ -110,6 +110,7 @@ AppRouter = Backbone.Router.extend({
     var user = new Model.User({ username: username, token: token })
     user.viewReset = new View.UserReset({ model: user })
     user.viewReset.render()
+    Router.navigate('/', { trigger: true, replace: true })
     user.viewReset.check()
   },
   

@@ -19,7 +19,7 @@ window.parseError = function(field, error) {
     case 'no_user_or_email':
       return 'That user does not exist on jukesy.'
     case 'reset_token_expired':
-      return 'Your reset token has expired.'
+      return 'That reset token is invalid or has expired.'
     case 'reset_password_required':
       return 'You cannot reset your password without a password.'
     case 'reset_password_unconfirmed':
