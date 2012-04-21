@@ -9,7 +9,7 @@ View.Alert = Backbone.View.extend({
   
   render: function() {
     this.$el.html(this.template({ message: this.options.message }))
-    // remove any other alerts from $prepend's first level of children
+    this.options.$prepend.children('.alert').remove()
     this.options.$prepend.prepend(this.$el)
     
     if (!this.$el.hasClass('in')) {
