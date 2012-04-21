@@ -10,24 +10,23 @@ module.exports = function(app) {
     resetToken: function(user, next) {
       var link = app.set('base_url') + '/user/' + user.username + '/reset/' + user.reset.token
 
-      if (app.set('env') == 'production') {
+      if (app.set('env') == 'production' || app.set('env') == 'staging') {
         nodemailer.send_mail({
             sender  : '"Jukesy" <no-reply@jukesy.com>'
           , to      : user.email
           , subject : 'Reset your password'
-          , html    : "Greetings, " + user.username + ". \n\n"
-              	  + "Jukesy is proud to inform you that your reset link has been created. It's a miracle of cryptography! \n\n"
-			            + link + "\n\n"
-                  + "Just fire that baby up. It will log you in and prompt you for a new password. \n\n"
-                  + "Thank you for using Jukesy."
-          , body    : "Greetings, " + user.username + ". \n\n"
-              	  + "Jukesy is proud to inform you that your reset link has been created. It's a miracle of cryptography! \n\n"
-			            + link + "\n\n"
-                  + "Just fire that baby up. It will log you in and prompt you for a new password. \n\n"
-                  + "Thank you for using Jukesy."
+          , html    : "<p>Hello, <a href=\"" + user.link() + "\">" + user.username + "</a>.</p>"
+                	  + "<p>Jukesy received a request to reset the password for your account.</p>"
+  			            + "<p>If you still wish to reset your password, you may use this link: <br>"
+                    + "<a href=\"" + link + "\">" + link + "</a></p>"
+                    + "<p>If your password does not need to be reset, simply ignore this message.</p>"
+          , body    : "Hello, " + user.username + ". \n\n"
+                	  + "Jukesy received a request to reset the password for your account. \n\n"
+  			            + "If you still wish to reset your password, you may use this link: \n"
+                    + link + "\n\n"
+                    + "If your password does not need to be reset, simply ignore this message. \n\n"
         }, next)
       } else {
-        console.log(link)
         next(false, true)
       }
     }

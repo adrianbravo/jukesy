@@ -86,6 +86,10 @@ User.method({
   
   validResetToken: function(token) {
     return (!this.reset || this.reset.expire < app.moment().utc().toDate() || token != this.reset.token) ? false : true
+  },
+  
+  link: function() {
+    return app.set('base_url') + '/user/' + this.username
   }
 })
 
