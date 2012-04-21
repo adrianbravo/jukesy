@@ -26,7 +26,7 @@ Model.Track = Backbone.Model.extend({
     } else {
       this.setPlaying()
       
-      Video.skipToPrev = false
+      Video.skipDirection = 'next'
       Meow.render({
         message: 'Now playing ' + this.get('name') + ' by ' + this.get('artist') + '.',
         type: 'info'

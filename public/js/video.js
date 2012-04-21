@@ -100,10 +100,9 @@ Model.Video = Backbone.Model.extend({
   },
 
   next: function() {
-    var self = this
-      , next = null
+    var next = null
     
-    if (this.skipToPrev) {
+    if (this.skipDirection == 'prev') {
       this.prev()
       return
     }
@@ -131,8 +130,7 @@ Model.Video = Backbone.Model.extend({
   },
   
   prev: function() {
-    var self = this
-      , prev = null
+    var prev = null
     
     if (this.loading || this.state == 3 || this.tryRepeat() || this.trySeek()) {
       return
@@ -143,7 +141,7 @@ Model.Video = Backbone.Model.extend({
       return
     }
     
-    this.skipToPrev = true
+    this.skipDirection = 'prev'
     if (this.track === _.first(NowPlaying.tracks.models) || _.isUndefined(this.track)) {
       prev = _.last(NowPlaying.tracks.models)
     } else {
