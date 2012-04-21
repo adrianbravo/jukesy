@@ -263,17 +263,6 @@ View.Sidebar = Backbone.View.extend({
   }
 })
 
-View.Alert = Backbone.View.extend({
-  className: 'alert fade',
-
-  template: jade.compile($('#alert-template').text()),
-
-  render: function() {
-    this.$el.html(this.template({ message: this.options.message }))
-    return this.$el
-  }
-})
-
 $(function() {
   // Bind resize and call it once.
   $(window).resize(_.debounce(windowResized))

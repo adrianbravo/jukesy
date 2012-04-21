@@ -8,7 +8,7 @@ module.exports = function(app) {
   return {
 
     resetToken: function(user, next) {
-      var link = 'http://jukesy.com' + '/user/' + user.username + '/reset/' + user.reset.token
+      var link = app.set('base_url') + '/user/' + user.username + '/reset/' + user.reset.token
 
       if (app.set('env') == 'production') {
         nodemailer.send_mail({
@@ -27,6 +27,7 @@ module.exports = function(app) {
                   + "Thank you for using Jukesy."
         }, next)
       } else {
+        console.log(link)
         next(false, true)
       }
     }

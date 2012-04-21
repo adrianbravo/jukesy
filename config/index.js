@@ -20,6 +20,12 @@ module.exports = function(app) {
   if (['development', 'test', 'staging', 'production'].indexOf(app.set('env')) == -1) {
     app.set('env', 'development')
   }
+  app.set('base_url', {
+    development : 'http://127.0.0.1:3000',
+    test        : 'http://127.0.0.1:7357',
+    staging     : 'http://staging.jukesy.com',
+    production  : 'http://jukesy.com'
+  }[app.set('env')])
 
   app._       = _
   app.moment  = moment
