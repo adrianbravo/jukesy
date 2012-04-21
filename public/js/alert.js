@@ -3,9 +3,19 @@ View.Alert = Backbone.View.extend({
 
   template: jade.compile($('#alert-template').text()),
 
+  initialize: function() {
+    this.render()
+  },
+  
   render: function() {
     this.$el.html(this.template({ message: this.options.message }))
-    return this.$el
+    // remove any other alerts from $prepend's first level of children
+    this.options.$prepend.prepend(this.$el)
+    
+    if (!this.$el.hasClass('in')) {
+      this.show()
+    }
+    return this
   },
   
   show: function() {
@@ -14,4 +24,8 @@ View.Alert = Backbone.View.extend({
       self.$el.addClass('in')
     })
   }
+  
 })
+
+
+;

@@ -314,11 +314,12 @@ View.Playlist = Backbone.View.extend({
       errorJSON = {}
     }
     
-    $alert = new View.Alert({
-      className: 'alert-error alert',
-      message: (error.status == 401 && !errorJSON.errors) ? parseError('unauthorized') : 'Something went wrong while trying to save this playlist.'
+    this.render()
+    new View.Alert({
+      className: 'alert-error alert fade',
+      message: (error.status == 401 && !errorJSON.errors) ? parseError('unauthorized') : 'Something went wrong while trying to save this playlist.',
+      $prepend: this.$el
     })
-    this.render().$el.prepend($alert.render())
   },
 
   save: function() {
@@ -340,18 +341,12 @@ View.Playlist = Backbone.View.extend({
       errorJSON = {}
     }
     
-    if (error.status == 401 && !errorJSON.errors) {
-      $alert = new View.Alert({
-        className: 'alert-error alert',
-        message: parseError('unauthorized')
-      })
-    } else {
-      $alert = new View.Alert({
-        className: 'alert-error alert',
-        message: 'Something went wrong while trying to delete this playlist.'
-      })
-    }
-    this.render().$el.prepend($alert.render())
+    this.render()
+    new View.Alert({
+      className: 'alert-error alert fade',
+      message: (error.status == 401 && !errorJSON.errors) ? parseError('unauthorized') : 'Something went wrong while trying to delete this playlist.',
+      $prepend: this.$el
+    })
   },
   
   deleteConfirm: function() {
@@ -373,6 +368,7 @@ View.Playlist = Backbone.View.extend({
     }
     
     this.model.destroy({
+      wait: true,
       error: this.deleteError
     })
   },

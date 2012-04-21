@@ -84,14 +84,10 @@ View.Form = Backbone.View.extend({
   },
   
   addAlert: function(message) {
-    var $alert = new View.Alert({
-          className: 'alert-error alert fade',
-          message: parseError(null, message || 'no_connection')
-        }).render()
-      
-    this.elAlertFind().prepend($alert)
-    _.defer(function() {
-      $alert.addClass('in')
+    new View.Alert({
+      className: 'alert-error alert fade',
+      message: parseError(null, message || 'no_connection'),
+      $prepend: this.elAlertFind()
     })
   },
   

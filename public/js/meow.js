@@ -3,17 +3,17 @@ View.Meow = Backbone.View.extend({
   
   render: function(options) {
     var self = this
-      , $alert
+      , alert
       
     options.className = 'fade in alert alert-' + options.type
+    options.$prepend = this.$el
     
-    $alert = new View.Alert(options)
-    this.$el.prepend($alert.render())
-    
+    alert = new View.Alert(options)
+
     _.delay(function() {
-      $alert.$el.removeClass('in')
+      alert.$el.removeClass('in')
       _.delay(function() {
-        $alert.$el.remove()
+        alert.$el.remove()
       }, 500)
     }, 2700)
   }

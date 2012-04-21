@@ -63,14 +63,10 @@ View.UserEdit = View.Form.extend({
     
   submitSuccess: function(model, response) {
     this.removeErrors()
-    var $alert = new View.Alert({
-          className: 'alert-success alert fade',
-          message: 'Your changes have been saved.'
-        }).render()
-      
-    this.$el.find('form').prepend($alert)
-    _.defer(function() {
-      $alert.addClass('in')
+    new View.Alert({
+      className: 'alert-success alert fade',
+      message: 'Your changes have been saved.',
+      $prepend: this.$el.find('form')
     })
   }
 })
@@ -108,13 +104,10 @@ View.UserReset = View.Form.extend({
   validate: function() {
     if (this.$el.find('input[name="password"]').val() != this.$el.find('input[name="password-confirm"]').val()) {
       this.removeErrors()
-      var $alert = new View.Alert({
-            className: 'alert-danger alert fade',
-            message: parseError(null, 'reset_password_unconfirmed')
-          }).render()
-      this.$el.find('form').prepend($alert)
-      _.defer(function() {
-        $alert.addClass('in')
+      new View.Alert({
+        className: 'alert-danger alert fade',
+        message: parseError(null, 'reset_password_unconfirmed'),
+        $prepend: this.$el.find('form')
       })
       this.focusInput()
       return false
@@ -141,13 +134,10 @@ View.UserReset = View.Form.extend({
     //Session.attemptLogin()
     this.removeErrors()
     this.$el.modal('hide')
-    var $alert = new View.Alert({
-          className: 'alert-success alert fade',
-          message: 'Your password has been reset!'
-        }).render()
-    MainView.$el.prepend($alert)
-    _.defer(function() {
-      $alert.addClass('in')
+    new View.Alert({
+      className: 'alert-success alert fade',
+      message: 'Your password has been reset!',
+      $prepend: $('#container .span10')
     })
   },
   
@@ -168,14 +158,10 @@ View.UserReset = View.Form.extend({
     } catch(e) {}
 
     this.$el.modal('hide')
-    $alert = new View.Alert({
-        className: 'alert-danger alert fade',
-        message: parseError(null, (errorJSON.errors && errorJSON.errors.$) || 'no_connection')
-      }).render()
-    MainView.$el.prepend($alert)
-        
-    _.defer(function() {
-      $alert.addClass('in')
+    new View.Alert({
+      className: 'alert-danger alert fade',
+      message: parseError(null, (errorJSON.errors && errorJSON.errors.$) || 'no_connection'),
+      $prepend: $('#container .span10')
     })
   }
 })
@@ -216,14 +202,11 @@ View.UserForgot = View.Form.extend({
   
   submitSuccess: function(model, response) {
     this.removeErrors()
-    var $alert = new View.Alert({
-          className: 'alert-success alert fade',
-          message: 'You should receive an email with a link to log in and reset your password shortly.'
-        }).render()
-      
-    this.$el.find('form').prepend($alert)
-    _.defer(function() {
-      $alert.addClass('in')
+    ModalView.hide()
+    new View.Alert({
+      className: 'alert-success alert fade',
+      message: 'You should receive an email with a link to log in and reset your password shortly.',
+      $prepend: $('#container .span10')
     })
   }
 })
