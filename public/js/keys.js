@@ -106,63 +106,63 @@ KeyMapper = {
   // 1
   k49: function(e) {
     if (this.keypressHasModifier(e)) return
-    Video.track.setVideo(1)
+    Video.track.setVideo(0)
     return false
   },
   
   // 2
   k50: function(e) {
     if (this.keypressHasModifier(e)) return
-    Video.track.setVideo(2)
+    Video.track.setVideo(1)
     return false
   },
   
   // 3
   k51: function(e) {
     if (this.keypressHasModifier(e)) return
-    Video.track.setVideo(3)
+    Video.track.setVideo(2)
     return false
   },
   
   // 4
   k52: function(e) {
     if (this.keypressHasModifier(e)) return
-    Video.track.setVideo(4)
+    Video.track.setVideo(3)
     return false
   },
   
   // 5
   k53: function(e) {
     if (this.keypressHasModifier(e)) return
-    Video.track.setVideo(5)
+    Video.track.setVideo(4)
     return false
   },
   
   // 6
   k54: function(e) {
     if (this.keypressHasModifier(e)) return
-    Video.track.setVideo(6)
+    Video.track.setVideo(5)
     return false
   },
   
   // 7
   k55: function(e) {
     if (this.keypressHasModifier(e)) return
-    Video.track.setVideo(7)
+    Video.track.setVideo(6)
     return false
   },
   
   // 8
   k56: function(e) {
     if (this.keypressHasModifier(e)) return
-    Video.track.setVideo(8)
+    Video.track.setVideo(7)
     return false
   },
   
   // 9
   k57: function(e) {
     if (this.keypressHasModifier(e)) return
-    Video.track.setVideo(9)
+    Video.track.setVideo(8)
     return false
   },
   
