@@ -29,8 +29,12 @@ module.exports = function(app) {
             return next(err || 500)
           }
 
-          // send an email
-          res.json(1)
+          app.controller('Mail').resetToken(user, function(err, success) {
+            if (err) {
+              return next(err || 500)
+            }
+            res.json(1)
+          })
         })
       })
     },
