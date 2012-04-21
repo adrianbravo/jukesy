@@ -131,7 +131,6 @@ View.UserReset = View.Form.extend({
   },
   
   submitSuccess: function(model, response) {
-    //Session.attemptLogin()
     this.removeErrors()
     this.$el.modal('hide')
     new View.Alert({

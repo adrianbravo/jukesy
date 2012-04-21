@@ -44,7 +44,6 @@ module.exports = function(app) {
         if (err || !user) {
           return next(err || new app.Error(500))
         }
-        app.auth.setUser(req.paramUser, req, res)
         res.json(1)
       })
     },
