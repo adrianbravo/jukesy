@@ -36,19 +36,7 @@ jukesy:
       ./public/js/alert.js \
       ./public/js/application.js > ./public/jukesy.js
 	uglifyjs -nc -nm -nmf ./public/jukesy.js > ./public/jukesy.min.js
-	jade -p app/views -o '{ \
-    env: "production", \
-    assets: { \
-      js: ["http://static1.jukesy.com/jukesy.min.js?${GITSHA}"], \
-      less: [], \
-      css: ["http://static2.jukesy.com/jukesy.css?${GITSHA}"], \
-      favicon: "http://static1.jukesy.com/favicon.ico" \
-    }, \
-    currentUser: {}, \
-    body: "", \
-    jadeLiteral: function(file) { return fs.readFileSync("app/views/" + file + ".jade", "utf8") }, \
-    Charts: JSON.stringify({ artists: JSON.parse(fs.readFileSync("public/chart/topartists.json")), tracks: JSON.parse(fs.readFileSync("public/chart/toptracks.json")) }) \
-  }' app/views/layout.jade --out public/
+	jade -p app/views -o '{ env: "production", assets: { js: ["http://static1.jukesy.com/jukesy.min.js?${GITSHA}"], less: [], css: ["http://static2.jukesy.com/jukesy.css?${GITSHA}"], favicon: "http://static1.jukesy.com/favicon.ico" }, currentUser: {}, body: "", jadeLiteral: function(file) { return fs.readFileSync("app/views/" + file + ".jade", "utf8") }, Charts: JSON.stringify({ artists: JSON.parse(fs.readFileSync("public/chart/topartists.json")), tracks: JSON.parse(fs.readFileSync("public/chart/toptracks.json")) }) }' app/views/layout.jade --out public/
 	mv public/layout.html public/index.html
 
 clean:
