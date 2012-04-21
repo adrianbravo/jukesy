@@ -62,8 +62,8 @@ Model.Playlist = Backbone.Model.extend({
     })
   },
   
-  navigateTo: function() {
-    Router.navigate(this.localUrl(), { trigger: true })
+  navigateTo: function(replace) {
+    Router.navigate(this.localUrl(), { trigger: true, replace: replace })
   },
   
   tracksCallback: function() {
