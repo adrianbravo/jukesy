@@ -13,11 +13,12 @@ Model.Shuffle = Backbone.Model.extend({
   },
   
   enable: function() {
-    this.history.reset()
+    this.history.reset([ Video.track ])
     this.set({ active: true })
   },
   
   next: function() {
+    this.trimHistory()
     var index = this.history.indexOf(Video.track)
     if (index + 1 == this.history.length) {
       var track = NowPlaying.tracks.randomWithout(this.history.models)
@@ -25,7 +26,6 @@ Model.Shuffle = Backbone.Model.extend({
     } else {
       this.history.at(index + 1).play()
     }
-    _.defer(this.trimHistory)
   },
   
   prev: function() {
@@ -37,7 +37,7 @@ Model.Shuffle = Backbone.Model.extend({
   },
   
   trimHistory: function() {
-    this.history.reset(this.history.last(50))
+    this.history.reset(this.history.last(_.min([Math.floor(this.history.length / 2), 50])))
   }
   
 })
