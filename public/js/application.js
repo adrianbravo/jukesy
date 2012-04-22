@@ -4,21 +4,21 @@ AppRouter = Backbone.Router.extend({
     'about'                : 'about',
     'terms-of-service'     : 'termsOfService',
     'privacy-policy'       : 'privacyPolicy',
-    'user/:username'       : 'userView',
-    'user/:username/edit'  : 'userEdit',
+    'user/:username'              : 'userView',
+    'user/:username/edit'         : 'userEdit',
     'user/:username/playlist'     : 'playlists',
     'user/:username/playlist/:id' : 'playlist',
     'user/:username/reset/:token' : 'userReset',
     'artist/:artist/album/:album' : 'searchAlbum',
     'artist/:artist/track/:track' : 'searchTrack',
-    'artist/:artist/top-tracks'   : 'searchArtistTopTracks',
-    'artist/:artist/top-albums'   : 'searchArtistTopAlbums',
-    'artist/:artist/similar'      : 'searchArtistSimilar',
-    'artist/:artist'              : 'searchArtist',
-    'search/:query/track'         : 'searchQueryTrack',
-    'search/:query/album'         : 'searchQueryAlbum',
-    'search/:query/artist'        : 'searchQueryArtist',
-    'search/:query'               : 'searchQuery',
+    'artist/:artist/top-tracks*q'   : 'searchArtistTopTracks',
+    'artist/:artist/top-albums'     : 'searchArtistTopAlbums',
+    'artist/:artist/similar'        : 'searchArtistSimilar',
+    'artist/:artist'                : 'searchArtist',
+    'search/:query/track*q' : 'searchQueryTrack',
+    'search/:query/album'   : 'searchQueryAlbum',
+    'search/:query/artist'  : 'searchQueryArtist',
+    'search/:query'         : 'searchQuery',
     '*derp'         : '404'
   },
 
@@ -75,6 +75,8 @@ AppRouter = Backbone.Router.extend({
   // TODO clean this up good god
   playlist: function(username, id) {
     var playlist = (username == 'anonymous') ? Playlists.getByCid(id) : Playlists.get(id)
+      , autoplay = Backbone.history.fragment.match(/\?autoplay/)
+    
     if (!playlist) {
       if (username == 'anonymous') {
         Router.navigate('/', { trigger: true, replace: true })
@@ -93,6 +95,11 @@ AppRouter = Backbone.Router.extend({
           playlist.tracks.reset(response.tracks)
           playlist.set({ changed: false }, { silent: true })
           MainView.render(playlist.view)
+          if (autoplay) {
+            playlist.setNowPlaying()
+            window.autoplay = playlist
+            playlist.tracks.play()
+          }
         },
         error: this.error
       })
@@ -157,10 +164,12 @@ AppRouter = Backbone.Router.extend({
   },
   
   searchAlbum: function(artist, album) {
+    album = _.trimQuery(album)
     MainView.render(new View.SearchAlbum({ artist: decodeURIComponent(artist), album: decodeURIComponent(album) }))
   },
   
   searchTrack: function(artist, track) {
+    track = _.trimQuery(track)
     MainView.render(new View.SearchTrack({ artist: decodeURIComponent(artist), track: decodeURIComponent(track) }))
   },
   

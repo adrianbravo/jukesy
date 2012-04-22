@@ -110,6 +110,7 @@ View.SearchResults = Backbone.View.extend({
   
   render: function() {
     var self = this
+      , autoplay = Backbone.history.fragment.match(/\?autoplay/)
       , json = {
           type: this.model.type,
           query: this.model.get(this.model.type),
@@ -125,6 +126,10 @@ View.SearchResults = Backbone.View.extend({
       _.forEach(this.model.results, function(result) {
         self.$innerEl().append(result.view.render().$el)
       })
+      if (this.type == 'tracks' && autoplay) {
+        this.playAll()
+        window.autoplay = NowPlaying
+      }
     }
     this.delegateEvents()
     this.renderLoadMore()
@@ -152,11 +157,11 @@ View.SearchResultsTracks = View.SearchResults.extend({
     'click .queue-all-last' : 'queueLast'
   },
   
-  playAll: function() {
+  playAll: function(autoplay) {
     newNowPlaying()
     NowPlaying.tracks.add(this.model.cloneTracks())
     NowPlaying.tracks.play()
-    NowPlaying.navigateTo()
+    NowPlaying.navigateTo(true)
   },
   
   queueNext: function() {
