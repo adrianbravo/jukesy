@@ -1,17 +1,4 @@
 
-View.Video = Backbone.View.extend({
-  el: '#video-wrapper',
-  
-  events: {
-    'click #video-quality': 'toggleQuality'
-  },
-  
-  toggleQuality: function() {
-    Video.toggleQuality()
-    this.$el.find('#video-quality').html(this.model.quality == 'hd720' ? 'HD' : 'MED')
-  }
-})
-
 Model.Video = Backbone.Model.extend({
   initialize: function() {
     swfobject.embedSWF('http://www.youtube.com/apiplayer?version=3&enablejsapi=1&playerapiid=video&wmode=transparent', // swfUrlStr
@@ -26,9 +13,7 @@ Model.Video = Backbone.Model.extend({
     )
     _.bindAll(this, 'volume', 'seek', 'stop')
     
-    this.view = new View.Video({ model: this })
     this.quality = 'hd720'
-    
     _.defer(function() {
       window.Controls = new View.Controls
     })
@@ -36,11 +21,11 @@ Model.Video = Backbone.Model.extend({
   
   toggleQuality: function() {
     this.quality = (this.quality == 'hd720') ? 'medium' : 'hd720'
+    this.player.setPlaybackQuality(this.quality)
     Meow.render({
       message: 'Set video quality to ' + this.quality,
       type: 'info'
     })
-    this.player.setPlaybackQuality(this.quality)
   },
   
   stop: function() {
@@ -230,6 +215,7 @@ View.Controls = Backbone.View.extend({
     this.renderShuffle()
     this.renderRadio()
     this.renderFullscreen()
+    this.renderQuality()
   },
   
   events: {
@@ -241,6 +227,7 @@ View.Controls = Backbone.View.extend({
     'click #radio'      : 'toggleRadio',
     'click #fullscreen' : 'toggleFullscreen',
     'click #volume'     : 'toggleMute',
+    'click #quality'    : 'toggleQuality',
     'mousedown #volume-bar'  : 'dragVolume',
     'mousedown #timer'       : 'dragTimer'
   },
@@ -309,6 +296,15 @@ View.Controls = Backbone.View.extend({
   
   prev: function() {
     NowPlaying.tracks.prev()
+  },
+  
+  toggleQuality: function() {
+    Video.toggleQuality()
+    this.renderQuality()
+  },
+  
+  renderQuality: function() {
+    $('#quality').html(Video.quality == 'hd720' ? 'HD' : 'MED')
   },
   
   toggleRepeat: function() {

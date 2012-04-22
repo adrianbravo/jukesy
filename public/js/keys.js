@@ -194,6 +194,13 @@ KeyMapper = {
     return false
   },
   
+  // Q
+  k81: function(e) {
+    if (this.keypressHasModifier(e)) return
+    Controls.toggleQuality()
+    return false
+  },
+  
   // R
   k82: function(e) {
     if (this.keypressHasModifier(e)) return
@@ -246,7 +253,7 @@ $(function() {
   _.bindAll(KeyMapper, 'keypressHasModifier',
             'k27', 'k32', 'k37', 'k38', 'k39', 'k40',
             'k49', 'k50', 'k51', 'k52', 'k53', 'k54', 'k55', 'k56', 'k57', 
-            'k68', 'k70', 'k77', 'k80', 'k82', 'k83', 'k86', 'k88', 'k191')
+            'k68', 'k70', 'k77', 'k80', 'k81', 'k82', 'k83', 'k86', 'k88', 'k191')
 })
 
 
