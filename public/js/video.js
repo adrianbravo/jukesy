@@ -36,6 +36,10 @@ Model.Video = Backbone.Model.extend({
   
   toggleQuality: function() {
     this.quality = (this.quality == 'hd720') ? 'medium' : 'hd720'
+    Meow.render({
+      message: 'Set video quality to ' + this.quality,
+      type: 'info'
+    })
     this.player.setPlaybackQuality(this.quality)
   },
   
