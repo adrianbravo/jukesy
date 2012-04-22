@@ -35,7 +35,7 @@ window.parseError = function(field, error) {
     case 'already_taken':
       return _.capitalize(field) + ' is already in use.'
   }
-  return 'Oops. Something went horribly wrong!'
+  return 'Sorry, there was an unknown error. If this persists, please contact us.'
 }
 
 
