@@ -2,6 +2,7 @@ module.exports = function(app) {
 
   var ApplicationController = app.controller('Application')
     , HomeController = app.controller('Home')
+    , SearchController = app.controller('Search')
     , UserController = app.controller('User')
     , PlaylistController = app.controller('Playlist')
     , SessionController = app.controller('Session')
@@ -55,6 +56,17 @@ module.exports = function(app) {
   app.post('/session', SessionController.create)
   app.del('/session', SessionController.delete)
   app.get('/logout', SessionController.delete)
+
+  app.get('/artist/:artist/track/:track', SearchController.artistTrack)
+  app.get('/artist/:artist/album/:album', SearchController.artistAlbum)
+  app.get('/artist/:artist/top-tracks', SearchController.artistTopTracks)
+  app.get('/artist/:artist/top-albums', SearchController.artistTopAlbums)
+  app.get('/artist/:artist/similar', SearchController.artistSimilar)
+  app.get('/artist/:artist', SearchController.artist)
+  app.get('/search/:query/track', SearchController.queryTrack)
+  app.get('/search/:query/album', SearchController.queryAlbum)
+  app.get('/search/:query/artist', SearchController.queryArtist)
+  app.get('/search/:query', SearchController.query)
 
   app.error(ApplicationController.error)
   app.all('*', ApplicationController.notFound)
