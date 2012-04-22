@@ -127,10 +127,10 @@ Model.Track = Backbone.Model.extend({
   },
   
   addSimilarTrack: function() {
-    if (!this.similarTracks || !this.similarTracks.length || this.collection.playlist != window.NowPlaying) {
+    if (!this.similarTracks || !this.similarTracks.length || (this.collection && this.collection.playlist != window.NowPlaying)) {
       return
     }
-    NowPlaying.tracks.add(this.similarTracks.randomWithout(NowPlaying.tracks).clone())
+    NowPlaying.tracks.add(this.similarTracks.randomWithout([]).clone())
   }
 
 })
