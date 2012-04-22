@@ -4,7 +4,6 @@ AppRouter = Backbone.Router.extend({
     'about'                : 'about',
     'terms-of-service'     : 'termsOfService',
     'privacy-policy'       : 'privacyPolicy',
-    'unsaved-playlist'     : 'nowPlaying',
     'user/:username'       : 'userView',
     'user/:username/edit'  : 'userEdit',
     'user/:username/playlist'     : 'playlists',
@@ -56,10 +55,6 @@ AppRouter = Backbone.Router.extend({
   
   termsOfService: function() {
     MainView.render('termsOfService')
-  },
-  
-  nowPlaying: function() {
-    MainView.render(NowPlaying.view)
   },
   
   playlists: function(username) {
