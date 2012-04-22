@@ -99,6 +99,8 @@ Model.Playlist = Backbone.Model.extend({
         trackPrev.play()
         NowPlaying.tracks.next()
       }
+    } else {
+      Shuffle.history.remove(track)
     }
   },
   
