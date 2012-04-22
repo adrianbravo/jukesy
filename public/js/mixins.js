@@ -61,6 +61,7 @@ View.Form = Backbone.View.extend({
     } else {
       this.addAlert()
     }
+    this.clearPasswords()
     this.focusInput()
   },
   
@@ -96,6 +97,10 @@ View.Form = Backbone.View.extend({
     _.defer(function() {
       self.elFocusFind().focus()
     })
+  },
+  
+  clearPasswords: function() {
+    this.$el.find('input[type=password]').val('')
   },
   
   elAlertFind: function() {
