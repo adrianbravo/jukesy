@@ -107,8 +107,7 @@ Model.Track = Backbone.Model.extend({
     if (!this.similarTracks || !this.similarTracks.length || this.collection.playlist != window.NowPlaying) {
       return
     }
-    // check if track is already in now playing before adding (filter by artist, name)
-    NowPlaying.tracks.add(this.similarTracks[Math.floor(this.similarTracks.length * Math.random())].clone())
+    NowPlaying.tracks.add(this.similarTracks.randomWithout(NowPlaying.tracks).clone())
   }
 
 })
