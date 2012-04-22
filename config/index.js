@@ -97,7 +97,7 @@ module.exports = function(app) {
       .use(express.bodyParser())
       .use(express.cookieParser())
       .use(express.session({
-        secret: 'jukesy', // TODO obfuscate this
+        secret: 'jukesy', // TODO clean this up
         maxAge: new Date(Date.now() + 3600000),
         store: new MongoStore({
           auto_reconnect: true,

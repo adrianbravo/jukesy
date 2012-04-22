@@ -35,7 +35,60 @@ module.exports = function(app) {
               })
       })
     },
+    
+    artistTrack: function(req, res, next) {
+      res.render('home/welcome', {
+        meta: app.meta({
+                title: req.params.artist + ' - ' + req.params.track + ' (and similar tracks)',
+                url: app.set('base_url') + '/artist/' + req.params.artist + '/track/' + req.params.track
+              })
+      })
+    },
+    
+    artistAlbum: function(req, res, next) {
+      res.render('home/welcome', {
+        meta: app.meta({
+                title: req.params.artist + ' - ' + req.params.album,
+                url: app.set('base_url') + '/artist/' + req.params.artist + '/album/' + req.params.album
+              })
+      })
+    },
+    
+    artistTopTracks: function(req, res, next) {
+      res.render('home/welcome', {
+        meta: app.meta({
+                title: 'top tracks by ' + req.params.artist,
+                url: app.set('base_url') + '/artist/' + req.params.artist + '/top-tracks'
+              })
+      })
+    },
+    
+    artistTopAlbums: function(req, res, next) {
+      res.render('home/welcome', {
+        meta: app.meta({
+                title: 'top albums by ' + req.params.artist,
+                url: app.set('base_url') + '/artist/' + req.params.artist + '/top-albums'
+              })
+      })
+    },
 
+    artistSimilar: function(req, res, next) {
+      res.render('home/welcome', {
+        meta: app.meta({
+                title: 'artists similar to ' + req.params.artist,
+                url: app.set('base_url') + '/artist/' + req.params.artist + '/similar'
+              })
+      })
+    },
+    
+    artist: function(req, res, next) {
+      res.render('home/welcome', {
+        meta: app.meta({
+                title: req.params.artist,
+                url: app.set('base_url') + '/artist/' + req.params.artist
+              })
+      })
+    }
   }
 }
 
