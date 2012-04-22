@@ -242,6 +242,7 @@ View.Sidebar = Backbone.View.extend({
   
   render: function() {
     this.$el.html(this.template({
+      nowPlayingURL: (window.NowPlaying && NowPlaying.url()) || '',
       currentUser: Session.userJSON(),
       unsavedPlaylist: window.NowPlaying && NowPlaying.isNew() && NowPlaying.get('sidebar') ? NowPlaying.toJSON() : undefined,
       playlists: _.chain(Playlists.models)

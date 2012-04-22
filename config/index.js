@@ -80,9 +80,11 @@ module.exports = function(app) {
           return fs.readFileSync(__dirname + '/../app/views/' + filename + '.jade', 'utf8')
         }
       },
+      // let's just put all the hacks in one place
       env: function() { return app.set('env') },
       assets: function() { return app.assets },
       currentUser: function(req, res) { return req.currentUser },
+      nowPlayingURL: function() { return '' },
       moment: function() { return app.moment },
       _: function() { return app._ },
       Charts: function() { return app.charts }

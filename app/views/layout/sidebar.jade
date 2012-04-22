@@ -1,6 +1,10 @@
 ul.nav.nav-list
 
   li
+    a(href= nowPlayingURL)
+      i.icon-music
+      | Now Playing
+  li
     a(href= '/#').create-new-playlist
       i.icon-plus-sign
       |  Create New Playlist
@@ -25,4 +29,4 @@ ul.nav.nav-list
             i.icon-music
           - else
             i.icon-empty
-          span(class= (playlist._id ? '' : ' unsaved ')) #{playlist.name}
+          | #{playlist.name}
