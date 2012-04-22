@@ -55,7 +55,7 @@ Model.Track = Backbone.Model.extend({
   noVideos: function() {
     this.error = true
     this.view.render().$el.addClass('error')
-    Video.next()
+    NowPlaying.tracks.next()
   },
   
   getVideoIds: function() {
@@ -166,6 +166,56 @@ Collection.Tracks = Backbone.Collection.extend({
   randomWithout: function(without) {
     var tracks = this.without.apply(this, without)
     return tracks[Math.floor(Math.random() * tracks.length)]
+  },
+  
+  next: function() {
+    var next = null
+    
+    if (Video.skipDirection == 'prev') {
+      this.prev()
+      return
+    }
+    if (Video.loading || Video.state == 3 || Video.tryRepeat()) {
+      return
+    }
+    
+    if (Shuffle.get('active')) {
+      Shuffle.next()
+      return
+    }
+    
+    if (!Video.track || Video.track === this.last()) {
+      next = this.first()
+    } else {
+      next = this.at(this.indexOf(Video.track) + 1)
+    }
+
+    if (next === Video.track) {
+      Video.seek(0)
+    } else {
+      next.play()
+    }
+  },
+  
+  prev: function() {
+    var prev = null
+    
+    if (Video.loading || Video.state == 3 || Video.tryRepeat() || Video.trySeek()) {
+      return
+    }
+    
+    if (Shuffle.get('active')) {
+      Shuffle.prev()
+      return
+    }
+    
+    Video.skipDirection = 'prev'
+    if (!Video.track || Video.track === this.first()) {
+      prev = this.last()
+    } else {
+      prev = this.at(this.indexOf(Video.track) - 1)
+    }
+    prev.play()
   }
   
 })

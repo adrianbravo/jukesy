@@ -58,7 +58,7 @@ Model.Video = Backbone.Model.extend({
       //Controls.updateTrackInfo()
     }
     if (this.state == 0) {
-      this.next()
+      NowPlaying.tracks.next()
     }
     if (this.state == 1 && this.pauseNextState) {
       this.pauseNextState = false
@@ -85,7 +85,7 @@ Model.Video = Backbone.Model.extend({
     this.stopped = false
 
     if (!this.track) {
-      this.next()
+      NowPlaying.tracks.next()
       return
     }
     
@@ -97,57 +97,6 @@ Model.Video = Backbone.Model.extend({
   
   isInitialLoad: function() {
     return this.state == -1 && !this.loadRatio() && !this.playRatio()
-  },
-
-  next: function() {
-    var next = null
-    
-    if (this.skipDirection == 'prev') {
-      this.prev()
-      return
-    }
-
-    if (this.loading || this.state == 3 || this.tryRepeat()) {
-      return
-    }
-    
-    if (Shuffle.get('active')) {
-      Shuffle.next()
-      return
-    }
-    
-    if (this.track === _.last(NowPlaying.tracks.models) || _.isUndefined(this.track)) {
-      next = _.first(NowPlaying.tracks.models)
-    } else {
-      next = NowPlaying.tracks.models[_.indexOf(NowPlaying.tracks.models, this.track) + 1]
-    }
-
-    if (next === this.track) {
-      this.seek(0)
-    } else {
-      next.play()
-    }
-  },
-  
-  prev: function() {
-    var prev = null
-    
-    if (this.loading || this.state == 3 || this.tryRepeat() || this.trySeek()) {
-      return
-    }
-    
-    if (Shuffle.get('active')) {
-      Shuffle.prev()
-      return
-    }
-    
-    this.skipDirection = 'prev'
-    if (this.track === _.first(NowPlaying.tracks.models) || _.isUndefined(this.track)) {
-      prev = _.last(NowPlaying.tracks.models)
-    } else {
-      prev = NowPlaying.tracks.models[_.indexOf(NowPlaying.tracks.models, this.track) - 1]
-    }
-    prev.play()
   },
   
   load: function(id) {
@@ -352,11 +301,11 @@ View.Controls = Backbone.View.extend({
   },
   
   next: function() {
-    Video.next()
+    NowPlaying.tracks.next()
   },
   
   prev: function() {
-    Video.prev()
+    NowPlaying.tracks.prev()
   },
   
   toggleRepeat: function() {
