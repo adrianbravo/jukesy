@@ -84,7 +84,6 @@ module.exports = function(app) {
       env: function() { return app.set('env') },
       assets: function() { return app.assets },
       currentUser: function(req, res) { return req.currentUser },
-      nowPlayingURL: function() { return '' },
       moment: function() { return app.moment },
       _: function() { return app._ },
       Charts: function() { return app.charts }

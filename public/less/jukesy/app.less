@@ -107,8 +107,8 @@ a:hover {
         overflow: hidden;
         width: 148px;
         height: 20px;
-        margin: 0;
-        padding: 4px 0;
+        margin: 2px 0;
+        padding: 2px 0;
         font-size: 14px;
         line-height: 20px;
         &:hover {
@@ -118,9 +118,20 @@ a:hover {
         &.active {
           color: @grayLighter;
         }
-        &.unsaved,
-        .unsaved {
-          opacity: 0.75;
+        &.changed, &.new {
+          opacity: 0.9;
+          .border-radius(2px);
+        }
+        &.changed:hover, &.new:hover {
+          opacity: 1;
+        }
+        &.changed {
+          background: #cc6d00;
+          color: @grayDark;
+        }
+        &.new {
+          background: @red;
+          color: @white;
         }
       }
     }  

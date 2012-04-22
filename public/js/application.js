@@ -87,7 +87,7 @@ AppRouter = Backbone.Router.extend({
     }
 
     //console.log('playlist models, if length is 0 do fetch', playlist.tracks.models)
-    if (!playlist.isNew() && !playlist.tracks.models.length) {
+    if (!playlist.isNew() && !playlist.tracks.models.length && !playlist.get('changed')) {
       playlist.fetch({
         success: function(model, response) {
           playlist.tracks.reset(response.tracks)
@@ -242,7 +242,7 @@ View.Sidebar = Backbone.View.extend({
   
   render: function() {
     this.$el.html(this.template({
-      nowPlayingURL: (window.NowPlaying && NowPlaying.url()) || '',
+      nowPlayingUrl: (window.NowPlaying && NowPlaying.localUrl()) || '',
       currentUser: Session.userJSON(),
       unsavedPlaylist: window.NowPlaying && NowPlaying.isNew() && NowPlaying.get('sidebar') ? NowPlaying.toJSON() : undefined,
       playlists: _.chain(Playlists.models)

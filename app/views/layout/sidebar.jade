@@ -1,9 +1,10 @@
 ul.nav.nav-list
 
-  li
-    a(href= nowPlayingURL)
-      i.icon-music
-      | Now Playing
+  - if (typeof nowPlayingUrl != 'undefined')
+    li
+      a(href= nowPlayingUrl)
+        i.icon-music
+        | Now Playing
   li
     a(href= '/#').create-new-playlist
       i.icon-plus-sign
@@ -19,12 +20,11 @@ ul.nav.nav-list
       i.icon-th-list
       |  My Playlists
 
-  li.divider
-
   - if (typeof playlists != 'undefined')
+    li.divider
     each playlist in playlists
       li
-        a.playlist(href= playlist.url, class= (playlist.active ? ' active ' : ''))
+        a.playlist(href= playlist.url, class= (playlist.active ? ' active ' : '') + (playlist.changed ? ' changed ' : '') + (!playlist._id ? ' new ' : ''))
           - if (playlist.nowPlaying)
             i.icon-music
           - else
