@@ -7,7 +7,7 @@ Mixins.TrackViewEvents = {
   playNow: function() {
     var clone = new Model.Track(this.model.toJSON())
     NowPlaying.tracks.add([ clone ], { at: _.indexOf(NowPlaying.tracks.models, Video.track) + 1 })
-    clone.play()
+    clone.play(true)
   },
   
   queueNext: function() {

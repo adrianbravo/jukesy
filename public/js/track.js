@@ -6,7 +6,7 @@ Model.Track = Backbone.Model.extend({
     this.viewTrackInfo = new View.TrackInfo({ model: this })
   },
       
-  play: function() {
+  play: function(force) {
     var self = this
     
     // this.playing poses an issue
@@ -14,9 +14,9 @@ Model.Track = Backbone.Model.extend({
       return false
     }
     
-    if (this === Video.track) {
-      Video.seek(0)
-    }
+    //if (this === Video.track) {
+    //  Video.seek(0)
+    //}
     
     if (NowPlaying != this.collection.playlist) {
       this.collection.playlist.setNowPlaying()
@@ -35,6 +35,11 @@ Model.Track = Backbone.Model.extend({
         message: 'Now playing ' + this.get('name') + ' by ' + this.get('artist') + '.',
         type: 'info'
       })
+      
+      if (force) {
+        this.removeFromHistory()
+      }
+      this.addToHistory()
       
       this.setVideo(0)
       Video.play()
@@ -58,8 +63,17 @@ Model.Track = Backbone.Model.extend({
 
   noVideos: function() {
     this.error = true
+    this.removeFromHistory()
     this.view.render().$el.addClass('error')
     this.skip()
+  },
+  
+  removeFromHistory: function() {
+    Shuffle.history.remove(this)
+  },
+  
+  addToHistory: function() {
+    Shuffle.history.add(this)
   },
   
   skip: function() {
@@ -154,7 +168,7 @@ View.Track = Backbone.View.extend(_.extend(Mixins.TrackViewEvents, {
   },
   
   playNow: function() {
-    this.model.play()
+    this.model.play(true)
     this.$el.find('.dropdown').removeClass('open')
     return false
   }

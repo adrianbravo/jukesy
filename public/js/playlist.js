@@ -78,16 +78,26 @@ Model.Playlist = Backbone.Model.extend({
   },
   
   trackRemoveCallback: function(track, playlist, options) {
-    var index = options.index || 0
+    var index, trackPrev
     track.view.remove()
-    Shuffle.history.remove(track)
     
     if (track == Video.track) {
-      if (NowPlaying.tracks.length) {
-        // This may be an issue with multiple track removal
-        NowPlaying.tracks.at(index).play()
+      if (Shuffle.get('active')) {
+        index = Shuffle.history.indexOf(track) - 1
+        trackPrev = Shuffle.history.at(index)
+        Shuffle.history.reset(Shuffle.history.first(index)) // removes tracks at and post-index
       } else {
+        index = options.index || 0
+        trackPrev = NowPlaying.tracks.at(index)
+      }
+      
+      if (!trackPrev && !NowPlaying.tracks.length) {
         Video.stop()
+      } else if (!trackPrev) {
+        NowPlaying.tracks.play()
+      } else {
+        trackPrev.play()
+        NowPlaying.tracks.next()
       }
     }
   },

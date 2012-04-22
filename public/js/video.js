@@ -36,7 +36,6 @@ Model.Video = Backbone.Model.extend({
   
   toggleQuality: function() {
     this.quality = (this.quality == 'hd720') ? 'medium' : 'hd720'
-    //this.seek(0)
     this.player.setPlaybackQuality(this.quality)
   },
   
