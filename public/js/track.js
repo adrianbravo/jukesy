@@ -9,14 +9,11 @@ Model.Track = Backbone.Model.extend({
   play: function(force) {
     var self = this
     
-    // this.playing poses an issue
     if (!Video.player || Video.loading || this.playing) {
+      Video.seek(0)
       return false
     }
     
-    //if (this === Video.track) {
-    //  Video.seek(0)
-    //}
     if (NowPlaying != this.collection.playlist) {
       this.collection.playlist.setNowPlaying()
     }

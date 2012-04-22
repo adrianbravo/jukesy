@@ -143,7 +143,7 @@ Model.Video = Backbone.Model.extend({
   },
   
   seek: function(time) {
-    this.player.seekTo(time, false)
+    this.player && this.player.seekTo(time, false)
   },
 
   duration: function() {
