@@ -13,7 +13,7 @@ Model.Shuffle = Backbone.Model.extend({
   },
   
   enable: function() {
-    this.history.reset([ Video.track ])
+    this.history.reset(Video.track ? [ Video.track ] : [])
     this.set({ active: true })
   },
   
