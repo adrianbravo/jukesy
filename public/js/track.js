@@ -151,7 +151,24 @@ View.Track = Backbone.View.extend(_.extend(Mixins.TrackViewEvents, {
 }))
 
 Collection.Tracks = Backbone.Collection.extend({
-  model: Model.Track
+  model: Model.Track,
+  
+  play: function() {
+    if (!this.length) {
+      return
+    }
+    if (Shuffle.get('active')) {
+      this.randomWithout([]).play()
+    } else {
+      this.at(0).play()
+    }
+  },
+  
+  randomWithout: function(without) {
+    var tracks = this.without.apply(this, without)
+    return tracks[Math.floor(Math.random() * tracks.length)]
+  }
+  
 })
 
 

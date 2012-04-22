@@ -44,13 +44,6 @@ Model.Playlist = Backbone.Model.extend({
     return url
   },
   
-  random: function(options) {
-    var tracks
-    options = options || { without: Video.track }
-    tracks = _.without(this.tracks.models, options.without || [])
-    return tracks[Math.floor(Math.random() * tracks.length)]
-  },
-  
   localUrl: function() {
     return '/user/' + this.get('user') + '/playlist/' + (this.id || this.cid)
   },
@@ -94,6 +87,7 @@ Model.Playlist = Backbone.Model.extend({
     
     if (Video.track == track) {
       if (NowPlaying.tracks.length) {
+        // This may be an issue with multiple track removal
         NowPlaying.tracks.at(index).play()
       } else {
         Video.stop()
@@ -287,9 +281,7 @@ View.Playlist = Backbone.View.extend({
   
   playAll: function() {
     this.model.setNowPlaying()
-    if (this.model.tracks.models[0]) {
-      this.model.tracks.models[0].play()
-    }
+    this.model.tracks.play()
   },
   
   queueNext: function() {

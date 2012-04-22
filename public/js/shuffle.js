@@ -17,13 +17,9 @@ Model.Shuffle = Backbone.Model.extend({
     this.set({ active: true })
   },
   
-  shuffle: function() {
-    return NowPlaying.random({ without: this.history.models })
-  },
-  
   next: function() {
     if (!this.historyIndex) {
-      var track = this.shuffle()
+      var track = NowPlaying.tracks.randomWithout(this.history.models)
       this.historyIndex = 0
       track.play()
       this.history.unshift(track)

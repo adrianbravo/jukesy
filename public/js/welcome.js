@@ -39,9 +39,8 @@ View.Welcome = Backbone.View.extend({
   playAll: function() {
     newNowPlaying()
     NowPlaying.tracks.add(this.cloneTracks())
-    if (NowPlaying.tracks.models[0]) {
-      NowPlaying.tracks.models[0].play()
-    }
+    NowPlaying.tracks.play()
+    NowPlaying.navigateTo(true)
   },
   
   queueNext: function() {

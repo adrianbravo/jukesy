@@ -88,7 +88,7 @@ Model.Video = Backbone.Model.extend({
       this.next()
       return
     }
-        
+    
     this.player.playVideo()
     if (this.state != 1) {
       this.seek(Math.floor(this.currentTime()))

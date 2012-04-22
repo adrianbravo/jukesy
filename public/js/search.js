@@ -153,11 +153,10 @@ View.SearchResultsTracks = View.SearchResults.extend({
   },
   
   playAll: function() {
-    var clones = this.model.cloneTracks()
     newNowPlaying()
-    NowPlaying.tracks.add(clones, { at: _.indexOf(NowPlaying.tracks.models, Video.track) + 1 })
-    clones[0].play()
-    NowPlaying.navigateTo(true) // we may not really want to use true here... enables replace on navigate
+    NowPlaying.tracks.add(this.model.cloneTracks())
+    NowPlaying.tracks.play()
+    NowPlaying.navigateTo(true)
   },
   
   queueNext: function() {
