@@ -17,7 +17,6 @@ Model.Track = Backbone.Model.extend({
     //if (this === Video.track) {
     //  Video.seek(0)
     //}
-    
     if (NowPlaying != this.collection.playlist) {
       this.collection.playlist.setNowPlaying()
     }
@@ -25,7 +24,6 @@ Model.Track = Backbone.Model.extend({
     if (_.isUndefined(this.videos)) {
       this.getVideoIds()
     } else if (_.isEmpty(this.videos)) {
-      this.setPlaying()
       this.noVideos()
     } else {
       this.setPlaying()
@@ -62,8 +60,8 @@ Model.Track = Backbone.Model.extend({
   },
 
   noVideos: function() {
+    this.setPlaying()
     this.error = true
-    this.removeFromHistory()
     this.view.render().$el.addClass('error')
     this.skip()
   },
@@ -77,11 +75,13 @@ Model.Track = Backbone.Model.extend({
   },
   
   skip: function() {
+    this.addToHistory()
     if (Video.skipDirection == 'prev') {
       NowPlaying.tracks.prev()
     } else {
       NowPlaying.tracks.next()
     }
+    this.removeFromHistory()
   },
   
   getVideoIds: function() {
