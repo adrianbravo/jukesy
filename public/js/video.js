@@ -79,7 +79,7 @@ Model.Video = Backbone.Model.extend({
   },
   
   play: function() {
-    if (!NowPlaying.tracks.models.length) {
+    if (!NowPlaying.tracks.length) {
       return false
     }
     this.stopped = false
