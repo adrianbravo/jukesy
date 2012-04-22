@@ -14,6 +14,10 @@ Model.Track = Backbone.Model.extend({
       return false
     }
     
+    if (this === Video.track) {
+      Video.seek(0)
+    }
+    
     if (NowPlaying != this.collection.playlist) {
       this.collection.playlist.setNowPlaying()
     }
@@ -55,7 +59,15 @@ Model.Track = Backbone.Model.extend({
   noVideos: function() {
     this.error = true
     this.view.render().$el.addClass('error')
-    NowPlaying.tracks.next()
+    this.skip()
+  },
+  
+  skip: function() {
+    if (Video.skipDirection == 'prev') {
+      NowPlaying.tracks.prev()
+    } else {
+      NowPlaying.tracks.next()
+    }
   },
   
   getVideoIds: function() {
@@ -171,30 +183,16 @@ Collection.Tracks = Backbone.Collection.extend({
   next: function() {
     var next = null
     
-    if (Video.skipDirection == 'prev') {
-      this.prev()
-      return
-    }
     if (Video.loading || Video.state == 3 || Video.tryRepeat()) {
       return
     }
     
     if (Shuffle.get('active')) {
-      Shuffle.next()
-      return
-    }
-    
-    if (!Video.track || Video.track === this.last()) {
-      next = this.first()
+      return Shuffle.next()
     } else {
-      next = this.at(this.indexOf(Video.track) + 1)
+      next = (!Video.track || Video.track === this.last()) ? this.first() : this.at(this.indexOf(Video.track) + 1)
     }
-
-    if (next === Video.track) {
-      Video.seek(0)
-    } else {
-      next.play()
-    }
+    next.play()
   },
   
   prev: function() {
@@ -204,16 +202,11 @@ Collection.Tracks = Backbone.Collection.extend({
       return
     }
     
-    if (Shuffle.get('active')) {
-      Shuffle.prev()
-      return
-    }
-    
     Video.skipDirection = 'prev'
-    if (!Video.track || Video.track === this.first()) {
-      prev = this.last()
+    if (Shuffle.get('active')) {
+      return Shuffle.prev()
     } else {
-      prev = this.at(this.indexOf(Video.track) - 1)
+      prev = (!Video.track || Video.track === this.first()) ? this.last() : this.at(this.indexOf(Video.track) - 1)
     }
     prev.play()
   }
