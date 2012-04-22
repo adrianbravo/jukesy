@@ -50,7 +50,7 @@ module.exports = function(app) {
     
     resetCheck: function(req, res, next) {
       if (!req.xhr) {
-        res.render('home/welcome')
+        res.render('home/welcome', { meta: app.meta() })
       } else {
         if (!req.paramUser.validResetToken(req.param('token'))) {
           return next(new app.Error(401, { $: 'reset_token_expired' }))
@@ -64,7 +64,13 @@ module.exports = function(app) {
       if (req.xhr) {
         res.json(userJSON) 
       } else {
-        res.render('user/show', { user: userJSON })
+        res.render('user/show', {
+          user: userJSON,
+          meta: app.meta({
+                  title: req.paramUser.username + '\'s profile',
+                  url: req.paramUser.url()
+                })
+        })
       }
     },
     
@@ -73,7 +79,13 @@ module.exports = function(app) {
       if (req.xhr) {
         res.json(userJSON) 
       } else {
-        res.render('user/edit', { user: userJSON })
+        res.render('user/edit', {
+          user: userJSON,
+          meta: app.meta({
+                  title: 'edit ' + userJSON.username + '\'s profile',
+                  url: req.paramUser.url() + '/edit'
+                })
+        })
       }
     },
 

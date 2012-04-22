@@ -33,7 +33,8 @@ User.method({
       fullname : this.fullname,
       bio      : this.bio,
       location : this.location,
-      website  : this.website
+      website  : this.website,
+      url      : this.url()
     }
     
     if (user && (user.id == this.id || user.admin)) {
@@ -46,6 +47,10 @@ User.method({
       })
     }
     return json
+  },
+  
+  url: function() {
+    return app.set('base_url') + '/user/' + this.user
   },
   
   findPlaylists: function(next) {

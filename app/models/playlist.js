@@ -26,9 +26,13 @@ Playlist.method({
       tracks       : this.tracks,
       tracks_count : this.tracks_count,
       time         : this.time,
-      url: '/user/' + this.user + '/playlist/' + this.id
+      url          : this.url()
     }
     return json
+  },
+  
+  url: function() {
+    return app.set('base_url') + '/user/' + this.user + '/playlist/' + this.id
   }
 })
 

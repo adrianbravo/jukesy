@@ -9,6 +9,7 @@ module.exports = function(app) {
         if (err || !playlists) {
           return next(new app.Error(err || 500))
         }
+        
         if (req.xhr) {
           res.json(
             app._.map(playlists, function(playlist) {
@@ -20,7 +21,11 @@ module.exports = function(app) {
             user: req.paramUser.username,
             playlists: app._.map(playlists, function(playlist) {
               return playlist.exposeJSON()
-            })
+            }),
+            meta: app.meta({
+                    title: req.paramUser.username + '\'s playlists',
+                    url: req.paramUser.url() + '/playlist'
+                  })
           })
         }
       })
@@ -33,7 +38,12 @@ module.exports = function(app) {
         res.render('playlist/show', {
           playlist: req.paramPlaylist.exposeJSON(),
           nowPlaying: false,
-          editName: false
+          editName: false,
+          meta: app.meta({
+                  title: req.paramPlaylist.name + ' - a playlist by ' + req.paramUser.username,
+                  url: req.paramPlaylist.url()
+                })
+          
         })
       }
     },

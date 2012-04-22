@@ -34,7 +34,6 @@ module.exports = function(app) {
   app.get('/about', HomeController.about)
   app.get('/terms-of-service', HomeController.termsOfService)
   app.get('/privacy-policy', HomeController.privacyPolicy)
-  app.get('/now-playing', HomeController.nowPlaying)
 
   app.get('/user', UserController.index)
   app.post('/user/forgot', UserController.forgot)

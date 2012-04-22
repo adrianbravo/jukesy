@@ -2,17 +2,17 @@ head
   title jukesy - watch music videos
 
   meta(content= 'text/html; charset=utf-8', 'http-equiv'= 'content-type')
-  meta(content= 'Jukesy is an application that helps you watch music videos from YouTube. With Jukesy, you can create playlists, discover new music, listen to your favorite albums, and more.', name= 'description')
+  meta(content= meta.description, name= 'description')
   meta(content= 'Adrian Bravo', name= 'author')
   meta(content= 'jukesy, music, music videos, youtube music', name= 'keywords')
   meta(content= 'width=device-width, initial-scale=1', name= 'viewport')
   
   meta(property= 'og:site_name', content= 'jukesy')
-  meta(property= 'og:title', content= 'jukesy - watch music videos')
-  meta(property= 'og:description', content= 'Jukesy is an application that helps you watch music videos from YouTube. With Jukesy, you can create playlists, discover new music, listen to your favorite albums, and more.')
-  meta(property= 'og:image', content= 'http://static2.jukesy.com/img/jukesy-256.png')
-  meta(property= 'og:type', content= 'website')
-  meta(property= 'og:url', content= 'http://jukesy.com')
+  meta(property= 'og:title', content= meta.title)
+  meta(property= 'og:description', content= meta.description)
+  meta(property= 'og:image', content= meta.image)
+  meta(property= 'og:type', content= meta.type)
+  meta(property= 'og:url', content= meta.url)
   meta(property= 'fb:app_id', content= '150725614969142')
   
   link(rel= 'icon', href= assets.favicon, type= 'image/png')

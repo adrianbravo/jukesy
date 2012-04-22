@@ -18,13 +18,13 @@ module.exports = function(app) {
       } else {
         switch(err.code) {
           case 500:
-            res.render('500', { status: 500 })
+            res.render('500', { status: 500, meta: app.meta() })
             break
           case 404:
-            res.render('404', { status: 404 })
+            res.render('404', { status: 404, meta: app.meta() })
             break
           case 401:
-            res.render('401', { status: 401 })
+            res.render('401', { status: 401, meta: app.meta() })
             break
           default:
             res.json(err, err.code)
@@ -35,7 +35,7 @@ module.exports = function(app) {
     },
 
     notFound: function(req, res, next) {
-      res.render('404', { status: 404 })
+      res.render('404', { status: 404, meta: app.meta() })
     }
 
   }
