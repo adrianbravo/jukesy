@@ -37,7 +37,7 @@ Model.Shuffle = Backbone.Model.extend({
   },
   
   trimHistory: function() {
-    this.history.reset(this.history.last(_.min([Math.floor(this.history.length / 2), 50])))
+    this.history.reset(this.history.last(_.min([Math.floor(NowPlaying.tracks.length / 2), 50])))
   }
   
 })
