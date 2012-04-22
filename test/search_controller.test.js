@@ -4,7 +4,7 @@ describe('Search Controller', function() {
     it('returns a 200 with proper metadata', function(done) {
       request.get('/search/' + encodeURIComponent('Röyksopp'), function(res) {
         expect(res).status(200)
-        expect(res.text).to.match(/search: Röyksopp/)
+        expect(res.text).to.match(/Search: Röyksopp/)
         done()
       })
     })
@@ -14,7 +14,7 @@ describe('Search Controller', function() {
     it('returns a 200 with proper metadata', function(done) {
       request.get('/search/' + encodeURIComponent('Röyksopp') + '/track', function(res) {
         expect(res).status(200)
-        expect(res.text).to.match(/search tracks: Röyksopp/)
+        expect(res.text).to.match(/Search for Tracks: Röyksopp/)
         done()
       })
     })
@@ -24,7 +24,7 @@ describe('Search Controller', function() {
     it('returns a 200 with proper metadata', function(done) {
       request.get('/search/' + encodeURIComponent('Röyksopp') + '/album', function(res) {
         expect(res).status(200)
-        expect(res.text).to.match(/search albums: Röyksopp/)
+        expect(res.text).to.match(/Search for Albums: Röyksopp/)
         done()
       })
     })
@@ -34,7 +34,7 @@ describe('Search Controller', function() {
     it('returns a 200 with proper metadata', function(done) {
       request.get('/search/' + encodeURIComponent('Röyksopp') + '/artist', function(res) {
         expect(res).status(200)
-        expect(res.text).to.match(/search artists: Röyksopp/)
+        expect(res.text).to.match(/Search for Artists: Röyksopp/)
         done()
       })
     })
@@ -64,7 +64,7 @@ describe('Search Controller', function() {
     it('returns a 200 with proper metadata', function(done) {
       request.get('/artist/' + encodeURIComponent('Röyksopp') + '/top-tracks', function(res) {
         expect(res).status(200)
-        expect(res.text).to.match(/top tracks by Röyksopp/)
+        expect(res.text).to.match(/Top Tracks by Röyksopp/)
         done()
       })
     })
@@ -74,7 +74,7 @@ describe('Search Controller', function() {
     it('returns a 200 with proper metadata', function(done) {
       request.get('/artist/' + encodeURIComponent('Röyksopp') + '/top-albums', function(res) {
         expect(res).status(200)
-        expect(res.text).to.match(/top albums by Röyksopp/)
+        expect(res.text).to.match(/Top Albums by Röyksopp/)
         done()
       })
     })
@@ -84,7 +84,7 @@ describe('Search Controller', function() {
     it('returns a 200 with proper metadata', function(done) {
       request.get('/artist/' + encodeURIComponent('Röyksopp') + '/similar', function(res) {
         expect(res).status(200)
-        expect(res.text).to.match(/artists similar to Röyksopp/)
+        expect(res.text).to.match(/Artists similar to Röyksopp/)
         done()
       })
     })

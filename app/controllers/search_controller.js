@@ -5,7 +5,7 @@ module.exports = function(app) {
     query: function(req, res, next) {
       res.render('home/welcome', {
         meta: app.meta({
-                title: 'search: ' + req.params.query,
+                title: 'Search: ' + req.params.query,
                 url: app.set('base_url') + '/search/' + req.params.query
               })
       })
@@ -14,7 +14,7 @@ module.exports = function(app) {
     queryTrack: function(req, res, next) {
       res.render('home/welcome', {
         meta: app.meta({
-                title: 'search tracks: ' + req.params.query,
+                title: 'Search for Tracks: ' + req.params.query,
                 url: app.set('base_url') + '/search/' + req.params.query + '/track'
               })
       })
@@ -22,7 +22,7 @@ module.exports = function(app) {
     queryAlbum: function(req, res, next) {
       res.render('home/welcome', {
         meta: app.meta({
-                title: 'search albums: ' + req.params.query,
+                title: 'Search for Albums: ' + req.params.query,
                 url: app.set('base_url') + '/search/' + req.params.query + '/album'
               })
       })
@@ -30,7 +30,7 @@ module.exports = function(app) {
     queryArtist: function(req, res, next) {
       res.render('home/welcome', {
         meta: app.meta({
-                title: 'search artists: ' + req.params.query,
+                title: 'Search for Artists: ' + req.params.query,
                 url: app.set('base_url') + '/search/' + req.params.query + '/artist'
               })
       })
@@ -41,6 +41,7 @@ module.exports = function(app) {
         meta: app.meta({
                 title: req.params.artist + ' - ' + req.params.track + ' (and similar tracks)',
                 url: app.set('base_url') + '/artist/' + req.params.artist + '/track/' + req.params.track
+                //type
               })
       })
     },
@@ -50,6 +51,7 @@ module.exports = function(app) {
         meta: app.meta({
                 title: req.params.artist + ' - ' + req.params.album,
                 url: app.set('base_url') + '/artist/' + req.params.artist + '/album/' + req.params.album
+                //type
               })
       })
     },
@@ -57,7 +59,7 @@ module.exports = function(app) {
     artistTopTracks: function(req, res, next) {
       res.render('home/welcome', {
         meta: app.meta({
-                title: 'top tracks by ' + req.params.artist,
+                title: 'Top Tracks by ' + req.params.artist,
                 url: app.set('base_url') + '/artist/' + req.params.artist + '/top-tracks'
               })
       })
@@ -66,7 +68,7 @@ module.exports = function(app) {
     artistTopAlbums: function(req, res, next) {
       res.render('home/welcome', {
         meta: app.meta({
-                title: 'top albums by ' + req.params.artist,
+                title: 'Top Albums by ' + req.params.artist,
                 url: app.set('base_url') + '/artist/' + req.params.artist + '/top-albums'
               })
       })
@@ -75,7 +77,7 @@ module.exports = function(app) {
     artistSimilar: function(req, res, next) {
       res.render('home/welcome', {
         meta: app.meta({
-                title: 'artists similar to ' + req.params.artist,
+                title: 'Artists similar to ' + req.params.artist,
                 url: app.set('base_url') + '/artist/' + req.params.artist + '/similar'
               })
       })
@@ -86,6 +88,7 @@ module.exports = function(app) {
         meta: app.meta({
                 title: req.params.artist,
                 url: app.set('base_url') + '/artist/' + req.params.artist
+                //type
               })
       })
     }
