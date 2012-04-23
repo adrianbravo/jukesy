@@ -18,7 +18,6 @@
               |  Disable Autosave
             - else
               |  Enable Autosave
-
       li
         a.playlist-sidebar
           - if (playlist.sidebar)
@@ -44,6 +43,10 @@
         a.queue-all-next Queue All Next
       li
         a.queue-all-last Queue All Last
+      - if (playlist._id)
+        li.divider
+        li
+          a.share Share
 
 - if (editName)
   input.playlist-name-edit(maxlength= '50', name= 'playlist-name', value= playlist.name)

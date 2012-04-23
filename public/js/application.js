@@ -296,6 +296,7 @@ $(function() {
   window.Shuffle = new Model.Shuffle
   window.loginModal = new View.SessionCreate({ model: Session })
   window.signupModal = new View.UserCreate()
+  window.shareModal = new View.Share()
   window.forgotModal = new View.UserForgot()
 
   // hijack links

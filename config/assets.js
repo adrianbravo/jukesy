@@ -32,6 +32,7 @@ var assets = {
 
     '/js/video.js',
     '/js/keys.js',
+    '/js/share.js',
     '/js/alert.js',
     '/js/application.js'
   ],

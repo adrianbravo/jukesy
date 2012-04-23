@@ -33,6 +33,7 @@ jukesy:
       ./public/js/welcome.js \
       ./public/js/video.js \
       ./public/js/keys.js \
+      ./public/js/share.js \
       ./public/js/alert.js \
       ./public/js/application.js > ./public/jukesy.js
 	uglifyjs -nc -nm -nmf ./public/jukesy.js > ./public/jukesy.min.js

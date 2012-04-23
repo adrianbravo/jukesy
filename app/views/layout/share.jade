@@ -1,0 +1,22 @@
+.modal-header
+  a.close('data-dismiss'= 'modal') &times;
+  h3 Sharing is caring
+.modal-body#share
+
+  p
+    button.btn.share-twitter
+      i.icon-twitter-sign
+      |  twitter
+    button.btn.share-facebook
+      i.icon-facebook-sign
+      |  facebook
+  p Or copy the url manually:
+
+  p
+    textarea#share-url #{url}#{autoplay ? '?autoplay' : ''}
+    button.btn.btn-info.pull-right.autoplay('data-toggle' = 'button', class= autoplay ? ' active ' : '') Auto-play
+    
+.modal-footer
+  button.btn('data-dismiss'= 'modal')
+    i.icon-arrow-left
+    |  Go back

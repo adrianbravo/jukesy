@@ -41,8 +41,8 @@ module.exports = function(app) {
           editName: false,
           meta: app.meta({
                   title: req.paramPlaylist.name + ' - a playlist by ' + req.paramUser.username,
-                  url: req.paramPlaylist.url(),
-                  image: app.set('base_url') + '/img/jukesy-play.png'
+                  image: app.set('base_url') + '/img/jukesy-play.png',
+                  url: null
                 })
           
         })

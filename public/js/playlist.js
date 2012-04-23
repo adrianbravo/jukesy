@@ -280,6 +280,7 @@ View.Playlist = Backbone.View.extend({
     'click .play-all'       : 'playAll',
     'click .queue-all-next' : 'queueNext',
     'click .queue-all-last' : 'queueLast',
+    'click .share'          : 'share',
     'blur .playlist-name-edit'     : 'validateName',
     'keypress .playlist-name-edit' : 'keyDown'
   },
@@ -325,6 +326,10 @@ View.Playlist = Backbone.View.extend({
   
   queueLast: function() {
     NowPlaying.tracks.add(this.model.cloneTracks())
+  },
+  
+  share: function() {
+    shareModal.render()
   },
   
   toggleSidebar: function() {

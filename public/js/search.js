@@ -154,7 +154,8 @@ View.SearchResultsTracks = View.SearchResults.extend({
   events: {
     'click .play-all'       : 'playAll',
     'click .queue-all-next' : 'queueNext',
-    'click .queue-all-last' : 'queueLast'
+    'click .queue-all-last' : 'queueLast',
+    'click .share'          : 'share'
   },
   
   playAll: function(autoplay) {
@@ -170,6 +171,10 @@ View.SearchResultsTracks = View.SearchResults.extend({
   
   queueLast: function() {
     NowPlaying.tracks.add(this.model.cloneTracks())
+  },
+  
+  share: function() {
+    shareModal.render()
   }
 })
 
