@@ -59,21 +59,28 @@ Model.Playlist = Backbone.Model.extend({
     Router.navigate(this.localUrl(), { trigger: true, replace: replace })
   },
   
-  tracksCallback: function() {
+  tracksCallback: function(track, playlist, options) {
     var change = this.tracks.models.length - this.get('tracks_count')
+      , namedTrack
       , message
     
     this.set({ tracks_count: this.tracks.models.length })
     this.view.render()
-    
-    if (change > 0) {
-      message = 'Added ' + change + ' ' + _.plural(change, 'track', 'tracks') + ' to ' + this.get('name')
+    namedTrack = change > 0 ? this.tracks.at(options.index - change + 1) : track
+
+    // move this to a view
+    if (change > 1) {
+      message = 'Added ' + namedTrack.get('artist') + ' - ' + namedTrack.get('name') + ' and ' + (change - 1) + ' other ' + _.plural(change, 'track', 'tracks') + ' to ' + this.get('name')
+    } else if (change == 1) {
+      message = 'Added ' + namedTrack.get('artist') + ' - ' + namedTrack.get('name') + ' to ' + this.get('name')
+    } else if (change == -1) {
+      message = 'Removed ' + namedTrack.get('artist') + ' - ' + namedTrack.get('name') + ' from ' + this.get('name')
     } else {
-      message = 'Removed ' + Math.abs(change) + ' ' + _.plural(change, 'track', 'tracks') + ' from ' + this.get('name')
+      message = 'Removed ' + namedTrack.get('artist') + ' - ' + namedTrack.get('name') + ' and ' + Math.abs(change - 1) + ' other ' + _.plural(change, 'track', 'tracks') + ' from ' + this.get('name')
     }
     Meow.render({
       message: message,
-      type: 'default'
+      type: 'success'
     })
   },
   

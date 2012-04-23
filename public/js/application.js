@@ -215,15 +215,18 @@ View.Main = Backbone.View.extend({
   },
 
   render: function(template) {
+    Controls.fullscreenDisable()
     if (_.isString(template)) {
       this.$el.html(this.templates[template]({ currentUser: Session.userJSON() }))
     } else if (_.isObject(template)) {
       this.$el.html(template.render().$el)
       template.delegateEvents()
     }
-    _.defer(function() {
-      $body.scrollTop(0)
-    })
+    if (template != WelcomeView) {
+      _.defer(function() {
+        $body.scrollTop(MainView.$el.position().top - 15)
+      })
+    }
     SidebarView.render()
   }
 })
