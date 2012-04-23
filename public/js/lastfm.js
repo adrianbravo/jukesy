@@ -36,7 +36,13 @@ Model.LastFM = Backbone.Model.extend({
     this.trigger('query')
     
     _.defer(function() {
-      $.getJSON('http://ws.audioscrobbler.com/2.0/?' + $.param(self.params), self.queryCallback)
+      //$.getJSON('http://ws.audioscrobbler.com/2.0/?' + $.param(self.params), self.queryCallback)
+      $.ajax({
+        url: 'http://ws.audioscrobbler.com/2.0/',
+        dataType: 'jsonp',
+        data: self.params,
+        success: self.queryCallback
+      })
     })
   },
   
