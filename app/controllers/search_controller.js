@@ -6,7 +6,7 @@ module.exports = function(app) {
       res.render('home/welcome', {
         meta: app.meta({
                 title: 'Search: ' + req.params.query,
-                url: app.set('base_url') + '/search/' + req.params.query
+                url: null
               })
       })
     },
@@ -15,8 +15,8 @@ module.exports = function(app) {
       res.render('home/welcome', {
         meta: app.meta({
                 title: 'Search for Tracks: ' + req.params.query,
-                url: app.set('base_url') + '/search/' + req.params.query + '/track',
-                image: app.set('base_url') + '/img/jukesy-play.png'
+                image: app.set('base_url') + '/img/jukesy-play.png',
+                url: null
               })
       })
     },
@@ -24,7 +24,7 @@ module.exports = function(app) {
       res.render('home/welcome', {
         meta: app.meta({
                 title: 'Search for Albums: ' + req.params.query,
-                url: app.set('base_url') + '/search/' + req.params.query + '/album'
+                url: null
               })
       })
     },
@@ -32,7 +32,7 @@ module.exports = function(app) {
       res.render('home/welcome', {
         meta: app.meta({
                 title: 'Search for Artists: ' + req.params.query,
-                url: app.set('base_url') + '/search/' + req.params.query + '/artist'
+                url: null
               })
       })
     },
@@ -41,8 +41,8 @@ module.exports = function(app) {
       res.render('home/welcome', {
         meta: app.meta({
                 title: req.params.artist + ' - ' + req.params.track + ' (and similar tracks)',
-                url: app.set('base_url') + '/artist/' + req.params.artist + '/track/' + req.params.track,
-                image: app.set('base_url') + '/img/jukesy-play.png'
+                image: app.set('base_url') + '/img/jukesy-play.png',
+                url: null
               })
       })
     },
@@ -51,8 +51,8 @@ module.exports = function(app) {
       res.render('home/welcome', {
         meta: app.meta({
                 title: req.params.artist + ' - ' + req.params.album,
-                url: app.set('base_url') + '/artist/' + req.params.artist + '/album/' + req.params.album,
-                image: app.set('base_url') + '/img/jukesy-play.png'
+                image: app.set('base_url') + '/img/jukesy-play.png',
+                url: null
               })
       })
     },
@@ -61,8 +61,8 @@ module.exports = function(app) {
       res.render('home/welcome', {
         meta: app.meta({
                 title: 'Top Tracks by ' + req.params.artist,
-                url: app.set('base_url') + '/artist/' + req.params.artist + '/top-tracks',
-                image: app.set('base_url') + '/img/jukesy-play.png'
+                image: app.set('base_url') + '/img/jukesy-play.png',
+                url: null
               })
       })
     },
@@ -71,7 +71,7 @@ module.exports = function(app) {
       res.render('home/welcome', {
         meta: app.meta({
                 title: 'Top Albums by ' + req.params.artist,
-                url: app.set('base_url') + '/artist/' + req.params.artist + '/top-albums'
+                url: null
               })
       })
     },
@@ -80,7 +80,7 @@ module.exports = function(app) {
       res.render('home/welcome', {
         meta: app.meta({
                 title: 'Artists similar to ' + req.params.artist,
-                url: app.set('base_url') + '/artist/' + req.params.artist + '/similar'
+                url: null
               })
       })
     },
@@ -89,7 +89,7 @@ module.exports = function(app) {
       res.render('home/welcome', {
         meta: app.meta({
                 title: req.params.artist,
-                url: app.set('base_url') + '/artist/' + req.params.artist
+                url: null
                 //type
               })
       })
