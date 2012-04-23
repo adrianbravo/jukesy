@@ -4,11 +4,12 @@ Model.Playlist = Backbone.Model.extend({
     name: 'Untitled Playlist',
     user: 'anonymous',
     sidebar: true,
+    autosave: true,
     tracks_count: 0
   },
   
   initialize: function() {
-    _.bindAll(this, 'setNowPlaying', 'unsetNowPlaying', 'syncCallback', 'destroyCallback', 'changeCallback', 'incrementUntitled')
+    _.bindAll(this, 'setNowPlaying', 'unsetNowPlaying', 'syncCallback', 'destroyCallback', 'changeCallback', 'incrementUntitled', 'queueAutosave')
     
     this.view = new View.Playlist({ model: this })
     this.destroyView = new View.PlaylistDestroy({ model: this })
@@ -16,7 +17,11 @@ Model.Playlist = Backbone.Model.extend({
     this.initializeTracks()
     this.on('sync', this.syncCallback)
     this.on('destroy', this.destroyCallback)
-    this.on('change:name change:sidebar', this.changeCallback)
+    this.on('change:name change:sidebar change:autosave', this.changeCallback)
+    
+    this.on('change:name change:sidebar change:autosave', this.queueAutosave)
+    this.tracks.on('add remove', this.queueAutosave)
+    
     _.defer(this.incrementUntitled)
   },
   
@@ -147,6 +152,19 @@ Model.Playlist = Backbone.Model.extend({
     this.set({ changed: true }, { silent: true })
   },
   
+  queueAutosave: function() {
+    var self = this
+    if (this.get('autosave') && !this.isNew()) {
+      this.autosave()
+    }
+  },
+  
+  autosave: _.debounce(function() {
+    if (this.get('changed')) {
+      this.save()
+    }
+  }, 15000),
+  
   setNowPlaying: function() {
     if (window.NowPlaying) {
       NowPlaying.unsetNowPlaying()
@@ -257,6 +275,7 @@ View.Playlist = Backbone.View.extend({
     'click .playlist-name.edit' : 'toggleNameEdit',
     'click .playlist-save'      : 'save',
     'click .playlist-sidebar'   : 'toggleSidebar',
+    'click .playlist-autosave'  : 'toggleAutosave',
     'click .playlist-delete'    : 'delete',
     'click .play-all'       : 'playAll',
     'click .queue-all-next' : 'queueNext',
@@ -312,7 +331,12 @@ View.Playlist = Backbone.View.extend({
     this.model.set({ sidebar: !this.model.get('sidebar') })
     this.render()
   },
-    
+  
+  toggleAutosave: function() {
+    this.model.set({ autosave: !this.model.get('autosave') })
+    this.render()
+  },
+  
   // TODO dry (reused from view form mixins)
   saveError: function(model, error) {
     var $alert, errorJSON

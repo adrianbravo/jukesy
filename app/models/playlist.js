@@ -6,15 +6,16 @@ var mongoose = require('mongoose')
   , validators = app.mongooseValidators
 
 var Playlist = module.exports = new Schema({
-  user    : { type: String, set: app.mongooseSetters.toLower, index: true },
-  name    : { type: String, default: 'Untitled Playlist' },
-  sidebar : { type: Boolean, default: false },
+  user     : { type: String, set: app.mongooseSetters.toLower, index: true },
+  name     : { type: String, default: 'Untitled Playlist' },
+  sidebar  : { type: Boolean, default: false },
+  autosave : { type: Boolean, default: true },
   tracks_count : { type: Number },
   tracks  : { type: Array, default: [] }
 }, { strict: true })
 
 Playlist.plugin(app.mongoosePlugins.timestamps)
-Playlist.plugin(app.mongoosePlugins.accessible, [ 'name', 'tracks', 'sidebar' ])
+Playlist.plugin(app.mongoosePlugins.accessible, [ 'name', 'tracks', 'sidebar', 'autosave' ])
 
 Playlist.method({
   exposeJSON: function() {
@@ -23,6 +24,7 @@ Playlist.method({
       user         : this.user,
       name         : this.name,
       sidebar      : this.sidebar,
+      autosave     : this.autosave,
       tracks       : this.tracks,
       tracks_count : this.tracks_count,
       time         : this.time,

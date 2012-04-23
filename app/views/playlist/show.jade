@@ -10,6 +10,15 @@
         a.playlist-save
           i.icon-share
           |  Save
+      - if (playlist._id)
+        li
+          a.playlist-autosave
+            i.icon-refresh
+            - if (playlist.autosave)
+              |  Disable Autosave
+            - else
+              |  Enable Autosave
+
       li
         a.playlist-sidebar
           - if (playlist.sidebar)
