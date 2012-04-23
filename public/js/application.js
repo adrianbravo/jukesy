@@ -224,7 +224,8 @@ View.Main = Backbone.View.extend({
     }
     if (template != WelcomeView) {
       _.defer(function() {
-        $body.scrollTop(MainView.$el.position().top - 15)
+        //$body.scrollTop(MainView.$el.position().top - 15)
+        $body.scrollTop(0)
       })
     }
     SidebarView.render()
