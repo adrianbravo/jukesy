@@ -200,8 +200,9 @@ View.Controls = Backbone.View.extend({
   template: jade.compile($('#controls-template').text()),
   
   initialize: function() {
-    _.bindAll(this, 'updateTimer', 'dragVolumeStop', 'dragTimerStop')
+    _.bindAll(this, 'updateTimer', 'dragVolumeStop', 'dragTimerStop', 'toggleQuality')
     this.render()
+    $('#quality').on('click', this.toggleQuality)
     
     _.defer(function() {
       setInterval(Controls.updateTimer, 333)
@@ -227,7 +228,6 @@ View.Controls = Backbone.View.extend({
     'click #radio'      : 'toggleRadio',
     'click #fullscreen' : 'toggleFullscreen',
     'click #volume'     : 'toggleMute',
-    'click #quality'    : 'toggleQuality',
     'mousedown #volume-bar'  : 'dragVolume',
     'mousedown #timer'       : 'dragTimer'
   },
