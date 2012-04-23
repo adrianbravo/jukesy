@@ -15,7 +15,8 @@ module.exports = function(app) {
       res.render('home/welcome', {
         meta: app.meta({
                 title: 'Search for Tracks: ' + req.params.query,
-                url: app.set('base_url') + '/search/' + req.params.query + '/track'
+                url: app.set('base_url') + '/search/' + req.params.query + '/track',
+                image: app.set('base_url') + '/img/jukesy-play.png'
               })
       })
     },
@@ -40,8 +41,8 @@ module.exports = function(app) {
       res.render('home/welcome', {
         meta: app.meta({
                 title: req.params.artist + ' - ' + req.params.track + ' (and similar tracks)',
-                url: app.set('base_url') + '/artist/' + req.params.artist + '/track/' + req.params.track
-                //type
+                url: app.set('base_url') + '/artist/' + req.params.artist + '/track/' + req.params.track,
+                image: app.set('base_url') + '/img/jukesy-play.png'
               })
       })
     },
@@ -50,8 +51,8 @@ module.exports = function(app) {
       res.render('home/welcome', {
         meta: app.meta({
                 title: req.params.artist + ' - ' + req.params.album,
-                url: app.set('base_url') + '/artist/' + req.params.artist + '/album/' + req.params.album
-                //type
+                url: app.set('base_url') + '/artist/' + req.params.artist + '/album/' + req.params.album,
+                image: app.set('base_url') + '/img/jukesy-play.png'
               })
       })
     },
@@ -60,7 +61,8 @@ module.exports = function(app) {
       res.render('home/welcome', {
         meta: app.meta({
                 title: 'Top Tracks by ' + req.params.artist,
-                url: app.set('base_url') + '/artist/' + req.params.artist + '/top-tracks'
+                url: app.set('base_url') + '/artist/' + req.params.artist + '/top-tracks',
+                image: app.set('base_url') + '/img/jukesy-play.png'
               })
       })
     },
