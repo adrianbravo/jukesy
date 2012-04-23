@@ -3,7 +3,8 @@
     .row
       .span2
         a#brand.brand(href= '/') jukesy
-      .span3
+      .span3#query-wrapper
         input#query(type= 'text', placeholder= 'Search for music', name= 'jukesy-query')
+        i.icon-search
       #session-button
           include session_button

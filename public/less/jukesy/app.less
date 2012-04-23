@@ -50,19 +50,32 @@ a:hover {
       border-bottom-color: @blue;
     }
   }
-
-  #query {
-    margin: 6px 0 0;
-    background: @grayLighter;
-    border-width: 2px;
-    border-color: @blue;
-    color: @grayDark;
+  
+  #query-wrapper {
+    position: relative;
+    padding-right: 20px;
     
-    &::-webkit-input-placeholder, &::-moz-placeholder {
-      color: @gray;
+    #query {
+      margin: 6px 0 0;
+      padding-right: 20px;
+      background: @grayLighter;
+      border-width: 2px;
+      border-color: @blue;
+      color: @blue;
+    
+      &::-webkit-input-placeholder, &::-moz-placeholder {
+        color: @blue;
+      }
+      &:focus {
+        background: @white;
+      }
     }
-    &:focus {
-      background: @white;
+    
+    i.icon-search {
+      position: absolute;
+      top: 12px;
+      right: 8px;
+      color: @blue;
     }
   }
   
