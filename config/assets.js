@@ -44,10 +44,9 @@ var assets = {
 }
 
 exports.development = assets
-exports.staging = assets
 exports.test = assets
 
-exports.production = {
+exports.staging = exports.production = {
   favicon: '/favicon.ico',
   js: [ '/jukesy.min.js' ],
   css: [ '/jukesy.css' ],

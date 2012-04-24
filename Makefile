@@ -1,9 +1,5 @@
 GITSHA := $(shell git rev-parse --short HEAD)
 
-#
-# lessc & uglifyjs are required
-#
-
 jukesy:
 	lessc --compress ./public/less/bootstrap/bootstrap.less > ./public/jukesy.css
 	cat ./public/js/lib/json2.js \
