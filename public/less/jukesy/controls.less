@@ -2,14 +2,15 @@
   .no-select();
   z-index: @zindexControls;
   position: fixed;
-  background: #222;
-  height: 45px;
+  background: #111;
+  height: 50px;
   top: auto;
   bottom: 0;
   left: 0;
   right: 0;
   margin: 0;
   font-size: 12px;
+  border-top: 1px solid #222;
 
   .control {
     display: inline-block;
@@ -81,14 +82,11 @@
     #time-read {
       position: absolute;
       right: 120px;
-      top: 0;
-      line-height: 24px;
+      top: 7px;
+      font-size: 11px;
       color: @grayLight;
-      font-weight: bold;
       
-      .time-current {
-        text-align: right;
-      }
+      .time-current { text-align: right; }
       .time-current,
       .time-duration {
         display: inline-block;
@@ -96,7 +94,7 @@
       }
     }
     .track-info {
-      line-height: 24px;
+      padding: 5px 0;
       text-align: center;
       width: 100%;
     }
