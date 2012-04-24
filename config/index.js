@@ -22,8 +22,8 @@ module.exports = function(app) {
   }
 
   app.set('base_url', {
-    development : 'http://127.0.0.1:3000',
-    test        : 'http://127.0.0.1:7357',
+    development : 'http://jukesy.local:3000',
+    test        : 'http://jukesy.test:7357',
     staging     : 'http://staging.jukesy.com',
     production  : 'http://jukesy.com'
   }[app.set('env')])
@@ -86,7 +86,8 @@ module.exports = function(app) {
       currentUser: function(req, res) { return req.currentUser },
       moment: function() { return app.moment },
       _: function() { return app._ },
-      Charts: function() { return app.charts }
+      Charts: function() { return app.charts },
+      baseUrl: function() { return app.set('base_url') }
     })
 
     app

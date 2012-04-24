@@ -96,7 +96,7 @@ Model.LastFM = Backbone.Model.extend({
   },
   
   url: function() {
-    return 'http://jukesy.com/' + this.urlFragment
+    return window.baseUrl + this.urlFragment
   },
 
   setType: function(type, deep) {
@@ -109,7 +109,7 @@ Model.LastFM = Backbone.Model.extend({
       this.params.artist = this.get('artist'),
       this.setType('artist')
       this.displayType = 'Similar Artists'
-      this.urlFragment = 'artist/' + this.get('artist')
+      this.urlFragment = '/artist/' + encodeURIComponent(this.get('artist'))
       this.pluckResults = function(data) {
         return data.similarartists && data.similarartists.artist
       }
@@ -119,7 +119,7 @@ Model.LastFM = Backbone.Model.extend({
       this.setType('album', true)
       this.paginationType = 'topalbums'
       this.displayType = 'Top Albums'
-      this.urlFragment = 'artist/' + this.get('artist') + '/top-albums'
+      this.urlFragment = '/artist/' + encodeURIComponent(this.get('artist')) + '/top-albums'
       this.pluckResults = function(data) {
         return data.topalbums && data.topalbums.album
       }
@@ -129,7 +129,7 @@ Model.LastFM = Backbone.Model.extend({
       this.setType('track', true)
       this.paginationType = 'toptracks'
       this.displayType = 'Top Tracks'
-      this.urlFragment = 'artist/' + this.get('artist') + '/top-tracks'
+      this.urlFragment = '/artist/' + encodeURIComponent(this.get('artist')) + '/top-tracks'
       this.pluckResults = function(data) {
         return data.toptracks && data.toptracks.track
       }
@@ -139,7 +139,7 @@ Model.LastFM = Backbone.Model.extend({
       this.setType('artist')
       this.paginationType = 'search'
       this.displayType = 'Artists'
-      this.urlFragment = 'search/' + this.get('artist') + '/artist'
+      this.urlFragment = '/search/' + encodeURIComponent(this.get('artist')) + '/artist'
       this.pluckResults = function(data) {
         return data.results.artistmatches && data.results.artistmatches.artist
       }
@@ -149,7 +149,7 @@ Model.LastFM = Backbone.Model.extend({
       this.params.album = this.get('album')
       this.setType('track', true)
       this.displayType = 'Track List'
-      this.urlFragment = 'artist/' + this.get('artist') + '/album/' + this.get('album')
+      this.urlFragment = '/artist/' + encodeURIComponent(this.get('artist')) + '/album/' + encodeURIComponent(this.get('album'))
       this.pluckResults = function(data) {
         return data.album && data.album.tracks && data.album.tracks.track
       }
@@ -159,7 +159,7 @@ Model.LastFM = Backbone.Model.extend({
       this.setType('album')
       this.paginationType = 'search'
       this.displayType = 'Albums'
-      this.urlFragment = 'search/' + this.get('album') + '/album'
+      this.urlFragment = '/search/' + encodeURIComponent(this.get('album')) + '/album'
       this.pluckResults = function(data) {
         return data.results.albummatches && data.results.albummatches.album
       }
@@ -183,7 +183,7 @@ Model.LastFM = Backbone.Model.extend({
       this.params.track = this.get('track')
       this.setType('track', true)
       this.displayType = 'Similar Tracks'
-      this.urlFragment = 'artist/' + this.get('artist') + '/track/' + this.get('track')
+      this.urlFragment = '/artist/' + encodeURIComponent(this.get('artist')) + '/track/' + encodeURIComponent(this.get('track'))
       this.pluckResults = function(data) {
         return data.similartracks && data.similartracks.track
       }
@@ -193,7 +193,7 @@ Model.LastFM = Backbone.Model.extend({
       this.setType('track')
       this.paginationType = 'search'
       this.displayType = 'Tracks'
-      this.urlFragment = 'search/' + this.get('track') + '/track'
+      this.urlFragment = '/search/' + encodeURIComponent(this.get('track')) + '/track'
       this.pluckResults = function(data) {
         return data.results.trackmatches && data.results.trackmatches.track
       }

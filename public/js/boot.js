@@ -9,10 +9,6 @@ _.mixin({
   },
   clean: function(str) {
     return _s.strip((''+str).replace(/\s+/g, ' '))
-  },
-  trimQuery: function(str) {
-    var queryPosition = str.indexOf('?')
-    return (queryPosition != -1) ? str.substring(0, queryPosition) : str
   }
 })
 
@@ -28,10 +24,6 @@ function onYouTubePlayerReady(id) {
   Video.player.addEventListener('onStateChange', 'Video.onStateChange')
   Video.player.addEventListener('onError', 'Video.onError')
   Video.volume(50)
-  if (window.autoplay) {
-    autoplay.tracks.play()
-    delete window.autoplay
-  }
 }
 
 // Redraws on resize

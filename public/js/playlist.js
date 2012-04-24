@@ -330,7 +330,10 @@ View.Playlist = Backbone.View.extend({
   
   // TODO do not hardcode this
   share: function() {
-    shareModal.render({ url: 'http://jukesy.com' + this.model.url() })
+    shareModal.render({
+      url: window.baseUrl + this.model.url(),
+      text: 'listening to the playlist ' + this.model.get('name') + ' by ' + this.model.get('user')
+    })
   },
   
   toggleSidebar: function() {

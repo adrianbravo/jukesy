@@ -110,7 +110,6 @@ View.SearchResults = Backbone.View.extend({
   
   render: function() {
     var self = this
-      , autoplay = Backbone.history.fragment.match(/\?autoplay/)
       , json = {
           type: this.model.type,
           query: this.model.get(this.model.type),
@@ -126,10 +125,6 @@ View.SearchResults = Backbone.View.extend({
       _.forEach(this.model.results, function(result) {
         self.$innerEl().append(result.view.render().$el)
       })
-      if (this.type == 'tracks' && autoplay) {
-        this.playAll()
-        window.autoplay = NowPlaying
-      }
     }
     this.delegateEvents()
     this.renderLoadMore()
@@ -158,7 +153,7 @@ View.SearchResultsTracks = View.SearchResults.extend({
     'click .share'          : 'share'
   },
   
-  playAll: function(autoplay) {
+  playAll: function() {
     newNowPlaying()
     NowPlaying.tracks.add(this.model.cloneTracks())
     NowPlaying.tracks.play()
@@ -173,8 +168,26 @@ View.SearchResultsTracks = View.SearchResults.extend({
     NowPlaying.tracks.add(this.model.cloneTracks())
   },
   
+  tweetText: function() {
+    switch(this.model.method) {
+      case 'track.getSimilar':
+        return 'listening to ' + this.model.get('track') + ' by ' + this.model.get('artist')
+      case 'track.search': 
+        return 'listening to ' + this.model.get('track')
+      case 'artist.getTopTracks':
+        return 'listening to ' + this.model.get('artist')
+      case 'album.getInfo':
+        return 'listening to ' + this.model.get('album') + ' by ' + this.model.get('artist')
+      default:
+        return ''
+    }
+  },
+  
   share: function() {
-    shareModal.render({ url: this.model.url() })
+    shareModal.render({
+      url: this.model.url(),
+      text: this.tweetText()
+    })
   }
 })
 
