@@ -53,7 +53,7 @@ module.exports = function(app) {
       description : 'Jukesy is an application that helps you watch music videos from YouTube. With Jukesy, you can create playlists, discover new music, listen to your favorite albums, and more.',
       image       : 'http://static2.jukesy.com/img/jukesy-256.png',
       type        : 'website',
-      url         : 'http://jukesy.com'
+      url         : app.set('base_url')
     }, meta)
   }
 
