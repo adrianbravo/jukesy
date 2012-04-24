@@ -174,7 +174,7 @@ View.SearchResultsTracks = View.SearchResults.extend({
   },
   
   share: function() {
-    shareModal.render()
+    shareModal.render({ url: this.model.url() })
   }
 })
 

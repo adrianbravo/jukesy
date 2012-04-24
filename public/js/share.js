@@ -5,9 +5,9 @@ View.Share = Backbone.View.extend({
     'click .autoplay': 'toggleAutoplay'
   },
   
-  render: function() {
-    if (!this.$el.is(':visible')) {
-      this.url = 'http://jukesy.com/' + Backbone.history.fragment
+  render: function(options) {
+    if (options) {
+      this.url = options.url
       this.autoplay = false
     }
     this.$el.html(this.template({
@@ -21,10 +21,8 @@ View.Share = Backbone.View.extend({
   
   toggleAutoplay: function() {
     this.autoplay = !this.autoplay
-    console.log('toggled autoplay', this.autoplay)
     this.render()
   }
-  
 })
 
 

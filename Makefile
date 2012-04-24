@@ -5,7 +5,7 @@ GITSHA := $(shell git rev-parse --short HEAD)
 #
 
 jukesy:
-	lessc --compress ./public/less/bootstrap.less > ./public/jukesy.css
+	lessc --compress ./public/less/bootstrap/bootstrap.less > ./public/jukesy.css
 	cat ./public/js/lib/json2.js \
       ./public/js/lib/jquery-1.7.2.min.js \
       ./public/js/lib/underscore-min.js \

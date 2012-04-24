@@ -10,6 +10,7 @@ html {
 #templates {
   display: none;
 }
+.modal .close { color: white; }
 body {
   &.dragging {
     .no-select();
@@ -112,7 +113,7 @@ a:hover {
     font-size: 14px;
 
     li.divider {
-      margin: 4px 0;
+      margin: 8px 0;
       border: 1px solid @blueDark;
     }
 
@@ -132,20 +133,10 @@ a:hover {
         &.active {
           color: @grayLighter;
         }
-        &.changed, &.new {
-          opacity: 0.8;
-          .border-radius(2px);
-          color: @white;
-        }
-        &.changed:hover, &.new:hover {
-          opacity: 1;
-        }
-        &.changed {
-          background: #cc6d00;
-        }
-        &.new {
-          background: @red;
-        }
+        
+        &.new { opacity: 0.5; }
+        &.changed { opacity: 0.8; }
+        &.changed:hover, &.new:hover { opacity: 1; }
       }
     }  
   }

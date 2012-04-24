@@ -1,14 +1,14 @@
 - if (!playlist._id || (currentUser && currentUser.username == playlist.user))
   .btn-group.pull-right
     button.btn.btn-large.btn-info.playlist-save
-      i.icon-share
+      i.icon-upload-alt
       |  Save
     button.btn.btn-large.btn-info.dropdown-toggle('data-toggle'= 'dropdown')
       span.caret
     ul.dropdown-menu
       li
         a.playlist-save
-          i.icon-share
+          i.icon-upload-alt
           |  Save
       - if (playlist._id)
         li
@@ -31,6 +31,7 @@
           i.icon-trash
           |  Delete
 
+
 - if (!playlist.nowPlaying)
   .btn-group.pull-right
     button.btn.btn-primary.btn-large.play-all Play All
@@ -47,6 +48,10 @@
         li.divider
         li
           a.share Share
+- else if (playlist._id)
+  button.btn.btn-primary.btn-large.pull-right.share
+    i.icon-share
+    |  Share
 
 - if (editName)
   input.playlist-name-edit(maxlength= '50', name= 'playlist-name', value= playlist.name)

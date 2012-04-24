@@ -37,7 +37,7 @@ var assets = {
     '/js/application.js'
   ],
   less: [
-    '/less/bootstrap.less'
+    '/less/bootstrap/bootstrap.less'
   ],
   css: []
 

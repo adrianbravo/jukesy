@@ -328,8 +328,9 @@ View.Playlist = Backbone.View.extend({
     NowPlaying.tracks.add(this.model.cloneTracks())
   },
   
+  // TODO do not hardcode this
   share: function() {
-    shareModal.render()
+    shareModal.render({ url: 'http://jukesy.com' + this.model.url() })
   },
   
   toggleSidebar: function() {

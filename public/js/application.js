@@ -74,6 +74,7 @@ AppRouter = Backbone.Router.extend({
   
   // TODO clean this up good god
   playlist: function(username, id) {
+    id = _.trimQuery(id)
     var playlist = (username == 'anonymous') ? Playlists.getByCid(id) : Playlists.get(id)
       , autoplay = Backbone.history.fragment.match(/\?autoplay/)
     
