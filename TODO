@@ -1,0 +1,23 @@
+
+Features
+- sharing
+- playlist.add, playlist.remove endpoints
+- tag radio
+- favorites
+- help / faq
+- social video channels
+
+Technical
+- improve view rendering on front-end (speed up dom stuff)
+- get rid of Makefile
+- separate player from playlists/tracks/etc. on front-end (merge Video and Controls, no need for backbone "model" here)
+- require.js
+- last.fm caching
+  - start using images for og:image for better social preview
+
+Server
+- cron jobs
+- log rotation
+- improve use of nginx proxy cache (mostly for last.fm caching)
+
+
