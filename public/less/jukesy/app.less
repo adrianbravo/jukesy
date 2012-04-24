@@ -229,10 +229,16 @@ footer {
 
 #share {
   .share-twitter, .share-facebook {
-    vertical-align: top;
+    display: inline-block;
+    margin: 0 10px 10px 0;
+    color: white;
+    opacity: 0.8;
   }
-  .share-twitter { width: 75px; height: 20px; }
-  .share-facebook { width: 300px; height: 80px; }
+  .share-twitter { background: rgb(1, 154, 210); }
+  .share-facebook { background: rgb(52, 96, 157); }
+  .share-facebook:hover, .share-twitter:hover {
+    opacity: 1.0;
+  }
   #share-url { background-color: @grayLighter; width: 80%; }  
 }
 

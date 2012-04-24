@@ -4,14 +4,12 @@
 .modal-body#share
 
   p
-    iframe.share-twitter(allowtransparency= 'true'
-      frameborder= 0
-      scrolling= 'no'
-      src= twitterSrc)
-    iframe.share-facebook(allowtransparency= 'true'
-      frameborder= 0
-      scrolling= 'no'
-      src= facebookSrc)
+    button.btn.share-facebook
+      i.icon-facebook-sign
+      |  facebook
+    button.btn.share-twitter
+      i.icon-twitter-sign
+      |  twitter
 
   p You can also copy the url manually:
 

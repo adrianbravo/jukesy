@@ -328,7 +328,6 @@ View.Playlist = Backbone.View.extend({
     NowPlaying.tracks.add(this.model.cloneTracks())
   },
   
-  // TODO do not hardcode this
   share: function() {
     shareModal.render({
       url: window.baseUrl + this.model.url(),
