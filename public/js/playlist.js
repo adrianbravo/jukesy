@@ -193,7 +193,7 @@ Model.Playlist = Backbone.Model.extend({
   },
   
   cloneTracks: function() {
-    return _.map(this.tracks.models, function(trackModel) { return trackModel.clone().toJSON() })
+    return _.map(this.tracks.models, function(trackModel) { return trackModel.toJSON() })
   },
     
   isEditable: function() {
@@ -233,7 +233,7 @@ Model.Playlist = Backbone.Model.extend({
     return !this.isNew() && !this.tracks.models.length && this.get('tracks_count')
   },
   
-  addTracksRemotely: function(x) {
+  addTracksRemotely: function(tracks) {
     this.save({ tracks: tracks }, {
       url: this.url() + '/tracks/add'
     })
@@ -252,10 +252,11 @@ View.Playlist = Backbone.View.extend({
     'click .playlist-sidebar'   : 'toggleSidebar',
     'click .playlist-autosave'  : 'toggleAutosave',
     'click .playlist-delete'    : 'delete',
-    'click .play-all'       : 'playAll',
-    'click .queue-all-next' : 'queueNext',
-    'click .queue-all-last' : 'queueLast',
-    'click .share'          : 'share',
+    'click .play-all'        : 'playAll',
+    'click .queue-all-next'  : 'queueNext',
+    'click .queue-all-last'  : 'queueLast',
+    'click .add-to-playlist' : 'addToPlaylist',
+    'click .share'           : 'share',
     'blur .playlist-name-edit'     : 'validateName',
     'keypress .playlist-name-edit' : 'keyDown'
   },
@@ -301,6 +302,10 @@ View.Playlist = Backbone.View.extend({
   
   queueLast: function() {
     NowPlaying.tracks.add(this.model.cloneTracks())
+  },
+  
+  addToPlaylist: function() {
+    Playlists.addToView.render({ tracks: this.model.cloneTracks() })
   },
   
   share: function() {
@@ -492,9 +497,9 @@ View.AddToPlaylists = Backbone.View.extend({
     }
     _.each(this.$el.find('.playlist.selected'), function(playlistDOM) {
       var playlist =  self.collection.getByCid($(playlistDOM).data('cid'))
-        , tracks = self.renderOptions.tracks.map(function(track) { return track.clone() })
+        , tracks = self.renderOptions.tracks.map(function(track) { return new Model.Track(track) })
       if (playlist.unfetched()) {
-        playlist.addTracksRemotely({ tracks: tracks })
+        playlist.addTracksRemotely(tracks)
       } else {
         playlist.tracks.add(tracks)
       }

@@ -147,10 +147,11 @@ View.SearchResultsTracks = View.SearchResults.extend({
   type: 'tracks',
   
   events: {
-    'click .play-all'       : 'playAll',
-    'click .queue-all-next' : 'queueNext',
-    'click .queue-all-last' : 'queueLast',
-    'click .share'          : 'share'
+    'click .play-all'        : 'playAll',
+    'click .queue-all-next'  : 'queueNext',
+    'click .queue-all-last'  : 'queueLast',
+    'click .add-to-playlist' : 'addToPlaylist',
+    'click .share'           : 'share'
   },
   
   playAll: function() {
@@ -166,6 +167,10 @@ View.SearchResultsTracks = View.SearchResults.extend({
   
   queueLast: function() {
     NowPlaying.tracks.add(this.model.cloneTracks())
+  },
+  
+  addToPlaylist: function() {
+    Playlists.addToView.render({ tracks: this.model.cloneTracks() })
   },
   
   tweetText: function() {
