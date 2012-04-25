@@ -1,0 +1,15 @@
+.modal-header
+  h3 Add to Playlist
+  
+.modal-body
+  p Select a playlist  
+  ul.unstyled
+    each playlist in playlists
+      li.playlist('data-cid'= playlist.cid) #{playlist.name}
+
+.modal-footer
+  p
+    button.btn.btn-primary.add
+      i.icon-plus-sign
+      |  Add
+    button.btn('data-dismiss'= 'modal') Cancel

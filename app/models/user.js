@@ -56,7 +56,7 @@ User.method({
   findPlaylists: function(next) {
     app.model('Playlist')
       .find({ user: this.username })
-      .select('user', 'name', 'sidebar', 'tracks_count', 'time')
+      .select('user', 'name', 'autosave', 'sidebar', 'tracks_count', 'time')
       .run(next)
   },
   

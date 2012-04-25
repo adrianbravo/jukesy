@@ -226,6 +226,7 @@ View.SearchResultTrack = View.SearchResult.extend(_.extend(Mixins.TrackViewEvent
     'click .dropdown'   : 'dropdown',
     'click .queue-next' : 'queueNext',
     'click .queue-last' : 'queueLast',
+    'click .add-to-playlist': 'addToPlaylist',
     'dblclick'          : 'playNow'
   },
   

@@ -35,6 +35,12 @@ Playlist.method({
   
   url: function() {
     return app.set('base_url') + '/user/' + this.user + '/playlist/' + this.id
+  },
+  
+  addTracks: function(tracks, next) {
+    tracks.unshift(this.tracks.length, 0)
+    this.tracks.splice.apply(this.tracks, tracks)
+    this.save(next)
   }
 })
 

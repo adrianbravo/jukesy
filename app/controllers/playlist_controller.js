@@ -76,6 +76,15 @@ module.exports = function(app) {
         }
         res.json(1)
       })
+    },
+    
+    add: function(req, res, next) {
+      req.paramPlaylist.addTracks(req.body.tracks || [], function(err, playlist) {
+        if (err || !playlist) {
+          return next(new app.Error(err || 500))
+        }
+        res.json(playlist.exposeJSON())
+      })
     }
 
   }

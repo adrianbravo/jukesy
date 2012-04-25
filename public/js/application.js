@@ -86,9 +86,8 @@ AppRouter = Backbone.Router.extend({
         Playlists.add(playlist)
       }
     }
-
-    //console.log('playlist models, if length is 0 do fetch', playlist.tracks.models)
-    if (!playlist.isNew() && !playlist.tracks.models.length && !playlist.get('changed')) {
+    
+    if (playlist.unfetched()) {
       playlist.fetch({
         success: function(model, response) {
           playlist.tracks.reset(response.tracks)

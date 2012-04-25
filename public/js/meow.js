@@ -15,7 +15,7 @@ View.Meow = Backbone.View.extend({
       _.delay(function() {
         alert.$el.remove()
       }, 500)
-    }, 2700)
+    }, 3700)
   }
   
 })

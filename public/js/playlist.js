@@ -56,7 +56,8 @@ Model.Playlist = Backbone.Model.extend({
   toJSON: function() {
     return _.extend(_.clone(this.attributes), {
       url    : this.localUrl(),
-      active : this.view.$el.is(':visible')
+      active : this.view.$el.is(':visible'),
+      cid    : this.cid
     })
   },
   
@@ -134,7 +135,9 @@ Model.Playlist = Backbone.Model.extend({
   
   destroyCallback: function(playlist, playlists, options) {
     if (this.get('nowPlaying')) {
-      this.unsetNowPlaying()
+      Video.stop()
+      newNowPlaying()
+      this.destroy()
     }
     if (this.view.$el.is(':visible')) {
       Router.navigate('/', { trigger: true, replace: true })
@@ -161,7 +164,7 @@ Model.Playlist = Backbone.Model.extend({
   
   autosave: _.debounce(function() {
     if (this.get('changed')) {
-      this.save()
+      this.save({ tracks : this.tracks.toJSON() })
     }
   }, 15000),
   
@@ -224,46 +227,18 @@ Model.Playlist = Backbone.Model.extend({
       }
       count++   
     }
-  }
-  
-})
-
-View.PlaylistDestroy = Backbone.View.extend({
-  className: 'playlist-destroy modal',
-  
-  template: jade.compile($('#playlist-destroy-template').text()),
-  
-  events: {
-    'click .destroy-confirm' : 'destroy',
-    'click .go-back'         : 'close'
   },
   
-  initialize: function() {
-    _.bindAll(this, 'close', 'destroy')
+  unfetched: function() {
+    return !this.isNew() && !this.tracks.models.length && this.get('tracks_count')
   },
   
-  close: function() {
-    this.$el.modal('hide')
-  },
-  
-  destroy: function() {
-    if (this.renderOptions.confirm) {
-      this.renderOptions.confirm()
-    }
-    this.close()
-  },
-
-  render: function(options) {
-    this.renderOptions = options || {}
-    
-    this.$el.modal({
-      backdrop: 'static',
-      keyboard: false
+  addTracksRemotely: function(x) {
+    this.save({ tracks: tracks }, {
+      url: this.url() + '/tracks/add'
     })
-    this.$el.html(this.template({ playlist: this.model.toJSON() }))
-    this.delegateEvents()
-    return this
   }
+  
 })
 
 View.Playlist = Backbone.View.extend({
@@ -438,6 +413,121 @@ View.Playlist = Backbone.View.extend({
   
 })
 
+View.PlaylistDestroy = Backbone.View.extend({
+  className: 'playlist-destroy modal',
+  
+  template: jade.compile($('#playlist-destroy-template').text()),
+  
+  events: {
+    'click .destroy-confirm' : 'destroy',
+    'click .go-back'         : 'close'
+  },
+  
+  initialize: function() {
+    _.bindAll(this, 'close', 'destroy')
+  },
+  
+  close: function() {
+    this.$el.modal('hide')
+  },
+  
+  destroy: function() {
+    if (this.renderOptions.confirm) {
+      this.renderOptions.confirm()
+    }
+    this.close()
+  },
+
+  render: function(options) {
+    this.renderOptions = options || {}
+    
+    this.$el.modal({
+      backdrop: 'static',
+      keyboard: false
+    })
+    this.$el.html(this.template({ playlist: this.model.toJSON() }))
+    this.delegateEvents()
+    return this
+  }
+})
+
+View.AddToPlaylists = Backbone.View.extend({
+  className: 'playlists-add modal',
+  
+  template: jade.compile($('#playlist-add-template').text()),
+  
+  events: {
+    'click .playlist'  : 'toggleSelect',
+    'click button.add' : 'add'
+  },
+  
+  initialize: function() {
+    _.bindAll(this, 'toggleSelect')
+  },
+  
+  render: function(options) {
+    this.renderOptions = options || {}
+    
+    this.$el.modal()
+    this.$el.html(this.template({
+      playlists: _.chain(this.collection.models)
+                    .sortBy(function(playlist) {
+                      return [
+                        playlist.isNew(),
+                        playlist.get('name').toLowerCase(),
+                        playlist.get('time') && playlist.get('time').created
+                      ]
+                    })
+                    .map(function(playlist) { return playlist.toJSON() })
+                    .value()
+    }))
+    this.disableAdd()
+    this.delegateEvents()
+  },
+  
+  add: function() {
+    var self = this
+    if (this.$el.find('button.add').hasClass('disabled')) {
+      return false
+    }
+    _.each(this.$el.find('.playlist.selected'), function(playlistDOM) {
+      var playlist =  self.collection.getByCid($(playlistDOM).data('cid'))
+        , tracks = self.renderOptions.tracks.map(function(track) { return track.clone() })
+      if (playlist.unfetched()) {
+        playlist.addTracksRemotely({ tracks: tracks })
+      } else {
+        playlist.tracks.add(tracks)
+      }
+    })
+    this.$el.modal('hide')
+  },
+  
+  disableAdd: function() {
+    if (!this.$el.find('.playlist.selected').length) {
+      this.$el.find('button.add').addClass('disabled')
+    } else {
+      this.$el.find('button.add').removeClass('disabled')
+    }
+  },
+  
+  toggleSelect: function(e) {
+    var $playlist = this.getPlaylist($(e.target))
+    $playlist.toggleClass('selected')
+    this.disableAdd()
+  },
+  
+  getPlaylist: function($target) {
+    if ($target && $target.hasClass('playlist')) {
+      return $target
+    } else if ($target) {
+      return this.getPlaylist($target.parent())
+    } else {
+      return null
+    }
+  },
+  
+})
+
 View.Playlists = Backbone.View.extend({
   template: jade.compile($('#playlist-index-template').text()),
   
@@ -475,6 +565,7 @@ Collection.Playlists = Backbone.Collection.extend({
   
   initialize: function() {
     this.view = new View.Playlists({ collection: this })
+    this.addToView = new View.AddToPlaylists({ collection: this })
     this.on('add', this.view.render, this.view)
     this.on('remove', this.view.render, this.view)
   }

@@ -25,7 +25,7 @@ Model.Radio = Backbone.Model.extend({
     if (!window.NowPlaying || !NowPlaying.tracks.length || this.tracks) {
       return
     }
-    if (Video.track && NowPlaying.tracks.indexOf(Video.track) + 3 < NowPlaying.tracks.length) {
+    if (Video.stopped || Video.track && NowPlaying.tracks.indexOf(Video.track) + 3 < NowPlaying.tracks.length) {
       return
     }
     

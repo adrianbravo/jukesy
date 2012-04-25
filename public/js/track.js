@@ -148,14 +148,17 @@ View.Track = Backbone.View.extend(_.extend(Mixins.TrackViewEvents, {
   template: jade.compile($('#track-template').text()),
     
   events: {
+    'dblclick'        : 'playNow',
     'click .play-now' : 'playNow',
-    'click .remove'   : 'removeTrack',
     'click .dropdown' : 'dropdown',
-    'dblclick'        : 'playNow'
+    'click .queue-next'      : 'queueNext',
+    'click .queue-last'      : 'queueLast',
+    'click .add-to-playlist' : 'addToPlaylist',
+    'click .remove'          : 'removeTrack'
   },
   
   initialize: function() {
-    _.bindAll(this, 'playNow', 'queueNext', 'queueLast')
+    _.bindAll(this, 'playNow', 'queueNext', 'queueLast', 'addToPlaylist')
     this.render()
   },
   

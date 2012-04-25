@@ -18,6 +18,10 @@ Mixins.TrackViewEvents = {
     NowPlaying.tracks.add([ new Model.Track(this.model.toJSON()) ])
   },
   
+  addToPlaylist: function() {
+    Playlists.addToView.render({ tracks: [ new Model.Track(this.model.toJSON()) ] })
+  },
+  
   dropdown: function() {
     this.$el.find('.dropdown-toggle').dropdown('toggle')
     return false
