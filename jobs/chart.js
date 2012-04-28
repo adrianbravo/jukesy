@@ -4,6 +4,7 @@ var request = require('superagent')
   , apiKey = '75c8c3065db32d805a292ec1af5631a3'
   , getChartTopArtists
   , getChartTopTracks
+  , getChartTopTags
 
 function chartTopArtists() {
   var attempt = 0
@@ -67,6 +68,37 @@ function chartTopTracks() {
   }
 }
 
+function chartTopTags() {
+  var attempt = 0
+  return function() {
+    console.log('requesting chart.getTopTags, attempt #' + (++attempt))
+    request
+      .get('http://ws.audioscrobbler.com/2.0/')
+      .send({ method: 'chart.getTopTags', api_key: apiKey, limit: '50', format: 'json' })
+      .set('User-Agent', 'jukesy.com')
+      .end(function(res) {
+        var tags = null
+        try {
+          tags = JSON.parse(res.res.text).tags.tag
+        } catch (e) {}
+
+        if (!tags) {
+          setTimeout(getChartTopTags, 1000)
+          return
+        }
+
+        tags = _.map(tags, function(tag) {
+          return {
+            name: tag.name,
+            reach: tag.reach
+          }
+        })
+        
+        fs.writeFileSync('public/chart/toptags.json', JSON.stringify(tags))
+      })
+  }
+}
+
 function grabImage(result) {
   var src = '', size = 'extralarge'
 
@@ -86,6 +118,8 @@ getChartTopArtists = chartTopArtists()
 getChartTopArtists()
 getChartTopTracks = chartTopTracks()
 getChartTopTracks()
+getChartTopTags = chartTopTags()
+getChartTopTags()
 
 
 
