@@ -96,11 +96,14 @@ module.exports = function(app) {
       .set('view engine', 'jade')
 
     app
+      .use(express.static(__dirname + '/../public'))
       .use(express.bodyParser())
       .use(express.cookieParser())
       .use(express.session({
-        secret: 'jukesy', // TODO clean this up
-        maxAge: new Date(Date.now() + 3600000),
+        secret: 'jukesy',
+        cookie: {
+          expires: new Date(Date.now() + 86400000)
+        },
         store: new MongoStore({
           auto_reconnect: true,
           host: app.mongodb.host,
@@ -109,7 +112,6 @@ module.exports = function(app) {
       }))
       .use(express.errorHandler({ dumpExceptions: true, showStack: true }))
       .use(express.methodOverride())
-      .use(express.static(__dirname + '/../public'))
       .use(app.router)
   })
 
