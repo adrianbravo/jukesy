@@ -1,11 +1,13 @@
 {
   "author": "Adrian Bravo <me@adrianbravo.net>",
   "name": "jukesy",
+  "private": true,
   "description": "music video player",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "homepage": "http://jukesy.com",
   "repository": {
-    "url": ""
+    "type": "git",
+    "url": "https://github.com/adrianbravo/jukesy"
   },  
   "main": "./",
   "engines": {
