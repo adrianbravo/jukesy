@@ -36,12 +36,18 @@ Model.LastFM = Backbone.Model.extend({
     this.trigger('query')
     
     _.defer(function() {
-      //$.getJSON('http://ws.audioscrobbler.com/2.0/?' + $.param(self.params), self.queryCallback)
       $.ajax({
-        url: 'http://ws.audioscrobbler.com/2.0/',
-        dataType: 'jsonp',
-        data: self.params,
-        success: self.queryCallback
+        url: '/lastfm_cache/?' + $.param(self.params),
+        success: self.queryCallback,
+        error: function() {
+          // fallback to local lastfm call
+          $.ajax({
+            url: 'http://ws.audioscrobbler.com/2.0/',
+            dataType: 'jsonp',
+            data: self.params,
+            success: self.queryCallback
+          })
+        }
       })
     })
   },

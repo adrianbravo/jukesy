@@ -6,6 +6,7 @@ module.exports = function(app) {
     , UserController = app.controller('User')
     , PlaylistController = app.controller('Playlist')
     , SessionController = app.controller('Session')
+    , LastfmController = app.controller('Lastfm')
     , User = app.model('User')
     , Playlist = app.model('Playlist')
   
@@ -62,6 +63,8 @@ module.exports = function(app) {
   app.post('/session', SessionController.create)
   app.del('/session', SessionController.delete)
   app.get('/logout', app.nocache, SessionController.delete)
+
+  app.get('/lastfm_cache', LastfmController.get)
 
   app.get('/artist/:artist/track/:track', SearchController.artistTrack)
   app.get('/artist/:artist/album/:album', SearchController.artistAlbum)

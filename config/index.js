@@ -46,6 +46,8 @@ module.exports = function(app) {
   app.mongooseValidators = require('../lib/mongoose_validators')
 
   app.auth = require('../lib/auth')
+  app.lastfm_cache = require('../lib/lastfm_cache')
+  app.lastfm_cache.startQueue()
   
   app.meta = function(meta) {
     return app._.extend({
