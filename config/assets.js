@@ -1,5 +1,4 @@
 var assets = {
-
   favicon: '/favicon.ico',
   js: [
     '/js/lib/json2.js',
@@ -36,19 +35,16 @@ var assets = {
     '/js/alert.js',
     '/js/application.js'
   ],
-  less: [
-    '/less/bootstrap/bootstrap.less'
-  ],
+  less: [ '/less/bootstrap/bootstrap.less' ],
   css: []
-
 }
 
 exports.development = assets
 exports.test = assets
-
 exports.staging = exports.production = {
-  favicon: '/favicon.ico',
-  js: [ '/jukesy.min.js' ],
-  css: [ '/jukesy.css' ],
+  favicon: 'http://static1.jukesy.com/favicon.ico',
+  js: [ 'http://static1.jukesy.com/jukesy.min.js' ],
+  css: [ 'http://static2.jukesy.com/jukesy.css' ],
   less: []
 }
+

@@ -83,6 +83,7 @@ module.exports = function(app) {
       // let's just put all the hacks in one place
       env: function() { return app.set('env') },
       assets: function() { return app.assets },
+      gitsha: function() { return app.gitsha },
       currentUser: function(req, res) { return req.currentUser },
       moment: function() { return app.moment },
       _: function() { return app._ },

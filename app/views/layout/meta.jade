@@ -15,13 +15,13 @@ head
   meta(property= 'og:url', content= meta.url)
   meta(property= 'fb:app_id', content= '150725614969142')
   
-  link(rel= 'icon', href= assets.favicon, type= 'image/png')
+  link(rel= 'icon', href= assets.favicon + '?' + gitsha, type= 'image/png')
 
   - each stylesheet in assets.css
-    link(rel='stylesheet', href= stylesheet, type='text/css')
+    link(rel='stylesheet', href= stylesheet + '?' + gitsha, type='text/css')
 
   - each stylesheet in assets.less
-    link(rel='stylesheet/less', href= stylesheet, type='text/css')
+    link(rel='stylesheet/less', href= stylesheet + '?' + gitsha, type='text/css')
 
   script(type= 'text/javascript')
     var _gaq = _gaq || [];

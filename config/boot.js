@@ -2,6 +2,7 @@ Error.stackTraceLimit = Infinity;
 
 var mongoose = require('mongoose')
   , fs = require('fs')
+  , exec = require('child_process').exec
   , async = require('async')
 
 module.exports = function(app, bootCallback) {
@@ -9,11 +10,28 @@ module.exports = function(app, bootCallback) {
 
   async.series([
 
+    // Set gitsha
+    function(next) {
+      if (app.set('env') == 'test') {
+        return next()
+      }
+
+      exec('git rev-parse --short HEAD', function(err, gitsha) {
+        if (err) {
+          console.error('Failed to get gitsha')
+          return
+        }
+        app.gitsha = gitsha
+        next()
+      })
+    },
+
     // Load models
     function(next) {
       var ext = '.js'
       fs.readdirSync(__dirname + '/../app/models').forEach(function(filename) {
         if (!filename.match(ext + '$')) {
+          console.error('Failed to load model:', filename)
           return
         }
         require(__dirname + '/../app/models/' + filename)
