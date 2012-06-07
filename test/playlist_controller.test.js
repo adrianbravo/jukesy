@@ -111,7 +111,7 @@ describe('Playlist Controller', function() {
           password: 'test'
         }, function(res) {
           expect(res).status(200)
-          cookie = res.headers['set-cookie'][1]
+          cookie = res.headers['set-cookie'][0]
           User.create({
             username: 'adrian2',
             password: 'test2',
@@ -124,7 +124,7 @@ describe('Playlist Controller', function() {
               password: 'test2'
             }, function(res) {
               expect(res).status(200)
-              cookie2 = res.headers['set-cookie'][1]
+              cookie2 = res.headers['set-cookie'][0]
               done()
             })
           })
@@ -212,7 +212,7 @@ describe('Playlist Controller', function() {
             password: 'test'
           }, function(res) {
             expect(res).status(200)
-            cookie = res.headers['set-cookie'][1]
+            cookie = res.headers['set-cookie'][0]
             done()
           })
         })
@@ -316,7 +316,7 @@ describe('Playlist Controller', function() {
             password: 'test'
           }, function(res) {
             expect(res).status(200)
-            cookie = res.headers['set-cookie'][1]
+            cookie = res.headers['set-cookie'][0]
             done()
           })
         })
@@ -391,7 +391,7 @@ describe('Playlist Controller', function() {
             password: 'test'
           }, function(res) {
             expect(res).status(200)
-            cookie = res.headers['set-cookie'][1]
+            cookie = res.headers['set-cookie'][0]
             done()
           })
         })
@@ -464,7 +464,6 @@ describe('Playlist Controller', function() {
         .end(function(res) {
           expect(res).status(200)
           expect(res.body.tracks).to.have.length(1)
-          console.log(res.body.tracks)
           done()
         })
     })

@@ -35,8 +35,7 @@ Model.Session = Backbone.Model.extend({
   },
 
   login: function (model) {
-    cookieParser()
-    var user = Cookies.user
+    var user = model
     if (user) {
       user.id = user.username
       user = new Model.User(user)

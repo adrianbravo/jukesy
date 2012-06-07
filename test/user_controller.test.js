@@ -170,7 +170,7 @@ describe('User Controller', function() {
           password: 'test'
         }, function(res) {
           expect(res).status(200)
-          cookie = res.headers['set-cookie'][1]
+          cookie = res.headers['set-cookie'][0]
           done()
         })
       })

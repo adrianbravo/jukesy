@@ -28,7 +28,7 @@ module.exports = function(app) {
       res.redirect('/')
     },
 
-    // primary session check, used once on front-end loading to set the session up.
+    // primary session check, used once on frontend loading to set the session up.
     // allows untying of session logic from "/" route for better caching of front page.
     refresh: function(req, res, next) {
       // grab playlists
