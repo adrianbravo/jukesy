@@ -9,6 +9,11 @@ module.exports = function(app) {
     , User = app.model('User')
     , Playlist = app.model('Playlist')
   
+  app.nocache = function(req, res, next) {
+    res.header('Cache-Control', 'no-cache')
+    next()
+  }
+
   app.param('username', function(req, res, next, username) {
     User.findOne({ username: (username || '').toLowerCase() }, function(err, user) {
       if (err || !user) {
@@ -30,33 +35,33 @@ module.exports = function(app) {
     })
   })
   
-  app.get('/status', ApplicationController.status)
+  app.get('/status', app.nocache, ApplicationController.status)
   app.get('/', HomeController.welcome)
   app.get('/about', HomeController.about)
   app.get('/terms-of-service', HomeController.termsOfService)
   app.get('/privacy-policy', HomeController.privacyPolicy)
 
-  app.get('/user', UserController.index)
+  app.get('/user', app.nocache, UserController.index)
   app.post('/user/forgot', UserController.forgot)
   app.post('/user', UserController.create)
-  app.get('/user/:username', app.auth.authenticate, UserController.read)
-  app.get('/user/:username/reset', UserController.resetCheck)
+  app.get('/user/:username', app.nocache, app.auth.authenticate, UserController.read)
+  app.get('/user/:username/reset', app.nocache, UserController.resetCheck)
   app.post('/user/:username/reset', UserController.reset)
-  app.get('/user/:username/edit', app.auth.authenticate, app.auth.authorize, UserController.edit)
+  app.get('/user/:username/edit', app.nocache, app.auth.authenticate, app.auth.authorize, UserController.edit)
   app.put('/user/:username', app.auth.authenticate, app.auth.authorize, UserController.update)
   app.del('/user/:username', app.auth.authenticate, app.auth.authorize, UserController.delete)
 
-  app.get('/user/:username/playlist', PlaylistController.index)
-  app.get('/user/:username/playlist/:playlist', PlaylistController.read)
+  app.get('/user/:username/playlist', app.nocache, PlaylistController.index)
+  app.get('/user/:username/playlist/:playlist', app.nocache, PlaylistController.read)
   app.post('/user/:username/playlist', app.auth.authenticate, app.auth.authorize, PlaylistController.create)
   app.put('/user/:username/playlist/:playlist', app.auth.authenticate, app.auth.authorize, PlaylistController.update)
   app.del('/user/:username/playlist/:playlist', app.auth.authenticate, app.auth.authorize, PlaylistController.delete)
   app.put('/user/:username/playlist/:playlist/tracks/add', app.auth.authenticate, app.auth.authorize, PlaylistController.add)
 
-  app.get('/session/refresh', app.auth.authenticate, SessionController.refresh)
+  app.get('/session/refresh', app.nocache, app.auth.authenticate, SessionController.refresh)
   app.post('/session', SessionController.create)
   app.del('/session', SessionController.delete)
-  app.get('/logout', SessionController.delete)
+  app.get('/logout', app.nocache, SessionController.delete)
 
   app.get('/artist/:artist/track/:track', SearchController.artistTrack)
   app.get('/artist/:artist/album/:album', SearchController.artistAlbum)
