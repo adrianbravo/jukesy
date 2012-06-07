@@ -50,7 +50,8 @@ module.exports = function(app) {
   app.meta = function(meta) {
     return app._.extend({
       title       : 'jukesy - watch music videos',
-      description : 'Jukesy is an application that helps you watch music videos from YouTube. With Jukesy, you can create playlists, discover new music, listen to your favorite albums, and more.',
+      description : 'Jukesy is an application that helps you watch music videos from YouTube. ' +
+                    'With Jukesy, you can create playlists, discover new music, listen to your favorite albums, and more.',
       image       : 'http://static2.jukesy.com/img/jukesy-256.png',
       type        : 'website',
       url         : app.set('base_url')
