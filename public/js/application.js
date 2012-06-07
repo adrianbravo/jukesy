@@ -229,7 +229,7 @@ View.Sidebar = Backbone.View.extend({
   template: jade.compile($('#sidebar-template').text()),
   
   events: {
-    'click .create-new-playlist': 'createPlaylist'
+    'click .create-playlist': 'createPlaylist'
   },
   
   initialize: function() {
