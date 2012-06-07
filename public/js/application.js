@@ -304,7 +304,7 @@ $(function() {
       var uri = $target.attr('href')
       if (uri) {
         e.preventDefault()
-        Router.navigate(uri.substr(1), true)
+        Router.navigate(uri.substr(1), { trigger: true })
       }
     }
   })

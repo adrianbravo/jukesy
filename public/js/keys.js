@@ -16,7 +16,7 @@ View.KeyboardShortcuts = Backbone.View.extend({
   
   searchAll: function(e) {
     if (e.keyCode == 13) {
-      Router.navigate('/search/' + encodeURIComponent($('#query').val()), true)
+      Router.navigate('/search/' + encodeURIComponent($('#query').val()), { trigger: true })
       $('#query').val('').blur()
     }
   },

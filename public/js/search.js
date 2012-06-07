@@ -158,7 +158,7 @@ View.SearchResultsTracks = View.SearchResults.extend({
     newNowPlaying()
     NowPlaying.tracks.add(this.model.cloneTracks())
     NowPlaying.tracks.play()
-    NowPlaying.navigateTo(true)
+    NowPlaying.navigateTo()
   },
   
   queueNext: function() {

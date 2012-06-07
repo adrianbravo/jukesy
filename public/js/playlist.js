@@ -61,8 +61,8 @@ Model.Playlist = Backbone.Model.extend({
     })
   },
   
-  navigateTo: function(replace) {
-    Router.navigate(this.localUrl(), { trigger: true, replace: replace })
+  navigateTo: function() {
+    Router.navigate(this.localUrl(), { trigger: true })
   },
   
   tracksCallback: function(track, playlist, options) {
@@ -76,13 +76,17 @@ Model.Playlist = Backbone.Model.extend({
 
     // move this to a view
     if (change > 1) {
-      message = 'Added ' + namedTrack.get('artist') + ' - ' + namedTrack.get('name') + ' and ' + (change - 1) + ' other ' + _.plural(change, 'track', 'tracks') + ' to ' + this.get('name')
+      message = 'Added ' + namedTrack.get('artist') + ' - ' + namedTrack.get('name') +
+                ' and ' + (change - 1) + ' other ' + _.plural(change, 'track', 'tracks') + ' to ' + this.get('name')
     } else if (change == 1) {
-      message = 'Added ' + namedTrack.get('artist') + ' - ' + namedTrack.get('name') + ' to ' + this.get('name')
+      message = 'Added ' + namedTrack.get('artist') + ' - ' + namedTrack.get('name') +
+                ' to ' + this.get('name')
     } else if (change == -1) {
-      message = 'Removed ' + namedTrack.get('artist') + ' - ' + namedTrack.get('name') + ' from ' + this.get('name')
+      message = 'Removed ' + namedTrack.get('artist') + ' - ' + namedTrack.get('name') +
+                ' from ' + this.get('name')
     } else {
-      message = 'Removed ' + namedTrack.get('artist') + ' - ' + namedTrack.get('name') + ' and ' + Math.abs(change - 1) + ' other ' + _.plural(change, 'track', 'tracks') + ' from ' + this.get('name')
+      message = 'Removed ' + namedTrack.get('artist') + ' - ' + namedTrack.get('name') +
+                ' and ' + Math.abs(change - 1) + ' other ' + _.plural(change, 'track', 'tracks') + ' from ' + this.get('name')
     }
     Meow.render({
       message: message,
@@ -119,7 +123,7 @@ Model.Playlist = Backbone.Model.extend({
   
   syncCallback: function(playlist, response, options) {
     if (options.changes && options.changes._id) {
-      Router.navigate(this.localUrl(), { trigger: true, replace: true })
+      Router.navigate(this.localUrl(), { trigger: true, replace: true }) // replace anonymous/url with :username/url
     }
     
     this.set({ changed: false }, { silent: true })
@@ -140,7 +144,7 @@ Model.Playlist = Backbone.Model.extend({
       this.destroy()
     }
     if (this.view.$el.is(':visible')) {
-      Router.navigate('/', { trigger: true, replace: true })
+      Router.navigate('/', { trigger: true, replace: true }) // replace url with /
     }
     
     if (!this.isNew()) {
