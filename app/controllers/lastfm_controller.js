@@ -10,7 +10,7 @@ module.exports = function(app) {
       var params = {}
       app._.each([ 'method', 'page', 'limit', 'artist', 'album', 'track' ], function(param) {
         if (req.param(param)) {
-          params[param] = req.param(param)
+          params[param] = req.param(param).toLowerCase()
         }
       })
 

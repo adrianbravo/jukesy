@@ -5,12 +5,17 @@ var mongoose = require('mongoose')
   , app = require('../../')
 
 var LastfmCache = module.exports = new Schema({
-  method : String,
+  method  : { type: String, enum: [
+    'artist.getsimilar', 'artist.gettopalbums', 'artist.gettoptracks', 'artist.search',
+    'album.getinfo', 'album.search',
+    'chart.gettopartists', 'chart.gettoptracks',
+    'track.getsimilar', 'track.search'
+  ] },
   page   : Number,
   limit  : Number,
-  artist : String,
-  album  : String,
-  track  : String,
+  artist : { type: String, lowercase: true },
+  album  : { type: String, lowercase: true },
+  track  : { type: String, lowercase: true },
   json   : {}
 })
 
