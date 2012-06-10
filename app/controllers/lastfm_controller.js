@@ -14,7 +14,7 @@ module.exports = function(app) {
         }
       })
 
-      app.lastfm_cache.get(params, {
+      app.lastfmCache.get(params, {
         success: function(json) {
           res.json(json)
         },

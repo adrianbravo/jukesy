@@ -7,10 +7,12 @@
 html {
   background: #060606;
 }
+
 #templates {
   display: none;
 }
 .modal .close { color: white; }
+
 body {
   &.dragging {
     .no-select();
@@ -84,12 +86,31 @@ a:hover {
     }
   }
   
-  .dropdown-menu a {
-    border-color: transparent;
-    color: @grayLighter;
+  .dropdown-menu {
+    background: @blueDark;
+    margin-top: 0;
+    border: 0;
+    .radius(0 0 4px 4px);
+    a {
+      border-color: transparent;
+      color: @grayLighter;
+      line-height: 0.8em;
+      padding: 8px 10px;
+      &:hover {
+        background: @blue;
+        color: white;
+      }
+    }
+    .divider {
+      background: @blue;
+    }
   }
   
   #session-button {
+    .dropdown-toggle {
+      width: 140px;
+      text-align: center;
+    }
     .nav {
       margin-right: 0;
       .caret {
@@ -146,7 +167,7 @@ a:hover {
 }
 
 footer {
-  margin-bottom: 400px;
+  margin-bottom: 40px;
   a {
     margin: 0 5px;
     &:first-child {
