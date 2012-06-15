@@ -47,8 +47,7 @@ module.exports = function(app) {
 
   app.auth = require('../lib/auth')
   app.lastfmCache = require('../lib/lastfm_cache')
-  app.lastfmCacheQueueSize = 25
-  app.lastfmCache.startQueue()
+  app.lastfmCache.initQueue()
   
   app.meta = function(meta) {
     return app._.extend({

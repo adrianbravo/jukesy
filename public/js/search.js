@@ -52,7 +52,7 @@ View.SearchTrack = View.BaseSearch.extend({
   template: jade.compile($('#search-track-template').text()),
   initialize: function(options) {
     this.options = options
-    new Model.LastFM({ artist: options.artist, track: options.track, method: 'track.getSimilar', limit: 150 })
+    new Model.LastFM({ artist: options.artist, track: options.track, method: 'track.getSimilar', limit: 50 })
   }
 })
 
@@ -94,7 +94,7 @@ View.SearchArtistSimilar = View.BaseSearch.extend({
   template: jade.compile($('#search-artist-similar-template').text()),
   initialize: function(options) {
     this.options = options
-    this.model = new Model.LastFM({ artist: options.artist, method: 'artist.getSimilar', limit: 240, loadMore: true })
+    this.model = new Model.LastFM({ artist: options.artist, method: 'artist.getSimilar', limit: 60, loadMore: true })
   }
 })
 

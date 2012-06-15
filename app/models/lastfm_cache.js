@@ -5,18 +5,19 @@ var mongoose = require('mongoose')
   , app = require('../../')
 
 var LastfmCache = module.exports = new Schema({
-  method  : { type: String, enum: [
-    'artist.getsimilar', 'artist.gettopalbums', 'artist.gettoptracks', 'artist.search',
-    'album.getinfo', 'album.search',
-    'chart.gettopartists', 'chart.gettoptracks',
-    'track.getsimilar', 'track.search'
-  ] },
-  page   : Number,
-  limit  : Number,
+  method : { type: String },
+  page   : { type: Number },
+  limit  : { type: Number },
   artist : { type: String, lowercase: true },
   album  : { type: String, lowercase: true },
   track  : { type: String, lowercase: true },
-  json   : {}
+  json   : {},
+  expiry : Date
+})
+
+LastfmCache.pre('save', function (next) {
+  this.expiry = new Date(Date.now() + 604800000) // 7 days
+  next()
 })
 
 mongoose.model('Lastfm_cache', LastfmCache)

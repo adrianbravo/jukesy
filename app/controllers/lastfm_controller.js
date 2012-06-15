@@ -14,6 +14,10 @@ module.exports = function(app) {
         }
       })
 
+      if (!params.method || !params.page || !params.limit) {
+        return next(new app.Error(403))
+      }
+
       app.lastfmCache.get(params, {
         success: function(json) {
           res.json(json)
