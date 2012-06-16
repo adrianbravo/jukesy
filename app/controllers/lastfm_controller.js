@@ -1,8 +1,3 @@
-// To create a capped collection 2 gigabytes (2147483648 bytes) in size:
-//
-// db.createCollection("lastfm-cache", { capped: true, size: 2147483648 });
-//
-
 module.exports = function(app) {
 
   return {

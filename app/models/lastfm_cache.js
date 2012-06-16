@@ -1,3 +1,7 @@
+// Set up as a capped collection
+// db.createCollection("lastfm_caches", { capped: true, size: BYTES_TO_USE });
+// db.lastfm_caches.ensureIndex({ method: 1, page: 1, limit: 1, artist: 1, album: 1, track: 1 })
+
 var mongoose = require('mongoose')
   , Schema = mongoose.Schema
   , ObjectId = Schema.ObjectId
