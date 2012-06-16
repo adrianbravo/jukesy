@@ -1,20 +1,18 @@
 Model.Shuffle = Backbone.Model.extend({
-  defaults: {
-    active: false
-  },
   
   initialize: function() {
+    this.active = false
     this.history = new Collection.Tracks()
     _.bindAll(this, 'trimHistory')
   },
   
   disable: function() {
-    this.set({ active: false })
+    this.active = false
   },
   
   enable: function() {
     this.history.reset(Video.track ? [ Video.track ] : [])
-    this.set({ active: true })
+    this.active = true
   },
   
   next: function() {

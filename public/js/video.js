@@ -323,7 +323,7 @@ View.Controls = Backbone.View.extend({
     if (this.$el.find('#shuffle').hasClass('disabled')) {
       return
     }
-    if (Shuffle.get('active')) {
+    if (Shuffle.active) {
       Shuffle.disable()
     } else {
       Shuffle.enable()
@@ -332,7 +332,7 @@ View.Controls = Backbone.View.extend({
   },
   
   renderShuffle: function() {
-    Shuffle.get('active') ? this.$el.find('#shuffle').removeClass('off') : this.$el.find('#shuffle').addClass('off')
+    Shuffle.active ? this.$el.find('#shuffle').removeClass('off') : this.$el.find('#shuffle').addClass('off')
   },
   
   toggleFullscreen: function() {
@@ -373,7 +373,7 @@ View.Controls = Backbone.View.extend({
     if (this.$el.find('#radio').hasClass('disabled')) {
       return
     }
-    if (Radio.get('active')) {
+    if (Radio.active) {
       Radio.disable()
     } else {
       Radio.enable()
@@ -382,7 +382,7 @@ View.Controls = Backbone.View.extend({
   },
   
   renderRadio: function() {
-    if (Radio.get('active')) {
+    if (Radio.active) {
       this.$el.find('#radio').removeClass('off')
       this.$el.find('#shuffle').addClass('disabled').addClass('off')
     } else {

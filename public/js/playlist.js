@@ -99,7 +99,7 @@ Model.Playlist = Backbone.Model.extend({
     track.view.remove()
     
     if (track == Video.track) {
-      if (Shuffle.get('active')) {
+      if (Shuffle.active) {
         index = Shuffle.history.indexOf(track)
         trackPrev = Shuffle.history.at(index - 1)
         Shuffle.history.reset(Shuffle.history.first(index))
@@ -179,7 +179,7 @@ Model.Playlist = Backbone.Model.extend({
     window.NowPlaying = this
     NowPlaying.set({ nowPlaying: true }, { silent: true })
     this.view.render()
-    if (window.Shuffle && Shuffle.get('active')) {
+    if (window.Shuffle && Shuffle.active) {
       Shuffle.enable()
     }
     return this

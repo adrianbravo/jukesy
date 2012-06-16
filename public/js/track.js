@@ -182,7 +182,7 @@ Collection.Tracks = Backbone.Collection.extend({
     if (!this.length) {
       return
     }
-    if (Shuffle.get('active')) {
+    if (Shuffle.active) {
       this.randomWithout([]).play()
     } else {
       this.at(0).play()
@@ -201,7 +201,7 @@ Collection.Tracks = Backbone.Collection.extend({
       return
     }
     
-    if (Shuffle.get('active')) {
+    if (Shuffle.active) {
       return Shuffle.next()
     } else {
       next = (!Video.track || Video.track === this.last()) ? this.first() : this.at(this.indexOf(Video.track) + 1)
@@ -217,7 +217,7 @@ Collection.Tracks = Backbone.Collection.extend({
     }
     
     Video.skipDirection = 'prev'
-    if (Shuffle.get('active')) {
+    if (Shuffle.active) {
       return Shuffle.prev()
     } else {
       prev = (!Video.track || Video.track === this.first()) ? this.last() : this.at(this.indexOf(Video.track) - 1)

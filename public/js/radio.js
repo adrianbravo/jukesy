@@ -1,19 +1,16 @@
 Model.Radio = Backbone.Model.extend({
-  defaults: {
-    active: false
-  },
-  
   initialize: function() {
-    _.bindAll(this, 'discover')
+    this.disable()
+    _.bindAll(this, 'discover', 'disable', 'enable')
   },
   
   disable: function() {
-    this.set({ active: false })
+    this.active = false
     clearInterval(this.interval)
   },
   
   enable: function() {
-    this.set({ active: true })
+    this.active = true
     this.interval = setInterval(this.discover, 2000)
     Video.repeat = false
     Shuffle.disable()
