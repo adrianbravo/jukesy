@@ -1,7 +1,6 @@
 Error.stackTraceLimit = Infinity;
 
-var mongoose = require('mongoose')
-  , fs = require('fs')
+var fs = require('fs')
   , exec = require('child_process').exec
   , async = require('async')
 
@@ -26,6 +25,11 @@ module.exports = function(app, bootCallback) {
       })
     },
 
+    // Connect to mongodb
+    function(next) {
+      require('./mongodb')(app, next)
+    },
+
     // Load models
     function(next) {
       var ext = '.js'
@@ -36,13 +40,6 @@ module.exports = function(app, bootCallback) {
         }
         require(__dirname + '/../app/models/' + filename)
       })
-      next()
-    },
-
-    // Connect to mongoose
-    function(next) {
-      var mongodbURL = 'mongodb://' + app.mongodb.host + '/' + app.mongodb.database
-      app.db = mongoose.connect(mongodbURL)
       next()
     },
 
@@ -62,6 +59,12 @@ module.exports = function(app, bootCallback) {
         })
         app.controllers[controllerName] = controller
       })
+      next()
+    },
+
+    // Express
+    function(next) {
+      require('./express')(app)
       next()
     },
 
