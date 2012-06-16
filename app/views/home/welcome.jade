@@ -1,8 +1,19 @@
 
 #search.welcome
   .hero-unit
-    h2 watch music videos on jukesy
-    p Get started above by searching Last.fm for an artist or track to enjoy. Or browse from lists of popular artists and tracks below.
+    .span6
+      h2 Watch music videos on jukesy!
+      p Get started above by searching Last.fm for an artist, album, or track. Or browse from lists of popular artists and tracks below.
+    .span3
+      h2 Coming Soon
+      ul
+        li tag/genre radio
+        li Last.fm scrobbling
+        li public playlists
+    p.alpha-warning.span9
+      i.icon-warning-sign
+      |  Jukesy is an alpha release. Features may change.
+    .clear
   
   #search-artists
     - if (typeof artists != 'undefined' && artists.length)
