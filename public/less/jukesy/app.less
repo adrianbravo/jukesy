@@ -8,6 +8,12 @@ html {
   background: #060606;
 }
 
+// special dropdown styles adjust font image to up-state
+.btn-group.open .dropdown-toggle, .dropdown.open .dropdown-toggle {
+  .icon-caret-down:before { content: "\f0d8"; }
+  .icon-chevron-down:before { content: "\f077"; }
+}
+
 #templates {
   display: none;
 }
@@ -56,6 +62,9 @@ a:hover {
       border-bottom-color: @blue;
     }
   }
+  .dropdown.open .dropdown-toggle:hover {
+    border-bottom-color: transparent;
+  }
   
   #query-wrapper {
     position: relative;
@@ -86,30 +95,39 @@ a:hover {
     }
   }
   
-  .dropdown-menu {
-    background: @blueDark;
-    margin-top: 0;
-    border: 0;
-    .radius(0 0 4px 4px);
-    a {
-      border-color: transparent;
-      color: @grayLighter;
-      line-height: 0.8em;
-      padding: 8px 10px;
-      &:hover {
+  .dropdown {
+    .dropdown-menu {
+      background: @blueDark;
+      margin-top: 0;
+      border: 0;
+      .radius(0 0 4px 4px);
+      a {
+        border-color: transparent;
+        color: @grayLighter;
+        line-height: 0.8em;
+        padding: 8px 10px;
+        &:hover {
+          background: @blue;
+          color: white;
+        }
+      }
+      .divider {
         background: @blue;
-        color: white;
       }
     }
-    .divider {
-      background: @blue;
+
+    &.open .dropdown-menu {
+      .transition(top, 0.5s);
     }
   }
-  
+
   #session-button {
     .dropdown-toggle {
       width: 140px;
-      text-align: center;
+      text-align: right;
+    }
+    li a {
+      text-align: left;
     }
     .nav {
       margin-right: 0;

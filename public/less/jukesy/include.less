@@ -15,6 +15,13 @@
   background-image: -moz-linear-gradient(center bottom, @top 100%, @bottom 0%);
 }
 
+.transition (@attr, @time) {
+  -webkit-transition: @attr @time ease-in;
+  -moz-transition: @attr @time ease-in;
+  -o-transition: @attr @time ease-in;
+  transition: @attr @time ease-in;
+}
+
 .fade (@ms) {
   -webkit-transition: opacity @ms ease-in @ms;
   -moz-transition: opacity @ms ease-in @ms;
