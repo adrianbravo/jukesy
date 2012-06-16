@@ -35,6 +35,6 @@ jukesy:
 	uglifyjs -nc -nm -nmf ./public/jukesy.js > ./public/jukesy.min.js
 
 clean:
-	rm -f ./public/jukesy.min.js ./public/jukesy.js ./public/jukesy.css ./public/index.html
+	rm -f ./public/jukesy.min.js ./public/jukesy.js ./public/jukesy.css
 
 .PHONY: clean
