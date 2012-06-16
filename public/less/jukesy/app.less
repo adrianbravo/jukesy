@@ -67,9 +67,7 @@ a:hover {
       border-bottom-color: @blue;
     }
   }
-  #brand {
-    border-bottom-width: 5px;
-  }
+
   .dropdown.open .dropdown-toggle:hover {
     border-bottom-color: transparent;
   }
@@ -123,10 +121,6 @@ a:hover {
         background: @blue;
       }
     }
-
-    &.open .dropdown-menu {
-      .transition(top, 0.5s);
-    }
   }
 
   #session-button {
@@ -144,6 +138,13 @@ a:hover {
         opacity: 1;
       }
     }
+  }
+
+  #session-button .nav li > a {
+    padding: 10px 10px 8px;
+  }
+  #brand {
+    padding: 10px 20px 8px;
   }
 }
 
