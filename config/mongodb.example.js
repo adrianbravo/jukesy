@@ -1,4 +1,5 @@
 var mongoose = require('mongoose')
+  , fs = require('fs')
 
 module.exports = function(app, callback) {
   var databaseConfig = {

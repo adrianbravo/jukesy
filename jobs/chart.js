@@ -32,7 +32,7 @@ function chartTopArtists() {
           }
         })
         
-        fs.writeFileSync('public/chart/topartists.json', JSON.stringify(artists))
+        fs.writeFileSync(__dirname + '/../public/chart/topartists.json', JSON.stringify(artists))
       })
   }
 }
@@ -63,7 +63,7 @@ function chartTopTracks() {
           }
         })
         
-        fs.writeFileSync('public/chart/toptracks.json', JSON.stringify(tracks))
+        fs.writeFileSync(__dirname + '/../public/chart/toptracks.json', JSON.stringify(tracks))
       })
   }
 }
@@ -94,7 +94,7 @@ function chartTopTags() {
           }
         })
         
-        fs.writeFileSync('public/chart/toptags.json', JSON.stringify(tags))
+        fs.writeFileSync(__dirname + '/../public/chart/toptags.json', JSON.stringify(tags))
       })
   }
 }
