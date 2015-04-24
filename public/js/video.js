@@ -1,24 +1,20 @@
 
 Model.Video = Backbone.Model.extend({
   initialize: function() {
-    swfobject.embedSWF('http://www.youtube.com/apiplayer?version=3&enablejsapi=1&playerapiid=video&wmode=transparent', // swfUrlStr
-                       'video', // replaceElemIdStr
-                       '480',   // width
-                       '270',   // height
-                       '8',     // swfVersionStr
-                       null,    // xiSwfUrlStr
-                       null,    // flashVarsObj
-                       { allowScriptAccess: 'always', wmode: 'transparent' },  // parameters
-                       { id: 'video' }                                         // attributes
-    )
-    _.bindAll(this, 'volume', 'seek', 'stop')
-    
-    this.quality = 'hd720'
+    // 2. This code loads the IFrame Player API code asynchronously.
+    var tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    _.bindAll(this, 'volume', 'seek', 'stop');
+
+    this.quality = 'hd720';
     _.defer(function() {
-      window.Controls = new View.Controls
-    })
+      window.Controls = new View.Controls();
+    });
   },
-  
+
   toggleQuality: function() {
     this.quality = (this.quality == 'hd720') ? 'medium' : 'hd720'
     this.player.setPlaybackQuality(this.quality)
@@ -27,7 +23,7 @@ Model.Video = Backbone.Model.extend({
       type: 'info'
     })
   },
-  
+
   stop: function() {
     this.stopped = true
     this.pause()
@@ -35,11 +31,11 @@ Model.Video = Backbone.Model.extend({
       this.track.unsetPlaying()
       this.track = null
     }
-    
+
     Controls.render()
     this.onStateChange(-1)
   },
-  
+
   onStateChange: function(state) {
     this.state = state
     if (this.state == -1) {
@@ -52,20 +48,20 @@ Model.Video = Backbone.Model.extend({
       this.pauseNextState = false
       this.pause()
     }
-    
+
     this.player.setPlaybackQuality(this.quality)
     Controls.renderPlay()
     Controls.renderTimer()
   },
-  
+
   playing: function() {
     return this.state == 1
   },
-  
+
   pause: function() {
     this.player.pauseVideo()
   },
-  
+
   play: function() {
     if (!NowPlaying.tracks.length) {
       return false
@@ -76,24 +72,24 @@ Model.Video = Backbone.Model.extend({
       NowPlaying.tracks.next()
       return
     }
-    
+
     this.player.playVideo()
     if (this.state != 1) {
       this.seek(Math.floor(this.currentTime()))
     }
   },
-  
+
   isInitialLoad: function() {
     return this.state == -1 && !this.loadRatio() && !this.playRatio()
   },
-  
+
   load: function(id) {
     if (this.state == 3) {
       return
     }
     this.player.loadVideoById(id)
   },
-  
+
   tryRepeat: function() {
     if (this.repeat && this.track) {
       // TODO fix this up
@@ -102,47 +98,49 @@ Model.Video = Backbone.Model.extend({
       return true
     }
   },
-  
+
   trySeek: function() {
     if (this.currentTime() > 2) {
       this.seek(0)
       return true
     }
   },
-  
+
   pauseNext: function() {
-    this.pauseNextState = true
+    this.pauseNextState = true;
   },
-  
+
   volume: function(volume) {
-    this.player.setVolume(volume)
-    $('#volume-bar .fill').width(volume + '%')
-    
-    var $volumeIcon = $('#volume div')
-    $volumeIcon.removeClass('icon-volume-off')
-    $volumeIcon.removeClass('icon-volume-down')
-    $volumeIcon.removeClass('icon-volume-up')
+    this.player.setVolume(volume);
+    $('#volume-bar .fill').width(volume + '%');
+
+    var $volumeIcon = $('#volume div');
+    $volumeIcon.removeClass('icon-volume-off');
+    $volumeIcon.removeClass('icon-volume-down');
+    $volumeIcon.removeClass('icon-volume-up');
     if (volume == 0) {
-      $volumeIcon.addClass('icon-volume-off')
+      $volumeIcon.addClass('icon-volume-off');
     } else if (volume <= 50) {
-      $volumeIcon.addClass('icon-volume-down')
+      $volumeIcon.addClass('icon-volume-down');
     } else {
-      $volumeIcon.addClass('icon-volume-up')
+      $volumeIcon.addClass('icon-volume-up');
     }
   },
-  
+
   seek: function(time) {
-    this.player && this.player.seekTo(time, false)
+    if (this.player) {
+      this.player.seekTo(time, false);
+    }
   },
 
   duration: function() {
-    return this.player.getDuration()
+    return this.player.getDuration();
   },
 
   currentTime: function() {
-    return this.player.getCurrentTime()
+    return this.player.getCurrentTime();
   },
-  
+
   loadRatio: function() {
     return this.player && this.player.getVideoBytesLoaded() / this.player.getVideoBytesTotal()
   },
@@ -150,11 +148,11 @@ Model.Video = Backbone.Model.extend({
   playRatio: function() {
     return this.player && this.player.getCurrentTime() / this.player.getDuration()
   },
-  
+
   onError: function(error) {
     this.track.youtubeError(parseInt(error))
   },
-  
+
   search: function(track) {
     var query = '"' + track.artist + '" "' + track.name + '"'
     if (!this.loading) {
@@ -163,6 +161,7 @@ Model.Video = Backbone.Model.extend({
       var url = "http://gdata.youtube.com/feeds/api/videos?" + $.param({
           alt           : 'json-in-script',
           category      : 'Music',
+          key           : 'AIzaSyCWqOB4EY4ro6LWNRhoFrMYVOorI8G0Q-U',
           vq            : (query + this.filters(query)),
           orderby       : 'relevance',
           'start-index' : 1,
@@ -174,7 +173,7 @@ Model.Video = Backbone.Model.extend({
       $.getScript(url)
       return true
     }
-  }, 
+  },
 
   jumpTo: function() {
     $body.scrollTop(0)
@@ -196,19 +195,19 @@ Model.Video = Backbone.Model.extend({
 
 View.Controls = Backbone.View.extend({
   el: $('#controls'),
-  
+
   template: jade.compile($('#controls-template').text()),
-  
+
   initialize: function() {
     _.bindAll(this, 'updateTimer', 'dragVolumeStop', 'dragTimerStop', 'toggleQuality')
     this.render()
     $('#quality').on('click', this.toggleQuality)
-    
+
     _.defer(function() {
       setInterval(Controls.updateTimer, 333)
     })
   },
-  
+
   render: function() {
     this.$el.html(this.template())
     this.volumeRefresh()
@@ -218,7 +217,7 @@ View.Controls = Backbone.View.extend({
     this.renderFullscreen()
     this.renderQuality()
   },
-  
+
   events: {
     'click #play-pause' : 'playPause',
     'click #next'       : 'next',
@@ -237,7 +236,7 @@ View.Controls = Backbone.View.extend({
       Video.volume(Video.player.getVolume())
     }
   },
-  
+
   playPause: function(e) {
     if (Video.playing()) {
       Video.pause()
@@ -254,7 +253,7 @@ View.Controls = Backbone.View.extend({
       Video.volume(this.lastVolume || 50)
     }
   },
-  
+
   renderPlay: function() {
     if (Video.playing()) {
       this.$el.find('#play-pause div').addClass('icon-pause')
@@ -262,7 +261,7 @@ View.Controls = Backbone.View.extend({
       this.$el.find('#play-pause div').removeClass('icon-pause')
     }
   },
-  
+
   renderTimer: function() {
     if (Video.playing()) {
       this.$el.find('#timer').addClass('active')
@@ -270,11 +269,11 @@ View.Controls = Backbone.View.extend({
       this.$el.find('#timer').removeClass('active')
     }
   },
-  
+
   updateTimer: function() {
     var load = Video.loadRatio()
       , play = Video.playRatio()
-    
+
     if (!Video.stopped && load > 0 && load != Infinity) {
       this.$el.find('#timer .fill').width(load * 100 + '%')
       this.$el.find('#timer .track').width(play * 100 + '%')
@@ -289,24 +288,24 @@ View.Controls = Backbone.View.extend({
       $body.scrollTop(0)
     }
   },
-  
+
   next: function() {
     NowPlaying.tracks.next()
   },
-  
+
   prev: function() {
     NowPlaying.tracks.prev()
   },
-  
+
   toggleQuality: function() {
     Video.toggleQuality()
     this.renderQuality()
   },
-  
+
   renderQuality: function() {
     $('#quality').html(Video.quality == 'hd720' ? 'HD' : 'MED')
   },
-  
+
   toggleRepeat: function() {
     if (this.$el.find('#repeat').hasClass('disabled')) {
       return
@@ -314,11 +313,11 @@ View.Controls = Backbone.View.extend({
     Video.repeat = !Video.repeat
     this.renderRepeat()
   },
-  
+
   renderRepeat: function() {
     Video.repeat ? this.$el.find('#repeat').removeClass('off') : this.$el.find('#repeat').addClass('off')
   },
-  
+
   toggleShuffle: function() {
     if (this.$el.find('#shuffle').hasClass('disabled')) {
       return
@@ -330,11 +329,11 @@ View.Controls = Backbone.View.extend({
     }
     this.renderShuffle()
   },
-  
+
   renderShuffle: function() {
     Shuffle.active ? this.$el.find('#shuffle').removeClass('off') : this.$el.find('#shuffle').addClass('off')
   },
-  
+
   toggleFullscreen: function() {
     if (Video.fullscreen) {
       this.fullscreenDisable()
@@ -344,7 +343,7 @@ View.Controls = Backbone.View.extend({
     windowResized()
     //this.update() ???
   },
-  
+
   fullscreenDisable: function() {
     Video.fullscreen = false
     this.renderFullscreen()
@@ -354,7 +353,7 @@ View.Controls = Backbone.View.extend({
       Video.jumpTo()
     })
   },
-  
+
   fullscreenEnable: function() {
     Video.fullscreen = true
     this.renderFullscreen()
@@ -363,12 +362,12 @@ View.Controls = Backbone.View.extend({
       $body.scrollTop(0)
     })
   },
-  
+
   renderFullscreen: function() {
     var $fullscreen = this.$el.find('#fullscreen div')
     Video.fullscreen ? $fullscreen.addClass('icon-resize-small') : $fullscreen.removeClass('icon-resize-small')
   },
-  
+
   toggleRadio: function() {
     if (this.$el.find('#radio').hasClass('disabled')) {
       return
@@ -380,7 +379,7 @@ View.Controls = Backbone.View.extend({
     }
     this.renderRadio()
   },
-  
+
   renderRadio: function() {
     if (Radio.active) {
       this.$el.find('#radio').removeClass('off')
@@ -390,16 +389,16 @@ View.Controls = Backbone.View.extend({
       this.$el.find('#shuffle').removeClass('disabled')
     }
   },
-  
+
   dragVolume: function(e) {
     var $target = $(e.target)
     if ($target.parents('#volume-bar').length) {
       $target = $target.parents('#volume-bar')
-    }  
+    }
     this.dragVolumeStop()
     this.dragVolumeStart($target, e)
   },
-  
+
   dragVolumeStart: function($target, e) {
     this.dragger = this.dragVolumeFill($target, Video.volume)
     this.dragger(e)
@@ -407,7 +406,7 @@ View.Controls = Backbone.View.extend({
     $(document).on('mousemove', this.dragger)
     $body.addClass('dragging')
   },
-  
+
   dragVolumeFill: function($target, callback) {
     return function(e, secondCallback) {
       var w = $target.width()
@@ -418,29 +417,29 @@ View.Controls = Backbone.View.extend({
       }
     }
   },
-  
+
   dragVolumeStop: function(e) {
     $body.removeClass('dragging')
     if (e) {
       this.dragger(e, function(lastVolume) {
         if (lastVolume) {
           Controls.lastVolume = lastVolume
-        }        
+        }
       })
     }
     $(document).off('mousemove')
     $(document).off('mouseup')
     this.dragger = null
   },
-  
+
   dragTimer: function(e) {
     if ($(e.target).is('#timer')) {
       return false
-    }  
+    }
     this.dragTimerStop()
     this.dragTimerStart($('#timer .fill'), e)
   },
-  
+
   dragTimerStart: function($target, e) {
     this.dragger = this.dragTimerFill($target, $('#timer').width(), Video.duration(), Video.seek)
     this.dragger(e)
@@ -448,7 +447,7 @@ View.Controls = Backbone.View.extend({
     $(document).on('mousemove', _.debounce(this.dragger, 300))
     $body.addClass('dragging')
   },
-  
+
   dragTimerFill: function($target, timerWidth, maxTime, callback) {
     return function(e) {
       var w = $target.width()
@@ -456,7 +455,7 @@ View.Controls = Backbone.View.extend({
       callback(boundedPosition)
     }
   },
-  
+
   dragTimerStop: function(e) {
     $body.removeClass('dragging')
     $(document).off('mousemove')
@@ -472,7 +471,7 @@ View.Controls = Backbone.View.extend({
     }
     return minutes + ":" + seconds
   }
-  
+
 })
 
 
