@@ -154,24 +154,23 @@ Model.Video = Backbone.Model.extend({
   },
 
   search: function(track) {
-    var query = '"' + track.artist + '" "' + track.name + '"'
+    var query = '"' + track.artist + '" "' + track.name + '"';
     if (!this.loading) {
-      this.loading = true
+      this.loading = true;
 
-      var url = "http://gdata.youtube.com/feeds/api/videos?" + $.param({
-          alt           : 'json-in-script',
-          category      : 'Music',
-          key           : 'AIzaSyCWqOB4EY4ro6LWNRhoFrMYVOorI8G0Q-U',
-          vq            : (query + this.filters(query)),
-          orderby       : 'relevance',
-          'start-index' : 1,
-          'max-results' : 20,
-          format        : 5,
-          callback      : 'window.setTrackVideoIds'
-      })
+      var url = "https://www.googleapis.com/youtube/v3/search?" + $.param({
+          key             : 'AIzaSyCWqOB4EY4ro6LWNRhoFrMYVOorI8G0Q-U',
+          part            : 'id',
+          type            : 'video',
+          order           : 'relevance',
+          maxResults      : '20',
+          videoEmbeddable : 'true',
+          q               : (query + this.filters(query)),
+          callback        : 'window.setTrackVideoIds'
+      });
 
-      $.getScript(url)
-      return true
+      $.getScript(url);
+      return true;
     }
   },
 

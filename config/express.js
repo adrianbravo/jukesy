@@ -7,14 +7,14 @@ var _ = require('underscore')
 module.exports = function(app) {
 
   app.set('base_url', {
-    development : 'http://jukesy.local:3000',
+    development : 'http://jukesy.local',
     test        : 'http://jukesy.test:7357',
     staging     : 'http://staging.jukesy.com',
     production  : 'http://jukesy.com'
   }[app.set('env')])
 
   app.set('port', {
-    development : '3000',
+    development : '80',
     test        : '7357',
     staging     : '4000',
     production  : '3000'
